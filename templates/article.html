@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {# Override head nếu cần custom meta tags, title, etc. #}
+    {% include 'partials/head.html' %}
+    
+    {# Custom meta tags cho article #}
+    {% if article %}
+    <title>{{ article.title }}</title>
+    <meta name="title" content="{{ article.title }}">
+    <meta name="description" content="{{ article.description }}">
+    <meta property="og:title" content="{{ article.title }}">
+    <meta property="og:description" content="{{ article.description }}">
+    {% endif %}
+{% endblock %}
+
+{% block body_class %}l4 article site_sermitsiaq section_{{ section|default('samfund') }} iteras-paywall{% endblock %}
+
+{% block content %}
+    {# Article content #}
+    <template class="definitionTemplate">
+        <div class="definitionPopup">
+            <div class="definitionInfo">
+                <p></p>
+                <span></span>
+                <button class="definitionClose">&#10005;</button>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        (function(){
+            const audioPlayers = document.querySelectorAll('.dacInlineAudio');
+            for (const audioPlayer of audioPlayers) {
+                window.dachserData.push('audioInline', audioPlayer);
+            }
+
+            window.onload = function() {
+                if (window.Dac && window.Dac.Definition) {
+                    const definition = new Dac.Definition();
+                    definition.setup();   
+                }
+            };
+        })();
+    </script>
+
+    {# Article body content - override trong view #}
+    {% block article_content %}
+        {# Default: render từ 1.html nếu không có content #}
+        <p>Article content goes here...</p>
+    {% endblock %}
+
+    {# Article-specific scripts #}
+    <script>
+        window.lab_article_data = window.lab_article_data || {};
+        {% if article_id %}
+        if (lab_article_data[{{ article_id }}]) {
+            lab_article_data[{{ article_id }}].tagsString = '{{ tags|default("") }}';
+            lab_article_data[{{ article_id }}].section = '{{ section|default("samfund") }}';
+            lab_article_data[{{ article_id }}].pageType = 'article';
+        } else {
+            lab_article_data[{{ article_id }}] = {
+                tagsString: '{{ tags|default("") }}',
+                section: '{{ section|default("samfund") }}',
+                pageType: 'article'
+            };
+        }
+        {% endif %}
+    </script>
+{% endblock %}
+
+{% block scripts %}
+    {# Base scripts #}
+    <script src="/view-resources/baseview/public/common/build/baseview_dependencies_dom.js?v=1768293024-L4" data-cookieconsent="ignore"></script>
+
+    {# Article-specific scripts #}
+    <script>
+        window.dachserData.handlers = {
+            parallax: function(item) {
+                if (window.Dac && window.Dac.Parallax) {
+                    new Dac.Parallax(item);
+                } else {
+                    console.warn('parallax: Missing required class Dac.Parallax. Content will not animate.');
+                }
+            },
+            swipehelper: function(item) {
+                if (window.Dac && window.Dac.SwipeHelper) {
+                    var element = document.querySelector(item.selector);
+                    if (!element) {
+                        console.warn('SwipeHelper: Missing element for selector: "' + item.selector + '".');
+                        return null;
+                    }
+                    return new Dac.SwipeHelper(element, item);
+                } else {
+                    console.warn('SwipeHelper: Missing required function Dac.SwipeHelper.');
+                    return null;
+                } 
+            },
+            readprogress: function(item) {
+                if (window.Dac && window.Dac.ReadProgress) {
+                    var element = document.querySelector(item.selector);
+                    if (!element) {
+                        console.warn('ReadProgress: Missing element for selector: "' + item.selector + '".');
+                        return;
+                    }
+                    new Dac.ReadProgress(element, item);
+                } else {
+                    console.warn('ReadProgress: Missing required function Dac.ReadProgress.');
+                } 
+            },
+            tabnavigation: function(item) {
+                if (window.Dac && window.Dac.TabNavigation) {
+                    new Dac.TabNavigation(item);
+                } else {
+                    console.warn('TabNavigation: Missing required function Dac.Tabnavigation.');
+                } 
+            },
+            elementattributetoggler: function(item) {
+                if (window.Dac && window.Dac.ElementAttributeToggler) {
+                    new Dac.ElementAttributeToggler(item);
+                } else {
+                    console.warn('ElementAttributeToggler: Missing required class Dac.ElementAttributeToggler.');
+                } 
+            },
+            articlelists: (item) => {
+                if (window.Dac && window.Dac.ArticleLists) {
+                    new Dac.ArticleLists(item);
+                } else {
+                    console.warn('ElementAttributeToggler: Missing required class Dac.ArticleLists.');
+                }
+            }
+        };
+
+        window.dachserData.execute = () => {
+            // Parallax
+            const parallaxQueue = window.dachserData.get('parallax') || [];
+            parallaxQueue.forEach(item => {
+                window.dachserData.handlers.parallax(item);
+            });
+        
+            // SwipeHelper
+            const swipehelperQueue = window.dachserData.get('swipehelper') || [];
+            swipehelperQueue.forEach(item => {
+                window.dachserData.setInstance(
+                    'swipehelper',
+                    item.selector,
+                    window.dachserData.handlers.swipehelper(item)
+                );
+            });
+
+            // ReadProgress
+            const readprogressQueue = window.dachserData.get('readprogress') || [];
+            readprogressQueue.forEach(item => {
+                window.dachserData.handlers.readprogress(item);
+            });
+        
+            // Tab-navigation
+            const tabnavigationQueue = window.dachserData.get('tabnavigation') || [];
+            tabnavigationQueue.forEach(item => {
+                window.dachserData.handlers.tabnavigation(item);
+            });
+
+            // ElementAttributeToggler
+            const elementAttributeTogglerQueue = window.dachserData.get('elementattributetoggler') || [];
+            elementAttributeTogglerQueue.forEach(item => {
+                window.dachserData.handlers.elementattributetoggler(item);
+            });
+
+            const articlelistsQueue = window.dachserData.get('articlelists') || [];
+            articlelistsQueue.forEach(item => {
+                window.dachserData.handlers.articlelists(item);
+            });
+        };
+
+        (function () {
+            window.dachserData.execute();
+        }());
+    </script>
+
+    <div class="powered-by "><a href="https://labradorcms.com/" target="_blank">Powered by Labrador CMS</a></div>
+
+    <script type="text/javascript">var _sf_async_config={uid:22254,domain:"sermitsiaq.ag",useCanonical:true};
+    (function(){
+      function loadChartbeat() {
+        window._sf_endpt=(new Date()).getTime();
+        var e = document.createElement('script');
+        e.setAttribute('language', 'javascript');
+        e.setAttribute('type', 'text/javascript');
+        e.setAttribute('src', '//static.chartbeat.com/js/chartbeat.js');
+        document.body.appendChild(e);
+      }
+      var oldonload = window.onload;
+      window.onload = (typeof window.onload != 'function') ?
+         loadChartbeat : function() { oldonload(); loadChartbeat(); };
+    })();</script>
+{% endblock %}
+

@@ -1,0 +1,780 @@
+        <header class="pageElement pageHeader">
+    <div class="section">
+    <div class="row mainrow">
+    <div class="section left-section">
+    <a class="link lang-link" href="https:&#x2F;&#x2F;kl.sermitsiaq.ag"><p class="text">KL</p>
+</a><a class="link lang-link" href="https:&#x2F;&#x2F;sermitsiaq.ag"><p class="text">DK</p>
+</a><div data-id="pageElements-9" class="search to-be-expanded">
+
+        <button class="search-button search-expander" aria-label="Søg"  aria-expanded="false" aria-controls="search-input-9" >
+                <i class="open fi-magnifying-glass"></i>
+                <i class="close fi-x"></i>
+        </button>
+
+    <form class="search-container" action="/cse" method="get" role="search">
+        <label for="search-input-9" class="visuallyhidden">Søg</label>
+        <input type="text" id="search-input-9" name="q" placeholder="Søg...">
+    </form>
+</div>
+
+        <script>
+            // Do the check for the search button inside the if statement, so we don't set a global const if there are multiple search buttons
+            if (document.querySelector('[data-id="pageElements-9"] .search-button')) {
+                // Now we can set a const that is only available inside the if scope
+                const searchButton = document.querySelector('[data-id="pageElements-9"] .search-button');
+                searchButton.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    // Toggle the expanded class on the search button and set the aria-expanded attribute.
+                    searchButton.parentElement.classList.toggle('expanded');
+                    searchButton.setAttribute('aria-expanded', searchButton.getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
+                    searchButton.setAttribute('aria-label', searchButton.getAttribute('aria-expanded') === 'true' ? 'Luk søgning' : 'Åbn søgning');
+
+                    // Set focus to the input. 
+                    // This might be dodgy due to moving focus automatically, but we'll keep it in for now.
+                    if (searchButton.getAttribute('aria-expanded') === 'true') {
+                        document.getElementById('search-input-9').focus();
+                    }
+                }, false);
+            }
+
+            if (document.getElementById('bonusButton')) {
+                document.getElementById('bonusButton').addEventListener('click', (event) => {
+                    document.querySelector('[data-id="pageElements-9"] .search-container').submit();
+                }, false);
+            }
+
+            /*
+                There should probably be some sort of sorting of the elements, so that if the search button is to the right,
+                the tab order should be the input before the button.
+                This is a job for future me.
+            */
+        </script>
+
+</div>
+<figure class="logo">
+    <a href=" //sermitsiaq.ag" aria-label="Gå til forside">
+        <img src="/view-resources/dachser2/public/sermitsiaq/logo.svg"
+            alt="Gå til forside. Logo, sermitsiaq.ag"
+            width="315"
+            >
+    </a>
+</figure>
+<div class="section right-section">
+<nav class="navigation topBarMenu">
+	<ul class="menu-list">
+			<li class="first-list-item buy-btn dac-hidden-desktop-down">
+				<a href="https://www.sermitsiaq.ag/køb-abonnement" target="_self">Køb abonnement</a>
+			</li>
+			<li class="first-list-item login-btn">
+				<a href="https://www.sermitsiaq.ag/login" target="_self">Log ind</a>
+			</li>
+	</ul>
+</nav>
+
+
+
+	<script>
+		(function () {
+			const menuLinks = document.querySelectorAll(`nav.topBarMenu ul li a`);
+			for (let i = 0; i < menuLinks.length; i++) {
+				const link = menuLinks[i].pathname;
+				if (link === window.location.pathname) {
+					menuLinks[i].parentElement.classList.add('lab-link-active');
+				} else {
+					menuLinks[i].parentElement.classList.remove('lab-link-active');
+				}
+			}
+		})();
+	</script>
+
+<div class="hamburger to-be-expanded dac-hidden-desktop-down" data-id="pageElements-13">
+    <div class="positionRelative">
+        <span class="hamburger-button hamburger-expander ">
+            <button class="burger-btn" aria-label="Åbn menu" aria-expanded="false" aria-controls="hamburger-container" aria-haspopup="menu">
+                    <i class="open fi-list"></i>
+                    <i class="close fi-x"></i>
+            </button>
+        </span>
+            <div class="hamburger-container" id="hamburger-container">        
+<nav class="navigation mainMenu expandable">
+	<ul class="menu-list">
+			<li class="first-list-item ">
+				<a href="/tag/samfund" target="_self">SAMFUND</a>
+			</li>
+			<li class="first-list-item ">
+				<a href="/tag/erhverv" target="_self">ERHVERV</a>
+			</li>
+			<li class="first-list-item ">
+				<a href="/tag/kultur" target="_self">KULTUR</a>
+			</li>
+			<li class="first-list-item ">
+				<a href="/tag/sport" target="_self">SPORT</a>
+			</li>
+			<li class="first-list-item job-link dac-hidden-desktop-down">
+				<a href="https://job.sermitsiaq.ag" target="_self">JOB</a>
+			</li>
+			<li class="first-list-item burger-link has-children">
+				<a href="/tag/samfund" target="_self">SAMFUND</a>
+				<ul class="children">
+					<li class="dac-hidden-desktop-up dac-hidden-desktop-down">
+						<a href="/tag/politik" target="_self">POLITIK</a>
+					</li>
+					<li class="dac-hidden-desktop-up dac-hidden-desktop-down">
+						<a href="/tag/indland" target="_self">INDLAND</a>
+					</li>
+					<li class="dac-hidden-desktop-up dac-hidden-desktop-down">
+						<a href="/tag/udland" target="_self">UDLAND</a>
+					</li>
+					<li class="dac-hidden-desktop-up dac-hidden-desktop-down">
+						<a href="/nuuk" target="_self">NUUK</a>
+					</li>
+					<li class="dac-hidden-desktop-up dac-hidden-desktop-down">
+						<a href="/tag/sundhed" target="_self">SUNDHED</a>
+					</li>
+				</ul>
+			</li>
+			<li class="first-list-item burger-link has-children">
+				<a href="/tag/erhverv" target="_self">ERHVERV</a>
+				<ul class="children">
+					<li class="dac-hidden-desktop-up dac-hidden-desktop-down">
+						<a href="/tag/uddannelse" target="_self">UDDANNELSE</a>
+					</li>
+				</ul>
+			</li>
+			<li class="first-list-item burger-link">
+				<a href="/tag/kultur" target="_self">KULTUR</a>
+			</li>
+			<li class="first-list-item burger-link">
+				<a href="/tag/sport" target="_self">SPORT</a>
+			</li>
+			<li class="first-list-item burger-link job-link">
+				<a href="https://job.sermitsiaq.ag" target="_self">JOB</a>
+			</li>
+			<li class="first-list-item burger-link job-link">
+				<a href="/podcasti" target="_self">PODCASTI</a>
+			</li>
+	</ul>
+</nav>
+
+		<script>
+			(function () {
+				// This is only called when the user presses the escape key.
+				function closeElement(event, element) {
+					if (event.key === 'Escape') {
+						window.removeEventListener('keydown', closeElement);
+
+						// Get all expanded elements and close them
+						const expanded = document.querySelectorAll('nav.mainMenu.expandable .has-children.expanded');
+						for (let i = 0; i < expanded.length; i++) {
+							expanded[i].classList.remove('expanded');
+							
+							// Traverse up from the element the user has selected to see if it is a child of the expanded element
+							// If it is, set focus to the first child, as that is the span element with tabindex. 
+							// This is so that if the user has moved on from the menu, we shouldn't mess with the focus and flow
+							if (document.activeElement.closest('.has-children') === expanded[i]) {
+								expanded[i].children[0].focus();
+							}
+						}
+					}
+				}
+
+				function toggleElement(event, element) {
+					// Prevent the default link behavior
+					event.preventDefault();
+
+					// Check if there are other expanded elements and close them
+					const expanded = document.querySelectorAll('nav.mainMenu.expandable .has-children.expanded');
+					for (let i = 0; i < expanded.length; i++) {
+						if (expanded[i] !== element.parentElement) {
+							expanded[i].classList.remove('expanded');
+						}
+					}
+
+					// Toggle the class "expanded" on the parent element
+					// We toggle instead of add/remove the class because we don't know if we are opening or closing the element
+					element.parentElement.classList.toggle('expanded');
+
+					window.addEventListener('keydown', closeElement);
+				}
+
+				// Add extra element for carat and toggle functionality after the span or a element
+				function addCarat(element) {
+					const carat = document.createElement('span');
+					carat.classList.add('carat');
+					carat.tabIndex = '0';
+					const sibling = element.querySelector(':scope > a') || element.querySelector(':scope > span');
+					element.insertBefore(carat, sibling.nextSibling);
+					element.tabIndex = '-1';
+					if (sibling.tagName === 'A') {
+						sibling.tabIndex = '0';
+					} else if (sibling.tagName === 'SPAN') {
+						sibling.tabIndex = '-1';
+					}
+				}
+
+				// Get all elements with class "has-children" and add two events - one click event and one keydown event
+				// Allow for the same expandable menu to be reused in different viewports by using different classes
+				let classes = '';
+				if (classes) {
+					classes = '.' + classes.trim().split(' ').join('.');
+				}
+
+				const hasChildren = document.querySelectorAll(`nav.mainMenu${ classes }.expandable .has-children > span`);
+				for (let i = 0; i < hasChildren.length; i++) {
+					hasChildren[i].addEventListener('click', function(e) {
+						toggleElement(e, this);
+					});
+
+					hasChildren[i].addEventListener('keydown', function (e) {
+						// Check for both enter and space keys
+						if (e.key === 'Enter' || e.key === ' ') {
+							toggleElement(e, this);
+						}
+					});
+				}
+
+				// Get all elements with class "has-children" when toggleChildren is enabled and carat and toggle functionality 
+				const hasChildrenToggle = document.querySelectorAll(`nav.mainMenu${ classes }.expandable.toggleChildren .has-children > span, nav.mainMenu${ classes }.expandable.toggleChildren .has-children > a`);
+				for (let i = 0; i < hasChildrenToggle.length; i++) {
+
+					// Add carat to the element
+					addCarat(hasChildrenToggle[i].parentElement);
+
+					if (hasChildrenToggle[i].tagName === 'A' || hasChildrenToggle[i].tagName === 'SPAN') {
+						hasChildrenToggle[i].nextSibling.addEventListener('click', function(e) {
+							toggleElement(e, hasChildrenToggle[i]);
+						});
+
+						hasChildrenToggle[i].nextSibling.addEventListener('keydown', function(e) {
+							// Check for both enter and space keys
+							if (e.key === 'Enter' || e.key === ' ') {
+								toggleElement(e, hasChildrenToggle[i]);
+							}
+						});
+
+						// Use with caution - ensure that parent li overlaps with child ul to avoid prematurely triggering leave
+						if (hasChildrenToggle[i].closest('nav').classList.contains('toggleOnHover')) {
+							hasChildrenToggle[i].addEventListener('mouseenter', function(e) {
+								hasChildrenToggle[i].parentElement.classList.add('expanded');
+							});
+
+							hasChildrenToggle[i].parentElement.addEventListener('mouseleave', function(e) {
+								hasChildrenToggle[i].parentElement.classList.remove('expanded');
+							});
+						}
+					}
+				}
+			})();
+		</script>
+
+
+	<script>
+		(function () {
+			const menuLinks = document.querySelectorAll(`nav.mainMenu ul li a`);
+			for (let i = 0; i < menuLinks.length; i++) {
+				const link = menuLinks[i].pathname;
+				if (link === window.location.pathname) {
+					menuLinks[i].parentElement.classList.add('lab-link-active');
+				} else {
+					menuLinks[i].parentElement.classList.remove('lab-link-active');
+				}
+			}
+		})();
+	</script>
+
+<nav class="navigation bottomBarMenu">
+	<ul class="menu-list">
+			<li class="first-list-item ">
+				<a href="/kontakt" target="_self">Kontakt</a>
+			</li>
+			<li class="first-list-item ">
+				<a href="https://www.sermitsiaq.ag/køb-abonnement" target="_self">Abonnement</a>
+			</li>
+			<li class="first-list-item ">
+				<a href="https://www.sermitsiaq.ag/oversigtannoncer" target="_self">Annoncer</a>
+			</li>
+			<li class="first-list-item ">
+				<a href="https://sermitsiaq.e-pages.pub/titles/" target="_blank">E-aviser</a>
+			</li>
+			<li class="first-list-item ">
+				<a href="https://www.sermitsiaq.ag/selvbetjening" target="_self">Selvbetjening</a>
+			</li>
+	</ul>
+</nav>
+
+
+
+	<script>
+		(function () {
+			const menuLinks = document.querySelectorAll(`nav.bottomBarMenu ul li a`);
+			for (let i = 0; i < menuLinks.length; i++) {
+				const link = menuLinks[i].pathname;
+				if (link === window.location.pathname) {
+					menuLinks[i].parentElement.classList.add('lab-link-active');
+				} else {
+					menuLinks[i].parentElement.classList.remove('lab-link-active');
+				}
+			}
+		})();
+	</script>
+
+
+            </div>
+    </div>
+
+</div>
+
+<script>
+    (function(){
+        const burgerButton = document.querySelector('[data-id="pageElements-13"] .burger-btn');
+        const dropdownCloseSection = document.querySelector('[data-id="pageElements-13"] .dropdown-close-section');
+
+        function toggleDropdown() {
+            // Toggle the expanded class and aria-expanded attribute
+            document.querySelector('[data-id="pageElements-13"].hamburger.to-be-expanded').classList.toggle('expanded');
+            burgerButton.setAttribute('aria-expanded', burgerButton.getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
+            burgerButton.setAttribute('aria-label', burgerButton.getAttribute('aria-expanded') === 'true' ? 'Luk menu' : 'Åbn menu');
+            // This doesn't seem to do anything? But there's styling dependent on it some places
+            document.body.classList.toggle('hamburger-expanded');
+        }
+        // Called via the eventlistener - if the key is Escape, toggle the dropdown and remove the eventlistener
+        function closeDropdown(e) {
+            if(e.key === 'Escape') {
+                toggleDropdown();
+                // Set the focus back on the button when clicking escape, so the user can continue tabbing down
+                // the page in a natural flow
+                document.querySelector('[data-id="pageElements-13"] .burger-btn').focus();
+                window.removeEventListener('keydown', closeDropdown);
+            }
+        }
+
+        if(burgerButton) {
+            burgerButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                toggleDropdown();
+
+                // If the menu gets expanded, add the eventlistener that will close it on pressing Escape
+                // else, remove the eventlistener otherwise it will continue to listen for escape even if the menu is closed.
+                if(document.querySelector('[data-id="pageElements-13"] .burger-btn').getAttribute('aria-expanded') === 'true') {
+                    window.addEventListener('keydown', closeDropdown);
+                } else {
+                    window.removeEventListener('keydown', closeDropdown);
+                }
+            })
+        }
+        if (dropdownCloseSection) {
+            dropdownCloseSection.addEventListener('click', function(e) {
+                e.preventDefault();
+                toggleDropdown();
+            });
+        }
+
+        document.querySelectorAll('.hamburger .hamburger-expander, .hamburger .hamburger-container, .stop-propagation').forEach(function (element) {
+            element.addEventListener('click', function (e) {
+                e.stopPropagation();
+            });
+        });
+    }());
+</script>
+</div>
+
+</div>
+<div class="row logo-row">
+<figure class="logo">
+    <a href=" //sermitsiaq.ag" aria-label="Gå til forside">
+        <img src="/view-resources/dachser2/public/sermitsiaq/logo.svg"
+            alt="Gå til forside. Logo, sermitsiaq.ag"
+            width="315"
+            >
+    </a>
+</figure>
+
+</div>
+<div class="row bottomrow dac-hidden-desktop-down">
+<nav class="navigation mainMenu">
+	<ul class="menu-list">
+			<li class="first-list-item ">
+				<a href="/tag/samfund" target="_self">SAMFUND</a>
+			</li>
+			<li class="first-list-item ">
+				<a href="/tag/erhverv" target="_self">ERHVERV</a>
+			</li>
+			<li class="first-list-item ">
+				<a href="/tag/kultur" target="_self">KULTUR</a>
+			</li>
+			<li class="first-list-item ">
+				<a href="/tag/sport" target="_self">SPORT</a>
+			</li>
+			<li class="first-list-item job-link dac-hidden-desktop-down">
+				<a href="https://job.sermitsiaq.ag" target="_self">JOB</a>
+			</li>
+			<li class="first-list-item burger-link has-children">
+				<a href="/tag/samfund" target="_self">SAMFUND</a>
+				<ul class="children">
+					<li class="dac-hidden-desktop-up dac-hidden-desktop-down">
+						<a href="/tag/politik" target="_self">POLITIK</a>
+					</li>
+					<li class="dac-hidden-desktop-up dac-hidden-desktop-down">
+						<a href="/tag/indland" target="_self">INDLAND</a>
+					</li>
+					<li class="dac-hidden-desktop-up dac-hidden-desktop-down">
+						<a href="/tag/udland" target="_self">UDLAND</a>
+					</li>
+					<li class="dac-hidden-desktop-up dac-hidden-desktop-down">
+						<a href="/nuuk" target="_self">NUUK</a>
+					</li>
+					<li class="dac-hidden-desktop-up dac-hidden-desktop-down">
+						<a href="/tag/sundhed" target="_self">SUNDHED</a>
+					</li>
+				</ul>
+			</li>
+			<li class="first-list-item burger-link has-children">
+				<a href="/tag/erhverv" target="_self">ERHVERV</a>
+				<ul class="children">
+					<li class="dac-hidden-desktop-up dac-hidden-desktop-down">
+						<a href="/tag/uddannelse" target="_self">UDDANNELSE</a>
+					</li>
+				</ul>
+			</li>
+			<li class="first-list-item burger-link">
+				<a href="/tag/kultur" target="_self">KULTUR</a>
+			</li>
+			<li class="first-list-item burger-link">
+				<a href="/tag/sport" target="_self">SPORT</a>
+			</li>
+			<li class="first-list-item burger-link job-link">
+				<a href="https://job.sermitsiaq.ag" target="_self">JOB</a>
+			</li>
+			<li class="first-list-item burger-link job-link">
+				<a href="/podcasti" target="_self">PODCASTI</a>
+			</li>
+	</ul>
+</nav>
+
+
+
+	<script>
+		(function () {
+			const menuLinks = document.querySelectorAll(`nav.mainMenu ul li a`);
+			for (let i = 0; i < menuLinks.length; i++) {
+				const link = menuLinks[i].pathname;
+				if (link === window.location.pathname) {
+					menuLinks[i].parentElement.classList.add('lab-link-active');
+				} else {
+					menuLinks[i].parentElement.classList.remove('lab-link-active');
+				}
+			}
+		})();
+	</script>
+
+
+</div>
+<div class="row fab-row dac-hidden-desktop-up">
+    <div class="fab-container right-align ">
+    <div class="fab-relative">
+        <div class="fab-wrapper"> 
+            <button title="Open menu" aria-label="Open menu" aria-controls="fab-menu-wrapper" aria-expanded="false" class="fab">
+                <i class="open fi-list"></i>
+                <i class="close fi-x"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="fab-menu-wrapper">
+        <div class="fab-menu-content">
+<nav class="navigation dropdownMenu expandable">
+	<ul class="menu-list">
+			<li class="first-list-item has-children">
+				<a href="/tag/samfund" target="_self">SAMFUND</a>
+				<ul class="children">
+					<li class="dac-hidden-desktop-down">
+						<a href="/tag/udland" target="_self">UDLAND</a>
+					</li>
+					<li class="dac-hidden-desktop-down">
+						<a href="/nuuk" target="_self">NUUK</a>
+					</li>
+					<li class="dac-hidden-desktop-down">
+						<a href="/tag/sundhed" target="_self">SUNDHED</a>
+					</li>
+				</ul>
+			</li>
+			<li class="first-list-item has-children">
+				<a href="/tag/erhverv" target="_self">ERHVERV</a>
+				<ul class="children">
+					<li class="dac-hidden-desktop-up dac-hidden-desktop-down">
+						<a href="/tag/uddannelse" target="_self">UDDANNELSE</a>
+					</li>
+				</ul>
+			</li>
+			<li class="first-list-item ">
+				<a href="/tag/kultur" target="_self">KULTUR</a>
+			</li>
+			<li class="first-list-item ">
+				<a href="/tag/sport" target="_self">SPORT</a>
+			</li>
+			<li class="first-list-item job-link">
+				<a href="https://job.sermitsiaq.ag" target="_self">JOB</a>
+			</li>
+			<li class="first-list-item job-link">
+				<a href="/podcasti" target="_self">PODCASTI</a>
+			</li>
+	</ul>
+</nav>
+
+		<script>
+			(function () {
+				// This is only called when the user presses the escape key.
+				function closeElement(event, element) {
+					if (event.key === 'Escape') {
+						window.removeEventListener('keydown', closeElement);
+
+						// Get all expanded elements and close them
+						const expanded = document.querySelectorAll('nav.dropdownMenu.expandable .has-children.expanded');
+						for (let i = 0; i < expanded.length; i++) {
+							expanded[i].classList.remove('expanded');
+							
+							// Traverse up from the element the user has selected to see if it is a child of the expanded element
+							// If it is, set focus to the first child, as that is the span element with tabindex. 
+							// This is so that if the user has moved on from the menu, we shouldn't mess with the focus and flow
+							if (document.activeElement.closest('.has-children') === expanded[i]) {
+								expanded[i].children[0].focus();
+							}
+						}
+					}
+				}
+
+				function toggleElement(event, element) {
+					// Prevent the default link behavior
+					event.preventDefault();
+
+					// Check if there are other expanded elements and close them
+					const expanded = document.querySelectorAll('nav.dropdownMenu.expandable .has-children.expanded');
+					for (let i = 0; i < expanded.length; i++) {
+						if (expanded[i] !== element.parentElement) {
+							expanded[i].classList.remove('expanded');
+						}
+					}
+
+					// Toggle the class "expanded" on the parent element
+					// We toggle instead of add/remove the class because we don't know if we are opening or closing the element
+					element.parentElement.classList.toggle('expanded');
+
+					window.addEventListener('keydown', closeElement);
+				}
+
+				// Add extra element for carat and toggle functionality after the span or a element
+				function addCarat(element) {
+					const carat = document.createElement('span');
+					carat.classList.add('carat');
+					carat.tabIndex = '0';
+					const sibling = element.querySelector(':scope > a') || element.querySelector(':scope > span');
+					element.insertBefore(carat, sibling.nextSibling);
+					element.tabIndex = '-1';
+					if (sibling.tagName === 'A') {
+						sibling.tabIndex = '0';
+					} else if (sibling.tagName === 'SPAN') {
+						sibling.tabIndex = '-1';
+					}
+				}
+
+				// Get all elements with class "has-children" and add two events - one click event and one keydown event
+				// Allow for the same expandable menu to be reused in different viewports by using different classes
+				let classes = '';
+				if (classes) {
+					classes = '.' + classes.trim().split(' ').join('.');
+				}
+
+				const hasChildren = document.querySelectorAll(`nav.dropdownMenu${ classes }.expandable .has-children > span`);
+				for (let i = 0; i < hasChildren.length; i++) {
+					hasChildren[i].addEventListener('click', function(e) {
+						toggleElement(e, this);
+					});
+
+					hasChildren[i].addEventListener('keydown', function (e) {
+						// Check for both enter and space keys
+						if (e.key === 'Enter' || e.key === ' ') {
+							toggleElement(e, this);
+						}
+					});
+				}
+
+				// Get all elements with class "has-children" when toggleChildren is enabled and carat and toggle functionality 
+				const hasChildrenToggle = document.querySelectorAll(`nav.dropdownMenu${ classes }.expandable.toggleChildren .has-children > span, nav.dropdownMenu${ classes }.expandable.toggleChildren .has-children > a`);
+				for (let i = 0; i < hasChildrenToggle.length; i++) {
+
+					// Add carat to the element
+					addCarat(hasChildrenToggle[i].parentElement);
+
+					if (hasChildrenToggle[i].tagName === 'A' || hasChildrenToggle[i].tagName === 'SPAN') {
+						hasChildrenToggle[i].nextSibling.addEventListener('click', function(e) {
+							toggleElement(e, hasChildrenToggle[i]);
+						});
+
+						hasChildrenToggle[i].nextSibling.addEventListener('keydown', function(e) {
+							// Check for both enter and space keys
+							if (e.key === 'Enter' || e.key === ' ') {
+								toggleElement(e, hasChildrenToggle[i]);
+							}
+						});
+
+						// Use with caution - ensure that parent li overlaps with child ul to avoid prematurely triggering leave
+						if (hasChildrenToggle[i].closest('nav').classList.contains('toggleOnHover')) {
+							hasChildrenToggle[i].addEventListener('mouseenter', function(e) {
+								hasChildrenToggle[i].parentElement.classList.add('expanded');
+							});
+
+							hasChildrenToggle[i].parentElement.addEventListener('mouseleave', function(e) {
+								hasChildrenToggle[i].parentElement.classList.remove('expanded');
+							});
+						}
+					}
+				}
+			})();
+		</script>
+
+
+	<script>
+		(function () {
+			const menuLinks = document.querySelectorAll(`nav.dropdownMenu ul li a`);
+			for (let i = 0; i < menuLinks.length; i++) {
+				const link = menuLinks[i].pathname;
+				if (link === window.location.pathname) {
+					menuLinks[i].parentElement.classList.add('lab-link-active');
+				} else {
+					menuLinks[i].parentElement.classList.remove('lab-link-active');
+				}
+			}
+		})();
+	</script>
+
+<nav class="navigation bottomBarMenu">
+	<ul class="menu-list">
+			<li class="first-list-item ">
+				<a href="/kontakt" target="_self">Kontakt</a>
+			</li>
+			<li class="first-list-item ">
+				<a href="https://www.sermitsiaq.ag/køb-abonnement" target="_self">Abonnement</a>
+			</li>
+			<li class="first-list-item ">
+				<a href="https://www.sermitsiaq.ag/oversigtannoncer" target="_self">Annoncer</a>
+			</li>
+			<li class="first-list-item ">
+				<a href="https://sermitsiaq.e-pages.pub/titles/" target="_blank">E-aviser</a>
+			</li>
+			<li class="first-list-item ">
+				<a href="https://www.sermitsiaq.ag/selvbetjening" target="_self">Selvbetjening</a>
+			</li>
+	</ul>
+</nav>
+
+
+
+	<script>
+		(function () {
+			const menuLinks = document.querySelectorAll(`nav.bottomBarMenu ul li a`);
+			for (let i = 0; i < menuLinks.length; i++) {
+				const link = menuLinks[i].pathname;
+				if (link === window.location.pathname) {
+					menuLinks[i].parentElement.classList.add('lab-link-active');
+				} else {
+					menuLinks[i].parentElement.classList.remove('lab-link-active');
+				}
+			}
+		})();
+	</script>
+
+
+        </div>
+    </div>
+</div>
+
+<script>
+    const labFabMenu = document.querySelector('.fab-menu-wrapper');
+    const labFabButton = document.querySelector('button[aria-controls="fab-menu-wrapper"]');
+    const labFabWrapper = document.querySelector('.fab-container');
+    const labFabBody = document.querySelector('body');
+
+    labFabButton.addEventListener('click', function() {
+        var expanded = this.getAttribute('aria-expanded') === 'true' || false;
+        this.setAttribute('aria-expanded', !expanded);
+        labFabMenu.classList.toggle('open');
+        labFabWrapper.classList.toggle('expanded');
+        labFabBody.classList.toggle('fab-open');
+    });
+</script>
+</div>
+
+</div>
+
+
+    <script>
+        (function () {
+            if (!'IntersectionObserver' in window) { return;}
+
+            var scrollEvents = scrollEvents || [];
+            var event = {
+                target: 'header.pageHeader',
+                offset: '20px',
+                classes: [],
+                styles: []
+            };
+            var classItem = {
+                selector: '.pageHeader',
+                class: []
+            };
+            classItem.class.push('scrolled');
+            event.classes.push(classItem);
+            scrollEvents.push(event);
+
+
+            if (scrollEvents) {
+                const domInterface = {
+                    classList: {
+                        remove: () => {},
+                        add: () => {}
+                    },
+                    style: {
+                        cssText: ''
+                    }
+                };
+                scrollEvents.forEach(function(event) {
+                    var callback = function (entries, observer) {
+                        if (!entries[0]) { return; }
+                        if (entries[0].isIntersecting) {
+                            event.styles.forEach(function(item) {
+                                (document.querySelector(item.selector) || domInterface).style.cssText = "";
+                            });
+                            event.classes.forEach(function(item) {
+                                item.class.forEach(function(classname) {
+                                    (document.querySelector(item.selector) || domInterface).classList.remove(classname);
+                                });
+                            });
+                        } else {
+                            event.styles.forEach(function(item) {
+                                (document.querySelector(item.selector) || domInterface).style.cssText = item.style;
+                            });
+                            event.classes.forEach(function(item) {
+                                item.class.forEach(function(classname) {
+                                    (document.querySelector(item.selector) || domInterface).classList.add(classname);
+                                });
+                            });
+                        }
+                    };
+
+                    var observer = new IntersectionObserver(callback, {
+                        rootMargin: event.offset,
+                        threshold: 1
+                    });
+                    var target = document.querySelector(event.target);
+                    if (target) {
+                        observer.observe(target);
+                    }
+                });
+            }
+        }());
+
+        window.Dac.clientData.paywall.toggleAuthenticatedContent(); 
+    </script>
+</header>

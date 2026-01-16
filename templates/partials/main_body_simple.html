@@ -1,0 +1,79 @@
+{# Main Body Section - Simple Version (không dùng batch) #}
+{# Usage: {% include 'partials/main_body_simple.html' with articles=articles_list %} #}
+
+<section class="main front" id="main">
+    {% if section_title %}
+    <h1 class="hidden-heading">{{ section_title }}</h1>
+    {% endif %}
+    
+    {# Top Ad Placeholder (optional) #}
+    {% if show_top_ad %}
+    <div data-element-guid="{{ top_ad_guid|default('') }}" class="placeholder placement-top">
+        <div data-element-guid="{{ top_ad_column_guid|default('') }}" class="column google-ad small-12 large-12 small-abs-12 large-abs-12" style="">
+            <span class="ad-label">Annonce</span>
+            <div class="adunit" id="2018-Top-Mega-banner"></div>
+            <script>
+                googletag.cmd.push(function() {
+                    googletag.display('2018-Top-Mega-banner');
+                });
+            </script>
+        </div>
+    </div>
+    {% endif %}
+
+    {# Page Content - Articles Grid #}
+    <div data-element-guid="{{ page_content_guid|default('17215aad-5762-4420-b4b6-23b738f459f4') }}" class="page-content">
+        
+        {# Render articles - mỗi article tự quản lý grid_size #}
+        {% if articles %}
+            {# Tạo row mới khi cần #}
+            {% set current_row = [] %}
+            {% set row_index = 0 %}
+            
+            {% for article in articles %}
+                {# Nếu article chưa có grid_size, set mặc định #}
+                {% if not article.grid_size %}
+                    {% set article = article|merge({'grid_size': 6}) %}
+                {% endif %}
+                
+                {# Nếu row hiện tại rỗng hoặc đã đủ, tạo row mới #}
+                {% if current_row|length == 0 or (current_row|length > 0 and (12 // current_row[0].grid_size) == current_row|length) %}
+                    {% if current_row|length > 0 %}
+                        </div>
+                    {% endif %}
+                    <div data-element-guid="row-{{ row_index }}" class="row small-12 large-12" style="">
+                    {% set row_index = row_index + 1 %}
+                    {% set current_row = [] %}
+                {% endif %}
+                
+                {# Add article to current row #}
+                {% set _ = current_row.append(article) %}
+                
+                {# Render article #}
+                {% include 'partials/article_item.html' %}
+            {% endfor %}
+            
+            {# Close last row #}
+            {% if current_row|length > 0 %}
+                </div>
+            {% endif %}
+        {% endif %}
+        
+    </div>
+
+    {# Bottom Ad Placeholder (optional) #}
+    {% if show_bottom_ad %}
+    <div data-element-guid="{{ bottom_ad_guid|default('') }}" class="placeholder placement-bottom">
+        <div data-element-guid="{{ bottom_ad_column_guid|default('') }}" class="column google-ad small-12 large-12 small-abs-12 large-abs-12" style="">
+            <span class="ad-label">Annonce</span>
+            <div class="adunit" id="2018-Sticky-right"></div>
+            <script>
+                googletag.cmd.push(function() {
+                    googletag.display('2018-Sticky-right');
+                });
+            </script>
+        </div>
+    </div>
+    {% endif %}
+</section>
+

@@ -1,0 +1,9 @@
+{# Article Row Partial Template #}
+{# Usage: {% include 'partials/article_row.html' with articles=[article1, article2, article3], row_guid='guid' %} #}
+
+<div data-element-guid="{{ row_guid|default('') }}" class="row small-12 large-12" style="">
+    {% for article in articles %}
+        {% include 'partials/article_item.html' %}
+    {% endfor %}
+</div>
+

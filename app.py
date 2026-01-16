@@ -5,6 +5,21 @@ import os
 
 app = Flask(__name__)
 
+# Register Jinja2 filters
+@app.template_filter('group_articles')
+def group_articles_filter(articles, articles_per_row=2):
+    """Jinja2 filter to group articles into rows"""
+    if not articles:
+        return []
+    grid_size = 6 if articles_per_row == 2 else 4
+    for article in articles:
+        if 'grid_size' not in article:
+            article['grid_size'] = grid_size
+    rows = []
+    for i in range(0, len(articles), articles_per_row):
+        rows.append(articles[i:i + articles_per_row])
+    return rows
+
 # Register blueprints
 app.register_blueprint(article_bp, url_prefix='/api')
 app.register_blueprint(article_view_bp)  # Register views blueprint

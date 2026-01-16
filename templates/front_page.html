@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {% include 'partials/head.html' %}
+    <title>Front Page - Sermitsiaq</title>
+{% endblock %}
+
+{% block body_class %}l4 front site_sermitsiaq section_{{ section|default('samfund') }} iteras-paywall{% endblock %}
+
+{% block content %}
+    {# Main Body với Articles Grid #}
+    {# Set variables trước khi include (Jinja2 không hỗ trợ 'with' trong include) #}
+    {% set articles = articles|default([]) %}
+    {% set section_title = section_title|default('') %}
+    {% set articles_per_row = articles_per_row|default(2) %}
+    {% set show_top_ad = show_top_ad|default(true) %}
+    {% set show_bottom_ad = show_bottom_ad|default(false) %}
+    {% include 'partials/main_body.html' %}
+{% endblock %}
+
+{% block scripts %}
+    {# Base scripts from article.html if needed #}
+    <script src="/view-resources/baseview/public/common/build/baseview_dependencies_dom.js?v=1768293024-L4" data-cookieconsent="ignore"></script>
+{% endblock %}
+

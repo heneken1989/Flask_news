@@ -1,0 +1,89 @@
+{# Main Body Section Partial Template #}
+{# Usage: 
+    {% set articles = articles_list %}
+    {% set section_title = 'Tag: erhverv' %}
+    {% set articles_per_row = 2 %}
+    {% include 'partials/main_body.html' %}
+#}
+
+<section class="main front" id="main">
+    {% if section_title %}
+    <h1 class="hidden-heading">{{ section_title }}</h1>
+    {% endif %}
+    
+    {# Top Ad Placeholder (optional) #}
+    {% if show_top_ad %}
+    <div data-element-guid="{{ top_ad_guid|default('') }}" class="placeholder placement-top">
+        <div data-element-guid="{{ top_ad_column_guid|default('') }}" class="column google-ad small-12 large-12 small-abs-12 large-abs-12" style="">
+            <span class="ad-label">Annonce</span>
+            <div class="adunit" id="2018-Top-Mega-banner"></div>
+            <script>
+                googletag.cmd.push(function() {
+                    googletag.display('2018-Top-Mega-banner');
+                });
+            </script>
+        </div>
+    </div>
+    {% endif %}
+
+    {# Page Content - Articles Grid - Match 100% với HTML gốc (dòng 1256) #}
+    <div data-element-guid="{{ page_content_guid|default('17215aad-5762-4420-b4b6-23b738f459f4') }}" class="page-content">
+        {# Render articles in rows - Match format từ HTML gốc #}
+        {# Tính toán dựa trên tổng grid_size thực tế trong row #}
+        {# Sử dụng namespace để track state trong loop #}
+        {% if articles %}
+            {% set row_guid_base = row_guid|default('5b98f6e1-6332-4192-afad-2c62a70a07cb') %}
+            {% set articles_per_row = articles_per_row|default(2) %}
+            {% set default_grid_size = 6 if articles_per_row == 2 else 4 %}
+            
+            {# Khởi tạo namespace để track state #}
+            {% set ns = namespace(row_index=0, current_row_size=0) %}
+            
+            {% for article_item in articles %}
+                {# Tính grid_size cho article này #}
+                {% set article_grid_size = article_item.grid_size|default(default_grid_size) %}
+                
+                {# Kiểm tra xem có cần row mới không dựa trên tổng grid_size #}
+                {# Row mới nếu: row đầu tiên (current_row_size == 0) HOẶC thêm article này sẽ vượt quá 12 #}
+                {% if ns.current_row_size == 0 or (ns.current_row_size + article_grid_size) > 12 %}
+                    {# Đóng row trước đó nếu có #}
+                    {% if ns.current_row_size > 0 %}
+</div>
+                    {% endif %}
+                    {# Tạo row mới #}
+<div data-element-guid="{{ row_guid_base }}{% if ns.row_index > 0 %}-{{ ns.row_index }}{% endif %}" class="row small-12 large-12" style="">
+                    {% set ns.row_index = ns.row_index + 1 %}
+                    {% set ns.current_row_size = 0 %}
+                {% endif %}
+                
+                {# Render article - match chính xác format từ HTML gốc (có space trước article) #}
+                {% set article = article_item %}
+                {% set article_grid_size = article_grid_size %}
+ {% include 'partials/article_item.html' %}
+                
+                {# Update tổng grid_size của row hiện tại #}
+                {% set ns.current_row_size = ns.current_row_size + article_grid_size %}
+            {% endfor %}
+            
+            {# Đóng row cuối cùng #}
+            {% if ns.current_row_size > 0 %}
+</div>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    {# Bottom Ad Placeholder (optional) #}
+    {% if show_bottom_ad %}
+    <div data-element-guid="{{ bottom_ad_guid|default('') }}" class="placeholder placement-bottom">
+        <div data-element-guid="{{ bottom_ad_column_guid|default('') }}" class="column google-ad small-12 large-12 small-abs-12 large-abs-12" style="">
+            <span class="ad-label">Annonce</span>
+            <div class="adunit" id="2018-Sticky-right"></div>
+            <script>
+                googletag.cmd.push(function() {
+                    googletag.display('2018-Sticky-right');
+                });
+            </script>
+        </div>
+    </div>
+    {% endif %}
+</section>

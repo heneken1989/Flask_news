@@ -1,0 +1,99 @@
+{# Article Item Partial Template - Match 100% với HTML gốc từ 2.html #}
+{# Usage: {% include 'partials/article_item.html' %} #}
+{# Article data được truyền qua context #}
+
+<article data-element-guid="{{ article.element_guid|default('') }}" class="column {{ article.paywall_class|default('') }} small-12 large-{{ article_grid_size|default(article.grid_size|default(6)) }} small-abs-12 large-abs-{{ article_grid_size|default(article.grid_size|default(6)) }} " data-site-alias="{{ article.site_alias|default('sermitsiaq') }}" data-section="{{ article.section|default('') }}" data-instance="{{ article.instance|default('') }}" itemscope>
+    
+    <div class="content" style="">
+        
+        <a itemprop="url" class="" href="{{ article.url|default('#') }}" data-k5a-url="{{ article.k5a_url|default(article.url|default('#')) }}" rel="">
+
+
+            <div class="media ">
+                
+
+{% if article.image %}
+<figure data-element-guid="{{ article.image.element_guid|default('') }}" class="" >
+    <div class="img fullwidthTarget">
+        <picture>
+            {% if article.image.desktop_webp %}
+            <source srcset="{{ article.image.desktop_webp }}" 
+                width="{{ article.image.desktop_width|default('524') }}"
+                height="{{ article.image.desktop_height|default('341') }}"
+                media="(min-width: 768px)"
+                type="image/webp">    
+            {% endif %}
+            {% if article.image.desktop_jpeg %}
+            <source srcset="{{ article.image.desktop_jpeg }}" 
+                width="{{ article.image.desktop_width|default('524') }}"
+                height="{{ article.image.desktop_height|default('341') }}"
+                media="(min-width: 768px)"
+                type="image/jpeg">    
+            {% endif %}
+            {% if article.image.mobile_webp %}
+            <source srcset="{{ article.image.mobile_webp }}" 
+                width="{{ article.image.mobile_width|default('480') }}"
+                height="{{ article.image.mobile_height|default('312') }}"
+                media="(max-width: 767px)"
+                type="image/webp">    
+            {% endif %}
+            {% if article.image.mobile_jpeg %}
+            <source srcset="{{ article.image.mobile_jpeg }}" 
+                width="{{ article.image.mobile_width|default('480') }}"
+                height="{{ article.image.mobile_height|default('312') }}"
+                media="(max-width: 767px)"
+                type="image/jpeg">    
+            {% endif %}
+            <img src="{{ article.image.fallback|default(article.image.mobile_jpeg|default('')) }}"
+                width="{{ article.image.mobile_width|default('480') }}"
+                height="{{ article.image.mobile_height|default('312') }}"
+                title="{{ article.title|default('') }}"
+                alt="{{ article.image.alt|default('') }}" 
+                
+                style=""    
+                >
+        </picture>        
+            </div>
+    
+</figure>
+{% endif %}
+
+                
+                
+                
+                
+                
+                
+            
+            <div class="floatingText">
+
+                <div class="labels">
+                </div>
+            </div>
+            
+{% if article.is_paywall %}
+<div class="paywallLabel  "><span class="fi-plus"></span> </div>
+{% endif %}
+
+        </div>
+
+{% if article.is_paywall %}
+<div class="paywallLabel  "><span class="fi-plus"></span> </div>
+{% endif %}
+
+        
+            <h2 itemprop="headline" 
+    class="headline t38"
+    style=""
+    >{{ article.title|default('Article Title') }}
+</h2>
+
+        
+
+
+
+        </a>
+
+        <time itemprop="datePublished" datetime="{{ article.published_date|default('') }}"></time>
+    </div>
+</article>

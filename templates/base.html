@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="da-DK" dir="ltr" class="resp_fonts">
+
+    <head>
+        {% block head %}
+            {# Default head content - có thể override trong child templates #}
+            {% include 'partials/head.html' %}
+        {% endblock %}
+        
+        {# Page-specific head content #}
+        {% block extra_head %}{% endblock %}
+    </head>
+
+    <body class="{% block body_class %}l4 article site_sermitsiaq section_samfund iteras-paywall{% endblock %}" {% block body_attrs %}{% endblock %}>
+        
+        {# Google Tag Manager (noscript) #}
+        <!-- Google Tag Manager (noscript) -->
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KXF2W8B"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) -->
+        
+        <script>
+        document.addEventListener("DOMContentLoaded", (event) => {
+            setScrollbarWidth();
+            window.addEventListener('resize', setScrollbarWidth);
+        });
+        function setScrollbarWidth() {
+            const root = document.querySelector(':root');
+            const width = (window.innerWidth - document.body.offsetWidth < 21) ? window.innerWidth - document.body.offsetWidth : 15;
+            root.style.setProperty('--lab-scrollbar-width', `${ width }px`);
+        }
+        </script>
+
+        <a href="#main" class="skip-link">Jump to main content</a>
+
+        {# Header - Reuse từ partial #}
+        {% include 'partials/header.html' %}
+
+        {# Main Content - Override trong child templates #}
+        <main id="main">
+            {% block content %}{% endblock %}
+        </main>
+
+        {# Footer - Reuse từ partial #}
+        {% include 'partials/footer.html' %}
+
+        {# Page-specific scripts - Override trong child templates #}
+        {% block scripts %}{% endblock %}
+    </body>
+</html>
+
