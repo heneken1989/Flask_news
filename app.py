@@ -1,9 +1,28 @@
 from flask import Flask, render_template, jsonify, send_from_directory
 from api.article_api import article_bp
 from views.article_views import article_view_bp
+from database import db
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)
+
+# Database configuration
+# Development: SQLite
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///articles.db'
+
+# Production: PostgreSQL
+# Load from environment variable (set in .env file or system env)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 
+    'postgresql://flask_user:your_password@localhost/flask_news')
+
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Initialize database
+db.init_app(app)
 
 # Register Jinja2 filters
 @app.template_filter('group_articles')
@@ -41,6 +60,9 @@ def serve_view_resources(filename):
 # def article():
 #     return render_template('1.html')
 
+# Create tables on startup (only in development)
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
     app.run(debug=True, port=5000)
 
