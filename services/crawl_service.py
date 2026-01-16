@@ -44,7 +44,6 @@ class SermitsiaqCrawler:
         
         articles_crawled = 0
         articles_created = 0
-        articles_updated = 0
         errors = []
         
         try:
@@ -91,50 +90,35 @@ class SermitsiaqCrawler:
             print("💾 Saving articles to database...")
             for idx, article_data in enumerate(articles):
                 try:
-                    # Check if article already exists
-                    existing_article = Article.query.filter_by(
-                        element_guid=article_data['element_guid']
-                    ).first()
+                    # QUAN TRỌNG: Override section từ article_data với section_name đang crawl
+                    # Vì parser có thể lấy section từ HTML (có thể không đúng)
+                    article_data['section'] = section_name
                     
-                    if existing_article:
-                        # Update existing article
-                        existing_article.title = article_data['title']
-                        existing_article.slug = article_data['slug']
-                        existing_article.published_url = article_data['url']
-                        existing_article.k5a_url = article_data['k5a_url']
-                        existing_article.section = section_name
-                        existing_article.instance = article_data.get('instance', '')
-                        existing_article.published_date = article_data.get('published_date')
-                        existing_article.is_paywall = article_data['is_paywall']
-                        existing_article.paywall_class = article_data['paywall_class']
-                        existing_article.image_data = article_data.get('image_data', {})
-                        existing_article.display_order = idx  # Set display_order
-                        existing_article.updated_at = datetime.utcnow()
-                        articles_updated += 1
-                    else:
-                        # Create new article
-                        new_article = Article(
-                            element_guid=article_data['element_guid'],
-                            title=article_data['title'],
-                            slug=article_data['slug'],
-                            published_url=article_data['url'],
-                            k5a_url=article_data['k5a_url'],
-                            section=section_name,
-                            site_alias=article_data.get('site_alias', 'sermitsiaq'),
-                            instance=article_data.get('instance', ''),
-                            published_date=article_data.get('published_date'),
-                            is_paywall=article_data['is_paywall'],
-                            paywall_class=article_data['paywall_class'],
-                            image_data=article_data.get('image_data', {}),
-                            display_order=idx,  # Set display_order để match pattern
-                        )
-                        db.session.add(new_article)
-                        articles_created += 1
+                    # Dùng ID (primary key) làm unique identifier
+                    # Mỗi lần crawl sẽ tạo articles mới với ID mới
+                    # Cho phép cùng element_guid xuất hiện ở nhiều sections với ID khác nhau
+                    new_article = Article(
+                        element_guid=article_data.get('element_guid'),  # Có thể None, không unique
+                        title=article_data['title'],
+                        slug=article_data['slug'],
+                        published_url=article_data['url'],
+                        k5a_url=article_data['k5a_url'],
+                        section=section_name,
+                        site_alias=article_data.get('site_alias', 'sermitsiaq'),
+                        instance=article_data.get('instance', ''),
+                        published_date=article_data.get('published_date'),
+                        is_paywall=article_data['is_paywall'],
+                        paywall_class=article_data['paywall_class'],
+                        image_data=article_data.get('image_data', {}),
+                        display_order=idx,  # Set display_order để match pattern
+                    )
+                    db.session.add(new_article)
+                    articles_created += 1
                     
                     # Commit mỗi 10 articles để tránh timeout
-                    if (articles_created + articles_updated) % 10 == 0:
+                    if articles_created % 10 == 0:
                         db.session.commit()
-                        print(f"  💾 Saved {articles_created + articles_updated} articles...")
+                        print(f"  💾 Saved {articles_created} articles...")
                 
                 except Exception as e:
                     error_msg = f"Error saving article {article_data.get('element_guid', 'unknown')}: {str(e)}"
@@ -149,7 +133,7 @@ class SermitsiaqCrawler:
             crawl_log.status = 'success' if not errors else 'partial'
             crawl_log.articles_crawled = articles_crawled
             crawl_log.articles_created = articles_created
-            crawl_log.articles_updated = articles_updated
+            crawl_log.articles_updated = 0  # Không còn update, chỉ create mới với ID mới
             crawl_log.completed_at = datetime.utcnow()
             if errors:
                 crawl_log.errors = '\n'.join(errors[:10])  # Limit to first 10 errors
@@ -157,8 +141,7 @@ class SermitsiaqCrawler:
             
             print(f"✅ Crawl completed!")
             print(f"   📊 Articles crawled: {articles_crawled}")
-            print(f"   ➕ Articles created: {articles_created}")
-            print(f"   🔄 Articles updated: {articles_updated}")
+            print(f"   ➕ Articles created: {articles_created} (with new IDs)")
             if errors:
                 print(f"   ⚠️  Errors: {len(errors)}")
             
@@ -166,7 +149,7 @@ class SermitsiaqCrawler:
                 'success': True,
                 'articles_crawled': articles_crawled,
                 'articles_created': articles_created,
-                'articles_updated': articles_updated,
+                'articles_updated': 0,
                 'errors': errors
             }
         
@@ -185,7 +168,7 @@ class SermitsiaqCrawler:
                 'success': False,
                 'articles_crawled': articles_crawled,
                 'articles_created': articles_created,
-                'articles_updated': articles_updated,
+                'articles_updated': 0,
                 'errors': errors
             }
 

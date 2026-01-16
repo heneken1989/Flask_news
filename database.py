@@ -40,7 +40,7 @@ class Article(db.Model):
     excerpt = db.Column(db.Text)
     
     # Thông tin từ website gốc
-    element_guid = db.Column(db.String(100), unique=True, nullable=False)  # GUID từ website gốc
+    element_guid = db.Column(db.String(100))  # GUID từ website gốc (không unique, chỉ để reference)
     instance = db.Column(db.String(50))  # Instance ID
     site_alias = db.Column(db.String(50), default='sermitsiaq')
     k5a_url = db.Column(db.String(500))  # URL cho K5A
@@ -48,7 +48,7 @@ class Article(db.Model):
     
     # Phân loại
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=True)
-    section = db.Column(db.String(50))  # 'erhverv', 'samfund', 'kultur', 'sport', 'job'
+    section = db.Column(db.String(50), nullable=False)  # 'erhverv', 'samfund', 'kultur', 'sport', 'job'
     
     # Đặc trưng hiển thị (quan trọng!)
     display_order = db.Column(db.Integer, default=0)  # Thứ tự hiển thị (0, 1, 2, ...)
@@ -91,6 +91,7 @@ class Article(db.Model):
         db.Index('idx_section_order', 'section', 'display_order'),
         db.Index('idx_featured', 'is_featured', 'display_order'),
         db.Index('idx_published_date', 'published_date'),
+        db.Index('idx_element_guid', 'element_guid'),  # Index để query nhanh, không unique
     )
     
     def to_dict(self):

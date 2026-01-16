@@ -12,8 +12,12 @@ def index():
     # Thử lấy articles từ database
     articles = []
     try:
-        # Query articles từ database, sắp xếp theo display_order
-        articles = Article.query.order_by(Article.display_order.asc()).limit(50).all()
+        # Query articles từ database, sắp xếp theo published_date DESC để lấy mới nhất
+        articles = Article.query.order_by(Article.published_date.desc().nullslast()).limit(50).all()
+        
+        # Set display_order cho pattern 2-3-2-3-2-3... (0, 1, 2, ...)
+        for idx, article in enumerate(articles):
+            article.display_order = idx
         
         # Convert to dict và áp dụng pattern grid_size
         articles = [article.to_dict() for article in articles]
@@ -221,6 +225,100 @@ def home():
         show_top_ad=True,
         show_bottom_ad=False
     )
+
+@article_view_bp.route('/tag/<section>')
+def tag_section(section):
+    """
+    Display articles by section/category
+    Route: /tag/samfund, /tag/erhverv, /tag/kultur, /tag/sport
+    Shows 50 newest articles from the specified section
+    """
+    from database import db
+    
+    # Validate section
+    valid_sections = ['samfund', 'erhverv', 'kultur', 'sport', 'job']
+    if section not in valid_sections:
+        # Return 404 or redirect to home
+        from flask import abort
+        abort(404)
+    
+    # Section name mapping (Danish)
+    section_names = {
+        'samfund': 'Samfund',
+        'erhverv': 'Erhverv',
+        'kultur': 'Kultur',
+        'sport': 'Sport',
+        'job': 'Job'
+    }
+    
+    # Query articles từ database theo section
+    articles = []
+    try:
+        # Query articles từ database, filter theo section
+        # Sắp xếp theo published_date DESC để lấy mới nhất, sau đó set display_order
+        articles = Article.query.filter_by(section=section)\
+                                .order_by(Article.published_date.desc().nullslast())\
+                                .limit(50).all()
+        
+        # Set display_order cho pattern 2-3-2-3-2-3... (0, 1, 2, ...)
+        for idx, article in enumerate(articles):
+            article.display_order = idx
+        
+        # Convert to dict và áp dụng pattern grid_size
+        articles = [article.to_dict() for article in articles]
+        articles = apply_grid_size_pattern(articles)
+        
+    except Exception as e:
+        print(f"⚠️  Database query failed for section {section}: {e}")
+        articles = []
+    
+    # Nếu không có articles từ database, dùng mock data
+    if not articles:
+        # Tạo 50 mock articles với display_order từ 0-49
+        articles = []
+        for i in range(50):
+            articles.append({
+                'element_guid': f'mock-{section}-{i:03d}',
+                'title': f'Article {i+1} - {section_names.get(section, section).upper()}',
+                'url': f'/{section}/article-{i+1}/2329{i:04d}',
+                'k5a_url': f'/a/2329{i:04d}',
+                'section': section,
+                'site_alias': 'sermitsiaq',
+                'instance': f'1000{i:02d}',
+                'published_date': f'2026-01-{15-i%30:02d}T10:00:00+01:00',
+                'is_paywall': i % 3 == 0,
+                'paywall_class': 'paywall' if i % 3 == 0 else '',
+                'display_order': i,
+                'image': {
+                    'desktop_webp': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=1058&height=688&format=webp',
+                    'desktop_jpeg': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=1058&height=688&format=jpg',
+                    'mobile_webp': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=960&height=624&format=webp',
+                    'mobile_jpeg': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=960&height=624&format=jpg',
+                    'fallback': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=960&height=624',
+                    'desktop_width': '529',
+                    'desktop_height': '344',
+                    'mobile_width': '480',
+                    'mobile_height': '312',
+                    'alt': '',
+                    'title': f'Article {i+1}'
+                }
+            })
+        
+        # Áp dụng pattern grid_size dựa trên display_order
+        articles = apply_grid_size_pattern(articles)
+    
+    # Section title
+    section_title = f'Tag: {section_names.get(section, section)}'
+    
+    return render_template('front_page.html',
+        articles=articles,
+        section_title=section_title,
+        articles_per_row=2,  # Default, sẽ bị override bởi grid_size pattern
+        section=section,
+        show_top_ad=True,
+        show_bottom_ad=False
+    )
+
 
 @article_view_bp.route('/article')
 @article_view_bp.route('/article/<int:article_id>')
