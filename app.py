@@ -3,6 +3,7 @@ from api.article_api import article_bp
 from views.article_views import article_view_bp
 from database import db
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -11,13 +12,26 @@ load_dotenv()
 app = Flask(__name__)
 
 # Database configuration
-# Development: SQLite
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///articles.db'
+# Có thể dùng PostgreSQL từ VPS hoặc SQLite local
+# Priority: DATABASE_URL env var > .env file > SQLite fallback
 
-# Production: PostgreSQL
-# Load from environment variable (set in .env file or system env)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 
-    'postgresql://flask_user:your_password@localhost/flask_news')
+db_url = os.environ.get('DATABASE_URL')
+if not db_url:
+    # Thử load từ .env file
+    env_file = Path(__file__).parent / '.env'
+    if env_file.exists():
+        load_dotenv(env_file)
+        db_url = os.environ.get('DATABASE_URL')
+
+if db_url:
+    # Dùng PostgreSQL (từ VPS hoặc local)
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_url
+    print(f"✅ Using PostgreSQL: {db_url.split('@')[1] if '@' in db_url else 'remote'}")
+else:
+    # Fallback to SQLite for local development
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///articles.db'
+    print("⚠️  Using SQLite (local development)")
+    print("   Set DATABASE_URL to use PostgreSQL")
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
