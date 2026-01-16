@@ -5,7 +5,7 @@ article_view_bp = Blueprint('article_views', __name__)
 @article_view_bp.route('/')
 def index():
     """Home page - displays article list với grid layout"""
-    # Mock articles data để test
+    # Mock articles data
     # TODO: Sẽ lấy từ API sau
     mock_articles = [
         {
@@ -169,11 +169,4 @@ def article(article_id=None):
     # Option 2: Giữ nguyên 1.html (backward compatible)
     return render_template('1.html', article_id=article_id)
 
-@article_view_bp.route('/test')
-@article_view_bp.route('/test/front')
-def test_front_page():
-    """Test route - redirect to home page"""
-    # Redirect to home page (same as index)
-    from flask import redirect, url_for
-    return redirect(url_for('article_views.index'))
 
