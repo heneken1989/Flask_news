@@ -11,6 +11,8 @@ Hướng dẫn chi tiết để thay thế React app bằng Flask app trên VPS,
 **SSL Certificate:** `/etc/letsencrypt/live/nococo.shop/`  
 **Nginx Config:** `/etc/nginx/sites-available/nococo` (hoặc tên file bạn đang dùng)
 
+> 📂 **Xem chi tiết đường dẫn:** [`PATHS_VPS.md`](PATHS_VPS.md)
+
 ## 🔄 So sánh: React vs Flask
 
 ### React (Cũ)
