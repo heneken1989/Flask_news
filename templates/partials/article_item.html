@@ -83,7 +83,7 @@
 
         
             <h2 itemprop="headline" 
-    class="headline t38"
+    class="headline {% if article_grid_size|default(article.grid_size|default(6)) == 4 %}t24{% else %}t38{% endif %}"
     style=""
     >{{ article.title|default('Article Title') }}
 </h2>
