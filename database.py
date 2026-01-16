@@ -108,9 +108,10 @@ class Article(db.Model):
             'is_paywall': self.is_paywall,
             'paywall_class': self.paywall_class,
             'grid_size': self.grid_size,
+            'display_order': self.display_order,  # Thêm display_order
             'is_featured': self.is_featured,
             'article_type': self.article_type,
-            'image': self.image_data or {}
+            'image': self.image_data or {}  # image_data từ database -> image cho template
         }
     
     def __repr__(self):
