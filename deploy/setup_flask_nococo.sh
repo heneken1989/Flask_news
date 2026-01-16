@@ -87,6 +87,13 @@ echo ""
 # Bước 5: Cập nhật Nginx config
 echo -e "${YELLOW}[5/6] Updating Nginx configuration...${NC}"
 
+# Kiểm tra Nginx đã cài chưa
+if ! command -v nginx &> /dev/null; then
+    echo -e "${YELLOW}⚠️  Nginx not found. Installing...${NC}"
+    apt update
+    apt install -y nginx
+fi
+
 # Backup config cũ
 if [ -f "$NGINX_CONFIG" ]; then
     cp "$NGINX_CONFIG" "${NGINX_CONFIG}.react.backup.$(date +%Y%m%d_%H%M%S)"
@@ -94,8 +101,8 @@ if [ -f "$NGINX_CONFIG" ]; then
 fi
 
 # Kiểm tra nếu có file config mới
-if [ -f "deploy/nginx_flask_nococo.conf" ]; then
-    cp deploy/nginx_flask_nococo.conf "$NGINX_CONFIG"
+if [ -f "$FLASK_DIR/deploy/nginx_flask_nococo.conf" ]; then
+    cp "$FLASK_DIR/deploy/nginx_flask_nococo.conf" "$NGINX_CONFIG"
     echo -e "${GREEN}✅ New config copied${NC}"
 else
     echo -e "${YELLOW}⚠️  nginx_flask_nococo.conf not found${NC}"
@@ -103,12 +110,28 @@ else
     echo "See: deploy/DEPLOY_REPLACE_REACT.md"
 fi
 
+# Enable site (tạo symlink nếu chưa có)
+NGINX_ENABLED="/etc/nginx/sites-enabled/nococo"
+if [ ! -L "$NGINX_ENABLED" ]; then
+    ln -s "$NGINX_CONFIG" "$NGINX_ENABLED"
+    echo -e "${GREEN}✅ Nginx site enabled${NC}"
+else
+    echo -e "${GREEN}✅ Nginx site already enabled${NC}"
+fi
+
 # Test và reload Nginx
 if nginx -t; then
-    systemctl reload nginx
-    echo -e "${GREEN}✅ Nginx reloaded${NC}"
+    # Start Nginx nếu chưa chạy
+    if ! systemctl is-active --quiet nginx; then
+        systemctl start nginx
+        echo -e "${GREEN}✅ Nginx started${NC}"
+    else
+        systemctl reload nginx
+        echo -e "${GREEN}✅ Nginx reloaded${NC}"
+    fi
 else
     echo -e "${RED}❌ Nginx config test failed${NC}"
+    echo "Check config: nginx -t"
     exit 1
 fi
 echo ""
