@@ -785,11 +785,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             document.querySelector('[data-id="pageElements-13"].hamburger.to-be-expanded').classList.toggle('expanded');
             burgerButton.setAttribute('aria-expanded', burgerButton.getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
             burgerButton.setAttribute('aria-label', burgerButton.getAttribute('aria-expanded') === 'true' ? 'Luk menu' : 'Åbn menu');
-
             // This doesn't seem to do anything? But there's styling dependent on it some places
             document.body.classList.toggle('hamburger-expanded');
         }
-
         // Called via the eventlistener - if the key is Escape, toggle the dropdown and remove the eventlistener
         function closeDropdown(e) {
             if(e.key === 'Escape') {

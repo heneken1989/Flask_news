@@ -1,0 +1,4 @@
+# Thư mục này chứa các static files (images, icons, JS) 
+# được serve trực tiếp bởi Nginx với đường dẫn /view-resources/
+# Giữ nguyên đường dẫn trong HTML gốc
+
