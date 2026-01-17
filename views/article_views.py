@@ -1,230 +1,157 @@
-from flask import Blueprint, render_template
-from utils import apply_grid_size_pattern
+from flask import Blueprint, render_template, request, make_response
+from utils import apply_grid_size_pattern, prepare_home_layouts
 from database import Article, Category
 
 article_view_bp = Blueprint('article_views', __name__)
 
+@article_view_bp.route('/home-test')
+def home_test():
+    """Simple test route để kiểm tra có phải do route /home không"""
+    user_agent = request.headers.get('User-Agent', 'Unknown')
+    return f"""
+    <h1>Home Test Route</h1>
+    <p>User-Agent: {user_agent}</p>
+    <p>Method: {request.method}</p>
+    <p>URL: {request.url}</p>
+    <p>If you see this, the route is working!</p>
+    <a href="/">Go to / (home)</a>
+    """
+
 @article_view_bp.route('/')
 def index():
-    """Home page - displays article list với grid layout theo pattern 2-3-2-3-2-3..."""
+    """
+    Home page với nhiều layout types khác nhau
+    Layout types: 1_full, 2_articles, 3_articles, 1_special_bg, 1_with_list_left, 1_with_list_right
+    """
     from database import db
     
-    # Thử lấy articles từ database
+    # Log request info để debug
+    user_agent = request.headers.get('User-Agent', 'Unknown')
+    print(f"🌐 / (home) request from: {user_agent[:50]}...")
+    print(f"   Method: {request.method}")
+    print(f"   URL: {request.url}")
+    
+    # Query articles từ database cho trang home
     articles = []
     try:
-        # Query articles từ database, sắp xếp theo published_date DESC để lấy mới nhất
-        articles = Article.query.order_by(Article.published_date.desc().nullslast()).limit(50).all()
+        # Query articles từ database, sắp xếp theo display_order
+        # Lấy articles có section='home' (articles crawl từ trang home)
+        # VÀ có layout_type (để biết cách hiển thị)
+        articles = Article.query.filter(
+            Article.section == 'home',
+            Article.layout_type.isnot(None)
+        ).order_by(Article.display_order.asc()).limit(100).all()
         
-        # Set display_order cho pattern 2-3-2-3-2-3... (0, 1, 2, ...)
-        for idx, article in enumerate(articles):
-            article.display_order = idx
-        
-        # Convert to dict và áp dụng pattern grid_size
+        # Convert to dict
         articles = [article.to_dict() for article in articles]
-        articles = apply_grid_size_pattern(articles)
         
     except Exception as e:
         print(f"⚠️  Database query failed: {e}")
         articles = []
     
-    # Nếu không có articles từ database, dùng mock data
+    # Nếu không có articles từ database, dùng mock data với các layout types
     if not articles:
-        # Tạo 50 mock articles với display_order từ 0-49
-        articles = []
-        for i in range(50):
-            articles.append({
-                'element_guid': f'mock-{i:03d}',
-                'title': f'Article {i+1} - Test Pattern 2-3-2-3',
-                'url': f'/erhverv/article-{i+1}/2329{i:04d}',
-                'k5a_url': f'/a/2329{i:04d}',
-                'section': 'erhverv',
+        articles = [
+            {
+                'element_guid': '1d8fc071-5df6-43e1-8879-f9eab34d3c45',
+                'title': 'Pressemøde om amerikansk delegations besøg i Danmark',
+                'url': '/samfund/pressemode-om-amerikansk-delegations-besog-i-danmark/2331441',
+                'k5a_url': '/a/2331441',
+                'section': 'samfund',
                 'site_alias': 'sermitsiaq',
-                'instance': f'1000{i:02d}',
-                'published_date': f'2026-01-{15-i%30:02d}T10:00:00+01:00',
-                'is_paywall': i % 3 == 0,  # Một số articles có paywall
-                'paywall_class': 'paywall' if i % 3 == 0 else '',
-                'display_order': i,  # Quan trọng: set display_order
+                'instance': '2331441',
+                'published_date': '2026-01-16T15:25:38+01:00',
+                'is_paywall': False,
+                'paywall_class': '',
+                'layout_type': '1_full',
                 'image': {
-                    'desktop_webp': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=1058&height=688&format=webp',
-                    'desktop_jpeg': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=1058&height=688&format=jpg',
-                    'mobile_webp': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=960&height=624&format=webp',
-                    'mobile_jpeg': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=960&height=624&format=jpg',
-                    'fallback': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=960&height=624',
+                    'desktop_webp': 'https://image.sermitsiaq.ag/2331462.webp?imageId=2331462&width=2116&height=1418&format=webp',
+                    'desktop_jpeg': 'https://image.sermitsiaq.ag/2331462.webp?imageId=2331462&width=2116&height=1418&format=jpg',
+                    'mobile_webp': 'https://image.sermitsiaq.ag/2331462.webp?imageId=2331462&width=960&height=644&format=webp',
+                    'mobile_jpeg': 'https://image.sermitsiaq.ag/2331462.webp?imageId=2331462&width=960&height=644&format=jpg',
+                    'fallback': 'https://image.sermitsiaq.ag/2331462.webp?imageId=2331462&width=960&height=644&format=jpg',
+                    'desktop_width': '1058',
+                    'desktop_height': '709',
+                    'mobile_width': '480',
+                    'mobile_height': '322',
+                    'alt': '',
+                    'title': 'Pressemøde om amerikansk delegations besøg i Danmark'
+                }
+            },
+            {
+                'element_guid': 'c6e0c689-1c51-4b97-80db-7b39988eca17',
+                'title': 'Trumps særlige udsending vil besøge Grønland i marts',
+                'url': '/samfund/trumps-saerlige-udsending-vil-besoge-gronland-i-marts/2331321',
+                'k5a_url': '/a/2331321',
+                'section': 'samfund',
+                'site_alias': 'sermitsiaq',
+                'instance': '2331321',
+                'published_date': '2026-01-16T13:23:06+01:00',
+                'is_paywall': False,
+                'paywall_class': '',
+                'layout_type': '2_articles',
+                'image': {
+                    'desktop_webp': 'https://image.sermitsiaq.ag/2331325.webp?imageId=2331325&width=1058&height=688&format=webp',
+                    'fallback': 'https://image.sermitsiaq.ag/2331325.webp?imageId=2331325&width=960&height=624&format=jpg',
                     'desktop_width': '529',
                     'desktop_height': '344',
                     'mobile_width': '480',
                     'mobile_height': '312',
                     'alt': '',
-                    'title': f'Article {i+1}'
+                    'title': 'Trumps særlige udsending vil besøge Grønland i marts'
                 }
-            })
-        
-        # Áp dụng pattern grid_size dựa trên display_order
-        articles = apply_grid_size_pattern(articles)
+            },
+            {
+                'element_guid': 'c7ee8684-56fe-41de-91b7-b6ad1a91a888',
+                'title': 'Trump sætter igen gang i forretningen',
+                'url': '/erhverv/trump-saetter-igen-gang-i-forretningen/2328783',
+                'k5a_url': '/a/2328783',
+                'section': 'erhverv',
+                'site_alias': 'sermitsiaq',
+                'instance': '2328783',
+                'published_date': '2026-01-16T15:21:54+01:00',
+                'is_paywall': True,
+                'paywall_class': 'paywall',
+                'layout_type': '2_articles',
+                'image': {
+                    'desktop_webp': 'https://image.sermitsiaq.ag/2328786.webp?imageId=2328786&width=1058&height=688&format=webp',
+                    'fallback': 'https://image.sermitsiaq.ag/2328786.webp?imageId=2328786&width=960&height=624&format=jpg',
+                    'desktop_width': '529',
+                    'desktop_height': '344',
+                    'mobile_width': '480',
+                    'mobile_height': '312',
+                    'alt': '',
+                    'title': 'Trump sætter igen gang i forretningen'
+                }
+            }
+        ]
     
-    # articles_per_row không còn cần thiết vì logic trong main_body.html tự động xử lý
-    # Nhưng vẫn truyền vào để tương thích
-    articles_per_row = 2  # Default, nhưng sẽ bị override bởi grid_size pattern
+    # Chuẩn bị layouts cho rendering
+    layouts = prepare_home_layouts(articles)
     
-    return render_template('front_page.html',
-        articles=articles,
-        section_title='Tag: erhverv',
-        articles_per_row=articles_per_row,
-        section='erhverv',
+    # Tạo response với headers để tránh cache issues
+    response = make_response(render_template('home_page.html',
+        layouts=layouts,
+        section_title='Home',
+        section='home',
         show_top_ad=True,
         show_bottom_ad=False
-    )
+    ))
+    
+    # Thêm headers để tránh cache và CORS issues
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+    
+    print(f"✅ / (home) response sent successfully")
+    return response
 
-@article_view_bp.route('/home')
-def home():
-    """Home page với articles grid - test route"""
-    # Mock articles data
-    # TODO: Sẽ lấy từ API sau
-    mock_articles = [
-        {
-            'element_guid': '1d8fc071-5df6-43e1-8879-f9eab34d3c45',
-            'title': 'Udenlandske journalister skaber nyt marked',
-            'url': '/erhverv/udenlandske-journalister-skaber-nyt-marked/2329217',
-            'k5a_url': '/a/2329217',
-            'section': 'erhverv',
-            'site_alias': 'sermitsiaq',
-            'instance': '100090',
-            'published_date': '2026-01-15T20:29:57+01:00',
-            'is_paywall': True,
-            'paywall_class': 'paywall',
-            'grid_size': 6,
-            'image': {
-                'element_guid': 'd614121f-9a2d-4264-ba21-98d8f8a43458',
-                'desktop_webp': 'https://image.sermitsiaq.ag/2329220.jpg?imageId=2329220&width=1048&height=682&format=webp',
-                'desktop_jpeg': 'https://image.sermitsiaq.ag/2329220.jpg?imageId=2329220&width=1048&height=682&format=jpg',
-                'mobile_webp': 'https://image.sermitsiaq.ag/2329220.jpg?imageId=2329220&width=960&height=624&format=webp',
-                'mobile_jpeg': 'https://image.sermitsiaq.ag/2329220.jpg?imageId=2329220&width=960&height=624&format=jpg',
-                'fallback': 'https://image.sermitsiaq.ag/2329220.jpg?imageId=2329220&width=960&height=624',
-                'desktop_width': '524',
-                'desktop_height': '341',
-                'mobile_width': '480',
-                'mobile_height': '312',
-                'alt': '',
-                'title': 'Udenlandske journalister skaber nyt marked'
-            }
-        },
-        {
-            'element_guid': '5e32d4a0-f3d6-48c8-b3d3-bf336d11074b',
-            'title': 'Direktør i GE: Geopolitisk usikkerhed påvirker virksomhederne og investeringsmiljøet',
-            'url': '/erhverv/direktor-i-ge/2328803',
-            'k5a_url': '/a/2328803',
-            'section': 'erhverv',
-            'site_alias': 'sermitsiaq',
-            'instance': '100088',
-            'published_date': '2026-01-13T21:00:00+01:00',
-            'is_paywall': True,
-            'paywall_class': 'paywall',
-            'grid_size': 6,
-            'image': {
-                'desktop_webp': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=1058&height=688&format=webp',
-                'desktop_jpeg': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=1058&height=688&format=jpg',
-                'mobile_webp': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=960&height=624&format=webp',
-                'mobile_jpeg': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=960&height=624&format=jpg',
-                'fallback': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=960&height=624',
-                'desktop_width': '529',
-                'desktop_height': '344',
-                'mobile_width': '480',
-                'mobile_height': '312',
-                'alt': '',
-                'title': 'Direktør i GE: Geopolitisk usikkerhed påvirker virksomhederne'
-            }
-        },
-        {
-            'element_guid': 'cd0bdf4f-1963-496f-afd8-d67eed81cb9a',
-            'title': 'Article 3 - Test với 3 articles per row',
-            'url': '/erhverv/article-3/2328804',
-            'k5a_url': '/a/2328804',
-            'section': 'erhverv',
-            'site_alias': 'sermitsiaq',
-            'instance': '100096',
-            'published_date': '2026-01-12T10:00:00+01:00',
-            'is_paywall': False,
-            'paywall_class': '',
-            'grid_size': 4,  # 3 per row
-            'image': {
-                'desktop_webp': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=1058&height=688&format=webp',
-                'mobile_webp': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=960&height=624&format=webp',
-                'fallback': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=960&height=624',
-                'desktop_width': '529',
-                'desktop_height': '344',
-                'mobile_width': '480',
-                'mobile_height': '312',
-                'alt': '',
-                'title': 'Article 3'
-            }
-        },
-        {
-            'element_guid': '14dc5b86-a14a-4735-bc9a-e983e2e8684a',
-            'title': 'Article 4 - Test với 3 articles per row',
-            'url': '/erhverv/article-4/2328805',
-            'k5a_url': '/a/2328805',
-            'section': 'erhverv',
-            'site_alias': 'sermitsiaq',
-            'instance': '100094',
-            'published_date': '2026-01-11T10:00:00+01:00',
-            'is_paywall': False,
-            'paywall_class': '',
-            'grid_size': 4,  # 3 per row
-            'image': {
-                'desktop_webp': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=1058&height=688&format=webp',
-                'mobile_webp': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=960&height=624&format=webp',
-                'fallback': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=960&height=624',
-                'desktop_width': '529',
-                'desktop_height': '344',
-                'mobile_width': '480',
-                'mobile_height': '312',
-                'alt': '',
-                'title': 'Article 4'
-            }
-        },
-        {
-            'element_guid': '721210dd-3321-434c-b1cc-18ee67cb900f',
-            'title': 'Article 5 - Test với 3 articles per row',
-            'url': '/erhverv/article-5/2328806',
-            'k5a_url': '/a/2328806',
-            'section': 'erhverv',
-            'site_alias': 'sermitsiaq',
-            'instance': '100092',
-            'published_date': '2026-01-10T10:00:00+01:00',
-            'is_paywall': False,
-            'paywall_class': '',
-            'grid_size': 4,  # 3 per row
-            'image': {
-                'desktop_webp': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=1058&height=688&format=webp',
-                'mobile_webp': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=960&height=624&format=webp',
-                'fallback': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=960&height=624',
-                'desktop_width': '529',
-                'desktop_height': '344',
-                'mobile_width': '480',
-                'mobile_height': '312',
-                'alt': '',
-                'title': 'Article 5'
-            }
-        }
-    ]
-    
-    # Tính toán articles_per_row dựa trên grid_size của articles
-    articles_per_row = 2
-    if mock_articles and len(mock_articles) > 0:
-        first_grid_size = mock_articles[0].get('grid_size', 6)
-        if first_grid_size == 4:
-            articles_per_row = 3
-        elif first_grid_size == 6:
-            articles_per_row = 2
-    
-    return render_template('front_page.html',
-        articles=mock_articles,
-        section_title='Tag: erhverv',
-        articles_per_row=articles_per_row,
-        section='erhverv',
-        show_top_ad=True,
-        show_bottom_ad=False
-    )
+# Route /home đã được chuyển sang route / (root)
+# @article_view_bp.route('/home')
+# def home():
+#     ... (code đã được chuyển sang route /)
 
 @article_view_bp.route('/tag/<section>')
 def tag_section(section):

@@ -105,3 +105,100 @@ def group_articles_by_row(articles, articles_per_row=2):
     
     return rows
 
+
+def prepare_home_layouts(articles):
+    """
+    Chuẩn bị articles cho trang home với các layout types khác nhau
+    Group articles theo layout_type và chuẩn bị data cho rendering
+    
+    Args:
+        articles: List of article dictionaries với layout_type
+    
+    Returns:
+        List of layout items, mỗi item có:
+        - layout_type: '1_full', '2_articles', '3_articles', '1_special_bg', '1_with_list_left', '1_with_list_right'
+        - data: Data cần thiết cho layout (article, articles, list_items, etc.)
+        - row_guid: GUID cho row
+    """
+    if not articles:
+        return []
+    
+    layouts = []
+    i = 0
+    row_index = 0
+    
+    while i < len(articles):
+        article = articles[i]
+        layout_type = article.get('layout_type') or '1_full'  # Default to 1_full
+        
+        row_guid = f"home-row-{row_index}"
+        layout_item = {
+            'layout_type': layout_type,
+            'row_guid': row_guid,
+            'data': {}
+        }
+        
+        if layout_type == '1_full':
+            # 1 article full width
+            layout_item['data'] = {
+                'article': article
+            }
+            i += 1
+            
+        elif layout_type == '2_articles':
+            # 2 articles 1 row
+            layout_item['data'] = {
+                'articles': articles[i:i+2]
+            }
+            i += 2
+            
+        elif layout_type == '3_articles':
+            # 3 articles 1 row
+            layout_item['data'] = {
+                'articles': articles[i:i+3]
+            }
+            i += 3
+            
+        elif layout_type == '1_special_bg':
+            # 1 article với special background
+            layout_item['data'] = {
+                'article': article,
+                'kicker': article.get('kicker') or (article.get('layout_data', {}).get('kicker') if article.get('layout_data') else None)
+            }
+            i += 1
+            
+        elif layout_type == '1_with_list_left':
+            # 1 article + list bên trái
+            layout_data = article.get('layout_data', {})
+            layout_item['data'] = {
+                'article': article,
+                'list_title': layout_data.get('list_title', 'LIST'),
+                'list_items': layout_data.get('list_items', []),
+                'list_position': 'left'
+            }
+            i += 1
+            
+        elif layout_type == '1_with_list_right':
+            # 1 article + list bên phải
+            layout_data = article.get('layout_data', {})
+            layout_item['data'] = {
+                'article': article,
+                'list_title': layout_data.get('list_title', 'LIST'),
+                'list_items': layout_data.get('list_items', []),
+                'list_position': 'right'
+            }
+            i += 1
+            
+        else:
+            # Unknown layout type, default to 1_full
+            layout_item['layout_type'] = '1_full'
+            layout_item['data'] = {
+                'article': article
+            }
+            i += 1
+        
+        layouts.append(layout_item)
+        row_index += 1
+    
+    return layouts
+

@@ -234,13 +234,87 @@ def extract_article_id_from_url(url):
         return None
 
 
-def parse_articles_from_html(html_content, base_url='https://www.sermitsiaq.ag'):
+def detect_layout_type_from_element(article_elem, row_elem=None):
+    """
+    Detect layout_type từ article element và row structure
+    
+    Args:
+        article_elem: BeautifulSoup element của article
+        row_elem: BeautifulSoup element của row chứa article (optional)
+    
+    Returns:
+        str: Layout type ('1_full', '2_articles', '3_articles', '1_special_bg', etc.)
+    """
+    try:
+        # Check article classes để xác định grid size
+        article_classes = article_elem.get('class', [])
+        article_class_str = ' '.join(article_classes) if article_classes else ''
+        
+        # Check special background
+        content_div = article_elem.find('div', class_='content')
+        if content_div:
+            content_classes = content_div.get('class', [])
+            content_class_str = ' '.join(content_classes) if content_classes else ''
+            if 'bg-black' in content_class_str:
+                return '1_special_bg'
+        
+        # Check grid size từ classes
+        if 'large-12' in article_class_str:
+            # Full width - có thể là 1_full
+            return '1_full'
+        elif 'large-6' in article_class_str:
+            # 2 per row
+            # Check xem có list bên cạnh không
+            if row_elem:
+                # Check xem có articlesByTag hoặc toplist trong row không
+                list_elem = row_elem.find('div', class_='articlesByTag')
+                if not list_elem:
+                    # Thử tìm toplist
+                    list_elem = row_elem.find('div', class_='toplist')
+                
+                if list_elem:
+                    # Check vị trí của list (left or right)
+                    # Lọc chỉ lấy elements có name (bỏ qua text nodes, comments, etc.)
+                    row_children = [child for child in row_elem.children 
+                                   if hasattr(child, 'name') and child.name is not None]
+                    
+                    article_index = None
+                    list_index = None
+                    
+                    for idx, child in enumerate(row_children):
+                        if child.name == 'article':
+                            # So sánh bằng cách check element_guid hoặc so sánh trực tiếp
+                            if child == article_elem or child.get('data-element-guid') == article_elem.get('data-element-guid'):
+                                article_index = idx
+                        elif child.name == 'div':
+                            child_classes = child.get('class', [])
+                            if 'articlesByTag' in child_classes or 'toplist' in child_classes:
+                                list_index = idx
+                    
+                    if article_index is not None and list_index is not None:
+                        if list_index < article_index:
+                            return '1_with_list_left'
+                        else:
+                            return '1_with_list_right'
+            return '2_articles'
+        elif 'large-4' in article_class_str:
+            # 3 per row
+            return '3_articles'
+        
+        # Default
+        return '1_full'
+    except:
+        return '1_full'  # Default fallback
+
+
+def parse_articles_from_html(html_content, base_url='https://www.sermitsiaq.ag', is_home=False):
     """
     Parse tất cả articles từ HTML content
     
     Args:
         html_content: HTML content string
         base_url: Base URL để resolve relative URLs
+        is_home: Nếu True, sẽ detect layout_type từ HTML structure
     
     Returns:
         list: List of article dictionaries
@@ -256,14 +330,90 @@ def parse_articles_from_html(html_content, base_url='https://www.sermitsiaq.ag')
         if not page_content:
             # Fallback: tìm tất cả articles
             article_elements = soup.find_all('article', attrs={'data-element-guid': True})
+            rows = []
         else:
             article_elements = page_content.find_all('article', attrs={'data-element-guid': True})
+            # Tìm rows nếu là home page
+            if is_home:
+                rows = page_content.find_all('div', class_='row')
+            else:
+                rows = []
         
         print(f"📰 Found {len(article_elements)} article elements")
         
         for article_elem in article_elements:
             article_data = parse_article_element(article_elem, base_url)
             if article_data:
+                # Nếu là home page, detect layout_type
+                if is_home:
+                    # Tìm row chứa article này
+                    row_elem = None
+                    for row in rows:
+                        if article_elem in row.find_all('article'):
+                            row_elem = row
+                            break
+                    
+                    layout_type = detect_layout_type_from_element(article_elem, row_elem)
+                    article_data['layout_type'] = layout_type
+                    
+                    # Detect layout_data nếu có
+                    layout_data = {}
+                    if layout_type == '1_special_bg':
+                        # Check kicker
+                        kicker_elem = article_elem.find('div', class_='kicker')
+                        if kicker_elem:
+                            layout_data['kicker'] = kicker_elem.get_text(strip=True)
+                    elif layout_type in ['1_with_list_left', '1_with_list_right']:
+                        # Parse list items từ row
+                        if row_elem:
+                            # Tìm list element (có thể là articlesByTag hoặc toplist)
+                            list_elem = row_elem.find('div', class_='articlesByTag')
+                            if not list_elem:
+                                list_elem = row_elem.find('div', class_='toplist')
+                            
+                            if list_elem:
+                                # Extract list title - có thể là h3 với class headline hoặc không
+                                list_title_elem = list_elem.find('h3')
+                                if list_title_elem:
+                                    layout_data['list_title'] = list_title_elem.get_text(strip=True)
+                                
+                                # Extract list items
+                                list_items = []
+                                # Tìm trong ul.toplist-results hoặc ul thông thường
+                                ul_elem = list_elem.find('ul', class_='toplist-results')
+                                if not ul_elem:
+                                    ul_elem = list_elem.find('ul')
+                                
+                                if ul_elem:
+                                    for li in ul_elem.find_all('li'):
+                                        link = li.find('a')
+                                        if link:
+                                            # Tìm title - có thể là h4 với class abt-title hoặc h4 thông thường
+                                            # Title có thể nằm trong link hoặc trong li
+                                            title_elem = link.find('h4', class_='abt-title')
+                                            if not title_elem:
+                                                title_elem = link.find('h4')
+                                            if not title_elem:
+                                                # Fallback: tìm trong li
+                                                title_elem = li.find('h4', class_='abt-title')
+                                            if not title_elem:
+                                                title_elem = li.find('h4')
+                                            
+                                            if title_elem:
+                                                title = title_elem.get_text(strip=True)
+                                                url = link.get('href', '')
+                                                if title and url:
+                                                    list_items.append({
+                                                        'title': title,
+                                                        'url': url
+                                                    })
+                                
+                                if list_items:
+                                    layout_data['list_items'] = list_items
+                    
+                    if layout_data:
+                        article_data['layout_data'] = layout_data
+                
                 articles.append(article_data)
         
         print(f"✅ Successfully parsed {len(articles)} articles")

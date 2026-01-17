@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {% include 'partials/head.html' %}
+    <title>Home - Sermitsiaq</title>
+    <style>
+        /* Loại bỏ underline cho headlines khi hover */
+        article a:hover,
+        article a:hover h2,
+        article a:hover .headline {
+            text-decoration: none !important;
+        }
+        article a {
+            text-decoration: none;
+        }
+    </style>
+{% endblock %}
+
+{% block body_class %}l4 front site_sermitsiaq section_{{ section|default('home') }} iteras-paywall{% endblock %}
+
+{% block content %}
+    {# Main Body với Home Layouts #}
+    {% set layouts = layouts|default([]) %}
+    {% set section_title = section_title|default('') %}
+    {% set show_top_ad = show_top_ad|default(true) %}
+    {% set show_bottom_ad = show_bottom_ad|default(false) %}
+    
+    {# Render từng layout #}
+    {% for layout in layouts %}
+        {% set layout_type = layout.layout_type %}
+        {% set row_guid = layout.row_guid %}
+        {% set data = layout.data %}
+        
+        {% if layout_type == '1_full' %}
+            {% set article = data.article %}
+            {% include 'partials/layout_1_article_full.html' %}
+            
+        {% elif layout_type == '2_articles' %}
+            {% set articles = data.articles %}
+            {% include 'partials/layout_2_articles.html' %}
+            
+        {% elif layout_type == '3_articles' %}
+            {% set articles = data.articles %}
+            {% include 'partials/layout_3_articles.html' %}
+            
+        {% elif layout_type == '1_special_bg' %}
+            {% set article = data.article %}
+            {% set kicker = data.kicker %}
+            {% include 'partials/layout_1_article_special_bg.html' %}
+            
+        {% elif layout_type == '1_with_list_left' %}
+            {% set article = data.article %}
+            {% set list_title = data.list_title %}
+            {% set list_items = data.list_items %}
+            {% set list_position = 'left' %}
+            {% include 'partials/layout_article_with_list.html' %}
+            
+        {% elif layout_type == '1_with_list_right' %}
+            {% set article = data.article %}
+            {% set list_title = data.list_title %}
+            {% set list_items = data.list_items %}
+            {% set list_position = 'right' %}
+            {% include 'partials/layout_article_with_list.html' %}
+            
+        {% else %}
+            {# Fallback: render as 1_full #}
+            {% set article = data.article if data.article else (data.articles[0] if data.articles else {}) %}
+            {% include 'partials/layout_1_article_full.html' %}
+        {% endif %}
+    {% endfor %}
+{% endblock %}
+
+{% block scripts %}
+    {# Base scripts from article.html if needed #}
+    <script src="/view-resources/baseview/public/common/build/baseview_dependencies_dom.js?v=1768293024-L4" data-cookieconsent="ignore"></script>
+{% endblock %}
+

@@ -53,9 +53,12 @@ class Article(db.Model):
     # Đặc trưng hiển thị (quan trọng!)
     display_order = db.Column(db.Integer, default=0)  # Thứ tự hiển thị (0, 1, 2, ...)
     is_featured = db.Column(db.Boolean, default=False)  # Bài viết chủ đạo (hình ảnh lớn)
+    is_home = db.Column(db.Boolean, default=False)  # Đánh dấu article thuộc trang home
     article_type = db.Column(db.String(50))  # 'standard', 'featured', 'small', 'large', etc.
     position = db.Column(db.String(50))  # 'top', 'main', 'sidebar', 'bottom'
     grid_size = db.Column(db.Integer, default=6)  # 6 (2 per row), 4 (3 per row), 12 (full width)
+    layout_type = db.Column(db.String(50))  # '1_full', '2_articles', '3_articles', '1_special_bg', '1_with_list_left', '1_with_list_right'
+    layout_data = db.Column(db.JSON)  # Lưu thêm data cho layout (kicker, list_items, list_title, etc.)
     
     # Paywall
     is_paywall = db.Column(db.Boolean, default=False)
@@ -90,6 +93,7 @@ class Article(db.Model):
     __table_args__ = (
         db.Index('idx_section_order', 'section', 'display_order'),
         db.Index('idx_featured', 'is_featured', 'display_order'),
+        db.Index('idx_is_home', 'is_home', 'display_order'),  # Index cho home page query
         db.Index('idx_published_date', 'published_date'),
         db.Index('idx_element_guid', 'element_guid'),  # Index để query nhanh, không unique
     )
@@ -112,7 +116,10 @@ class Article(db.Model):
             'display_order': self.display_order,  # Thêm display_order
             'is_featured': self.is_featured,
             'article_type': self.article_type,
-            'image': self.image_data or {}  # image_data từ database -> image cho template
+            'layout_type': self.layout_type,
+            'layout_data': self.layout_data or {},
+            'image': self.image_data or {},  # image_data từ database -> image cho template
+            'kicker': (self.layout_data or {}).get('kicker') if self.layout_data else None
         }
     
     def __repr__(self):
