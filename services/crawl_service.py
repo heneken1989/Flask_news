@@ -302,6 +302,7 @@ class SermitsiaqCrawler:
                         is_home=True,  # Đánh dấu thuộc home
                         layout_type=article_data.get('layout_type'),  # Layout type từ parser
                         layout_data=article_data.get('layout_data', {}),  # Layout data nếu có
+                        grid_size=article_data.get('grid_size', 6),  # Grid size từ HTML (5, 6, 7, 8, etc.)
                     )
                     db.session.add(new_article)
                     articles_created += 1

@@ -4,9 +4,12 @@
 
 <div data-element-guid="{{ row_guid|default('') }}" class="row small-12 large-12" style="">
 {% for article in articles[:2] %}
-    <article data-element-guid="{{ article.element_guid|default('') }}" class="column {{ article.paywall_class|default('') }} small-12 large-6 small-abs-12 large-abs-6 " data-site-alias="{{ article.site_alias|default('sermitsiaq') }}" data-section="{{ article.section|default('') }}" data-instance="{{ article.instance|default('') }}" itemscope>
+    {% set article_grid_size = article.grid_size|default(6) %}
+    {% set layout_data = article.layout_data|default({}) %}
+    {% set has_bg_black = layout_data.get('has_bg_black', False) %}
+    <article data-element-guid="{{ article.element_guid|default('') }}" class="column {% if article.is_paywall %}paywall{% endif %} {{ article.paywall_class|default('') }} small-12 large-{{ article_grid_size }} small-abs-12 large-abs-{{ article_grid_size }} " data-site-alias="{{ article.site_alias|default('sermitsiaq') }}" data-section="{{ article.section|default('') }}" data-instance="{{ article.instance|default('') }}" itemscope>
     
-    <div class="content" style="">
+    <div class="content {% if has_bg_black %}bg-black color_mobile_bg-black border-bg-black mobile_border-bg-black border_width_14 border_width_mobile_14 hasContentPadding mobile-hasContentPadding hasBorder mobile-hasBorder{% endif %}" style="">
         
         <a itemprop="url" class="" href="{{ article.url|default('#') }}" data-k5a-url="{{ article.k5a_url|default(article.url|default('#')) }}" rel="" style="text-decoration: none;">
 
@@ -64,6 +67,11 @@
                 
             
             <div class="floatingText">
+{% if article.kicker_floating %}
+                <div style="" class="kicker floating bg-primary color_mobile_bg-primary hasTextPadding mobile-hasTextPadding">
+{{ article.kicker_floating }}
+</div>
+{% endif %}
 
                 <div class="labels">
                 </div>
@@ -80,10 +88,17 @@
 {% endif %}
 
         
+{% if article.kicker_below %}
+            <div style="" class="{{ article.kicker_below_classes|default('kicker below primary color_mobile_primary') }}">
+{{ article.kicker_below }}
+</div>
+{% endif %}
             <h2 itemprop="headline" 
-    class="headline t38"
+    class="headline t38 {% if has_bg_black %}white color_mobile_white{% endif %}"
     style=""
-    >{{ article.title|default('Article Title') }}
+    >{% if article.title_parts %}
+{% for part in article.title_parts %}{% if part.color_class %}<span class="{{ part.color_class }}">{{ part.text }}</span>{% else %}{{ part.text }}{% endif %}{% endfor %}
+{% else %}{{ article.title|default('Article Title') }}{% endif %}
 </h2>
 
         

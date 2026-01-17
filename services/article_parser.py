@@ -7,6 +7,108 @@ import re
 from urllib.parse import urljoin, urlparse
 
 
+def parse_title_with_highlights(title_elem):
+    """
+    Parse title element để extract text và các phần được highlight với màu sắc
+    
+    Args:
+        title_elem: BeautifulSoup element của h2.headline
+    
+    Returns:
+        dict: {
+            'full_text': str,  # Full title text (plain text)
+            'parts': [  # List of title parts với highlight info
+                {'text': str, 'color_class': str or None},
+                ...
+            ]
+        }
+    """
+    if not title_elem:
+        return None
+    
+    try:
+        # Lấy full text (plain text, không có HTML)
+        full_text = title_elem.get_text(strip=False)  # Giữ newlines
+        
+        # Parse các parts với highlight
+        parts = []
+        
+        # Duyệt qua tất cả children của title_elem
+        for child in title_elem.children:
+            if hasattr(child, 'name'):
+                # Nếu là tag (span, etc.)
+                if child.name == 'span':
+                    # Extract color classes từ span
+                    span_classes = child.get('class', [])
+                    color_class = ' '.join(span_classes) if span_classes else None
+                    text = child.get_text(strip=False)  # Giữ newlines
+                    parts.append({
+                        'text': text,
+                        'color_class': color_class
+                    })
+                else:
+                    # Tag khác, lấy text
+                    text = child.get_text(strip=False)
+                    if text.strip():
+                        parts.append({
+                            'text': text,
+                            'color_class': None
+                        })
+            else:
+                # Text node
+                text = str(child).strip()
+                if text:
+                    parts.append({
+                        'text': text,
+                        'color_class': None
+                    })
+        
+        # Nếu không có parts (không có span), tạo 1 part với full text
+        if not parts:
+            parts.append({
+                'text': full_text,
+                'color_class': None
+            })
+        
+        return {
+            'full_text': full_text.strip(),
+            'parts': parts
+        }
+    except Exception as e:
+        print(f"⚠️  Error parsing title with highlights: {e}")
+        # Fallback: return plain text
+        return {
+            'full_text': title_elem.get_text(strip=True),
+            'parts': [{'text': title_elem.get_text(strip=True), 'color_class': None}]
+        }
+
+
+def extract_grid_size_from_classes(article_classes):
+    """
+    Extract grid size từ article classes (large-5, large-6, large-7, etc.)
+    
+    Args:
+        article_classes: List of class strings hoặc string
+    
+    Returns:
+        int: Grid size (5, 6, 7, 8, 4, 12, etc.) hoặc None
+    """
+    try:
+        if isinstance(article_classes, str):
+            class_str = article_classes
+        else:
+            class_str = ' '.join(article_classes) if article_classes else ''
+        
+        # Tìm pattern large-X trong class string
+        import re
+        match = re.search(r'large-(\d+)', class_str)
+        if match:
+            return int(match.group(1))
+        return None
+    except:
+        return None
+
+
 def parse_article_element(article_element, base_url='https://www.sermitsiaq.ag'):
     """
     Parse một article element từ HTML để extract data
@@ -44,11 +146,14 @@ def parse_article_element(article_element, base_url='https://www.sermitsiaq.ag')
         if k5a_url and not k5a_url.startswith('http'):
             k5a_url = urljoin(base_url, k5a_url)
         
-        # Title
+        # Title với highlights
         title_elem = article_element.find('h2', class_='headline')
-        title = title_elem.get_text(strip=True) if title_elem else ''
-        if not title:
+        title_data = parse_title_with_highlights(title_elem) if title_elem else None
+        if not title_data or not title_data['full_text']:
             return None
+        
+        title = title_data['full_text']  # Plain text cho backward compatibility
+        title_parts = title_data['parts']  # Parts với highlight info
         
         # Published date
         time_elem = article_element.find('time', itemprop='datePublished')
@@ -67,6 +172,24 @@ def parse_article_element(article_element, base_url='https://www.sermitsiaq.ag')
         is_paywall = paywall_elem is not None
         paywall_class = 'paywall' if is_paywall else ''
         
+        # Extract kicker floating (text màu xanh trên hình ảnh)
+        kicker_floating = None
+        floating_text_elem = article_element.find('div', class_='floatingText')
+        if floating_text_elem:
+            kicker_elem = floating_text_elem.find('div', class_=lambda x: x and 'kicker' in x and 'floating' in x)
+            if kicker_elem:
+                kicker_floating = kicker_elem.get_text(strip=True)
+        
+        # Extract kicker below (text nằm giữa media và headline, ví dụ "OPDATERET")
+        kicker_below = None
+        kicker_below_classes = None
+        # Tìm div với class "kicker below" trong article element
+        kicker_below_elem = article_element.find('div', class_=lambda x: x and 'kicker' in x and 'below' in x)
+        if kicker_below_elem:
+            kicker_below = kicker_below_elem.get_text(strip=True)
+            # Lấy classes của kicker below để giữ nguyên styling
+            kicker_below_classes = ' '.join(kicker_below_elem.get('class', []))
+        
         # Image data
         image_data = parse_article_image(article_element, base_url)
         
@@ -76,9 +199,14 @@ def parse_article_element(article_element, base_url='https://www.sermitsiaq.ag')
         # Extract article ID từ URL (nếu có)
         article_id = extract_article_id_from_url(url)
         
+        # Extract grid size từ classes
+        article_classes = article_element.get('class', [])
+        grid_size = extract_grid_size_from_classes(article_classes)
+        
         return {
             'element_guid': element_guid,
             'title': title,
+            'title_parts': title_parts,  # Parts với highlight info
             'slug': slug,
             'url': url,
             'k5a_url': k5a_url,
@@ -88,8 +216,12 @@ def parse_article_element(article_element, base_url='https://www.sermitsiaq.ag')
             'published_date': published_date,
             'is_paywall': is_paywall,
             'paywall_class': paywall_class,
+            'kicker_floating': kicker_floating,
+            'kicker_below': kicker_below,  # Kicker below (ví dụ "OPDATERET")
+            'kicker_below_classes': kicker_below_classes,  # Classes của kicker below
             'image_data': image_data,
             'article_id': article_id,
+            'grid_size': grid_size,  # Lưu grid size từ HTML
         }
     except Exception as e:
         print(f"⚠️  Error parsing article element: {e}")
@@ -250,56 +382,70 @@ def detect_layout_type_from_element(article_elem, row_elem=None):
         article_classes = article_elem.get('class', [])
         article_class_str = ' '.join(article_classes) if article_classes else ''
         
-        # Check special background
+        # Check special background (nhưng không return ngay, vì có thể là 2_articles với bg-black)
         content_div = article_elem.find('div', class_='content')
+        has_special_bg = False
         if content_div:
             content_classes = content_div.get('class', [])
             content_class_str = ' '.join(content_classes) if content_classes else ''
             if 'bg-black' in content_class_str:
-                return '1_special_bg'
+                has_special_bg = True
         
-        # Check grid size từ classes
+        # Nếu có row_elem, check số lượng articles trong row để xác định layout
+        if row_elem:
+            # Lọc chỉ lấy elements có name (bỏ qua text nodes, comments, etc.)
+            row_children = [child for child in row_elem.children 
+                           if hasattr(child, 'name') and child.name is not None]
+            
+            # Đếm số articles trong row
+            articles_in_row = [child for child in row_children if child.name == 'article']
+            
+            # Check xem có list bên cạnh không
+            list_elem = row_elem.find('div', class_='articlesByTag')
+            if not list_elem:
+                list_elem = row_elem.find('div', class_='toplist')
+            
+            if list_elem:
+                # Có list trong row - check vị trí
+                article_index = None
+                list_index = None
+                
+                for idx, child in enumerate(row_children):
+                    if child.name == 'article':
+                        if child == article_elem or child.get('data-element-guid') == article_elem.get('data-element-guid'):
+                            article_index = idx
+                    elif child.name == 'div':
+                        child_classes = child.get('class', [])
+                        if 'articlesByTag' in child_classes or 'toplist' in child_classes:
+                            list_index = idx
+                
+                if article_index is not None and list_index is not None:
+                    if list_index < article_index:
+                        return '1_with_list_left'
+                    else:
+                        return '1_with_list_right'
+            
+            # Nếu có 2 articles trong row, đó là 2_articles (bất kể grid size)
+            if len(articles_in_row) == 2:
+                return '2_articles'
+            # Nếu có 3 articles trong row, đó là 3_articles
+            elif len(articles_in_row) == 3:
+                return '3_articles'
+        
+        # Check grid size từ classes (fallback nếu không có row_elem)
         if 'large-12' in article_class_str:
             # Full width - có thể là 1_full
             return '1_full'
-        elif 'large-6' in article_class_str:
-            # 2 per row
-            # Check xem có list bên cạnh không
-            if row_elem:
-                # Check xem có articlesByTag hoặc toplist trong row không
-                list_elem = row_elem.find('div', class_='articlesByTag')
-                if not list_elem:
-                    # Thử tìm toplist
-                    list_elem = row_elem.find('div', class_='toplist')
-                
-                if list_elem:
-                    # Check vị trí của list (left or right)
-                    # Lọc chỉ lấy elements có name (bỏ qua text nodes, comments, etc.)
-                    row_children = [child for child in row_elem.children 
-                                   if hasattr(child, 'name') and child.name is not None]
-                    
-                    article_index = None
-                    list_index = None
-                    
-                    for idx, child in enumerate(row_children):
-                        if child.name == 'article':
-                            # So sánh bằng cách check element_guid hoặc so sánh trực tiếp
-                            if child == article_elem or child.get('data-element-guid') == article_elem.get('data-element-guid'):
-                                article_index = idx
-                        elif child.name == 'div':
-                            child_classes = child.get('class', [])
-                            if 'articlesByTag' in child_classes or 'toplist' in child_classes:
-                                list_index = idx
-                    
-                    if article_index is not None and list_index is not None:
-                        if list_index < article_index:
-                            return '1_with_list_left'
-                        else:
-                            return '1_with_list_right'
+        elif 'large-6' in article_class_str or 'large-5' in article_class_str or 'large-7' in article_class_str or 'large-8' in article_class_str:
+            # 2 per row (với các tỷ lệ khác nhau: 6+6, 5+7, 8+4, etc.)
             return '2_articles'
         elif 'large-4' in article_class_str:
             # 3 per row
             return '3_articles'
+        
+        # Nếu có special bg và không phải 2_articles, return 1_special_bg
+        if has_special_bg:
+            return '1_special_bg'
         
         # Default
         return '1_full'
@@ -358,6 +504,30 @@ def parse_articles_from_html(html_content, base_url='https://www.sermitsiaq.ag',
                     
                     # Detect layout_data nếu có
                     layout_data = {}
+                    
+                    # Thêm kicker_floating vào layout_data nếu có (cho tất cả layout types)
+                    if article_data.get('kicker_floating'):
+                        layout_data['kicker_floating'] = article_data['kicker_floating']
+                    
+                    # Thêm kicker_below vào layout_data nếu có (cho tất cả layout types)
+                    if article_data.get('kicker_below'):
+                        layout_data['kicker_below'] = article_data['kicker_below']
+                        layout_data['kicker_below_classes'] = article_data.get('kicker_below_classes', 'kicker below primary color_mobile_primary')
+                    
+                    # Thêm title_parts vào layout_data nếu có highlights (cho tất cả layout types)
+                    if article_data.get('title_parts'):
+                        layout_data['title_parts'] = article_data['title_parts']
+                    
+                    # Check và lưu has_bg_black nếu article có bg-black (cho tất cả layout types)
+                    content_div = article_elem.find('div', class_='content')
+                    if content_div:
+                        content_classes = content_div.get('class', [])
+                        content_class_str = ' '.join(content_classes) if content_classes else ''
+                        if 'bg-black' in content_class_str:
+                            layout_data['has_bg_black'] = True
+                            # Lưu tất cả classes của content div để giữ nguyên styling
+                            layout_data['content_classes'] = content_class_str
+                    
                     if layout_type == '1_special_bg':
                         # Check kicker
                         kicker_elem = article_elem.find('div', class_='kicker')

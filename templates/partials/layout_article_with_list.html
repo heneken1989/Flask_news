@@ -7,8 +7,8 @@
 <!-- List on Left -->
 <div data-element-guid="{{ row_guid|default('') }}-list" class="column articlesByTag toplist small-12 large-6 small-abs-12 large-abs-6">
     
-    <div class="content border-bg-custom-5 mobile_border-bg-custom-5 border-side-top mobile_border-side-top border_width_4 border_width_mobile_4 hasBorder mobile-hasBorder" style="">
-                <h3 itemprop="headline" class="t32 font-weight-bold m-font-weight-bold color_mobile_no_bg_color tertiary color_mobile_tertiary">{{ list_title|default('LIST') }}</h3>
+    <div class="content border-bg-custom-5 mobile_border-bg-custom-5 border-side-top mobile_border-side-top border-side-bottom mobile_border-side-bottom border_width_4 border_width_mobile_4 hasBorder mobile-hasBorder" style="">
+                <h3 itemprop="headline" class="t31 font-weight-black m-font-weight-black color_mobile_no_bg_color font-IBM Plex Sans" style="border-bottom: 1px solid rgba(153, 158, 169, 0.3); padding-bottom: 10px; margin-bottom: 10px;">{{ list_title|default('LIST') }}</h3>
             <ul>
 {% for item in list_items %}
                 <li>
@@ -28,10 +28,10 @@
 </div>
 
 <!-- Article on Right -->
-<article data-element-guid="{{ article.element_guid|default('') }}" class="column small-12 large-6 small-abs-12 large-abs-6 " data-site-alias="{{ article.site_alias|default('sermitsiaq') }}" data-section="{{ article.section|default('') }}" data-instance="{{ article.instance|default('') }}" itemscope>
+<article data-element-guid="{{ article.element_guid|default('') }}" class="column {% if article.is_paywall %}paywall{% endif %} {{ article.paywall_class|default('') }} small-12 large-6 small-abs-12 large-abs-6 " data-site-alias="{{ article.site_alias|default('sermitsiaq') }}" data-section="{{ article.section|default('') }}" data-instance="{{ article.instance|default('') }}" itemscope>
 {% else %}
 <!-- Article on Left -->
-<article data-element-guid="{{ article.element_guid|default('') }}" class="column small-12 large-6 small-abs-12 large-abs-6 " data-site-alias="{{ article.site_alias|default('sermitsiaq') }}" data-section="{{ article.section|default('') }}" data-instance="{{ article.instance|default('') }}" itemscope>
+<article data-element-guid="{{ article.element_guid|default('') }}" class="column {% if article.is_paywall %}paywall{% endif %} {{ article.paywall_class|default('') }} small-12 large-6 small-abs-12 large-abs-6 " data-site-alias="{{ article.site_alias|default('sermitsiaq') }}" data-section="{{ article.section|default('') }}" data-instance="{{ article.instance|default('') }}" itemscope>
 {% endif %}
     
     <div class="content color_mobile_no_bg_color mobile_no_border_color border_width_14 border_width_mobile_14" style="">
@@ -93,19 +93,38 @@
                 
             
             <div class="floatingText">
+{% if article.kicker_floating %}
+                <div style="" class="kicker floating bg-primary color_mobile_bg-primary hasTextPadding mobile-hasTextPadding">
+{{ article.kicker_floating }}
+</div>
+{% endif %}
 
                 <div class="labels">
                 </div>
             </div>
             
+{% if article.is_paywall %}
+<div class="paywallLabel  "><span class="fi-plus"></span> </div>
+{% endif %}
 
         </div>
 
+{% if article.is_paywall %}
+<div class="paywallLabel  "><span class="fi-plus"></span> </div>
+{% endif %}
+
         
+{% if article.kicker_below %}
+            <div style="" class="{{ article.kicker_below_classes|default('kicker below primary color_mobile_primary') }}">
+{{ article.kicker_below }}
+</div>
+{% endif %}
             <h2 itemprop="headline" 
     class="headline "
     style=""
-    >{{ article.title|default('Article Title') }}
+    >{% if article.title_parts %}
+{% for part in article.title_parts %}{% if part.color_class %}<span class="{{ part.color_class }}">{{ part.text }}</span>{% else %}{{ part.text }}{% endif %}{% endfor %}
+{% else %}{{ article.title|default('Article Title') }}{% endif %}
 </h2>
 
         
@@ -122,8 +141,8 @@
 <!-- List on Right -->
 <div data-element-guid="{{ row_guid|default('') }}-list" class="column articlesByTag toplist small-12 large-6 small-abs-12 large-abs-6">
     
-    <div class="content border-bg-custom-5 mobile_border-bg-custom-5 border-side-top mobile_border-side-top border_width_4 border_width_mobile_4 hasBorder mobile-hasBorder" style="">
-                <h3 itemprop="headline" class="t31 font-weight-black m-font-weight-black color_mobile_no_bg_color font-IBM Plex Sans">{{ list_title|default('LIST') }}</h3>
+    <div class="content border-bg-custom-5 mobile_border-bg-custom-5 border-side-top mobile_border-side-top border-side-bottom mobile_border-side-bottom border_width_4 border_width_mobile_4 hasBorder mobile-hasBorder" style="">
+                <h3 itemprop="headline" class="t31 font-weight-black m-font-weight-black color_mobile_no_bg_color font-IBM Plex Sans" style="border-bottom: 1px solid rgba(153, 158, 169, 0.3); padding-bottom: 10px; margin-bottom: 10px;">{{ list_title|default('LIST') }}</h3>
             <ul>
 {% for item in list_items %}
                 <li>

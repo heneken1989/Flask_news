@@ -119,7 +119,11 @@ class Article(db.Model):
             'layout_type': self.layout_type,
             'layout_data': self.layout_data or {},
             'image': self.image_data or {},  # image_data từ database -> image cho template
-            'kicker': (self.layout_data or {}).get('kicker') if self.layout_data else None
+            'kicker': (self.layout_data or {}).get('kicker') if self.layout_data else None,
+            'kicker_floating': (self.layout_data or {}).get('kicker_floating') if self.layout_data else None,
+            'kicker_below': (self.layout_data or {}).get('kicker_below') if self.layout_data else None,  # Kicker below (ví dụ "OPDATERET")
+            'kicker_below_classes': (self.layout_data or {}).get('kicker_below_classes', 'kicker below primary color_mobile_primary') if self.layout_data else None,
+            'title_parts': (self.layout_data or {}).get('title_parts') if self.layout_data else None  # Title parts với highlights
         }
     
     def __repr__(self):

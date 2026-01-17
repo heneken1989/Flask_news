@@ -37,13 +37,23 @@ def index():
         # Query articles từ database, sắp xếp theo display_order
         # Lấy articles có section='home' (articles crawl từ trang home)
         # VÀ có layout_type (để biết cách hiển thị)
+        # Không giới hạn số lượng để hiển thị tất cả articles
         articles = Article.query.filter(
             Article.section == 'home',
             Article.layout_type.isnot(None)
-        ).order_by(Article.display_order.asc()).limit(100).all()
+        ).order_by(Article.display_order.asc()).all()
+        
+        # Log số lượng articles để debug
+        print(f"📊 Found {len(articles)} articles for home page")
         
         # Convert to dict
         articles = [article.to_dict() for article in articles]
+        
+        # Log số lượng articles để debug
+        print(f"📊 Found {len(articles)} articles for home page")
+        if articles:
+            print(f"   First article: {articles[0].get('title', 'N/A')[:50]}...")
+            print(f"   Last article: {articles[-1].get('title', 'N/A')[:50]}...")
         
     except Exception as e:
         print(f"⚠️  Database query failed: {e}")
@@ -128,6 +138,7 @@ def index():
     
     # Chuẩn bị layouts cho rendering
     layouts = prepare_home_layouts(articles)
+    print(f"📐 Prepared {len(layouts)} layouts from {len(articles)} articles")
     
     # Tạo response với headers để tránh cache issues
     response = make_response(render_template('home_page.html',

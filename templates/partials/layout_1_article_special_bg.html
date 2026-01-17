@@ -3,7 +3,7 @@
 {# Requires: article, row_guid, kicker (optional) #}
 
 <div data-element-guid="{{ row_guid|default('') }}" class="row small-12 large-12" style="">
-    <article data-element-guid="{{ article.element_guid|default('') }}" class="column small-12 large-12 small-abs-12 large-abs-12 " data-site-alias="{{ article.site_alias|default('sermitsiaq') }}" data-section="{{ article.section|default('') }}" data-instance="{{ article.instance|default('') }}" itemscope>
+    <article data-element-guid="{{ article.element_guid|default('') }}" class="column {% if article.is_paywall %}paywall{% endif %} {{ article.paywall_class|default('') }} small-12 large-12 small-abs-12 large-abs-12 " data-site-alias="{{ article.site_alias|default('sermitsiaq') }}" data-section="{{ article.section|default('') }}" data-instance="{{ article.instance|default('') }}" itemscope>
     
     <div class="content bg-black color_mobile_bg-black border-bg-black mobile_border-bg-black border_width_14 border_width_mobile_14 hasContentPadding mobile-hasContentPadding hasBorder mobile-hasBorder" style="">
         
@@ -64,13 +64,25 @@
                 
             
             <div class="floatingText">
+{% if article.kicker_floating %}
+                <div style="" class="kicker floating bg-primary color_mobile_bg-primary hasTextPadding mobile-hasTextPadding">
+{{ article.kicker_floating }}
+</div>
+{% endif %}
 
                 <div class="labels">
                 </div>
             </div>
             
+{% if article.is_paywall %}
+<div class="paywallLabel  "><span class="fi-plus"></span> </div>
+{% endif %}
 
         </div>
+
+{% if article.is_paywall %}
+<div class="paywallLabel  "><span class="fi-plus"></span> </div>
+{% endif %}
 
         
 {% if article.kicker %}
@@ -83,7 +95,9 @@ class="kicker below ">
             <h2 itemprop="headline" 
     class="headline t48"
     style=""
-    >{{ article.title|default('Article Title') }}
+    >{% if article.title_parts %}
+{% for part in article.title_parts %}{% if part.color_class %}<span class="{{ part.color_class }}">{{ part.text }}</span>{% else %}{{ part.text }}{% endif %}{% endfor %}
+{% else %}{{ article.title|default('Article Title') }}{% endif %}
 </h2>
 
         
