@@ -14,11 +14,10 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 try:
-    from googletrans import Translator
     from deep_translator import GoogleTranslator
 except ImportError:
-    print("❌ Error: googletrans or deep-translator not installed")
-    print("   Run: pip install googletrans==4.0.0rc1 deep-translator")
+    print("❌ Error: deep-translator not installed")
+    print("   Run: pip install deep-translator")
     sys.exit(1)
 
 # Language mapping - Google Translate supported languages
@@ -31,8 +30,7 @@ LANG_MAP = {
 # Languages not supported by Google Translate (need manual translation)
 UNSUPPORTED_LANGUAGES = ['kl']  # Greenlandic
 
-# Translation service (use 'googletrans' or 'deep_translator')
-TRANSLATION_SERVICE = 'deep_translator'  # More reliable
+# Translation service - chỉ dùng deep_translator (đã loại bỏ googletrans)
 
 def parse_po_file(po_file_path):
     """Parse .po file và extract msgid/msgstr pairs (skip metadata)"""
@@ -128,14 +126,10 @@ def translate_text(text, source_lang='da', target_lang='en'):
         return text
     
     try:
-        if TRANSLATION_SERVICE == 'deep_translator':
-            translator = GoogleTranslator(source=source_lang, target=target_lang)
-            translated = translator.translate(text)
-            return translated
-        else:
-            translator = Translator()
-            result = translator.translate(text, src=source_lang, dest=target_lang)
-            return result.text
+        # Chỉ dùng deep_translator (đã loại bỏ googletrans)
+        translator = GoogleTranslator(source=source_lang, target=target_lang)
+        translated = translator.translate(text)
+        return translated
     except Exception as e:
         print(f"   ⚠️  Translation error: {e}")
         return text
