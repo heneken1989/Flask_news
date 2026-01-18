@@ -48,7 +48,7 @@ class Article(db.Model):
     
     # Phân loại
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=True)
-    section = db.Column(db.String(50), nullable=False)  # 'erhverv', 'samfund', 'kultur', 'sport', 'job'
+    section = db.Column(db.String(50), nullable=False)  # 'erhverv', 'samfund', 'kultur', 'sport', 'podcasti'
     
     # Đặc trưng hiển thị (quan trọng!)
     display_order = db.Column(db.Integer, default=0)  # Thứ tự hiển thị (0, 1, 2, ...)

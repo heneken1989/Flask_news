@@ -34,7 +34,7 @@ class SermitsiaqCrawler:
         
         Args:
             section_url: URL của section (ví dụ: https://www.sermitsiaq.ag/tag/erhverv)
-            section_name: Tên section (erhverv, samfund, kultur, sport, job)
+            section_name: Tên section (erhverv, samfund, kultur, sport, podcasti)
             max_articles: Số lượng articles tối đa cần crawl
             scroll_pause: Thời gian chờ giữa các lần scroll (giây)
         

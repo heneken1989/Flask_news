@@ -205,7 +205,7 @@ def tag_section(section):
     from database import db
     
     # Validate section
-    valid_sections = ['samfund', 'erhverv', 'kultur', 'sport', 'job']
+    valid_sections = ['samfund', 'erhverv', 'kultur', 'sport', 'podcasti']
     if section not in valid_sections:
         # Return 404 or redirect to home
         from flask import abort
@@ -217,17 +217,29 @@ def tag_section(section):
         'erhverv': 'Erhverv',
         'kultur': 'Kultur',
         'sport': 'Sport',
-        'job': 'Job'
+        'podcasti': 'Podcasti'
     }
     
-    # Query articles từ database theo section
+    # Get current language from session or default
+    current_language = session.get('language', 'en')  # Default to 'en'
+    
+    # Check URL parameter for language override
+    if request.args.get('lang'):
+        lang = request.args.get('lang')
+        if lang in ['da', 'kl', 'en']:
+            current_language = lang
+    
+    # Query articles từ database theo section và language
     articles = []
     try:
-        # Query articles từ database, filter theo section
-        # Sắp xếp theo published_date DESC để lấy mới nhất, sau đó set display_order
-        articles = Article.query.filter_by(section=section)\
-                                .order_by(Article.published_date.desc().nullslast())\
-                                .limit(50).all()
+        # Query articles với language filter và exclude temp articles
+        articles = Article.query.filter_by(
+            section=section,
+            language=current_language,
+            is_temp=False,  # Chỉ show articles đã hoàn thành translate
+            is_home=False  # Section page, không phải home
+        ).order_by(Article.published_date.desc().nullslast())\
+         .limit(50).all()
         
         # Set display_order cho pattern 2-3-2-3-2-3... (0, 1, 2, ...)
         for idx, article in enumerate(articles):

@@ -1,0 +1,292 @@
+#!/usr/bin/env python3
+"""
+Script để crawl và translate articles từ các sections (tags) cho cả 3 ngôn ngữ
+
+Workflow cho mỗi section:
+1. Crawl DK từ https://www.sermitsiaq.ag/tag/{section} (hoặc /podcasti cho podcasti)
+2. Crawl KL từ https://kl.sermitsiaq.ag/tag/{section} (hoặc /podcasti cho podcasti)
+3. Match articles giữa DK và KL
+4. Translate DK articles sang EN
+
+Sections: erhverv, samfund, kultur, sport, podcasti
+Note: podcasti sử dụng URL /podcasti thay vì /tag/podcasti
+"""
+
+import sys
+import os
+from pathlib import Path
+
+# Add parent directory to path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from app import app
+from database import db, Article
+from services.crawl_service import SermitsiaqCrawler
+from services.article_matcher import match_and_link_articles
+from services.translation_service import translate_articles_batch
+import argparse
+
+# Section URLs mapping
+SECTION_URLS = {
+    'erhverv': {
+        'da': 'https://www.sermitsiaq.ag/tag/erhverv',
+        'kl': 'https://kl.sermitsiaq.ag/tag/erhverv'
+    },
+    'samfund': {
+        'da': 'https://www.sermitsiaq.ag/tag/samfund',
+        'kl': 'https://kl.sermitsiaq.ag/tag/samfund'
+    },
+    'kultur': {
+        'da': 'https://www.sermitsiaq.ag/tag/kultur',
+        'kl': 'https://kl.sermitsiaq.ag/tag/kultur'
+    },
+    'sport': {
+        'da': 'https://www.sermitsiaq.ag/tag/sport',
+        'kl': 'https://kl.sermitsiaq.ag/tag/sport'
+    },
+    'podcasti': {
+        'da': 'https://www.sermitsiaq.ag/podcasti',
+        'kl': 'https://kl.sermitsiaq.ag/podcasti'
+    }
+}
+
+
+def crawl_danish_section(section_name, max_articles=50):
+    """Crawl Danish section"""
+    print("\n" + "="*60)
+    print(f"🇩🇰 Crawling Danish (DK) section: {section_name}")
+    print("="*60)
+    
+    if section_name not in SECTION_URLS:
+        print(f"❌ Invalid section: {section_name}")
+        return 0
+    
+    crawler = SermitsiaqCrawler(
+        base_url='https://www.sermitsiaq.ag',
+        language='da'
+    )
+    
+    result = crawler.crawl_section(
+        section_url=SECTION_URLS[section_name]['da'],
+        section_name=section_name,
+        max_articles=max_articles,
+        headless=True,
+        language='da'
+    )
+    
+    if result['success']:
+        print(f"✅ Danish crawl completed: {result['articles_created']} articles")
+        return result['articles_created']
+    else:
+        print(f"❌ Danish crawl failed: {result['errors']}")
+        return 0
+
+
+def crawl_greenlandic_section(section_name, max_articles=50):
+    """Crawl Greenlandic section"""
+    print("\n" + "="*60)
+    print(f"🇬🇱 Crawling Greenlandic (KL) section: {section_name}")
+    print("="*60)
+    
+    if section_name not in SECTION_URLS:
+        print(f"❌ Invalid section: {section_name}")
+        return 0
+    
+    crawler = SermitsiaqCrawler(
+        base_url='https://kl.sermitsiaq.ag',
+        language='kl'
+    )
+    
+    result = crawler.crawl_section(
+        section_url=SECTION_URLS[section_name]['kl'],
+        section_name=section_name,
+        max_articles=max_articles,
+        headless=True,
+        language='kl'
+    )
+    
+    if result['success']:
+        print(f"✅ Greenlandic crawl completed: {result['articles_created']} articles")
+        return result['articles_created']
+    else:
+        print(f"❌ Greenlandic crawl failed: {result['errors']}")
+        return 0
+
+
+def match_dk_kl_section_articles(section_name):
+    """Match DK và KL articles trong section"""
+    print("\n" + "="*60)
+    print(f"🔗 Matching DK and KL articles in section: {section_name}")
+    print("="*60)
+    
+    # Get DK articles
+    dk_articles = Article.query.filter_by(
+        language='da',
+        section=section_name,
+        is_home=False  # Section articles, not home
+    ).all()
+    
+    # Get KL articles
+    kl_articles = Article.query.filter_by(
+        language='kl',
+        section=section_name,
+        is_home=False
+    ).all()
+    
+    print(f"   Found {len(dk_articles)} DK articles")
+    print(f"   Found {len(kl_articles)} KL articles")
+    
+    if not dk_articles or not kl_articles:
+        print("⚠️  No articles to match")
+        return
+    
+    # Match and link
+    stats = match_and_link_articles(dk_articles, kl_articles)
+    
+    print(f"✅ Matching completed: {stats['matched_count']} articles matched")
+    return stats
+
+
+def translate_dk_section_to_en(section_name):
+    """Translate DK section articles to EN"""
+    print("\n" + "="*60)
+    print(f"🌐 Translating DK section '{section_name}' to EN...")
+    print("="*60)
+    
+    # Get ALL DK articles in section (sẽ tạo temp EN articles)
+    dk_articles = Article.query.filter_by(
+        language='da',
+        section=section_name,
+        is_home=False
+    ).all()
+    
+    print(f"   Found {len(dk_articles)} DK articles to translate")
+    
+    if not dk_articles:
+        print("⚠️  No articles to translate")
+        return
+    
+    # Translate (tạo temp articles với is_temp=True)
+    translated, errors = translate_articles_batch(
+        dk_articles,
+        target_language='en',
+        save_to_db=True,
+        delay=0.5
+    )
+    
+    print(f"✅ Translation completed: {len(translated)} articles translated (temp)")
+    
+    # Sau khi translate xong, thay thế old EN articles bằng temp articles
+    print("\n" + "="*60)
+    print(f"🔄 Replacing old EN articles with new translations for section: {section_name}")
+    print("="*60)
+    
+    # Đếm old EN articles (không phải temp)
+    old_en_count = Article.query.filter_by(
+        language='en',
+        section=section_name,
+        is_home=False,
+        is_temp=False
+    ).count()
+    
+    print(f"   Found {old_en_count} old EN articles to remove")
+    
+    # Xóa old EN articles (không phải temp)
+    if old_en_count > 0:
+        deleted = Article.query.filter_by(
+            language='en',
+            section=section_name,
+            is_home=False,
+            is_temp=False
+        ).delete()
+        db.session.commit()
+        print(f"   ✅ Deleted {deleted} old EN articles")
+    
+    # Đổi temp articles thành bình thường (is_temp=False)
+    temp_count = Article.query.filter_by(
+        language='en',
+        section=section_name,
+        is_home=False,
+        is_temp=True
+    ).count()
+    
+    if temp_count > 0:
+        updated = Article.query.filter_by(
+            language='en',
+            section=section_name,
+            is_home=False,
+            is_temp=True
+        ).update({'is_temp': False})
+        db.session.commit()
+        print(f"   ✅ Activated {updated} new EN articles (removed temp flag)")
+    
+    print(f"\n✅ Replacement completed for section: {section_name}!")
+    if errors:
+        print(f"⚠️  {len(errors)} errors occurred during translation")
+    
+    return translated, errors
+
+
+def process_section(section_name, max_articles=50, skip_crawl=False):
+    """Process một section: crawl, match, translate"""
+    print("\n" + "="*80)
+    print(f"📰 PROCESSING SECTION: {section_name.upper()}")
+    print("="*80)
+    
+    if not skip_crawl:
+        crawl_danish_section(section_name, max_articles)
+        crawl_greenlandic_section(section_name, max_articles)
+    
+    match_dk_kl_section_articles(section_name)
+    translate_dk_section_to_en(section_name)
+    
+    # Print summary
+    dk_count = Article.query.filter_by(language='da', section=section_name, is_home=False).count()
+    kl_count = Article.query.filter_by(language='kl', section=section_name, is_home=False).count()
+    en_count = Article.query.filter_by(language='en', section=section_name, is_home=False).count()
+    
+    print(f"\n📊 Summary for {section_name}:")
+    print(f"   - Danish (DK): {dk_count} articles")
+    print(f"   - Greenlandic (KL): {kl_count} articles")
+    print(f"   - English (EN): {en_count} articles")
+
+
+def main():
+    """Main function"""
+    parser = argparse.ArgumentParser(description='Crawl and translate sections for multi-language')
+    parser.add_argument('--section', choices=['erhverv', 'samfund', 'kultur', 'sport', 'podcasti', 'all'],
+                       default='all', help='Section to process (default: all)')
+    parser.add_argument('--max-articles', type=int, default=50,
+                       help='Maximum articles per section (default: 50)')
+    parser.add_argument('--skip-crawl', action='store_true',
+                       help='Skip crawling, only match and translate')
+    args = parser.parse_args()
+    
+    with app.app_context():
+        sections = ['erhverv', 'samfund', 'kultur', 'sport', 'podcasti'] if args.section == 'all' else [args.section]
+        
+        for section in sections:
+            try:
+                process_section(section, max_articles=args.max_articles, skip_crawl=args.skip_crawl)
+            except Exception as e:
+                print(f"❌ Error processing section {section}: {e}")
+                import traceback
+                traceback.print_exc()
+                continue
+        
+        print("\n" + "="*80)
+        print("✅ All sections processing completed!")
+        print("="*80)
+        
+        # Print overall summary
+        print(f"\n📊 Overall Summary:")
+        for section in sections:
+            dk = Article.query.filter_by(language='da', section=section, is_home=False).count()
+            kl = Article.query.filter_by(language='kl', section=section, is_home=False).count()
+            en = Article.query.filter_by(language='en', section=section, is_home=False).count()
+            print(f"   {section.upper()}: DK={dk}, KL={kl}, EN={en}")
+
+
+if __name__ == '__main__':
+    main()
+
