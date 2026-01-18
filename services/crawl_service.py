@@ -17,10 +17,18 @@ import time
 class SermitsiaqCrawler:
     """Crawler cho sermitsiaq.ag"""
     
-    def __init__(self, base_url='https://www.sermitsiaq.ag'):
+    def __init__(self, base_url='https://www.sermitsiaq.ag', language='da'):
+        """
+        Initialize crawler
+        
+        Args:
+            base_url: Base URL của website (default: https://www.sermitsiaq.ag)
+            language: Language code ('da' for Danish, 'kl' for Greenlandic)
+        """
         self.base_url = base_url
+        self.language = language
     
-    def crawl_section(self, section_url, section_name='erhverv', max_articles=50, scroll_pause=2, headless=True):
+    def crawl_section(self, section_url, section_name='erhverv', max_articles=50, scroll_pause=2, headless=True, language=None):
         """
         Crawl articles từ một section
         
@@ -86,16 +94,23 @@ class SermitsiaqCrawler:
             
             print(f"✅ Crawled {articles_crawled} articles")
             
-            # QUAN TRỌNG: Xóa articles cũ của section này trước khi lưu articles mới
-            # Để tránh duplicate và đảm bảo chỉ có 50 articles mới nhất
-            print(f"🗑️  Removing old articles from section '{section_name}'...")
-            old_articles_count = Article.query.filter_by(section=section_name).count()
+            # QUAN TRỌNG: Xóa articles cũ của section CÙNG LANGUAGE trước khi lưu articles mới
+            # Determine language from base_url or parameter
+            article_language = language or self.language
+            print(f"🗑️  Removing old {article_language} articles from section '{section_name}'...")
+            old_articles_count = Article.query.filter_by(
+                section=section_name,
+                language=article_language
+            ).count()
             if old_articles_count > 0:
-                deleted_count = Article.query.filter_by(section=section_name).delete()
+                deleted_count = Article.query.filter_by(
+                    section=section_name,
+                    language=article_language
+                ).delete()
                 db.session.commit()
-                print(f"   ✅ Deleted {deleted_count} old articles")
+                print(f"   ✅ Deleted {deleted_count} old {article_language} articles")
             else:
-                print(f"   ℹ️  No old articles to delete")
+                print(f"   ℹ️  No old {article_language} articles to delete")
             
             # Save new articles to database
             print("💾 Saving new articles to database...")
@@ -104,6 +119,9 @@ class SermitsiaqCrawler:
                     # QUAN TRỌNG: Override section từ article_data với section_name đang crawl
                     # Vì parser có thể lấy section từ HTML (có thể không đúng)
                     article_data['section'] = section_name
+                    
+                    # Determine language from base_url or parameter
+                    article_language = language or self.language
                     
                     # Tạo article mới với ID mới
                     new_article = Article(
@@ -120,6 +138,8 @@ class SermitsiaqCrawler:
                         paywall_class=article_data['paywall_class'],
                         image_data=article_data.get('image_data', {}),
                         display_order=idx,  # Set display_order để match pattern
+                        language=article_language,  # Set language
+                        original_language=article_language,  # Set original_language
                     )
                     db.session.add(new_article)
                     articles_created += 1
@@ -182,7 +202,7 @@ class SermitsiaqCrawler:
                 'errors': errors
             }
     
-    def crawl_home(self, home_url='https://www.sermitsiaq.ag', max_articles=100, scroll_pause=2, headless=True):
+    def crawl_home(self, home_url=None, max_articles=100, scroll_pause=2, headless=True, language=None):
         """
         Crawl articles từ trang home
         
@@ -220,7 +240,8 @@ class SermitsiaqCrawler:
                 # Scroll để load thêm articles (lazy loading)
                 print("📜 Scrolling to load articles...")
                 scroll_count = 0
-                max_scrolls = 50  # Tăng số lần scroll để load tất cả articles
+                # Tăng max_scrolls nếu crawl all (max_articles=0)
+                max_scrolls = 100 if max_articles == 0 else 50  # Tăng số lần scroll để load tất cả articles
                 previous_count = 0
                 no_new_articles_count = 0
                 
@@ -267,15 +288,25 @@ class SermitsiaqCrawler:
             
             print(f"✅ Crawled {articles_crawled} articles from home page")
             
-            # QUAN TRỌNG: Xóa articles cũ của home trước khi lưu articles mới
-            print(f"🗑️  Removing old articles from home...")
-            old_articles_count = Article.query.filter_by(section='home', is_home=True).count()
+            # QUAN TRỌNG: Xóa articles cũ của home CÙNG LANGUAGE trước khi lưu articles mới
+            # Determine language from base_url or parameter
+            article_language = language or self.language
+            print(f"🗑️  Removing old {article_language} articles from home...")
+            old_articles_count = Article.query.filter_by(
+                section='home', 
+                is_home=True,
+                language=article_language
+            ).count()
             if old_articles_count > 0:
-                deleted_count = Article.query.filter_by(section='home', is_home=True).delete()
+                deleted_count = Article.query.filter_by(
+                    section='home', 
+                    is_home=True,
+                    language=article_language
+                ).delete()
                 db.session.commit()
-                print(f"   ✅ Deleted {deleted_count} old home articles")
+                print(f"   ✅ Deleted {deleted_count} old {article_language} home articles")
             else:
-                print(f"   ℹ️  No old home articles to delete")
+                print(f"   ℹ️  No old {article_language} home articles to delete")
             
             # Save new articles to database
             print("💾 Saving new home articles to database...")
@@ -284,21 +315,29 @@ class SermitsiaqCrawler:
                     # Set section='home' và is_home=True
                     article_data['section'] = 'home'
                     
+                    # Sử dụng display_order từ parser nếu có, nếu không thì dùng idx
+                    display_order = article_data.get('display_order', idx)
+                    
+                    # Determine language from base_url or parameter
+                    article_language = language or self.language
+                    
                     # Tạo article mới với ID mới
                     new_article = Article(
                         element_guid=article_data.get('element_guid'),
-                        title=article_data['title'],
-                        slug=article_data['slug'],
-                        published_url=article_data['url'],
-                        k5a_url=article_data['k5a_url'],
+                        title=article_data.get('title', 'Untitled'),  # Slider có thể không có title
+                        slug=article_data.get('slug', ''),
+                        published_url=article_data.get('url', ''),
+                        k5a_url=article_data.get('k5a_url', ''),
+                        language=article_language,  # Set language
+                        original_language=article_language,  # Set original_language
                         section='home',  # Section = 'home'
                         site_alias=article_data.get('site_alias', 'sermitsiaq'),
                         instance=article_data.get('instance', ''),
                         published_date=article_data.get('published_date'),
-                        is_paywall=article_data['is_paywall'],
-                        paywall_class=article_data['paywall_class'],
+                        is_paywall=article_data.get('is_paywall', False),
+                        paywall_class=article_data.get('paywall_class', ''),
                         image_data=article_data.get('image_data', {}),
-                        display_order=idx,  # Set display_order
+                        display_order=display_order,  # Sử dụng display_order từ parser
                         is_home=True,  # Đánh dấu thuộc home
                         layout_type=article_data.get('layout_type'),  # Layout type từ parser
                         layout_data=article_data.get('layout_data', {}),  # Layout data nếu có
@@ -306,6 +345,15 @@ class SermitsiaqCrawler:
                     )
                     db.session.add(new_article)
                     articles_created += 1
+                    
+                    # Debug: Log slider info
+                    if article_data.get('layout_type') == 'slider':
+                        layout_data = article_data.get('layout_data', {})
+                        slider_articles = layout_data.get('slider_articles', [])
+                        slider_title = layout_data.get('slider_title', 'Untitled')
+                        print(f"  🎠 Saving slider '{slider_title}': {len(slider_articles)} articles")
+                        if len(slider_articles) < 4:
+                            print(f"     ⚠️  WARNING: Slider has only {len(slider_articles)} articles")
                     
                     # Commit mỗi 10 articles để tránh timeout
                     if articles_created % 10 == 0:

@@ -1,0 +1,17 @@
+@use "./vars" as *;
+
+br.newline {
+    display: none;
+}
+
+@include desktop_down {
+    br.newline-mobile {
+        display: block;
+    }
+}
+
+@include desktop {
+    br.newline-desktop {
+        display: block;
+    }
+}

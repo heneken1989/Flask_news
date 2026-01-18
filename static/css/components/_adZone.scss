@@ -1,0 +1,77 @@
+@use "./vars" as *;
+
+// Ad-column 
+.adZone {
+    &.adZone-top {
+        margin: 0 auto;
+        width: var(--lab_page_width, 68rem);
+        padding: 0;
+    }
+    &.adZone-right {
+        position: absolute;
+        min-width: 180px;
+        z-index: 8;
+        right: auto;
+        left: calc(100vw / 2 + 35.2rem);
+        &.sticky.active {
+            .adnuntius-ad:last-child .adnuntius-ad-content, .google-ad:last-child .adunit {
+                position: fixed;
+                left: calc(100vw / 2 + 35.2rem);
+                top: 120px;
+            }
+        }
+    }
+    &.adZone-left {
+        position: absolute;
+        min-width: 180px;
+        z-index: 7;
+        left: auto;
+        right: calc(100vw / 2 + 35.2rem);
+        &.sticky.active {
+            .adnuntius-ad:last-child .adnuntius-ad-content, .google-ad:last-child .adunit {
+                position: fixed;
+                right: calc(100vw / 2 + 35.2rem);
+                top: 120px;
+            }
+        }
+    }
+
+    &.adZone-bgTop_300{
+        >div {
+            float: none;
+            position: initial;
+            max-height: 300px;;
+            padding: 0;
+            margin: 0;
+        }
+    }
+    &.adZone-bgTop_150{
+        >div {
+            float: none;
+            position: initial;
+            max-height: 150px;;
+            padding: 0;
+            margin: 0;
+        }
+    }
+}
+
+@include mobile {
+    .adZone {
+        &.adZone-top {
+            width: 100%;
+        }
+    }
+}
+
+// Hide markup for adzone if hideOnTablet is true, if xUaDevice is desktop but innerWidth is too narrow
+@media screen and (max-width: 1315px) {    
+    .adZone {
+        &.adZone-left {
+            display: none;
+        }
+        &.adZone-right {
+            display: none;
+        }
+    }
+}

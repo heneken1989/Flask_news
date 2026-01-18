@@ -1,0 +1,84 @@
+{# Layout: Article Slider (articlescroller) #}
+{# Usage: {% include 'partials/layout_slider.html' with context %} #}
+{# Requires: slider_title, slider_articles (list), slider_id, row_guid #}
+
+<div data-element-guid="{{ row_guid|default('') }}" class="row small-12 large-12">
+<!-- placeholder(#2) -->
+<div data-element-guid="{{ row_guid|default('') }}-slider" class="column articlescroller {{ source_class|default('source_nyheder') }} small-12 large-12 {% if has_nav|default(True) %}border-side-bottom mobile_border-side-bottom{% endif %}" id="{{ slider_id|default('article_list_default') }}">
+    
+    <div class="inner content fullwidthTarget">
+            
+            <h2 class="articlescroller-header t31 primary color_mobile_primary align-left mobile_text_align_align-left font-IBMPlexSans"><span data-lab-fontface="PublicoHeadlineWeb" class="font-PublicoHeadlineWeb font-weight-black m-font-weight-black" data-lab-font_weight_desktop="font-weight-black">{{ _(slider_title|default('SLIDER')) }}</span></h2>
+
+        <ul class="scroll-container swipehelper snap-container-x snap-element-start articles count_{{ items_per_view|default(4) }} ">
+{% for item in slider_articles %}
+                <li data-section="{{ item.section|default('') }}" class="scroll-item snap-element column hasImage skipLeadText">
+                    <a href="{{ item.url|default('#') }}">
+{% if item.is_paywall %}
+                            <figure>
+<div class="paywallLabel  "><span class="fi-plus"></span> </div>
+{% if item.image and item.image.src %}
+                                <img src="{{ item.image.src }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('159') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
+{% endif %}
+                            </figure>
+{% else %}
+                            <figure>
+{% if item.image and item.image.src %}
+                                <img src="{{ item.image.src }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('159') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
+{% endif %}
+                            </figure>
+{% endif %}
+                        <div class="text-container">
+{% if item.kicker %}
+                            <h4>{{ item.kicker }}</h4>
+{% endif %}
+                            
+                            <h3>{{ item.title|default('Article Title') }}</h3>
+                            
+                            
+                            
+                        </div>
+                    </a>
+                </li>
+{% endfor %}
+        </ul>
+
+            
+            
+
+{% if has_nav|default(True) %}
+        <nav>
+            <span class="arrow left" role="button" aria-label="{{ _('Go left') }}">
+                <span></span>
+            </span>
+            <span class="arrow right" role="button" aria-label="{{ _('Go right') }}">
+                <span></span>
+            </span>
+        </nav>
+{% endif %}
+
+    </div>
+
+        <script>
+        (function () {
+            window.dachserData.push('swipehelper', {
+                selector: '#{{ slider_id|default("article_list_default") }}',
+                itemsContainerSelector: '.scroll-container',
+                itemsSelector: '.scroll-item',
+                isHorizontal: true,
+                autoScroll: {
+                    enabled: true,
+                    interval: '4000'
+                },
+                navItems: {
+                    forwardSelector: 'nav .arrow.right',
+                    backwardSelector: 'nav .arrow.left',
+                },
+                debug: false
+            });
+        }());
+        </script>
+</div>
+
+</div>
+

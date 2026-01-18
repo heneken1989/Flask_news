@@ -2,7 +2,7 @@
 
 {% block head %}
     {% include 'partials/head.html' %}
-    <title>Home - Sermitsiaq</title>
+    <title>{{ _('Home') }} - Sermitsiaq</title>
     <style>
         /* Loại bỏ underline cho headlines khi hover */
         article a:hover,
@@ -12,6 +12,150 @@
         }
         article a {
             text-decoration: none;
+        }
+        
+        /* SwipeHelper styles - từ _swipehelper.scss */
+        .swipehelper {
+            overflow: auto;
+            overflow: -moz-scrollbars-none;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .swipehelper::-webkit-scrollbar {
+            width: 0 !important;
+        }
+        .swipehelper.snap-container-x {
+            scroll-snap-type: x mandatory;
+        }
+        .swipehelper.snap-container-y {
+            scroll-snap-type: y mandatory;
+        }
+        .swipehelper.snap-element-start .snap-element {
+            scroll-snap-align: start;
+        }
+        .swipehelper.snap-element-center .snap-element {
+            scroll-snap-align: center;
+        }
+        
+        /* Articlescroller styles - từ _articlescroller.scss */
+        .articlescroller .scroll-container {
+            overflow-x: scroll;
+            display: flex;
+            position: relative;
+            user-select: none;
+            margin-right: -0.7rem;
+            margin-left: -0.7rem;
+            transition: transform 0.6s;
+            transition-duration: 0.6s;
+        }
+        .articlescroller .scroll-container.transition-linear {
+            transition-timing-function: linear;
+        }
+        .articlescroller .scroll-item {
+            flex: 0 0 auto;
+            transition: inherit;
+            transform: translateX(0);
+            will-change: transform;
+            overflow: hidden;
+        }
+        .articlescroller .scroll-item img {
+            width: 100%;
+            display: inline;
+        }
+        .articlescroller .scroll-item h3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            padding: 0.2em 0 0.2em;
+        }
+        .articlescroller .scroll-item h4 {
+            font-size: 1em;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .articlescroller .scroll-item a {
+            color: inherit;
+            text-decoration: none;
+        }
+        .articlescroller .scroll-item a:hover h3 {
+            text-decoration: underline;
+        }
+        
+        /* Count classes - hiển thị số items per view */
+        .articlescroller ul.count_1 li {
+            flex-basis: 100%;
+        }
+        .articlescroller ul.count_2 li {
+            flex-basis: 50%;
+        }
+        .articlescroller ul.count_3 li {
+            flex-basis: 33.33%;
+        }
+        .articlescroller ul.count_4 li {
+            flex-basis: 25%;
+        }
+        .articlescroller ul.count_5 li {
+            flex-basis: 20%;
+        }
+        .articlescroller ul.count_5 li {
+            flex-basis: 20%;
+        }
+        .articlescroller ul.count_6 li {
+            flex-basis: 16.66%;
+        }
+        
+        /* Nav buttons */
+        .articlescroller .inner {
+            position: relative;
+            overflow: hidden;
+        }
+        .articlescroller nav .arrow {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            border-radius: 100%;
+            background-color: rgba(0,0,0,0.5);
+            transform: translateY(-70%);
+            cursor: pointer;
+            border: 1px solid transparent;
+            z-index: 10;
+        }
+        .articlescroller nav .arrow:hover {
+            border-color: #fff;
+        }
+        .articlescroller nav .arrow span {
+            border-bottom: 2px solid #fff;
+            border-left: 2px solid #fff;
+            width: 1rem;
+            height: 1rem;
+            display: block;
+            margin: 1.2rem;
+            transform: translateX(0.2rem) rotate(45deg);
+        }
+        .articlescroller nav .arrow.right {
+            left: auto;
+            right: 10px;
+        }
+        .articlescroller nav .arrow.right span {
+            transform: translateX(-0.2rem) rotate(-135deg);
+        }
+        .articlescroller nav .arrow.nav-hidden {
+            opacity: 0;
+        }
+        
+        /* Mobile styles */
+        @media (max-width: 767px) {
+            .articlescroller nav .arrow {
+                top: 10%;
+                left: 0;
+            }
+            .articlescroller nav .arrow span {
+                width: 0.5rem;
+                height: 0.5rem;
+                margin: 0.6rem;
+            }
+            .articlescroller nav .arrow.right {
+                right: 0;
+            }
         }
     </style>
 {% endblock %}
@@ -34,7 +178,7 @@
         {% if show_top_ad %}
         <div data-element-guid="{{ top_ad_guid|default('') }}" class="placeholder placement-top">
             <div data-element-guid="{{ top_ad_column_guid|default('') }}" class="column google-ad small-12 large-12 small-abs-12 large-abs-12" style="">
-                <span class="ad-label">Annonce</span>
+                <span class="ad-label">{{ _('Advertisement') }}</span>
                 <div class="adunit" id="2018-Top-Mega-banner"></div>
                 <script>
                     googletag.cmd.push(function() {
@@ -84,6 +228,28 @@
             {% set list_position = 'right' %}
             {% include 'partials/layout_article_with_list.html' %}
             
+        {% elif layout_type == 'slider' %}
+            {% set slider_title = data.slider_title %}
+            {% set slider_articles = data.slider_articles %}
+            {% set slider_id = data.slider_id %}
+            {% include 'partials/layout_slider.html' %}
+            
+        {% elif layout_type == 'job_slider' %}
+            {% set slider_title = data.slider_title %}
+            {% set slider_articles = data.slider_articles %}
+            {% set slider_id = data.slider_id %}
+            {% set header_link = data.header_link %}
+            {% set extra_classes = data.extra_classes %}
+            {% set header_classes = data.header_classes %}
+            {% set source_class = data.source_class %}
+            {% set has_nav = data.has_nav %}
+            {% set items_per_view = data.items_per_view %}
+            {% include 'partials/layout_job_slider.html' %}
+            
+        {% elif layout_type == '5_articles' %}
+            {% set articles = data.articles %}
+            {% include 'partials/layout_5_articles.html' %}
+            
         {% else %}
             {# Fallback: render as 1_full #}
             {% set article = data.article if data.article else (data.articles[0] if data.articles else {}) %}
@@ -96,7 +262,7 @@
         {% if show_bottom_ad %}
         <div data-element-guid="{{ bottom_ad_guid|default('') }}" class="placeholder placement-bottom">
             <div data-element-guid="{{ bottom_ad_column_guid|default('') }}" class="column google-ad small-12 large-12 small-abs-12 large-abs-12" style="">
-                <span class="ad-label">Annonce</span>
+                <span class="ad-label">{{ _('Advertisement') }}</span>
                 <div class="adunit" id="2018-Sticky-right"></div>
                 <script>
                     googletag.cmd.push(function() {
@@ -112,5 +278,255 @@
 {% block scripts %}
     {# Base scripts from article.html if needed #}
     <script src="/view-resources/baseview/public/common/build/baseview_dependencies_dom.js?v=1768293024-L4" data-cookieconsent="ignore"></script>
+    
+    <script>
+        // Khởi tạo handlers cho dachserData (giống như home.html)
+        window.dachserData.handlers = {
+            parallax: function(item) {
+                if (window.Dac && window.Dac.Parallax) {
+                    new Dac.Parallax(item);
+                } else {
+                    console.warn('parallax: Missing required class Dac.Parallax. Content will not animate.');
+                }
+            },
+            swipehelper: function(item) {
+                if (window.Dac && window.Dac.SwipeHelper) {
+                    var element = document.querySelector(item.selector);
+                    if (!element) {
+                        console.warn('SwipeHelper: Missing element for selector: "' + item.selector + '".');
+                        return null;
+                    }
+                    return new Dac.SwipeHelper(element, item);
+                } else {
+                    console.warn('SwipeHelper: Missing required function Dac.SwipeHelper.');
+                    return null;
+                } 
+            },
+            readprogress: function(item) {
+                if (window.Dac && window.Dac.ReadProgress) {
+                    var element = document.querySelector(item.selector);
+                    if (!element) {
+                        console.warn('ReadProgress: Missing element for selector: "' + item.selector + '".');
+                        return;
+                    }
+                    new Dac.ReadProgress(element, item);
+                } else {
+                    console.warn('ReadProgress: Missing required function Dac.ReadProgress.');
+                } 
+            },
+            tabnavigation: function(item) {
+                if (window.Dac && window.Dac.TabNavigation) {
+                    new Dac.TabNavigation(item);
+                } else {
+                    console.warn('TabNavigation: Missing required function Dac.Tabnavigation.');
+                } 
+            },
+            elementattributetoggler: function(item) {
+                if (window.Dac && window.Dac.ElementAttributeToggler) {
+                    new Dac.ElementAttributeToggler(item);
+                } else {
+                    console.warn('ElementAttributeToggler: Missing required class Dac.ElementAttributeToggler.');
+                } 
+            },
+            articlelists: (item) => {
+                if (window.Dac && window.Dac.ArticleLists) {
+                    new Dac.ArticleLists(item);
+                } else {
+                    console.warn('ElementAttributeToggler: Missing required class Dac.ArticleLists.');
+                }
+            }
+        };
+
+        window.dachserData.execute = () => {
+            // Parallax
+            const parallaxQueue = window.dachserData.get('parallax') || [];
+            parallaxQueue.forEach(item => {
+                window.dachserData.handlers.parallax(item);
+            });
+        
+            // SwipeHelper, used by several components like ArticleScroller etc.
+            // Register each element using SwipeHelper:
+            const swipehelperQueue = window.dachserData.get('swipehelper') || [];
+            console.log('🎠 Initializing', swipehelperQueue.length, 'sliders');
+            swipehelperQueue.forEach((item, idx) => {
+                console.log(`  Slider ${idx + 1}: selector = ${item.selector}`);
+                const instance = window.dachserData.handlers.swipehelper(item);
+                if (instance) {
+                    window.dachserData.setInstance(
+                        'swipehelper',
+                        item.selector,
+                        instance
+                    );
+                    console.log(`  ✅ Slider ${idx + 1} initialized successfully`);
+                } else {
+                    console.warn(`  ⚠️  Slider ${idx + 1} failed to initialize`);
+                }
+            });
+
+            // ReadProgress
+            const readprogressQueue = window.dachserData.get('readprogress') || [];
+            readprogressQueue.forEach(item => {
+                window.dachserData.handlers.readprogress(item);
+            });
+        
+            // Tab-navigation
+            const tabnavigationQueue = window.dachserData.get('tabnavigation') || [];
+            tabnavigationQueue.forEach(item => {
+                window.dachserData.handlers.tabnavigation(item);
+            });
+
+            // ElementAttributeToggler
+            const elementAttributeTogglerQueue = window.dachserData.get('elementattributetoggler') || [];
+            elementAttributeTogglerQueue.forEach(item => {
+                window.dachserData.handlers.elementattributetoggler(item);
+            });
+
+            const articlelistsQueue = window.dachserData.get('articlelists') || [];
+            articlelistsQueue.forEach(item => {
+                window.dachserData.handlers.articlelists(item);
+            });
+        };
+
+        // Đợi DOM ready và tất cả scripts đã load trước khi execute
+        (function () {
+            function initDachserData() {
+                // Kiểm tra xem Dac.SwipeHelper đã load chưa
+                if (window.Dac && window.Dac.SwipeHelper) {
+                    window.dachserData.execute();
+                } else {
+                    // Nếu chưa load, đợi thêm một chút
+                    setTimeout(initDachserData, 100);
+                }
+            }
+            
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Đợi thêm một chút để đảm bảo tất cả slider scripts đã được push
+                    setTimeout(initDachserData, 200);
+                    // Khởi tạo custom slider navigation
+                    setTimeout(initSliderNavigation, 300);
+                });
+            } else {
+                // DOM đã ready, đợi thêm một chút để đảm bảo tất cả slider scripts đã được push
+                setTimeout(initDachserData, 200);
+                // Khởi tạo custom slider navigation
+                setTimeout(initSliderNavigation, 300);
+            }
+        }());
+        
+        // Hàm tự build để xử lý slider navigation buttons
+        function initSliderNavigation() {
+            console.log("🎠 Initializing custom slider navigation...");
+            
+            // Tìm tất cả các slider trên trang
+            const sliders = document.querySelectorAll('.articlescroller');
+            
+            sliders.forEach((slider, sliderIndex) => {
+                console.log(`  Processing slider ${sliderIndex + 1}...`);
+                
+                // Tìm scroll container và nav buttons trong slider này
+                const scrollContainer = slider.querySelector('.scroll-container');
+                const navLeft = slider.querySelector('nav .arrow.left');
+                const navRight = slider.querySelector('nav .arrow.right');
+                
+                if (!scrollContainer) {
+                    console.warn(`  ⚠️  Slider ${sliderIndex + 1}: No scroll-container found`);
+                    return;
+                }
+                
+                // Nếu không có nav buttons, skip slider này (ví dụ: slider NUUK)
+                if (!navLeft || !navRight) {
+                    console.log(`  ℹ️  Slider ${sliderIndex + 1}: No nav buttons (static slider, e.g. NUUK)`);
+                    return;
+                }
+                
+                console.log(`  ✅ Slider ${sliderIndex + 1}: Found container and nav buttons`);
+                
+                // Tính toán scroll amount: width của 4 items (1 viewport)
+                function getScrollAmount() {
+                    const firstItem = scrollContainer.querySelector('.scroll-item');
+                    if (!firstItem) return scrollContainer.clientWidth;
+                    
+                    // Lấy width của 1 item và nhân với 4
+                    const itemWidth = firstItem.offsetWidth;
+                    const scrollAmount = itemWidth * 4;
+                    return scrollAmount;
+                }
+                
+                // Hàm scroll sang trái (back)
+                function scrollLeft() {
+                    const scrollAmount = getScrollAmount();
+                    const currentScroll = scrollContainer.scrollLeft;
+                    const newScroll = Math.max(0, currentScroll - scrollAmount);
+                    
+                    scrollContainer.scrollTo({
+                        left: newScroll,
+                        behavior: 'smooth'
+                    });
+                    
+                    console.log(`  ← Scrolled left: ${currentScroll} → ${newScroll}`);
+                }
+                
+                // Hàm scroll sang phải (next)
+                function scrollRight() {
+                    const scrollAmount = getScrollAmount();
+                    const currentScroll = scrollContainer.scrollLeft;
+                    const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+                    const newScroll = Math.min(maxScroll, currentScroll + scrollAmount);
+                    
+                    scrollContainer.scrollTo({
+                        left: newScroll,
+                        behavior: 'smooth'
+                    });
+                    
+                    console.log(`  → Scrolled right: ${currentScroll} → ${newScroll}`);
+                }
+                
+                // Thêm event listeners cho nav buttons
+                navLeft.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    scrollLeft();
+                });
+                
+                navRight.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    scrollRight();
+                });
+                
+                // Cập nhật trạng thái nav buttons dựa trên vị trí scroll
+                function updateNavButtons() {
+                    const currentScroll = scrollContainer.scrollLeft;
+                    const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+                    const threshold = 10; // 10px threshold
+                    
+                    // Ẩn/hiện nút left
+                    if (currentScroll <= threshold) {
+                        navLeft.classList.add('nav-hidden');
+                    } else {
+                        navLeft.classList.remove('nav-hidden');
+                    }
+                    
+                    // Ẩn/hiện nút right
+                    if (currentScroll >= maxScroll - threshold) {
+                        navRight.classList.add('nav-hidden');
+                    } else {
+                        navRight.classList.remove('nav-hidden');
+                    }
+                }
+                
+                // Cập nhật nav buttons khi scroll
+                scrollContainer.addEventListener('scroll', updateNavButtons);
+                
+                // Cập nhật lần đầu
+                updateNavButtons();
+                
+                console.log(`  ✅ Slider ${sliderIndex + 1}: Navigation initialized`);
+            });
+            
+            console.log(`🎠 Custom slider navigation initialized for ${sliders.length} slider(s)`);
+        }
+    </script>
 {% endblock %}
 

@@ -1,10 +1,37 @@
         <header class="pageElement pageHeader">
+    <style>
+        /* Language switcher separators - inline CSS */
+        .pageHeader .mainrow .left-section {
+            display: flex;
+            align-items: center;
+        }
+        .pageHeader .mainrow .left-section a.lang-link {
+            display: inline-flex;
+            align-items: center;
+            vertical-align: middle;
+        }
+        /* Ensure lang-link text is black by default */
+        .pageHeader .mainrow .left-section a.lang-link .text {
+            color: #222222 !important;
+        }
+        /* Only active language text should be red */
+        .pageHeader .mainrow .left-section a.lang-link .text.active-lang {
+            color: #d32f2f !important;
+            font-weight: bold;
+        }
+        .pageHeader .mainrow .left-section a.lang-link:first-child::after,
+        .pageHeader .mainrow .left-section a.lang-link:nth-child(2)::after {
+            content: "/";
+            margin-left: .5em;
+            display: inline;
+            vertical-align: middle;
+            color: #222222 !important; /* Always black, not affected by active-lang */
+        }
+    </style>
     <div class="section">
     <div class="row mainrow">
     <div class="section left-section">
-    <a class="link lang-link" href="https:&#x2F;&#x2F;kl.sermitsiaq.ag"><p class="text">KL</p>
-</a><a class="link lang-link" href="https:&#x2F;&#x2F;sermitsiaq.ag"><p class="text">DK</p>
-</a><div data-id="pageElements-9" class="search to-be-expanded">
+    <a class="link lang-link" href="{{ url_for('set_language', lang='kl') }}"><p class="text {% if current_locale == 'kl' %}active-lang{% endif %}">KL</p></a><a class="link lang-link" href="{{ url_for('set_language', lang='da') }}"><p class="text {% if current_locale == 'da' %}active-lang{% endif %}">DK</p></a><a class="link lang-link" href="{{ url_for('set_language', lang='en') }}"><p class="text {% if current_locale == 'en' %}active-lang{% endif %}">EN</p></a><div data-id="pageElements-9" class="search to-be-expanded">
 
         <button class="search-button search-expander" aria-label="Søg"  aria-expanded="false" aria-controls="search-input-9" >
                 <i class="open fi-magnifying-glass"></i>
@@ -12,8 +39,8 @@
         </button>
 
     <form class="search-container" action="/cse" method="get" role="search">
-        <label for="search-input-9" class="visuallyhidden">Søg</label>
-        <input type="text" id="search-input-9" name="q" placeholder="Søg...">
+        <label for="search-input-9" class="visuallyhidden">{{ _('Søg') }}</label>
+        <input type="text" id="search-input-9" name="q" placeholder="{{ _('Søg...') }}">
     </form>
 </div>
 
@@ -65,10 +92,10 @@
 <nav class="navigation topBarMenu">
 	<ul class="menu-list">
 			<li class="first-list-item buy-btn dac-hidden-desktop-down">
-				<a href="https://www.sermitsiaq.ag/køb-abonnement" target="_self">Køb abonnement</a>
+				<a href="https://www.sermitsiaq.ag/køb-abonnement" target="_self">{{ _('Køb abonnement') }}</a>
 			</li>
 			<li class="first-list-item login-btn">
-				<a href="https://www.sermitsiaq.ag/login" target="_self">Log ind</a>
+				<a href="https://www.sermitsiaq.ag/login" target="_self">{{ _('Log ind') }}</a>
 			</li>
 	</ul>
 </nav>
@@ -101,59 +128,59 @@
 <nav class="navigation mainMenu expandable">
 	<ul class="menu-list">
 			<li class="first-list-item ">
-				<a href="/tag/samfund" target="_self">SAMFUND</a>
+				<a href="/tag/samfund" target="_self">{{ _('SAMFUND') }}</a>
 			</li>
 			<li class="first-list-item ">
-				<a href="/tag/erhverv" target="_self">ERHVERV</a>
+				<a href="/tag/erhverv" target="_self">{{ _('ERHVERV') }}</a>
 			</li>
 			<li class="first-list-item ">
-				<a href="/tag/kultur" target="_self">KULTUR</a>
+				<a href="/tag/kultur" target="_self">{{ _('KULTUR') }}</a>
 			</li>
 			<li class="first-list-item ">
-				<a href="/tag/sport" target="_self">SPORT</a>
+				<a href="/tag/sport" target="_self">{{ _('SPORT') }}</a>
 			</li>
 			<li class="first-list-item job-link dac-hidden-desktop-down">
-				<a href="https://job.sermitsiaq.ag" target="_self">JOB</a>
+				<a href="https://job.sermitsiaq.ag" target="_self">{{ _('JOB') }}</a>
 			</li>
 			<li class="first-list-item burger-link has-children">
-				<a href="/tag/samfund" target="_self">SAMFUND</a>
+				<a href="/tag/samfund" target="_self">{{ _('SAMFUND') }}</a>
 				<ul class="children">
 					<li class="dac-hidden-desktop-up dac-hidden-desktop-down">
-						<a href="/tag/politik" target="_self">POLITIK</a>
+						<a href="/tag/politik" target="_self">{{ _('POLITIK') }}</a>
 					</li>
 					<li class="dac-hidden-desktop-up dac-hidden-desktop-down">
-						<a href="/tag/indland" target="_self">INDLAND</a>
+						<a href="/tag/indland" target="_self">{{ _('INDLAND') }}</a>
 					</li>
 					<li class="dac-hidden-desktop-up dac-hidden-desktop-down">
-						<a href="/tag/udland" target="_self">UDLAND</a>
+						<a href="/tag/udland" target="_self">{{ _('UDLAND') }}</a>
 					</li>
 					<li class="dac-hidden-desktop-up dac-hidden-desktop-down">
-						<a href="/nuuk" target="_self">NUUK</a>
+						<a href="/nuuk" target="_self">{{ _('NUUK') }}</a>
 					</li>
 					<li class="dac-hidden-desktop-up dac-hidden-desktop-down">
-						<a href="/tag/sundhed" target="_self">SUNDHED</a>
+						<a href="/tag/sundhed" target="_self">{{ _('SUNDHED') }}</a>
 					</li>
 				</ul>
 			</li>
 			<li class="first-list-item burger-link has-children">
-				<a href="/tag/erhverv" target="_self">ERHVERV</a>
+				<a href="/tag/erhverv" target="_self">{{ _('ERHVERV') }}</a>
 				<ul class="children">
 					<li class="dac-hidden-desktop-up dac-hidden-desktop-down">
-						<a href="/tag/uddannelse" target="_self">UDDANNELSE</a>
+						<a href="/tag/uddannelse" target="_self">{{ _('UDDANNELSE') }}</a>
 					</li>
 				</ul>
 			</li>
 			<li class="first-list-item burger-link">
-				<a href="/tag/kultur" target="_self">KULTUR</a>
+				<a href="/tag/kultur" target="_self">{{ _('KULTUR') }}</a>
 			</li>
 			<li class="first-list-item burger-link">
-				<a href="/tag/sport" target="_self">SPORT</a>
+				<a href="/tag/sport" target="_self">{{ _('SPORT') }}</a>
 			</li>
 			<li class="first-list-item burger-link job-link">
-				<a href="https://job.sermitsiaq.ag" target="_self">JOB</a>
+				<a href="https://job.sermitsiaq.ag" target="_self">{{ _('JOB') }}</a>
 			</li>
 			<li class="first-list-item burger-link job-link">
-				<a href="/podcasti" target="_self">PODCASTI</a>
+				<a href="/podcasti" target="_self">{{ _('PODCASTI') }}</a>
 			</li>
 	</ul>
 </nav>
@@ -287,19 +314,19 @@
 <nav class="navigation bottomBarMenu">
 	<ul class="menu-list">
 			<li class="first-list-item ">
-				<a href="/kontakt" target="_self">Kontakt</a>
+				<a href="/kontakt" target="_self">{{ _('Kontakt') }}</a>
 			</li>
 			<li class="first-list-item ">
-				<a href="https://www.sermitsiaq.ag/køb-abonnement" target="_self">Abonnement</a>
+				<a href="https://www.sermitsiaq.ag/køb-abonnement" target="_self">{{ _('Abonnement') }}</a>
 			</li>
 			<li class="first-list-item ">
-				<a href="https://www.sermitsiaq.ag/oversigtannoncer" target="_self">Annoncer</a>
+				<a href="https://www.sermitsiaq.ag/oversigtannoncer" target="_self">{{ _('Annoncer') }}</a>
 			</li>
 			<li class="first-list-item ">
-				<a href="https://sermitsiaq.e-pages.pub/titles/" target="_blank">E-aviser</a>
+				<a href="https://sermitsiaq.e-pages.pub/titles/" target="_blank">{{ _('E-aviser') }}</a>
 			</li>
 			<li class="first-list-item ">
-				<a href="https://www.sermitsiaq.ag/selvbetjening" target="_self">Selvbetjening</a>
+				<a href="https://www.sermitsiaq.ag/selvbetjening" target="_self">{{ _('Selvbetjening') }}</a>
 			</li>
 	</ul>
 </nav>
@@ -396,59 +423,59 @@
 <nav class="navigation mainMenu">
 	<ul class="menu-list">
 			<li class="first-list-item ">
-				<a href="/tag/samfund" target="_self">SAMFUND</a>
+				<a href="/tag/samfund" target="_self">{{ _('SAMFUND') }}</a>
 			</li>
 			<li class="first-list-item ">
-				<a href="/tag/erhverv" target="_self">ERHVERV</a>
+				<a href="/tag/erhverv" target="_self">{{ _('ERHVERV') }}</a>
 			</li>
 			<li class="first-list-item ">
-				<a href="/tag/kultur" target="_self">KULTUR</a>
+				<a href="/tag/kultur" target="_self">{{ _('KULTUR') }}</a>
 			</li>
 			<li class="first-list-item ">
-				<a href="/tag/sport" target="_self">SPORT</a>
+				<a href="/tag/sport" target="_self">{{ _('SPORT') }}</a>
 			</li>
 			<li class="first-list-item job-link dac-hidden-desktop-down">
-				<a href="https://job.sermitsiaq.ag" target="_self">JOB</a>
+				<a href="https://job.sermitsiaq.ag" target="_self">{{ _('JOB') }}</a>
 			</li>
 			<li class="first-list-item burger-link has-children">
-				<a href="/tag/samfund" target="_self">SAMFUND</a>
+				<a href="/tag/samfund" target="_self">{{ _('SAMFUND') }}</a>
 				<ul class="children">
 					<li class="dac-hidden-desktop-up dac-hidden-desktop-down">
-						<a href="/tag/politik" target="_self">POLITIK</a>
+						<a href="/tag/politik" target="_self">{{ _('POLITIK') }}</a>
 					</li>
 					<li class="dac-hidden-desktop-up dac-hidden-desktop-down">
-						<a href="/tag/indland" target="_self">INDLAND</a>
+						<a href="/tag/indland" target="_self">{{ _('INDLAND') }}</a>
 					</li>
 					<li class="dac-hidden-desktop-up dac-hidden-desktop-down">
-						<a href="/tag/udland" target="_self">UDLAND</a>
+						<a href="/tag/udland" target="_self">{{ _('UDLAND') }}</a>
 					</li>
 					<li class="dac-hidden-desktop-up dac-hidden-desktop-down">
-						<a href="/nuuk" target="_self">NUUK</a>
+						<a href="/nuuk" target="_self">{{ _('NUUK') }}</a>
 					</li>
 					<li class="dac-hidden-desktop-up dac-hidden-desktop-down">
-						<a href="/tag/sundhed" target="_self">SUNDHED</a>
+						<a href="/tag/sundhed" target="_self">{{ _('SUNDHED') }}</a>
 					</li>
 				</ul>
 			</li>
 			<li class="first-list-item burger-link has-children">
-				<a href="/tag/erhverv" target="_self">ERHVERV</a>
+				<a href="/tag/erhverv" target="_self">{{ _('ERHVERV') }}</a>
 				<ul class="children">
 					<li class="dac-hidden-desktop-up dac-hidden-desktop-down">
-						<a href="/tag/uddannelse" target="_self">UDDANNELSE</a>
+						<a href="/tag/uddannelse" target="_self">{{ _('UDDANNELSE') }}</a>
 					</li>
 				</ul>
 			</li>
 			<li class="first-list-item burger-link">
-				<a href="/tag/kultur" target="_self">KULTUR</a>
+				<a href="/tag/kultur" target="_self">{{ _('KULTUR') }}</a>
 			</li>
 			<li class="first-list-item burger-link">
-				<a href="/tag/sport" target="_self">SPORT</a>
+				<a href="/tag/sport" target="_self">{{ _('SPORT') }}</a>
 			</li>
 			<li class="first-list-item burger-link job-link">
-				<a href="https://job.sermitsiaq.ag" target="_self">JOB</a>
+				<a href="https://job.sermitsiaq.ag" target="_self">{{ _('JOB') }}</a>
 			</li>
 			<li class="first-list-item burger-link job-link">
-				<a href="/podcasti" target="_self">PODCASTI</a>
+				<a href="/podcasti" target="_self">{{ _('PODCASTI') }}</a>
 			</li>
 	</ul>
 </nav>
@@ -487,38 +514,38 @@
 <nav class="navigation dropdownMenu expandable">
 	<ul class="menu-list">
 			<li class="first-list-item has-children">
-				<a href="/tag/samfund" target="_self">SAMFUND</a>
+				<a href="/tag/samfund" target="_self">{{ _('SAMFUND') }}</a>
 				<ul class="children">
 					<li class="dac-hidden-desktop-down">
-						<a href="/tag/udland" target="_self">UDLAND</a>
+						<a href="/tag/udland" target="_self">{{ _('UDLAND') }}</a>
 					</li>
 					<li class="dac-hidden-desktop-down">
-						<a href="/nuuk" target="_self">NUUK</a>
+						<a href="/nuuk" target="_self">{{ _('NUUK') }}</a>
 					</li>
 					<li class="dac-hidden-desktop-down">
-						<a href="/tag/sundhed" target="_self">SUNDHED</a>
+						<a href="/tag/sundhed" target="_self">{{ _('SUNDHED') }}</a>
 					</li>
 				</ul>
 			</li>
 			<li class="first-list-item has-children">
-				<a href="/tag/erhverv" target="_self">ERHVERV</a>
+				<a href="/tag/erhverv" target="_self">{{ _('ERHVERV') }}</a>
 				<ul class="children">
 					<li class="dac-hidden-desktop-up dac-hidden-desktop-down">
-						<a href="/tag/uddannelse" target="_self">UDDANNELSE</a>
+						<a href="/tag/uddannelse" target="_self">{{ _('UDDANNELSE') }}</a>
 					</li>
 				</ul>
 			</li>
 			<li class="first-list-item ">
-				<a href="/tag/kultur" target="_self">KULTUR</a>
+				<a href="/tag/kultur" target="_self">{{ _('KULTUR') }}</a>
 			</li>
 			<li class="first-list-item ">
-				<a href="/tag/sport" target="_self">SPORT</a>
+				<a href="/tag/sport" target="_self">{{ _('SPORT') }}</a>
 			</li>
 			<li class="first-list-item job-link">
-				<a href="https://job.sermitsiaq.ag" target="_self">JOB</a>
+				<a href="https://job.sermitsiaq.ag" target="_self">{{ _('JOB') }}</a>
 			</li>
 			<li class="first-list-item job-link">
-				<a href="/podcasti" target="_self">PODCASTI</a>
+				<a href="/podcasti" target="_self">{{ _('PODCASTI') }}</a>
 			</li>
 	</ul>
 </nav>
@@ -652,19 +679,19 @@
 <nav class="navigation bottomBarMenu">
 	<ul class="menu-list">
 			<li class="first-list-item ">
-				<a href="/kontakt" target="_self">Kontakt</a>
+				<a href="/kontakt" target="_self">{{ _('Kontakt') }}</a>
 			</li>
 			<li class="first-list-item ">
-				<a href="https://www.sermitsiaq.ag/køb-abonnement" target="_self">Abonnement</a>
+				<a href="https://www.sermitsiaq.ag/køb-abonnement" target="_self">{{ _('Abonnement') }}</a>
 			</li>
 			<li class="first-list-item ">
-				<a href="https://www.sermitsiaq.ag/oversigtannoncer" target="_self">Annoncer</a>
+				<a href="https://www.sermitsiaq.ag/oversigtannoncer" target="_self">{{ _('Annoncer') }}</a>
 			</li>
 			<li class="first-list-item ">
-				<a href="https://sermitsiaq.e-pages.pub/titles/" target="_blank">E-aviser</a>
+				<a href="https://sermitsiaq.e-pages.pub/titles/" target="_blank">{{ _('E-aviser') }}</a>
 			</li>
 			<li class="first-list-item ">
-				<a href="https://www.sermitsiaq.ag/selvbetjening" target="_self">Selvbetjening</a>
+				<a href="https://www.sermitsiaq.ag/selvbetjening" target="_self">{{ _('Selvbetjening') }}</a>
 			</li>
 	</ul>
 </nav>

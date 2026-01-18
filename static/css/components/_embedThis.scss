@@ -1,0 +1,168 @@
+body.dac-popup-open {
+    overflow: hidden;
+}
+
+.dac-embed-this {
+    position: relative;
+
+    input[type="button"],
+    .dac-embed-copied {
+        border: 1px solid #505050;
+        background-color: #fff;
+        color: #000;
+        font-size: 1rem;
+        font-family: inherit;
+        padding: 0.5rem 0.8rem;
+        border-radius: 5px;
+        &:hover {
+            border-color: #008cba;
+            color: #008cba;
+            cursor: pointer;
+        }
+    }
+
+    .dac-embed-copied {
+        background-color: transparent;
+        border: 1px solid #505050;
+        margin-left: 1rem;
+        color: #000;
+        &:hover {
+            border-color: #505050;
+            color: #000;
+            cursor: default;
+        }
+    }
+
+    .dac-embed-this-content {
+        position: absolute;
+        display: flex;
+        top: 1rem;
+        right: 1rem;
+        bottom: 1rem;
+        left: 1rem;
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 2.5rem 3rem 3rem;
+    }
+
+    .dac-embed-frame {
+        height: 100%;
+        &:empty:after {
+            content: "Preview loading ...";
+            display: block;
+            padding: 4rem;
+            text-align: center;
+            font-size: 1.8rem;
+            color: gray;
+        }
+    }
+
+    .labrador-cms-embed {
+        overflow: auto;
+        height: 100%;
+        border: 1px solid transparent;
+        &:hover {
+            border: 1px solid gray;
+        }
+    }
+
+    .dac-embed-aside {
+        flex: 1 1 30%;
+    }
+
+    .dac-embed-preview {
+        flex: 1 1 70%;
+    }
+
+    .dac-embed-this-popup {
+        display: none;
+        position: fixed;
+        z-index: 10000;
+        background-color: #fff;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+
+        &.dac-open {
+            display: block;
+        }
+
+        textarea {
+            height: 12rem;
+            font-size: 1rem;
+        }
+
+        textarea.dac-embed-content-full {
+            display: none;
+        }
+
+        &.dac-type-full textarea {
+            display: none;
+
+            &.dac-embed-content-full {
+                display: block;
+            }
+        }
+
+        label {
+            margin-right: 0.6rem;
+        }
+
+        p {
+            margin: 0.5em 0;
+        }
+
+        .dac-embed-close {
+            position: absolute;
+            right: 1rem;
+            top: 0rem;
+
+            a {
+                padding: 0.5rem;
+                border-radius: unset;
+                width: auto;
+                font-size: 1rem;
+                background-color: rgba(0, 0, 0, 0);
+                color: rgb(0, 140, 186);
+                text-decoration: underline;
+                height: auto;
+
+                &:hover {
+                    transform: none;
+                    color: rgb(0, 120, 160);
+                }
+            }
+        }
+    }
+
+    @include tablet_up {
+        .dac-embed-aside {
+            border-right: 1px solid #dedede;
+            padding-right: 4rem;
+        }
+        .dac-embed-preview {
+            padding-left: 4rem;
+        }
+    }
+
+    @include mobile {
+        .dac-embed-this-popup {
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            max-height: 100vh;
+            height: 100vh;
+            overflow: auto;
+        }
+        .dac-embed-this-content {
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            padding: 1rem;
+            flex-direction: column;
+        }
+    }
+}

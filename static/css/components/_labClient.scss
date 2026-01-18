@@ -1,0 +1,24 @@
+@use "./vars" as *;
+
+.labclient-content {
+    .boxalign-left {
+        float: left;
+        margin-right: 1.5rem;
+        margin-top: 0.4rem;
+
+        @include mobile {
+            float: none;
+            margin-right: 0;
+        }
+    }
+    .boxalign-right {
+        float: right;
+        margin-left: 1rem;
+        margin-top: 0.4rem;
+
+        @include mobile {
+            float: none;
+            margin-left: 0;
+        }
+    }
+}

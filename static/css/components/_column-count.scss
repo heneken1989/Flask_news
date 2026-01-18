@@ -1,0 +1,25 @@
+@use './vars' as *;
+
+@include tablet_up {
+    @for $i from 1 through 6 {
+        .col-#{$i} {
+            columns: $i auto;
+            column-gap: $columns_gutter * 2;
+            > * {
+                -webkit-column-break-inside: avoid;
+            }
+        }
+    }
+}
+
+@include mobile {
+    @for $i from 1 through 6 {
+        .mobile-col-#{$i} {
+            columns: $i auto;
+            column-gap: $columns_gutter * 2;
+            > * {
+                -webkit-column-break-inside: avoid;
+            }
+        }
+    }
+}

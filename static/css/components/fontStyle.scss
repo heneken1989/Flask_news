@@ -1,0 +1,16 @@
+@use "./vars" as *;
+
+.italic {
+    font-style: italic !important;
+}
+.no_italic {
+    font-style: normal !important;
+}
+@include desktop_down {
+    .m-italic {
+        font-style: italic !important;
+    }
+    .m-no_italic {
+        font-style: normal !important;
+    }  
+}

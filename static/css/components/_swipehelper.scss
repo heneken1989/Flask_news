@@ -1,0 +1,42 @@
+
+
+// Markup-example:
+// <div class="swipehelper snap-container-x snap-element-start">
+//     <div class="snap-element">...</div>
+//     <div class="snap-element">...</div>
+//     <div class="snap-element">...</div>
+//     <div class="snap-element">...</div>
+//     <div class="snap-element">...</div>
+//     <div class="snap-element">...</div>
+//     <div class="snap-element">...</div>
+//     <div class="snap-element">...</div>
+// </div>
+
+.swipehelper {
+
+    overflow: auto;
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        width: 0 !important
+    }
+
+    &.snap-container-x {
+        scroll-snap-type: x mandatory;
+    }
+
+    &.snap-container-y {
+        scroll-snap-type: y mandatory;
+    }
+
+    &.snap-element-start .snap-element {
+        scroll-snap-align: start;
+    }
+
+    &.snap-element-center .snap-element {
+        scroll-snap-align: center;
+    }
+
+}

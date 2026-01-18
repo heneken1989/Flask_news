@@ -453,6 +453,311 @@ def detect_layout_type_from_element(article_elem, row_elem=None):
         return '1_full'  # Default fallback
 
 
+def parse_slider_item(slider_item_elem, base_url='https://www.sermitsiaq.ag'):
+    """
+    Parse một article item trong slider
+    
+    Args:
+        slider_item_elem: BeautifulSoup element của li.scroll-item
+        base_url: Base URL để resolve relative URLs
+    
+    Returns:
+        dict: Article data trong slider
+    """
+    try:
+        link = slider_item_elem.find('a')
+        if not link:
+            print(f"    ⚠️  Slider item has no <a> tag")
+            return None
+        
+        url = link.get('href', '')
+        if not url:
+            print(f"    ⚠️  Slider item has no href")
+            return None
+        
+        if url and not url.startswith('http'):
+            url = urljoin(base_url, url)
+        
+        # Parse image - figure nằm trong <a>
+        image_data = {}
+        figure = link.find('figure')  # Tìm figure trong <a>, không phải trong <li>
+        if figure:
+            img = figure.find('img')
+            if img:
+                img_src = img.get('src', '')
+                if img_src and not img_src.startswith('http'):
+                    img_src = urljoin(base_url, img_src)
+                image_data['src'] = img_src
+                image_data['alt'] = img.get('alt', '')
+                image_data['width'] = img.get('width', '265')
+                image_data['height'] = img.get('height', '159')
+        
+        # Parse paywall - có thể nằm trong figure (trong <a>) hoặc ngoài <li>
+        is_paywall = False
+        paywall_in_figure = figure.find('div', class_='paywallLabel') if figure else None
+        paywall_in_link = link.find('div', class_='paywallLabel')  # Có thể nằm trong <a> nhưng ngoài figure
+        paywall_outside = slider_item_elem.find('div', class_='paywallLabel')  # Hoặc ngoài <a>
+        is_paywall = paywall_in_figure is not None or paywall_in_link is not None or paywall_outside is not None
+        
+        # Parse title và kicker - text-container nằm trong <a>
+        text_container = link.find('div', class_='text-container')  # Tìm trong <a>, không phải trong <li>
+        title = ''
+        kicker = ''
+        
+        if text_container:
+            # Title là h3
+            h3 = text_container.find('h3')
+            if h3:
+                title = h3.get_text(strip=True)
+            
+            # Kicker là h4 (có thể không có)
+            h4 = text_container.find('h4')
+            if h4:
+                kicker = h4.get_text(strip=True)
+        
+        # Parse section
+        section = slider_item_elem.get('data-section', '')
+        
+        # Luôn trả về kết quả, ngay cả khi thiếu title (có thể có trường hợp đặc biệt)
+        result = {
+            'url': url,
+            'title': title,
+            'kicker': kicker,
+            'image': image_data,
+            'is_paywall': is_paywall,
+            'section': section
+        }
+        
+        return result
+    except Exception as e:
+        print(f"⚠️  Error parsing slider item: {e}")
+        import traceback
+        traceback.print_exc()
+        return None
+
+
+def parse_slider(slider_elem, base_url='https://www.sermitsiaq.ag'):
+    """
+    Parse một slider (articlescroller) element
+    
+    Args:
+        slider_elem: BeautifulSoup element của div.articlescroller
+        base_url: Base URL để resolve relative URLs
+    
+    Returns:
+        dict: Slider data với layout_type='slider' và layout_data chứa slider info
+    """
+    try:
+        element_guid = slider_elem.get('data-element-guid', '')
+        slider_id = slider_elem.get('id', '')
+        
+        # Parse slider title và header link (cho JOB slider)
+        title_elem = slider_elem.find('h2', class_='articlescroller-header')
+        slider_title = ''
+        header_link = None
+        if title_elem:
+            # Check xem có link trong header không (JOB slider)
+            link_elem = title_elem.find('a')
+            if link_elem:
+                header_link = {
+                    'url': link_elem.get('href', ''),
+                    'text': link_elem.get_text(strip=True)
+                }
+                slider_title = header_link['text']
+            else:
+                # Title có thể có span bên trong
+                span = title_elem.find('span')
+                if span:
+                    slider_title = span.get_text(strip=True)
+                else:
+                    slider_title = title_elem.get_text(strip=True)
+        
+        # Parse các articles trong slider
+        # Tìm ul.scroll-container - có thể nằm trong .inner.content
+        inner_content = slider_elem.find('div', class_='inner')
+        if not inner_content:
+            inner_content = slider_elem
+        
+        scroll_container = inner_content.find('ul', class_=lambda x: x and 'scroll-container' in x)
+        if not scroll_container:
+            # Fallback: tìm bất kỳ ul nào có class chứa 'scroll'
+            scroll_container = inner_content.find('ul', class_=lambda x: x and 'scroll' in str(x).lower())
+        
+        # Check xem có nav buttons không
+        has_nav = inner_content.find('nav') is not None
+        
+        # Check xem có phải slider NUUK không (source_nuuk class hoặc count_5)
+        slider_classes = slider_elem.get('class', [])
+        is_nuuk_slider = 'source_nuuk' in slider_classes
+        
+        # Check xem có phải JOB slider không (source_job-dk, source_feed_random_kl_jobs, hoặc source_job)
+        is_job_slider = (
+            'source_job-dk' in slider_classes or 
+            'source_feed_random_kl_jobs' in slider_classes or
+            'source_job' in str(slider_classes)
+        )
+        
+        # Parse các class đặc biệt cho JOB slider
+        extra_classes = []
+        if 'bg-custom-2' in slider_classes:
+            extra_classes.append('bg-custom-2')
+        if 'color_mobile_bg-custom-2' in slider_classes:
+            extra_classes.append('color_mobile_bg-custom-2')
+        if 'hasContentPadding' in slider_classes:
+            extra_classes.append('hasContentPadding')
+        if 'mobile-hasContentPadding' in slider_classes:
+            extra_classes.append('mobile-hasContentPadding')
+        if 'layout-align-centered' in slider_classes:
+            extra_classes.append('layout-align-centered')
+        
+        # Parse header classes cho JOB (lưu tất cả classes từ header)
+        header_classes = []
+        if title_elem:
+            title_classes = title_elem.get('class', [])
+            # Lưu tất cả classes từ header để giữ nguyên styling
+            header_classes = title_classes.copy() if title_classes else []
+        
+        # Check count class từ scroll-container
+        scroll_container_classes = scroll_container.get('class', []) if scroll_container else []
+        count_class = None
+        for cls in scroll_container_classes:
+            if cls.startswith('count_'):
+                count_class = cls
+                count_num = cls.replace('count_', '')
+                if count_num == '5':
+                    is_nuuk_slider = True
+                break
+        
+        slider_articles = []
+        
+        if scroll_container:
+            # Tìm tất cả li.scroll-item - có thể có nhiều class, nên dùng lambda
+            items = scroll_container.find_all('li', class_=lambda x: x and 'scroll-item' in x)
+            print(f"  🎠 Found {len(items)} items in slider '{slider_title}'")
+            
+            for idx, item in enumerate(items):
+                article_data = parse_slider_item(item, base_url)
+                if article_data:
+                    article_data['position'] = idx  # Thứ tự trong slider
+                    slider_articles.append(article_data)
+                else:
+                    print(f"    ⚠️  Failed to parse slider item {idx}")
+            
+            print(f"  ✅ Successfully parsed {len(slider_articles)}/{len(items)} slider items")
+        else:
+            print(f"  ⚠️  No scroll-container found in slider")
+            # Debug: in ra cấu trúc HTML để kiểm tra
+            print(f"  🔍 Slider HTML structure:")
+            print(f"     - Has inner div: {inner_content is not None}")
+            if inner_content:
+                all_uls = inner_content.find_all('ul')
+                print(f"     - Found {len(all_uls)} ul elements")
+                for ul_idx, ul in enumerate(all_uls):
+                    ul_classes = ul.get('class', [])
+                    print(f"       UL {ul_idx}: classes = {ul_classes}")
+        
+        # Xác định items_per_view và source class
+        if is_nuuk_slider:
+            items_per_view = 5
+            source_class = 'source_nuuk'
+        elif is_job_slider:
+            items_per_view = 4
+            # Xác định source_class dựa trên class thực tế
+            if 'source_feed_random_kl_jobs' in slider_classes:
+                source_class = 'source_feed_random_kl_jobs'
+            elif 'source_job-dk' in slider_classes:
+                source_class = 'source_job-dk'
+            else:
+                source_class = 'source_job'  # Fallback
+        else:
+            items_per_view = 4
+            source_class = 'source_nyheder'
+        
+        # Xác định layout_type
+        if is_job_slider:
+            layout_type = 'job_slider'
+        else:
+            layout_type = 'slider'
+        
+        return {
+            'element_guid': element_guid,
+            'slider_id': slider_id,
+            'layout_type': layout_type,
+            'title': slider_title or 'Slider',  # Fallback title
+            'url': '',  # Slider không có URL riêng
+            'section': 'home',
+            'layout_data': {
+                'slider_title': slider_title,
+                'slider_articles': slider_articles,
+                'slider_id': slider_id,
+                'has_nav': has_nav,
+                'items_per_view': items_per_view,
+                'source_class': source_class,
+                'header_link': header_link,  # Link trong header (cho JOB)
+                'extra_classes': extra_classes,  # Các class đặc biệt (bg-custom-2, etc.)
+                'header_classes': header_classes  # Các class cho header (underline, t22, etc.)
+            },
+            'is_home': True
+        }
+    except Exception as e:
+        print(f"⚠️  Error parsing slider: {e}")
+        import traceback
+        traceback.print_exc()
+        return None
+
+
+def parse_nuuk_articles(nuuk_elem, base_url='https://www.sermitsiaq.ag', row_index=0):
+    """
+    Parse NUUK articlescroller thành 5 articles riêng lẻ với layout_type='5_articles'
+    
+    Args:
+        nuuk_elem: BeautifulSoup element của div.articlescroller.source_nuuk
+        base_url: Base URL để resolve relative URLs
+        row_index: Index của row để tính display_order
+    
+    Returns:
+        list: List of 5 article dictionaries với layout_type='5_articles'
+    """
+    try:
+        # Tìm scroll-container và các items
+        inner_content = nuuk_elem.find('div', class_='inner')
+        if not inner_content:
+            inner_content = nuuk_elem
+        
+        scroll_container = inner_content.find('ul', class_=lambda x: x and 'scroll-container' in x)
+        if not scroll_container:
+            print(f"  ⚠️  NUUK: No scroll-container found")
+            return []
+        
+        items = scroll_container.find_all('li', class_=lambda x: x and 'scroll-item' in x)
+        print(f"  🏙️  NUUK: Found {len(items)} items")
+        
+        nuuk_articles = []
+        for idx, item in enumerate(items):
+            # Parse mỗi item như một article
+            article_data = parse_slider_item(item, base_url)
+            if article_data:
+                # Convert 'image' thành 'image_data' để lưu vào database
+                if 'image' in article_data and article_data['image']:
+                    article_data['image_data'] = article_data.pop('image')
+                
+                # Set layout_type và display_order
+                article_data['layout_type'] = '5_articles'
+                article_data['display_order'] = row_index * 1000 + idx
+                article_data['section'] = 'home'
+                article_data['is_home'] = True
+                nuuk_articles.append(article_data)
+        
+        print(f"  ✅ NUUK: Successfully parsed {len(nuuk_articles)} articles")
+        return nuuk_articles
+        
+    except Exception as e:
+        print(f"  ❌ Error parsing NUUK articles: {e}")
+        import traceback
+        traceback.print_exc()
+        return []
+
+
 def parse_articles_from_html(html_content, base_url='https://www.sermitsiaq.ag', is_home=False):
     """
     Parse tất cả articles từ HTML content
@@ -460,7 +765,7 @@ def parse_articles_from_html(html_content, base_url='https://www.sermitsiaq.ag',
     Args:
         html_content: HTML content string
         base_url: Base URL để resolve relative URLs
-        is_home: Nếu True, sẽ detect layout_type từ HTML structure
+        is_home: Nếu True, sẽ detect layout_type từ HTML structure và parse sliders
     
     Returns:
         list: List of article dictionaries
@@ -487,104 +792,138 @@ def parse_articles_from_html(html_content, base_url='https://www.sermitsiaq.ag',
         
         print(f"📰 Found {len(article_elements)} article elements")
         
-        for article_elem in article_elements:
-            article_data = parse_article_element(article_elem, base_url)
-            if article_data:
-                # Nếu là home page, detect layout_type
-                if is_home:
-                    # Tìm row chứa article này
-                    row_elem = None
-                    for row in rows:
-                        if article_elem in row.find_all('article'):
-                            row_elem = row
-                            break
+        # Nếu là home page, parse theo thứ tự rows để giữ đúng thứ tự
+        if is_home and page_content:
+            # Parse theo thứ tự rows
+            for row_idx, row in enumerate(rows):
+                # Check xem row có chứa slider không - tìm div có class chứa 'articlescroller'
+                slider_elem = row.find('div', class_=lambda x: x and 'articlescroller' in x)
+                if slider_elem:
+                    # Check xem có phải NUUK không (source_nuuk class)
+                    slider_classes = slider_elem.get('class', [])
+                    is_nuuk = 'source_nuuk' in slider_classes
                     
-                    layout_type = detect_layout_type_from_element(article_elem, row_elem)
-                    article_data['layout_type'] = layout_type
-                    
-                    # Detect layout_data nếu có
-                    layout_data = {}
-                    
-                    # Thêm kicker_floating vào layout_data nếu có (cho tất cả layout types)
-                    if article_data.get('kicker_floating'):
-                        layout_data['kicker_floating'] = article_data['kicker_floating']
-                    
-                    # Thêm kicker_below vào layout_data nếu có (cho tất cả layout types)
-                    if article_data.get('kicker_below'):
-                        layout_data['kicker_below'] = article_data['kicker_below']
-                        layout_data['kicker_below_classes'] = article_data.get('kicker_below_classes', 'kicker below primary color_mobile_primary')
-                    
-                    # Thêm title_parts vào layout_data nếu có highlights (cho tất cả layout types)
-                    if article_data.get('title_parts'):
-                        layout_data['title_parts'] = article_data['title_parts']
-                    
-                    # Check và lưu has_bg_black nếu article có bg-black (cho tất cả layout types)
-                    content_div = article_elem.find('div', class_='content')
-                    if content_div:
-                        content_classes = content_div.get('class', [])
-                        content_class_str = ' '.join(content_classes) if content_classes else ''
-                        if 'bg-black' in content_class_str:
-                            layout_data['has_bg_black'] = True
-                            # Lưu tất cả classes của content div để giữ nguyên styling
-                            layout_data['content_classes'] = content_class_str
-                    
-                    if layout_type == '1_special_bg':
-                        # Check kicker
-                        kicker_elem = article_elem.find('div', class_='kicker')
-                        if kicker_elem:
-                            layout_data['kicker'] = kicker_elem.get_text(strip=True)
-                    elif layout_type in ['1_with_list_left', '1_with_list_right']:
-                        # Parse list items từ row
-                        if row_elem:
-                            # Tìm list element (có thể là articlesByTag hoặc toplist)
-                            list_elem = row_elem.find('div', class_='articlesByTag')
-                            if not list_elem:
-                                list_elem = row_elem.find('div', class_='toplist')
-                            
-                            if list_elem:
-                                # Extract list title - có thể là h3 với class headline hoặc không
-                                list_title_elem = list_elem.find('h3')
-                                if list_title_elem:
-                                    layout_data['list_title'] = list_title_elem.get_text(strip=True)
-                                
-                                # Extract list items
-                                list_items = []
-                                # Tìm trong ul.toplist-results hoặc ul thông thường
-                                ul_elem = list_elem.find('ul', class_='toplist-results')
-                                if not ul_elem:
-                                    ul_elem = list_elem.find('ul')
-                                
-                                if ul_elem:
-                                    for li in ul_elem.find_all('li'):
-                                        link = li.find('a')
-                                        if link:
-                                            # Tìm title - có thể là h4 với class abt-title hoặc h4 thông thường
-                                            # Title có thể nằm trong link hoặc trong li
-                                            title_elem = link.find('h4', class_='abt-title')
-                                            if not title_elem:
-                                                title_elem = link.find('h4')
-                                            if not title_elem:
-                                                # Fallback: tìm trong li
-                                                title_elem = li.find('h4', class_='abt-title')
-                                            if not title_elem:
-                                                title_elem = li.find('h4')
-                                            
-                                            if title_elem:
-                                                title = title_elem.get_text(strip=True)
-                                                url = link.get('href', '')
-                                                if title and url:
-                                                    list_items.append({
-                                                        'title': title,
-                                                        'url': url
-                                                    })
-                                
-                                if list_items:
-                                    layout_data['list_items'] = list_items
-                    
-                    if layout_data:
-                        article_data['layout_data'] = layout_data
+                    if is_nuuk:
+                        # Parse NUUK như 5 articles riêng lẻ
+                        nuuk_articles = parse_nuuk_articles(slider_elem, base_url, row_idx)
+                        if nuuk_articles:
+                            articles.extend(nuuk_articles)
+                            print(f"🏙️  Parsed NUUK: {len(nuuk_articles)} articles")
+                    else:
+                        # Parse như slider thông thường
+                        slider_data = parse_slider(slider_elem, base_url)
+                        if slider_data:
+                            slider_data['display_order'] = row_idx * 1000  # Đặt display_order dựa trên vị trí row
+                            articles.append(slider_data)
+                            slider_title = slider_data.get('layout_data', {}).get('slider_title', 'Untitled')
+                            slider_articles_count = len(slider_data.get('layout_data', {}).get('slider_articles', []))
+                            print(f"🎠 Parsed slider '{slider_title}': {slider_articles_count} articles")
                 
-                articles.append(article_data)
+                # Parse articles trong row này
+                row_articles = row.find_all('article', attrs={'data-element-guid': True})
+                for article_idx, article_elem in enumerate(row_articles):
+                    # Chỉ parse nếu article này chưa được parse (tránh duplicate)
+                    if article_elem in article_elements:
+                        article_data = parse_article_element(article_elem, base_url)
+                        if article_data:
+                            article_data['display_order'] = row_idx * 1000 + article_idx  # Đặt display_order
+                            # Detect layout_type
+                            layout_type = detect_layout_type_from_element(article_elem, row)
+                            article_data['layout_type'] = layout_type
+                            
+                            # Detect layout_data nếu có
+                            layout_data = {}
+                            
+                            # Thêm kicker_floating vào layout_data nếu có (cho tất cả layout types)
+                            if article_data.get('kicker_floating'):
+                                layout_data['kicker_floating'] = article_data['kicker_floating']
+                            
+                            # Thêm kicker_below vào layout_data nếu có (cho tất cả layout types)
+                            if article_data.get('kicker_below'):
+                                layout_data['kicker_below'] = article_data['kicker_below']
+                                layout_data['kicker_below_classes'] = article_data.get('kicker_below_classes', 'kicker below primary color_mobile_primary')
+                            
+                            # Thêm title_parts vào layout_data nếu có highlights (cho tất cả layout types)
+                            if article_data.get('title_parts'):
+                                layout_data['title_parts'] = article_data['title_parts']
+                            
+                            # Check và lưu background colors nếu article có bg-* (cho tất cả layout types)
+                            content_div = article_elem.find('div', class_='content')
+                            if content_div:
+                                content_classes = content_div.get('class', [])
+                                content_class_str = ' '.join(content_classes) if content_classes else ''
+                                # Check bất kỳ background color nào (bg-black, bg-secondary, bg-primary, etc.)
+                                has_bg_color = any(cls.startswith('bg-') for cls in content_classes)
+                                if has_bg_color:
+                                    layout_data['has_bg_color'] = True
+                                    # Giữ lại has_bg_black cho backward compatibility
+                                    if 'bg-black' in content_class_str:
+                                        layout_data['has_bg_black'] = True
+                                    # Lưu tất cả classes của content div để giữ nguyên styling
+                                    layout_data['content_classes'] = content_class_str
+                            
+                            if layout_type == '1_special_bg':
+                                # Check kicker
+                                kicker_elem = article_elem.find('div', class_='kicker')
+                                if kicker_elem:
+                                    layout_data['kicker'] = kicker_elem.get_text(strip=True)
+                            elif layout_type in ['1_with_list_left', '1_with_list_right']:
+                                # Parse list items từ row
+                                # Tìm list element (có thể là articlesByTag hoặc toplist)
+                                list_elem = row.find('div', class_='articlesByTag')
+                                if not list_elem:
+                                    list_elem = row.find('div', class_='toplist')
+                                
+                                if list_elem:
+                                    # Extract list title - có thể là h3 với class headline hoặc không
+                                    list_title_elem = list_elem.find('h3')
+                                    if list_title_elem:
+                                        layout_data['list_title'] = list_title_elem.get_text(strip=True)
+                                    
+                                    # Extract list items
+                                    list_items = []
+                                    # Tìm trong ul.toplist-results hoặc ul thông thường
+                                    ul_elem = list_elem.find('ul', class_='toplist-results')
+                                    if not ul_elem:
+                                        ul_elem = list_elem.find('ul')
+                                    
+                                    if ul_elem:
+                                        for li in ul_elem.find_all('li'):
+                                            link = li.find('a')
+                                            if link:
+                                                # Tìm title - có thể là h4 với class abt-title hoặc h4 thông thường
+                                                # Title có thể nằm trong link hoặc trong li
+                                                title_elem = link.find('h4', class_='abt-title')
+                                                if not title_elem:
+                                                    title_elem = link.find('h4')
+                                                if not title_elem:
+                                                    # Fallback: tìm trong li
+                                                    title_elem = li.find('h4', class_='abt-title')
+                                                if not title_elem:
+                                                    title_elem = li.find('h4')
+                                                
+                                                if title_elem:
+                                                    title = title_elem.get_text(strip=True)
+                                                    url = link.get('href', '')
+                                                    if title and url:
+                                                        list_items.append({
+                                                            'title': title,
+                                                            'url': url
+                                                        })
+                                    
+                                    if list_items:
+                                        layout_data['list_items'] = list_items
+                            
+                            if layout_data:
+                                article_data['layout_data'] = layout_data
+                            
+                            articles.append(article_data)
+        else:
+            # Không phải home page, parse articles như bình thường (không có layout detection)
+            for article_elem in article_elements:
+                article_data = parse_article_element(article_elem, base_url)
+                if article_data:
+                    articles.append(article_data)
         
         print(f"✅ Successfully parsed {len(articles)} articles")
         

@@ -64,6 +64,9 @@ class Article(db.Model):
     is_paywall = db.Column(db.Boolean, default=False)
     paywall_class = db.Column(db.String(50), default='')
     
+    # Translation temp flag (để tránh duplicate khi translate)
+    is_temp = db.Column(db.Boolean, default=False)  # True = đang trong quá trình translate, chưa show
+    
     # Thời gian
     published_date = db.Column(db.DateTime)  # Thời gian publish từ website gốc
     crawled_at = db.Column(db.DateTime, default=datetime.utcnow)  # Thời gian crawl
@@ -89,6 +92,14 @@ class Article(db.Model):
     # Metadata từ crawl
     crawl_metadata = db.Column(db.JSON)  # Lưu thêm metadata nếu cần
     
+    # Multi-language support
+    language = db.Column(db.String(2), nullable=False, default='da')  # 'da', 'kl', 'en'
+    canonical_id = db.Column(db.Integer, db.ForeignKey('articles.id'), nullable=True)  # Link các bài cùng nội dung khác ngôn ngữ
+    original_language = db.Column(db.String(2), default='da')  # Ngôn ngữ gốc (thường là 'da')
+    
+    # Relationship để link các translations
+    canonical_article = db.relationship('Article', remote_side=[id], backref='translations', foreign_keys=[canonical_id])
+    
     # Indexes để query nhanh
     __table_args__ = (
         db.Index('idx_section_order', 'section', 'display_order'),
@@ -96,6 +107,9 @@ class Article(db.Model):
         db.Index('idx_is_home', 'is_home', 'display_order'),  # Index cho home page query
         db.Index('idx_published_date', 'published_date'),
         db.Index('idx_element_guid', 'element_guid'),  # Index để query nhanh, không unique
+        db.Index('idx_language', 'language'),  # Index cho language filtering
+        db.Index('idx_canonical_language', 'canonical_id', 'language'),  # Index cho translation lookup
+        db.Index('idx_section_language', 'section', 'language', 'display_order'),  # Index cho section + language query
     )
     
     def to_dict(self):
@@ -123,7 +137,10 @@ class Article(db.Model):
             'kicker_floating': (self.layout_data or {}).get('kicker_floating') if self.layout_data else None,
             'kicker_below': (self.layout_data or {}).get('kicker_below') if self.layout_data else None,  # Kicker below (ví dụ "OPDATERET")
             'kicker_below_classes': (self.layout_data or {}).get('kicker_below_classes', 'kicker below primary color_mobile_primary') if self.layout_data else None,
-            'title_parts': (self.layout_data or {}).get('title_parts') if self.layout_data else None  # Title parts với highlights
+            'title_parts': (self.layout_data or {}).get('title_parts') if self.layout_data else None,  # Title parts với highlights
+            'language': self.language,  # Thêm language
+            'canonical_id': self.canonical_id,  # Thêm canonical_id
+            'original_language': self.original_language  # Thêm original_language
         }
     
     def __repr__(self):

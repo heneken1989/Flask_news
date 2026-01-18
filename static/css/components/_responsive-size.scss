@@ -1,0 +1,13 @@
+@use "./vars" as *;
+
+@mixin sizeDefinition($i, $size: 0, $important: '') {
+    width: #{$i}vw !important;
+}
+
+@include mobile {
+    @for $i from 1 through 100 {
+        .small-vw-#{$i} {
+            @include sizeDefinition($i, 0, !important);
+        }
+    }
+}

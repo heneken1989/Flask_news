@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, request, make_response
-from utils import apply_grid_size_pattern, prepare_home_layouts
+from flask import Blueprint, render_template, request, make_response, session
+from utils import apply_grid_size_pattern, prepare_home_layouts, get_home_articles_by_language
 from database import Article, Category
 
 article_view_bp = Blueprint('article_views', __name__)
@@ -31,29 +31,60 @@ def index():
     print(f"   Method: {request.method}")
     print(f"   URL: {request.url}")
     
-    # Query articles từ database cho trang home
+    # Get current language from session or default
+    # Use session.get() to avoid calling get_locale() which needs app context
+    current_language = session.get('language', 'en')  # Default to 'en'
+    
+    # Check URL parameter for language override
+    if request.args.get('lang'):
+        lang = request.args.get('lang')
+        if lang in ['da', 'kl', 'en']:
+            current_language = lang
+    
+    # Query articles từ database cho trang home, filtered by language
     articles = []
     try:
-        # Query articles từ database, sắp xếp theo display_order
-        # Lấy articles có section='home' (articles crawl từ trang home)
-        # VÀ có layout_type (để biết cách hiển thị)
-        # Không giới hạn số lượng để hiển thị tất cả articles
-        articles = Article.query.filter(
-            Article.section == 'home',
-            Article.layout_type.isnot(None)
-        ).order_by(Article.display_order.asc()).all()
+        # Query articles với language filter
+        article_objects = get_home_articles_by_language(
+            language=current_language,
+            limit=None  # Không giới hạn để hiển thị tất cả
+        )
+        
+        # Filter chỉ lấy articles có layout_type
+        article_objects = [a for a in article_objects if a.layout_type]
         
         # Log số lượng articles để debug
-        print(f"📊 Found {len(articles)} articles for home page")
+        print(f"📊 Found {len(article_objects)} articles for home page (language: {current_language})")
         
         # Convert to dict
-        articles = [article.to_dict() for article in articles]
+        articles = [article.to_dict() for article in article_objects]
         
         # Log số lượng articles để debug
         print(f"📊 Found {len(articles)} articles for home page")
         if articles:
             print(f"   First article: {articles[0].get('title', 'N/A')[:50]}...")
             print(f"   Last article: {articles[-1].get('title', 'N/A')[:50]}...")
+        
+        # Debug: Kiểm tra sliders
+        sliders = [a for a in articles if a.get('layout_type') == 'slider']
+        if sliders:
+            print(f"🎠 Found {len(sliders)} sliders:")
+            for idx, slider in enumerate(sliders):
+                layout_data = slider.get('layout_data', {})
+                slider_articles = layout_data.get('slider_articles', [])
+                slider_title = layout_data.get('slider_title', 'Untitled')
+                
+                # Debug chi tiết
+                print(f"   Slider {idx+1}: '{slider_title}' - {len(slider_articles)} articles")
+                print(f"      layout_data type: {type(layout_data)}")
+                print(f"      slider_articles type: {type(slider_articles)}")
+                if isinstance(slider_articles, list):
+                    print(f"      First 3 article titles: {[a.get('title', 'N/A')[:30] for a in slider_articles[:3]]}")
+                else:
+                    print(f"      ⚠️  slider_articles is not a list! Value: {slider_articles}")
+                
+                if len(slider_articles) < 4:
+                    print(f"      ⚠️  WARNING: Slider has only {len(slider_articles)} articles (expected >= 4)")
         
     except Exception as e:
         print(f"⚠️  Database query failed: {e}")

@@ -1,0 +1,65 @@
+{# Layout: 5 Articles 1 Row (NUUK) #}
+{# Usage: {% include 'partials/layout_5_articles.html' with context %} #}
+{# Requires: articles (list of 5 articles), row_guid #}
+
+<div data-element-guid="{{ row_guid|default('') }}" class="row small-12 large-12" style="">
+<div data-element-guid="{{ row_guid|default('') }}-nuuk" class="column articlescroller source_nuuk small-12 large-12" style="">
+    
+    <div class="inner content fullwidthTarget">
+            
+            <h2 class="articlescroller-header t28 font-weight-black m-font-weight-black tertiary color_mobile_tertiary align-left mobile_text_align_align-left font-PublicoHeadlineWeb" style="">{{ _('NUUK') }}</h2>
+
+        <ul class="scroll-container swipehelper snap-container-x snap-element-start articles count_5 ">
+{% for article in articles[:5] %}
+                <li data-section="{{ article.section|default('') }}" class="scroll-item snap-element column hasImage skipLeadText">
+                    <a href="{{ article.url|default('#') }}">
+{% if article.is_paywall %}
+                            <figure>
+<div class="paywallLabel  "><span class="fi-plus"></span> </div>
+{% if article.image %}
+    {% if article.image.src %}
+                                <img src="{{ article.image.src }}" width="{{ article.image.width|default('212') }}" height="{{ article.image.height|default('137') }}" loading="lazy" alt="{{ article.image.alt|default('') }}">
+    {% elif article.image.fallback %}
+                                <img src="{{ article.image.fallback }}" width="{{ article.image.width|default('212') }}" height="{{ article.image.height|default('137') }}" loading="lazy" alt="{{ article.image.alt|default('') }}">
+    {% elif article.image.mobile_jpeg %}
+                                <img src="{{ article.image.mobile_jpeg }}" width="{{ article.image.width|default('212') }}" height="{{ article.image.height|default('137') }}" loading="lazy" alt="{{ article.image.alt|default('') }}">
+    {% endif %}
+{% endif %}
+                            </figure>
+{% else %}
+                            <figure>
+{% if article.image %}
+    {% if article.image.src %}
+                                <img src="{{ article.image.src }}" width="{{ article.image.width|default('212') }}" height="{{ article.image.height|default('137') }}" loading="lazy" alt="{{ article.image.alt|default('') }}">
+    {% elif article.image.fallback %}
+                                <img src="{{ article.image.fallback }}" width="{{ article.image.width|default('212') }}" height="{{ article.image.height|default('137') }}" loading="lazy" alt="{{ article.image.alt|default('') }}">
+    {% elif article.image.mobile_jpeg %}
+                                <img src="{{ article.image.mobile_jpeg }}" width="{{ article.image.width|default('212') }}" height="{{ article.image.height|default('137') }}" loading="lazy" alt="{{ article.image.alt|default('') }}">
+    {% endif %}
+{% endif %}
+                            </figure>
+{% endif %}
+                        <div class="text-container">
+{% if article.kicker %}
+                            <h4>{{ article.kicker }}</h4>
+{% endif %}
+                            
+                            <h3>{{ article.title|default('Article Title') }}</h3>
+                            
+                            
+                            
+                        </div>
+                    </a>
+                </li>
+{% endfor %}
+        </ul>
+
+            
+            
+
+    </div>
+
+</div>
+
+</div>
+

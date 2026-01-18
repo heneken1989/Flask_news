@@ -1,0 +1,10 @@
+// Styles for public/common/SlideIn/SlideIn.js
+.slidein {
+    transition: transform 1s;
+    transform: translateX(0) scale(1);
+    opacity: 1;
+    &.slidein-out {
+        transform: translateX(50px) scale(0.7);
+        opacity: 0;
+    }
+}

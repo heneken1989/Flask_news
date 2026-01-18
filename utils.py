@@ -1,6 +1,7 @@
 """
 Utility functions for Flask app
 """
+from database import Article
 
 def calculate_grid_size_pattern(display_order):
     """
@@ -159,6 +160,13 @@ def prepare_home_layouts(articles):
             }
             i += 3
             
+        elif layout_type == '5_articles':
+            # 5 articles 1 row (NUUK)
+            layout_item['data'] = {
+                'articles': articles[i:i+5]
+            }
+            i += 5
+            
         elif layout_type == '1_special_bg':
             # 1 article với special background
             layout_item['data'] = {
@@ -189,6 +197,80 @@ def prepare_home_layouts(articles):
             }
             i += 1
             
+        elif layout_type == 'slider':
+            # Article slider
+            layout_data = article.get('layout_data', {})
+            slider_articles = layout_data.get('slider_articles', [])
+            slider_title = layout_data.get('slider_title', '')
+            has_nav = layout_data.get('has_nav', True)  # Default có nav
+            items_per_view = layout_data.get('items_per_view', 4)  # Default 4 items
+            source_class = layout_data.get('source_class', 'source_nyheder')  # Default source_nyheder
+            
+            # Debug: Log số articles trong slider
+            if not isinstance(slider_articles, list):
+                print(f"⚠️  WARNING: slider_articles is not a list, type: {type(slider_articles)}")
+                slider_articles = []
+            else:
+                print(f"🎠 Preparing slider '{slider_title}': {len(slider_articles)} articles")
+                if len(slider_articles) < 4:
+                    print(f"   ⚠️  WARNING: Slider has only {len(slider_articles)} articles")
+            
+            layout_item['data'] = {
+                'slider_title': slider_title,
+                'slider_articles': slider_articles,
+                'slider_id': layout_data.get('slider_id', f'slider-{row_index}'),
+                'has_nav': has_nav,
+                'items_per_view': items_per_view,
+                'source_class': source_class
+            }
+            i += 1
+            
+        elif layout_type == 'job_slider':
+            # JOB slider với header link và background đặc biệt
+            layout_data = article.get('layout_data', {})
+            slider_articles = layout_data.get('slider_articles', [])
+            slider_title = layout_data.get('slider_title', '')
+            has_nav = layout_data.get('has_nav', True)
+            items_per_view = layout_data.get('items_per_view', 4)
+            source_class = layout_data.get('source_class', 'source_job-dk')
+            header_link = layout_data.get('header_link')
+            extra_classes = layout_data.get('extra_classes', [])
+            header_classes = layout_data.get('header_classes', [])
+            
+            print(f"💼 Preparing JOB slider '{slider_title}': {len(slider_articles)} articles")
+            
+            layout_item['data'] = {
+                'slider_title': slider_title,
+                'slider_articles': slider_articles,
+                'slider_id': layout_data.get('slider_id', f'job-slider-{row_index}'),
+                'has_nav': has_nav,
+                'items_per_view': items_per_view,
+                'source_class': source_class,
+                'header_link': header_link,
+                'extra_classes': extra_classes,
+                'header_classes': header_classes
+            }
+            i += 1
+            
+            # Debug: Log số articles trong slider
+            if not isinstance(slider_articles, list):
+                print(f"⚠️  WARNING: slider_articles is not a list, type: {type(slider_articles)}")
+                slider_articles = []
+            else:
+                print(f"🎠 Preparing slider '{slider_title}': {len(slider_articles)} articles")
+                if len(slider_articles) < 4:
+                    print(f"   ⚠️  WARNING: Slider has only {len(slider_articles)} articles")
+            
+            layout_item['data'] = {
+                'slider_title': slider_title,
+                'slider_articles': slider_articles,
+                'slider_id': layout_data.get('slider_id', f'slider-{row_index}'),
+                'has_nav': has_nav,
+                'items_per_view': items_per_view,
+                'source_class': source_class
+            }
+            i += 1
+            
         else:
             # Unknown layout type, default to 1_full
             layout_item['layout_type'] = '1_full'
@@ -201,4 +283,108 @@ def prepare_home_layouts(articles):
         row_index += 1
     
     return layouts
+
+
+# ==================== Multi-Language Support Functions ====================
+
+def get_articles_by_language(language='en', section=None, is_home=False, limit=None, exclude_temp=True):
+    """
+    Get articles filtered by language
+    
+    Args:
+        language: Language code ('da', 'kl', 'en') - can be Locale object or string
+        section: Section name (optional, e.g., 'erhverv', 'samfund')
+        is_home: Whether to filter by is_home=True
+        limit: Maximum number of articles to return
+        exclude_temp: Whether to exclude temp articles (default: True - chỉ show articles đã hoàn thành)
+    
+    Returns:
+        List of Article objects
+    """
+    # Convert Locale object to string if needed
+    language_str = str(language) if language else 'en'
+    query = Article.query.filter_by(language=language_str)
+    
+    if section:
+        query = query.filter_by(section=section)
+    
+    if is_home:
+        query = query.filter_by(is_home=True)
+    
+    # Exclude temp articles (chỉ show articles đã hoàn thành translate)
+    if exclude_temp:
+        query = query.filter_by(is_temp=False)
+    
+    query = query.order_by(Article.display_order.asc(), Article.published_date.desc())
+    
+    if limit:
+        query = query.limit(limit)
+    
+    return query.all()
+
+
+def get_article_with_fallback(article_id, preferred_language='en'):
+    """
+    Get article với fallback logic:
+    1. Nếu article có language = preferred_language → return article
+    2. Nếu có translation (canonical_id) → return translation
+    3. Nếu không có translation → return original article
+    
+    Args:
+        article_id: Article ID
+        preferred_language: Preferred language ('da', 'kl', 'en') - can be Locale object or string
+    
+    Returns:
+        Article object
+    """
+    # Convert Locale object to string if needed
+    preferred_language_str = str(preferred_language) if preferred_language else 'en'
+    
+    article = Article.query.get(article_id)
+    
+    if not article:
+        return None
+    
+    # Nếu article đã có language mong muốn
+    if article.language == preferred_language_str:
+        return article
+    
+    # Tìm translation qua canonical_id
+    if article.canonical_id:
+        # Article này là translation, tìm canonical
+        canonical = Article.query.get(article.canonical_id)
+        if canonical and canonical.language == preferred_language_str:
+            return canonical
+    
+    # Tìm translation của article này
+    translation = Article.query.filter_by(
+        canonical_id=article.id,
+        language=preferred_language_str
+    ).first()
+    
+    if translation:
+        return translation
+    
+    # Fallback: return original article
+    return article
+
+
+def get_home_articles_by_language(language='en', limit=100):
+    """
+    Get home page articles filtered by language
+    
+    Args:
+        language: Language code ('da', 'kl', 'en') - can be Locale object or string
+        limit: Maximum number of articles
+    
+    Returns:
+        List of Article objects
+    """
+    # Convert Locale object to string if needed
+    language_str = str(language) if language else 'en'
+    return get_articles_by_language(
+        language=language_str,
+        is_home=True,
+        limit=limit
+    )
 

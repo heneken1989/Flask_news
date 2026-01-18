@@ -5,7 +5,9 @@
 <div data-element-guid="{{ row_guid|default('') }}" class="row small-12 large-12" style="">
 <article data-element-guid="{{ article.element_guid|default('') }}" class="column {% if article.is_paywall %}paywall{% endif %} {{ article.paywall_class|default('') }} small-12 large-12 small-abs-12 large-abs-12 " data-site-alias="{{ article.site_alias|default('sermitsiaq') }}" data-section="{{ article.section|default('') }}" data-instance="{{ article.instance|default('') }}" itemscope>
     
-    <div class="content" style="">
+    {% set has_bg_color = article.layout_data and article.layout_data.get('has_bg_color') %}
+    {% set content_classes = article.layout_data.get('content_classes', '') if article.layout_data else '' %}
+    <div class="content {% if content_classes %}{{ content_classes }}{% endif %}" style="">
         
         <a itemprop="url" class="" href="{{ article.url|default('#') }}" data-k5a-url="{{ article.k5a_url|default(article.url|default('#')) }}" rel="" style="text-decoration: none;">
 
@@ -90,7 +92,7 @@
 </div>
 {% endif %}
             <h2 itemprop="headline" 
-    class="headline t46"
+    class="headline t46 {% if has_bg_color %}white color_mobile_white{% endif %}"
     style=""
     >{% if article.title_parts %}
 {% for part in article.title_parts %}{% if part.color_class %}<span class="{{ part.color_class }}">{{ part.text }}</span>{% else %}{{ part.text }}{% endif %}{% endfor %}

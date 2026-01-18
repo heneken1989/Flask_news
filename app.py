@@ -1,4 +1,5 @@
-from flask import Flask, render_template, jsonify, send_from_directory, request
+from flask import Flask, render_template, jsonify, send_from_directory, request, session, redirect, url_for
+from flask_babel import Babel, gettext as _, lazy_gettext as _l, format_date, format_time, format_datetime
 from api.article_api import article_bp
 from views.article_views import article_view_bp
 from database import db
@@ -10,6 +11,38 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
+
+# Babel configuration for i18n
+app.config['BABEL_DEFAULT_LOCALE'] = 'en'  # English as default
+app.config['BABEL_SUPPORTED_LOCALES'] = ['en', 'da', 'kl']  # English, Danish, Greenlandic
+app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'translations'
+
+# Language detection function
+def get_locale():
+    """Determine the best match with our supported languages"""
+    # Check if language is in URL parameter (highest priority)
+    if request.args.get('lang'):
+        lang = request.args.get('lang')
+        if lang in app.config['BABEL_SUPPORTED_LOCALES']:
+            # If setting to default language, remove from session to use default
+            if lang == app.config['BABEL_DEFAULT_LOCALE']:
+                session.pop('language', None)
+            else:
+                session['language'] = lang
+            return lang
+    
+    # Check if language is set in session
+    if 'language' in session:
+        return session['language']
+    
+    # Skip browser detection - always use default locale
+    # This ensures consistent behavior and prevents unwanted language switching
+    # Default to English
+    return app.config['BABEL_DEFAULT_LOCALE']
+
+# Initialize Babel with locale_selector
+babel = Babel(app, locale_selector=get_locale)
 
 # Database configuration
 # Có thể dùng PostgreSQL từ VPS hoặc SQLite local
@@ -75,6 +108,33 @@ def internal_error(error):
     print(f"   Traceback:")
     traceback.print_exc()
     return "500 Internal Server Error", 500
+
+@app.route('/set_language/<lang>')
+def set_language(lang):
+    """Set language and redirect back"""
+    if lang in app.config['BABEL_SUPPORTED_LOCALES']:
+        # If setting to default language, remove from session to use default
+        if lang == app.config['BABEL_DEFAULT_LOCALE']:
+            session.pop('language', None)  # Remove language from session
+        else:
+            session['language'] = lang
+    # Redirect to home page if no referrer
+    return redirect(request.referrer or '/')
+
+# Make translation functions available to all templates
+@app.context_processor
+def inject_translations():
+    """Make translation functions available in all templates"""
+    # Get current locale
+    current_locale = get_locale()
+    return dict(
+        _=_,
+        _l=_l,
+        format_date=format_date,
+        format_time=format_time,
+        format_datetime=format_datetime,
+        current_locale=current_locale
+    )
 
 # Register blueprints
 app.register_blueprint(article_bp, url_prefix='/api')

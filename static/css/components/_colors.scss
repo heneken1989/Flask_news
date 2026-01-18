@@ -1,0 +1,460 @@
+@use './colortools' as *;
+
+// Note: Color-styling generated here are only styles not found in any color-tool in thr admin-pages.
+// Text, background and border-colors are defined in admin-pages.
+// The color-tool on the admin-page build css for:
+// - border_colors
+// - background_colors
+// - background_colors_opacity
+// - font_colors
+// If any other color-styling is moved to admin-pages it must be removed from this file to avoid double definitions.
+
+// Default border-style:
+[class*=" border-bg-"],
+.hasBorder {
+    border: 1px solid transparent;
+}
+
+// Default grid color
+@include grid_background_color(#fff);
+
+// Border widths
+@include border_side_list('border-side-');
+@include border_width_list('border_width_');
+@include desktop_down {
+    @include border_side_list('mobile_border-side-');
+    @include border_width_list('border_width_mobile_');
+}
+
+// Gradients
+.gradient-strong {
+    background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.7));
+    color: rgb(255, 255, 255);
+}
+
+.gradient-medium {
+    background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.5));
+    color: rgb(255, 255, 255);
+}
+
+.gradient-light {
+    background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.3));
+}
+
+.gradient-extraLight {
+    background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.1));
+}
+
+@include desktop_down {
+    .color_mobile_gradient-strong {
+        background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.7));
+        color: rgb(255, 255, 255);
+    }
+
+    .color_mobile_gradient-medium {
+        background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.5));
+        color: rgb(255, 255, 255);
+    }
+
+    .color_mobile_gradient-light {
+        background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.3));
+    }
+
+    .color_mobile_gradient-extraLight {
+        background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.1));
+    }
+}
+
+// Gradient overlay for images
+.image-gradient-strong .img:after,
+.image-gradient-medium .img:after,
+.image-gradient-light .img:after,
+.image-gradient-extraLight .img:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+
+.image-gradient-strong .img:after {
+    background-image: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.7));
+}
+
+.image-gradient-medium .img:after {
+    background-image: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.5));
+}
+
+.image-gradient-light .img:after {
+    background-image: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.3));
+}
+
+.image-gradient-extraLight .img:after {
+    background-image: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.1));
+}
+
+.row[class*=" border-bg-"],
+.row.hasBorder,
+.row[class*="mobile_border-"] {
+    margin-bottom: 1rem;
+}
+
+.column.quotebox,
+.column.text_multiline,
+.column.factbox {
+    .content {
+        &[class*="bg-"],
+        &.hasContentPadding {
+            &[class*= "border-side-"] {
+                padding: 1rem !important;
+            }
+        }
+    }
+}
+
+.column.text_multiline {
+    &:has(.multiline.hasContentPadding),
+    &:has(.multiline.hasBorder) {
+        padding: var(--columns-gutter);
+    }
+}
+
+@include desktop_down {
+    .content.color_mobile_no_gradient,
+    .content.color_mobile_no_image_gradient .img:after {
+        background-image: none !important;
+    }
+
+    .content.color_mobile_no_bg_color:not(.mobile-hasContentPadding) {
+        background-color: transparent;
+        color: inherit;
+
+        &:not([class*=" mobile_border-bg-"]) {
+            padding: 0 !important;
+        }
+    }
+
+    .row.mobile_no_border_side:not([class*="mobile_border"]),
+    .content.mobile_no_border_side:not([class*= "mobile_border"]) {
+        border: 0 !important;
+
+            &:not([class*= "bg-"]),
+            &:not(.hasContentPadding) {
+                padding: 0 !important;
+            }
+
+            &[class*="bg-"],
+            &.hasContentPadding {
+                padding-bottom: 0rem !important;
+            }
+    }
+
+    .content.mobile_no_border_color,
+    .content.mobile_border-no_color {
+        &:not([class*="mobile_border-side-"]) {
+            border: 0 !important;
+        }
+    }
+
+    .row[class*=" border-"]:not([class*=" mobile_no_border_color"]),
+    .content[class*=" border-"]:not([class*=" mobile_no_border_color"]),
+    .row.hasBorder:not([class*=" mobile_no_border_color"]),
+    .content.hasBorder:not([class*=" mobile_no_border_color"]) {
+        &:not([class*= "border-side"]):not([class*= "mobile_border-side"]):not([class*= "border-radius"]):not([class*= "border-radius-mobile"]) {
+            padding: $bg_text_padding !important;
+        }
+    }
+
+    // If you add border-side and bg on desktop, then on mobile you change to full border and no bg
+    // the padding was only set to one side. This will set it to all sides as it should be.
+    .content.color_mobile_no_bg_color {
+        &[class*= "bg-"] {
+            &[class*= "mobile_border-bg-"] {
+                padding: 1rem !important;
+            }
+        }
+    }
+
+    .content.mobile_no_border_color.color_mobile_no_bg_color {
+        padding: 0;
+    }
+
+    .mobile_border-side-top {
+        &:not([class*=" mobile_no_border_side"]) {
+            border-bottom: 0 !important;
+            border-right: 0 !important;
+            border-left: 0 !important;
+            padding-top: 1rem !important;
+        }
+    }
+
+    .mobile_border-side-right {
+        &:not([class*=" mobile_no_border_side"]) {
+            border-bottom: 0 !important;
+            border-left: 0 !important;
+            border-top: 0 !important;
+            padding-right: 1rem !important;
+        }
+    }
+
+    .mobile_border-side-bottom {
+        &:not([class*=" mobile_no_border_side"]) {
+            border-left: 0 !important;
+            border-top: 0 !important;
+            border-right: 0 !important;
+            padding-bottom: 1rem !important;
+        }
+    }
+
+    .mobile_border-side-left {
+        &:not([class*=" mobile_no_border_side"]) {
+            border-top: 0 !important;
+            border-right: 0 !important;
+            border-bottom: 0 !important;
+            padding-left: 1rem !important;
+        }
+    }
+
+    .column.text_multiline {
+        &:has(.multiline.mobile-hasContentPadding),
+        &:has(.multiline.mobile-hasBorder) {
+            padding: var(--columns-gutter);
+        }
+    }
+}
+
+// Image-gradient opacity
+@for $i from 1 through 10 {
+    .image_gradient_opacity-#{$i * 10} .img:after {
+        opacity: calc($i / 10);
+    }
+}
+
+@for $i from 1 through 10 {
+    .image_overlay_opacity-#{$i * 10} .img:after {
+        opacity: $i;
+    }
+}
+
+.row[class*=" bg-"],
+.row-section[class*=" bg-"],
+.row.hasContentPadding,
+.row-section.hasContentPadding {
+    margin-bottom: $columns_gutter;
+}
+
+.row[class*=" bg-"],
+.row.hasContentPadding {
+    padding-top: $columns_gutter;
+}
+
+.content[class*=" bg-"],
+.content.hasContentPadding,
+.content.hasTextPadding,
+.content[class*=" border-"],
+.content.hasBorder,
+figure[class*="bg-"] p {
+    padding: $bg_text_padding;
+}
+
+.content[class*=" bg-"],
+.content.hasContentPadding,
+.content[class*=" border-"],
+.content.hasBorder,
+.content.hasTextPadding {
+    padding-bottom: 0;
+
+    a .headline:last-child,
+    a .subtitle:last-child {
+        padding-bottom: $bg_text_padding;
+        margin-bottom: 0;
+    }
+
+    &.headline, 
+    &.singleline,
+    &.multiline {
+        padding-bottom: $bg_text_padding;
+    }
+
+    &:has(> .fact) {
+        padding-bottom: $bg_text_padding;
+    }
+
+    // Non-empty quote
+    &:has(> .quote:not(.dac-hidden)) {
+        padding-bottom: calc(0.5 * $bg_text_padding);
+
+        // Emtpty author
+        &:has(.author.dac-hidden) {
+            padding-bottom: $bg_text_padding;
+        }
+    }
+}
+
+.content[class*=" bg-"] figure,
+.content.hasContentPadding figure {
+    margin-top: - $bg_text_padding;
+    margin-right: - $bg_text_padding;
+    margin-left: - $bg_text_padding;
+
+    .caption {
+        margin-right: $bg_text_padding;
+        margin-left: $bg_text_padding;
+    }
+}
+
+.content[class*=" bg-"],
+.content.hasContentPadding {
+    p.subtitle.subtitleAboveImage + .media figure {
+        margin-top: initial;
+    }
+}
+
+.content[class*=" bg-"] .content:not([class*=" bg-"]):not(.hasContentPadding) figure,
+.content.hasContentPadding .content:not([class*=" bg-"]):not(.hasContentPadding) figure {
+    margin-top: initial;
+    margin-right: initial;
+    margin-left: initial;
+}
+
+.content[class*=" bg-"] .bylines .byline.column .content:not([class*=" bg-"]):not(.hasContentPadding) figure,
+.content.hasContentPadding .bylines .byline.column .content:not([class*=" bg-"]):not(.hasContentPadding) figure {
+    margin-right: 0.4em;
+}
+
+.content[class*=" bg-"] h2 + .media figure,
+.content.hasContentPadding h2 + .media figure {
+    margin-top: 0;
+}
+
+.content[class*=" bg-"] figure,
+.content[class*="color_mobile_bg-"] figure,
+.content.hasContentPadding figure,
+.content.mobile-hasContentPadding figure {
+    &.floatLeft,
+    &.floatRight {
+        margin-bottom: - $bg_text_padding;
+    }
+}
+
+@include desktop_down {
+    [class*=" mobile_border-bg-"] {
+        border: 1px solid;
+    }
+
+    [class*=" mobile_border-side-"] {
+        border: 0;
+    }
+
+    .content[class*="color_mobile_bg-"],
+    .content[class*="mobile_border-bg-"],
+    figure[class*="color_mobile_bg-"] p,
+    .content.mobile-hasContentPadding,
+    .content.mobile-hasTextPadding {
+        padding: $bg_text_padding;
+        padding-bottom: 0;
+
+        a .headline:last-child,
+        a .subtitle:last-child {
+            padding-bottom: $bg_text_padding;
+            margin-bottom: 0;
+        }
+
+        &.headline, 
+        &.singleline,
+        &.multiline {
+            padding-bottom: $bg_text_padding;
+        }
+
+        &:has(> .fact) {
+            padding-bottom: $bg_text_padding;
+        }
+
+        // Non-empty quote
+        &:has(> .quote:not(.dac-hidden)) {
+            padding-bottom: calc(0.5 * $bg_text_padding);
+
+            // Emtpty author
+            &:has(.author.dac-hidden) {
+                padding-bottom: $bg_text_padding;
+            }
+        }
+    }
+
+    .content[class*="color_mobile_bg-"],
+    .content.mobile-hasContentPadding {
+        figure {
+            margin-top: - $bg_text_padding;
+            margin-right: - $bg_text_padding;
+            margin-left: -$bg_text_padding;
+        }
+
+        p.subtitle.subtitleAboveImage + .media figure {
+            margin-top: initial;
+        }
+
+        h2 + .media figure {
+            margin-top: 0;
+        }
+
+        .kicker.above {
+            margin-bottom: $bg_text_padding;
+        }
+    }
+
+    .content.mobile_no_border_color:not([class*="color_mobile_bg-"]):not([class*=" bg-"]),
+    .content.color_mobile_no_bg_color:not([class*="mobile_border-bg-"]):not([class*="border-bg-"]):not(.hasContentPadding) figure {
+        padding: 0;
+    }
+
+    .content.color_mobile_no_bg_color[class*="mobile_border-bg-"] figure {
+        margin: 0.4rem; // because that's the margin you get if you don't toggle the background color
+    }
+
+    // Lab 4
+    .content[class*="color_mobile_bg-"],
+    .content.mobile-hasContentPadding {
+        figure.mobile-floatLeft,
+        figure.mobile-floatRight {
+            margin-bottom: - $bg_text_padding !important;
+        }
+    }
+}
+
+@include desktop_down {
+    // in order to make eyedropper work after previously turning off background color on mobile
+    .color_mobile_no_bg_color:not(.hasContentPadding):not(.hasTextPadding) {
+        background-color: transparent !important;
+        padding: unset !important;
+    }
+
+    .color_mobile_no_bg_color {
+        color: inherit !important;
+    }
+    
+    article.column .content .color_mobile_no_bg_color.kicker:not(.floating):not(.hasTextPadding) {
+        padding-bottom: 8px !important;
+
+        &.below {
+            padding-top: 0.7rem !important;
+            margin-bottom: -0.5rem !important;
+
+            &:last-child {
+                margin-bottom: unset !important;
+            }
+        }
+    }
+}
+
+// prevent custom background color from inheriting incorrect text color
+[class*=' bg-'].color_mobile_no_bg_color.hasContentPadding.mobile-hasContentPadding {
+    color: unset;
+}
+
+@include desktop_down {
+    [class*=' color_mobile_bg-'].hasContentPadding.mobile-hasContentPadding:not([class*=' bg-']) {
+        color: unset;
+    }
+}

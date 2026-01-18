@@ -1,0 +1,131 @@
+@use "./vars" as *;
+
+@mixin expandable {
+    .content {
+        margin-bottom: 1rem;
+        position: relative;
+        overflow: visible;
+    }
+    .toggle {
+        position: absolute;
+        bottom: -1rem;
+        left: 50%;
+        width: 2rem;
+        height: 2rem;
+        text-align: center;
+        font-size: 1rem;
+        line-height: 1;
+        background-color: #fff;
+        padding: 0.3rem 0;
+        border-radius: 100%;
+        margin: 0 0 0 -1rem;
+        cursor: pointer;
+        &:after {
+            content: "";
+            border: solid rgb(80, 80, 80);
+            border-width: 0 2px 2px 0;
+            display: inline-block;
+            padding: 4px;
+            transform: translateY(0.25rem) rotate(225deg);
+        }
+
+        &:hover {
+            border-color: #000;
+            &:after {
+                border-color: #000;
+            }
+        }
+    }
+}
+
+@mixin display-toggle {
+    .toggle {
+        display: block;
+    }
+}
+
+@mixin collapsable {
+    .toggle {
+        display: block;
+    }
+}
+
+@mixin collapsed-state {
+    figure {
+        height: 0;
+        overflow: hidden;
+    }
+    &.style-fade .collapsableContent {
+        max-height: 3.5rem; // Note: Depends on line-height etc.
+        overflow: hidden;
+        position: relative;
+    }
+    &.style-hide .collapsableContent {
+        display: none;
+    }
+    .toggle {
+        &:after {
+            transform: translateY(-0.1rem) rotate(45deg);
+        }
+    }
+}
+
+body.l3 {
+    @include tablet_up {
+        .column.expandable-desktop {
+            @include expandable;
+            &.state-collapsed-desktop {
+                @include collapsed-state;
+                @include display-toggle;
+            }
+        }
+        .column.collapsable-desktop.state-expanded-desktop {
+            @include display-toggle;
+        }
+    }
+
+    @include mobile {
+        .column.expandable-mobile {
+            @include expandable;
+            &.state-collapsed-mobile {
+                @include collapsed-state;
+                @include display-toggle;
+            }
+        }
+        .column.collapsable-mobile.state-expanded-mobile {
+            @include display-toggle;
+        }
+    }
+}
+
+body.l4 {
+    @include tablet_up {
+        .column.expandable-desktop {
+            @include expandable;
+
+            &:not(.state-expanded-desktop):not(.is-editor) {
+                @include collapsed-state;
+                @include display-toggle;
+            }
+        }
+
+        .column.collapsable-desktop.state-expanded-desktop {
+            @include display-toggle;
+        }
+    }
+
+    @include mobile {
+        .column.expandable-mobile {
+            @include expandable;
+
+            &:not(.state-expanded-mobile):not(.is-editor) {
+                @include collapsed-state;
+                @include display-toggle;
+            }
+        }
+
+        .column.collapsable-mobile.state-expanded-mobile {
+            @include display-toggle;
+        }
+    }
+}

@@ -1,0 +1,138 @@
+# Danish translations for PROJECT.
+# Copyright (C) 2026 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-01-18 08:58+0700\n"
+"PO-Revision-Date: 2026-01-17 23:20+0700\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: da\n"
+"Language-Team: da <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: templates/home_page.html:5
+msgid "Home"
+msgstr ""
+
+#: templates/home_page.html:181 templates/home_page.html:265
+msgid "Advertisement"
+msgstr ""
+
+#: templates/partials/header.html:15
+msgid "Søg"
+msgstr ""
+
+#: templates/partials/header.html:16
+msgid "Søg..."
+msgstr ""
+
+#: templates/partials/header.html:68
+msgid "Køb abonnement"
+msgstr ""
+
+#: templates/partials/header.html:71
+msgid "Log ind"
+msgstr ""
+
+#: templates/partials/header.html:104 templates/partials/header.html:119
+#: templates/partials/header.html:399 templates/partials/header.html:414
+#: templates/partials/header.html:490
+msgid "SAMFUND"
+msgstr ""
+
+#: templates/partials/header.html:107 templates/partials/header.html:139
+#: templates/partials/header.html:402 templates/partials/header.html:434
+#: templates/partials/header.html:504
+msgid "ERHVERV"
+msgstr ""
+
+#: templates/partials/header.html:110 templates/partials/header.html:147
+#: templates/partials/header.html:405 templates/partials/header.html:442
+#: templates/partials/header.html:512
+msgid "KULTUR"
+msgstr ""
+
+#: templates/partials/header.html:113 templates/partials/header.html:150
+#: templates/partials/header.html:408 templates/partials/header.html:445
+#: templates/partials/header.html:515
+msgid "SPORT"
+msgstr ""
+
+#: templates/partials/header.html:116 templates/partials/header.html:153
+#: templates/partials/header.html:411 templates/partials/header.html:448
+#: templates/partials/header.html:518
+msgid "JOB"
+msgstr ""
+
+#: templates/partials/header.html:122 templates/partials/header.html:417
+msgid "POLITIK"
+msgstr ""
+
+#: templates/partials/header.html:125 templates/partials/header.html:420
+msgid "INDLAND"
+msgstr ""
+
+#: templates/partials/header.html:128 templates/partials/header.html:423
+#: templates/partials/header.html:493
+msgid "UDLAND"
+msgstr ""
+
+#: templates/partials/header.html:131 templates/partials/header.html:426
+#: templates/partials/header.html:496
+#: templates/partials/layout_5_articles.html:10
+msgid "NUUK"
+msgstr ""
+
+#: templates/partials/header.html:134 templates/partials/header.html:429
+#: templates/partials/header.html:499
+msgid "SUNDHED"
+msgstr ""
+
+#: templates/partials/header.html:142 templates/partials/header.html:437
+#: templates/partials/header.html:507
+msgid "UDDANNELSE"
+msgstr ""
+
+#: templates/partials/header.html:156 templates/partials/header.html:451
+#: templates/partials/header.html:521
+msgid "PODCASTI"
+msgstr ""
+
+#: templates/partials/header.html:290 templates/partials/header.html:655
+msgid "Kontakt"
+msgstr ""
+
+#: templates/partials/header.html:293 templates/partials/header.html:658
+msgid "Abonnement"
+msgstr ""
+
+#: templates/partials/header.html:296 templates/partials/header.html:661
+msgid "Annoncer"
+msgstr ""
+
+#: templates/partials/header.html:299 templates/partials/header.html:664
+msgid "E-aviser"
+msgstr ""
+
+#: templates/partials/header.html:302 templates/partials/header.html:667
+msgid "Selvbetjening"
+msgstr ""
+
+#: templates/partials/layout_job_slider.html:63
+#: templates/partials/layout_slider.html:51
+msgid "Go left"
+msgstr ""
+
+#: templates/partials/layout_job_slider.html:66
+#: templates/partials/layout_slider.html:54
+msgid "Go right"
+msgstr ""
+

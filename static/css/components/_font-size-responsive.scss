@@ -1,0 +1,150 @@
+@use "./vars" as *;
+
+$mobileVpGutter: 2.95;
+
+@include mobile {
+    .resp_fonts {
+        font-size: vw(17);
+
+        body {
+            font-size: vw(17);
+        }
+
+        article.column .content {
+            .headline {
+                font-size: vw(27);
+            }
+            .subtitle {
+                font-size: vw(16);
+            }
+            .kicker {
+                font-size: vw(19);
+            }
+        }
+
+        article.column {
+            .bylines {
+                .byline {
+                    figure {
+                        width: 8vw;
+                        height: 8vw;
+                    }
+                }
+            }
+            ul.relatedArticles li.column figure {
+                width: 21vw;
+            }
+        }
+
+        .articleHeader {
+            .headline {
+                font-size: vw(34);
+            }
+
+            .subtitle {
+                font-size: vw(18);
+            }
+            .kicker {
+                font-size: vw(21);
+            }
+        }
+
+        .bodytext .factbox h2 {
+            font-size: vw(25);
+        }
+
+        .articleList h2 {
+            font-size: vw(23);
+        }
+
+        .articleLists h3 {
+            font-size: vw(18);
+        }
+
+        .articlesByTag.toplist {
+            h3 {
+                font-size: vw(17);
+            }
+            h4 {
+                font-size: vw(20);
+            }
+            ul li a img {
+                width: 26.5vw;
+                max-height: 26.5vw;
+            }
+        }
+
+        .labradorSearch h2 {
+            font-size: vw(25);
+        }
+
+        .quotebox {
+            h3 {
+                font-size: vw(25);
+            }
+            p {
+                font-size: vw(17);
+            }
+        }
+
+        .scrollbox h2 {
+            font-size: vw(25);
+        }
+
+        .tablebox h3 {
+            font-size: vw(20);
+        }
+
+        .text_subtitle h3 {
+            font-size: vw(22);
+        }
+
+        .text_title h1 {
+            font-size: vw(34);
+        }
+
+        .tagboard .header h2 {
+            font-size: vw(25);
+        }
+
+        .row > .row_header_text {
+            font-size: vw(18);
+        }
+
+        .userFeedback {
+            h3 {
+                font-size: vw(22);
+            }
+            .description {
+                font-size: vw(17);
+            }
+        }
+
+        .articlescroller ul li {
+            h3 {
+                font-size: vw(20);
+            }
+
+            p.lab-articlescroller-published-date {
+                font-size: vw(14);
+            }
+        }
+
+        .bylines .byline figure {
+            width: 11vw;
+        }
+
+        .column,
+        .columns {
+            padding-left: #{$mobileVpGutter}vw;
+            padding-right: #{$mobileVpGutter}vw;
+        }
+
+        // Generate responsive font sizes for mobile fontsize classes
+        @for $i from 14 through 150 {
+            .tm#{$i} {
+                font-size: vw($i) !important
+            }
+        }
+    }
+}

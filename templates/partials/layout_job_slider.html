@@ -1,0 +1,96 @@
+{# Layout: JOB Slider (articlescroller với header link và background đặc biệt) #}
+{# Usage: {% include 'partials/layout_job_slider.html' with context %} #}
+{# Requires: slider_title, slider_articles (list), slider_id, row_guid, header_link, extra_classes, header_classes #}
+
+<div data-element-guid="{{ row_guid|default('') }}" class="row small-12 large-12" style="">
+<!-- placeholder(#4) -->
+<div data-element-guid="{{ row_guid|default('') }}-job-slider" class="column articlescroller {{ source_class|default('source_job-dk') }} {% if extra_classes %}{{ extra_classes|join(' ') }}{% else %}layout-align-centered bg-custom-2 color_mobile_bg-custom-2 hasContentPadding mobile-hasContentPadding{% endif %} small-12 large-12" style="" id="{{ slider_id|default('article_list_default') }}">
+    
+    <div class="inner content fullwidthTarget">
+            
+            <h2 class="articlescroller-header {% if header_classes %}{{ header_classes|join(' ') }}{% else %}t22 octonary color_mobile_octonary align-left mobile_text_align_align-left font-IBMPlexSansCondensed underline{% endif %}" style="">{% if header_link %}<a href="{{ header_link.url|default('#') }}">{{ _(header_link.text|default(slider_title|default('Se alle jobs'))) }}</a>{% else %}{{ _(slider_title|default('JOB')) }}{% endif %}</h2>
+
+        <ul class="scroll-container swipehelper snap-container-x snap-element-start articles count_{{ items_per_view|default(4) }} ">
+{% for item in slider_articles %}
+                <li data-section="{{ item.section|default('') }}" class="scroll-item snap-element column hasImage skipLeadText">
+                    <a href="{{ item.url|default('#') }}">
+{% if item.is_paywall %}
+                            <figure>
+<div class="paywallLabel  "><span class="fi-plus"></span> </div>
+{% if item.image %}
+    {% if item.image.src %}
+                                <img src="{{ item.image.src }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('172') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
+    {% elif item.image.fallback %}
+                                <img src="{{ item.image.fallback }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('172') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
+    {% elif item.image.mobile_jpeg %}
+                                <img src="{{ item.image.mobile_jpeg }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('172') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
+    {% endif %}
+{% endif %}
+                            </figure>
+{% else %}
+                            <figure>
+{% if item.image %}
+    {% if item.image.src %}
+                                <img src="{{ item.image.src }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('172') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
+    {% elif item.image.fallback %}
+                                <img src="{{ item.image.fallback }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('172') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
+    {% elif item.image.mobile_jpeg %}
+                                <img src="{{ item.image.mobile_jpeg }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('172') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
+    {% endif %}
+{% endif %}
+                            </figure>
+{% endif %}
+                        <div class="text-container">
+{% if item.kicker %}
+                            <h4>{{ item.kicker }}</h4>
+{% endif %}
+                            
+                            <h3>{{ item.title|default('Article Title') }}</h3>
+                            
+                            
+                            
+                        </div>
+                    </a>
+                </li>
+{% endfor %}
+        </ul>
+
+            
+            
+
+{% if has_nav|default(True) %}
+        <nav>
+            <span class="arrow left" role="button" aria-label="{{ _('Go left') }}">
+                <span></span>
+            </span>
+            <span class="arrow right" role="button" aria-label="{{ _('Go right') }}">
+                <span></span>
+            </span>
+        </nav>
+{% endif %}
+
+    </div>
+
+        <script>
+        (function () {
+            window.dachserData.push('swipehelper', {
+                selector: '#{{ slider_id|default("article_list_default") }}',
+                itemsContainerSelector: '.scroll-container',
+                itemsSelector: '.scroll-item',
+                isHorizontal: true,
+                autoScroll: {
+                    enabled: true,
+                    interval: '4000'
+                },
+                navItems: {
+                    forwardSelector: 'nav .arrow.right',
+                    backwardSelector: 'nav .arrow.left',
+                },
+                debug: false
+            });
+        }());
+        </script>
+</div>
+
+</div>
+

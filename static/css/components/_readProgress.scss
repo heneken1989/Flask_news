@@ -1,0 +1,15 @@
+.read-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: #0eb5ea;
+    transform: scaleX(0);
+    transform-origin: left;
+    z-index: 5500;
+    transition: transform 3s;
+    border-bottom: 1px solid #fff;
+    box-sizing: content-box;
+    pointer-events: none;
+}

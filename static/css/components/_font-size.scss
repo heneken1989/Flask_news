@@ -1,0 +1,40 @@
+@use "./vars" as *;
+
+@mixin font-size($i, $size: 0, $important: '') {
+    font-size: ($i - $size) *1px #{$important};
+
+    @if $i >= 14 and $i <= 22 {
+        line-height: 1.4 #{$important};
+    }
+    @else if  $i >= 23 and $i <= 30 {
+        line-height: 1.3 #{$important};
+    }
+    @else if  $i >= 31 and $i <= 42 {
+        line-height: 1.2 #{$important};
+        margin-bottom: 0.075em;
+    }
+    @else if  $i >= 43 and $i <= 54 {
+        line-height:1.15 #{$important};
+        margin-bottom:0.1em;
+    }
+    @else if  $i >= 55 and $i <= 77 {
+        line-height:1.1 #{$important};
+        margin-bottom:0.125em;
+    }
+    @else if  $i >= 78 {
+        line-height:1 #{$important};
+        margin-bottom:0.15em;
+    }
+}
+
+h2.headline:has(.auto-font-size-line) {
+    container-type: inline-size;
+    font-size: var(--lab-auto-font-size, 5cqi);
+    display: block;
+    line-height: 1.2;
+    span.auto-font-size-line {
+      font-size: var(--lab-auto-font-size);
+      display: inline-block;
+      width: fit-content;
+    }
+}

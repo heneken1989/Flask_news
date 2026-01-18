@@ -1,0 +1,67 @@
+@use './vars' as *;
+
+.font-weight-extra-light {
+  font-weight: var(--lab-font-weight-extra-light, 200) !important;
+}
+
+.font-weight-light {
+  font-weight: var(--lab-font-weight-light, 300) !important;
+}
+
+.font-weight-normal {
+  font-weight: var(--lab-font-weight-normal, 400) !important;
+}
+
+.font-weight-medium {
+  font-weight: var(--lab-font-weight-medium, 500) !important;
+}
+
+.font-weight-semi-bold {
+  font-weight: var(--lab-font-weight-semi-bold, 600) !important;
+}
+
+.font-weight-bold {
+  font-weight: var(--lab-font-weight-bold, 700) !important;
+}
+
+.font-weight-extra-bold {
+  font-weight: var(--lab-font-weight-extra-bold, 800) !important;
+}
+
+.font-weight-black {
+  font-weight: var(--lab-font-weight-black, 900) !important;
+}
+
+@include desktop_down {
+  .m-font-weight-extra-light {
+    font-weight: var(--lab-m-font-weight-extra, var(--lab-font-weight-extra-light, 200)) !important;
+  }
+
+  .m-font-weight-light {
+    font-weight: var(--lab-m-font-weight-light, var(--lab-font-weight-light, 300)) !important;
+  }
+
+  .m-font-weight-normal {
+    font-weight: var(--lab-m-font-weight-normal, var(--lab-font-weight-normal, 400)) !important;
+  }
+
+  .m-font-weight-medium {
+    font-weight: var(--lab-m-font-weight-medium, var(--lab-font-weight-medium, 500)) !important;
+  }
+
+  .m-font-weight-semi-bold {
+    font-weight: var(--lab-m-font-weight-semi-bold, var(--lab-font-weight-semi-bold, 600)) !important;
+  }
+
+  .m-font-weight-bold {
+    font-weight: var(--lab-m-font-weight-bold, var(--lab-font-weight-bold, 700)) !important;
+  }
+
+  .m-font-weight-extra-bold {
+    font-weight: var(--lab-m-font-weight-extra-bold, var(--lab-font-weight-extra-bold, 800)) !important;
+  }
+
+  .m-font-weight-black {
+    font-weight: var(--lab-m-font-weight-black, var(--lab-font-weight-black, 900)) !important;
+  }
+}

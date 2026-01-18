@@ -1,0 +1,80 @@
+@use "./vars" as *;
+
+$horizontalOffset: 1rem;
+
+.placement- {
+    &top {
+        margin: 0 auto;
+        padding: 0;
+        width: var(--lab_page_width, 68rem);
+    }
+    &left,
+    &right {
+        position: absolute;
+        top: 0;
+        min-width: 180px;
+        height: 100%;
+        .sticky {
+            position: sticky;
+            top: 0;
+        }
+    }
+    &left {
+        left: auto;
+        right: calc(50vw + (var(--lab_page_width, 68rem) / 2) - 0.5rem + #{$horizontalOffset});
+        z-index: 0;
+    }
+    &right {
+        right: auto;
+        left: calc(50vw + (var(--lab_page_width, 68rem) / 2) - 0.5rem + #{$horizontalOffset});
+        z-index: 0;
+    }
+
+    &bgTop_300 {
+        >div {
+            float: none;
+            position: initial;
+            max-height: 300px;
+            padding: 0;
+            margin: 0;
+        }
+    }
+    
+    &bgTop_150 {
+        >div {
+            float: none;
+            position: initial;
+            max-height: 150px;
+            padding: 0;
+            margin: 0;
+        }
+    }
+
+    &body-top {
+        margin: 0 auto;
+        padding: 0;
+    }
+}
+
+.infiniteSection {
+    .placement-left {
+        right: var(--lab_page_width, 68rem);
+    }
+
+    .placement-right {
+        left: var(--lab_page_width, 68rem);
+    }
+}
+
+@include desktop_down {
+    .placement-top {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 1315px) {    
+    .placement-left,
+    .placement-right {
+        display: none;
+    }
+}

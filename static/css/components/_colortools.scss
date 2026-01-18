@@ -1,0 +1,161 @@
+@use "./vars" as *;
+
+// grid-colors
+@mixin grid_background_color($color: #fff) {
+    .main .row:not([class*="bg-"]),
+    section.related .row:not([class*="bg-"]),
+    main.pageWidth > article:not([class*="bg-"]) {
+        background-color: $color;
+    }
+
+    .front_rows .content.hasContentPadding .row, 
+    section.related .row[class*="bg-"] .row,
+    section.related .row.hasContentPadding .row, 
+    .row[class*="bg-"] .row,
+    .row.hasContentPadding .row, 
+    .row-section[class*="bg-"] .row,
+    .row-section.hasContentPadding .row {
+        background-color: transparent;
+    }
+
+    .main .row-section[class*="bg-"] > .row,
+    .main .row-section.hasContentPadding > .row {
+        background-color: initial;
+    }
+
+    body.custom-background-color {
+        section.related,
+        section.related .row:not([class*=bg-]),
+        section.related .row:not(.hasContentPadding),
+        .main .row:not([class*=bg-]),
+        .main .row:not(.hasContentPadding),
+        footer {
+            background-color: transparent;
+        }
+    }
+}
+
+// Text-colors
+@mixin text_color_list($color-prefix: '') {
+    @each $colorname, $color in $text_colors {
+        .#{$color-prefix}#{$colorname} {
+            color: $color !important;
+        }
+    }
+}
+
+// Border-colors
+@mixin border_color_list($color-prefix: '') {
+    @each $colorname, $color in $background_colors {
+        .#{$color-prefix}border-bg-#{$colorname} {
+            border: 1px solid $color !important;
+        }
+    }
+}
+
+// Border-width
+$border_widths: (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20);
+@mixin border_width_list($width-prefix: '') {
+    @each $width in $border_widths {
+        .#{$width-prefix}#{$width} {
+            border-width: #{$width}px !important;
+        }
+    }
+}
+
+// Border-sides
+$border-sides: ("left", "right", "top", "bottom");
+@mixin border_side_list($side-prefix: '') {
+    @each $side in $border-sides {
+        .#{$side-prefix}#{$side} {
+            border: 0;
+            border-#{$side}: 1px solid !important;
+
+            // Rows should still have padding, so we only remove padding from other content if there's no background color
+            &:not([class*="bg-"]),
+            &:not(.hasContentPadding) {
+                &:not(.row) {
+                    padding: 0 !important;
+                    padding-#{$side}: $bg_text_padding !important;
+                }
+            }
+
+            // Adds padding to the side. This line is added twice as the specificity of :not(.row) overrides the padding-#{$side} line otherwise,
+            // and rows should have padding on the side of the border
+            padding-#{$side}: $bg_text_padding !important;
+
+            &[class*="bg-"],
+            &.hasContentPadding {
+                &:not(.row) {
+                    padding-left: 1rem !important;
+                }
+            }
+        }
+    }
+}
+
+// Background colors. Set white text-color for dark background-colors
+@mixin background_color_list($color-prefix: '') {
+    @each $colorname, $color in $background_colors {
+        .#{$color-prefix}bg-#{$colorname} {
+            background-color: $color;
+
+            @if (lightness($color) < 50) {
+                color: #fff;
+            }
+        }
+
+        @each $opacity in $background_colors_opacity {
+            .#{$color-prefix}bg-#{$colorname}.op-bg_#{$opacity} {
+                background-color: rgba( $color, ($opacity / 100) );
+            }
+        }
+    }
+}
+
+
+%gradient_settings {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+
+@mixin color-list($color-prefix: '') {
+    @each $colorname, $color in $background_colors {
+        .#{$color-prefix}image-gradient-bg-#{$colorname} .img:after {
+            @extend %gradient_settings;
+            background-image: linear-gradient(to bottom, transparent 50%, #{$color});
+        }
+    }
+}
+
+@mixin opacity-color-list($color-prefix: '') {
+    @each $colorname, $color in $background_colors {
+        .#{$color-prefix}image-overlay-bg-#{$colorname} {
+            background-color: #{$color};
+        }
+    }
+}
+
+@mixin color-list2($color-prefix: '') {
+    %gradient_settings2 {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+    }
+
+    @each $colorname, $color in $background_colors {
+        .#{$color-prefix}image-gradient-bg-#{$colorname} .img:after {
+            @extend %gradient_settings2;
+            background-image: linear-gradient(to bottom, transparent 50%, #{$color});
+        }
+    }
+}

@@ -1,0 +1,257 @@
+"""
+Translation service để translate articles từ Danish sang English
+"""
+from deep_translator import GoogleTranslator
+from database import Article, db
+import time
+from datetime import datetime
+
+
+def translate_article(dk_article, target_language='en', delay=0.5):
+    """
+    Translate article từ Danish sang English
+    
+    Args:
+        dk_article: Article object với language='da'
+        target_language: Target language ('en')
+        delay: Delay giữa các lần translate (giây) để tránh rate limit
+    
+    Returns:
+        Article object với language='en' (chưa save vào database)
+    """
+    if dk_article.language != 'da':
+        raise ValueError(f"Source article must be in Danish (da), got {dk_article.language}")
+    
+    if target_language != 'en':
+        raise ValueError(f"Only English (en) translation is supported, got {target_language}")
+    
+    print(f"🌐 Translating article {dk_article.id}: '{dk_article.title[:50]}...'")
+    
+    try:
+        translator = GoogleTranslator(source='da', target='en')
+        
+        # Translate title
+        translated_title = translator.translate(dk_article.title)
+        print(f"   ✅ Title translated")
+        
+        # Delay để tránh rate limit
+        time.sleep(delay)
+        
+        # Translate content (nếu có)
+        translated_content = None
+        if dk_article.content:
+            translated_content = translator.translate(dk_article.content)
+            print(f"   ✅ Content translated ({len(translated_content)} chars)")
+            time.sleep(delay)
+        
+        # Translate excerpt (nếu có)
+        translated_excerpt = None
+        if dk_article.excerpt:
+            translated_excerpt = translator.translate(dk_article.excerpt)
+            print(f"   ✅ Excerpt translated")
+            time.sleep(delay)
+        
+        # Translate layout_data fields (nếu có)
+        translated_layout_data = None
+        if dk_article.layout_data:
+            translated_layout_data = dk_article.layout_data.copy()
+            
+            # Translate kicker
+            if 'kicker' in translated_layout_data and translated_layout_data['kicker']:
+                translated_layout_data['kicker'] = translator.translate(translated_layout_data['kicker'])
+                time.sleep(delay)
+            
+            # Translate kicker_floating
+            if 'kicker_floating' in translated_layout_data and translated_layout_data['kicker_floating']:
+                translated_layout_data['kicker_floating'] = translator.translate(translated_layout_data['kicker_floating'])
+                time.sleep(delay)
+            
+            # Translate kicker_below
+            if 'kicker_below' in translated_layout_data and translated_layout_data['kicker_below']:
+                translated_layout_data['kicker_below'] = translator.translate(translated_layout_data['kicker_below'])
+                time.sleep(delay)
+            
+            # Translate slider_title (quan trọng!)
+            if 'slider_title' in translated_layout_data and translated_layout_data['slider_title']:
+                translated_layout_data['slider_title'] = translator.translate(translated_layout_data['slider_title'])
+                print(f"   ✅ Slider title translated: '{translated_layout_data['slider_title']}'")
+                time.sleep(delay)
+            
+            # Translate slider_articles (các articles trong slider)
+            if 'slider_articles' in translated_layout_data and isinstance(translated_layout_data['slider_articles'], list):
+                print(f"   📰 Translating {len(translated_layout_data['slider_articles'])} slider articles...")
+                for article_idx, article in enumerate(translated_layout_data['slider_articles']):
+                    if isinstance(article, dict):
+                        # Translate article title
+                        if 'title' in article and article['title']:
+                            article['title'] = translator.translate(article['title'])
+                            time.sleep(delay)
+                        
+                        # Translate article kicker
+                        if 'kicker' in article and article['kicker']:
+                            article['kicker'] = translator.translate(article['kicker'])
+                            time.sleep(delay)
+                        
+                        # Translate article excerpt nếu có
+                        if 'excerpt' in article and article['excerpt']:
+                            article['excerpt'] = translator.translate(article['excerpt'])
+                            time.sleep(delay)
+                print(f"   ✅ Slider articles translated")
+            
+            # Translate header_link text (cho JOB slider)
+            if 'header_link' in translated_layout_data and isinstance(translated_layout_data['header_link'], dict):
+                header_link = translated_layout_data['header_link']
+                if 'text' in header_link and header_link['text']:
+                    header_link['text'] = translator.translate(header_link['text'])
+                    time.sleep(delay)
+            
+            # Translate list_title
+            if 'list_title' in translated_layout_data and translated_layout_data['list_title']:
+                translated_layout_data['list_title'] = translator.translate(translated_layout_data['list_title'])
+                time.sleep(delay)
+            
+            # Translate list_items titles
+            if 'list_items' in translated_layout_data:
+                for item in translated_layout_data['list_items']:
+                    if 'title' in item and item['title']:
+                        item['title'] = translator.translate(item['title'])
+                        time.sleep(delay)
+            
+            # Translate title_parts nếu có (cho highlights)
+            if 'title_parts' in translated_layout_data and isinstance(translated_layout_data['title_parts'], list):
+                for part in translated_layout_data['title_parts']:
+                    if isinstance(part, dict) and 'text' in part and part['text']:
+                        part['text'] = translator.translate(part['text'])
+                        time.sleep(delay)
+        
+        # Create translated article (với is_temp=True để tránh duplicate khi đang translate)
+        en_article = Article(
+            title=translated_title,
+            slug=dk_article.slug,  # Giữ nguyên slug
+            content=translated_content,
+            excerpt=translated_excerpt,
+            language='en',
+            canonical_id=dk_article.id,  # Link với DK version
+            original_language='da',
+            is_temp=True,  # Đánh dấu là temp (chưa show) cho đến khi translate xong hết
+            # Copy other fields
+            element_guid=dk_article.element_guid,
+            instance=dk_article.instance,
+            site_alias=dk_article.site_alias,
+            k5a_url=dk_article.k5a_url,  # Giữ nguyên URL
+            published_url=dk_article.published_url,  # Giữ nguyên URL
+            category_id=dk_article.category_id,
+            section=dk_article.section,
+            display_order=dk_article.display_order,
+            is_featured=dk_article.is_featured,
+            is_home=dk_article.is_home,
+            article_type=dk_article.article_type,
+            position=dk_article.position,
+            grid_size=dk_article.grid_size,
+            layout_type=dk_article.layout_type,
+            layout_data=translated_layout_data or dk_article.layout_data,
+            is_paywall=dk_article.is_paywall,
+            paywall_class=dk_article.paywall_class,
+            published_date=dk_article.published_date,
+            image_data=dk_article.image_data,  # Giữ nguyên image
+            crawl_metadata=dk_article.crawl_metadata
+        )
+        
+        print(f"   ✅ Translation completed")
+        return en_article
+        
+    except Exception as e:
+        print(f"   ❌ Translation failed: {e}")
+        raise
+
+
+def translate_articles_batch(dk_articles, target_language='en', save_to_db=True, delay=0.5):
+    """
+    Translate multiple articles từ Danish sang English
+    
+    Args:
+        dk_articles: List of Article objects với language='da'
+        target_language: Target language ('en')
+        save_to_db: Whether to save translated articles to database
+        delay: Delay giữa các lần translate (giây)
+    
+    Returns:
+        List of translated Article objects
+    """
+    translated_articles = []
+    errors = []
+    
+    for idx, dk_article in enumerate(dk_articles, 1):
+        try:
+            print(f"\n[{idx}/{len(dk_articles)}] Translating article {dk_article.id}...")
+            
+            # Check if temp translation already exists (nếu có thì update, không skip)
+            existing_temp = Article.query.filter_by(
+                canonical_id=dk_article.id,
+                language='en',
+                is_temp=True
+            ).first()
+            
+            if existing_temp:
+                print(f"   ⚠️  Temp translation already exists (ID: {existing_temp.id}). Updating...")
+                # Update existing temp article
+                try:
+                    en_article = translate_article(dk_article, target_language, delay)
+                    existing_temp.title = en_article.title
+                    existing_temp.content = en_article.content
+                    existing_temp.excerpt = en_article.excerpt
+                    existing_temp.layout_data = en_article.layout_data
+                    db.session.commit()
+                    print(f"   ✅ Updated temp article {existing_temp.id}")
+                    translated_articles.append(existing_temp)
+                    continue
+                except Exception as e:
+                    print(f"   ❌ Failed to update temp article: {e}")
+                    errors.append({
+                        'article_id': dk_article.id,
+                        'error': str(e)
+                    })
+                    db.session.rollback()
+                    continue
+            
+            # Check if non-temp translation exists (skip, sẽ được xóa sau)
+            existing = Article.query.filter_by(
+                canonical_id=dk_article.id,
+                language='en',
+                is_temp=False
+            ).first()
+            
+            if existing:
+                print(f"   ℹ️  Old translation exists (ID: {existing.id}). Will be replaced after translation.")
+            
+            # Translate và tạo temp article (is_temp=True)
+            en_article = translate_article(dk_article, target_language, delay)
+            
+            if save_to_db:
+                db.session.add(en_article)
+                db.session.commit()
+                print(f"   ✅ Saved temp article to database (ID: {en_article.id}, is_temp=True)")
+            
+            translated_articles.append(en_article)
+            
+        except Exception as e:
+            error_msg = f"Failed to translate article {dk_article.id}: {e}"
+            print(f"   ❌ {error_msg}")
+            errors.append({
+                'article_id': dk_article.id,
+                'error': str(e)
+            })
+            db.session.rollback()
+            continue
+    
+    print(f"\n✅ Translation batch completed:")
+    print(f"   - Translated: {len(translated_articles)}")
+    print(f"   - Errors: {len(errors)}")
+    
+    if errors:
+        print(f"\n❌ Errors:")
+        for error in errors:
+            print(f"   - Article {error['article_id']}: {error['error']}")
+    
+    return translated_articles, errors
+

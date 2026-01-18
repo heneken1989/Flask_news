@@ -1,0 +1,718 @@
+@use "./vars" as *;
+@use '../mixins/paywall' as *;
+
+.paywallTeaser {
+    z-index: 6;
+
+    .inner {
+        text-align: center;
+        font-family: Helvetica, Arial, sans-serif;
+        background-color: #fff;
+        box-shadow: 0 2px 16px -6px #000;
+        padding: 3em;
+
+        .sales-pitch {
+            .sales-pitch-content-wrapper {
+                .sales-pitch-title *,
+                .sales-pitch-content * {
+                    display: block;
+                }
+            }
+        }
+
+        .offers {
+            display: flex;
+            justify-content: space-between;
+            align-content: center;
+            margin: 1em -0.5em;
+            flex-wrap: wrap;
+
+            .offer {
+                flex: 1;
+                margin: 0.5em;
+                padding: 1em;
+                border: 1px solid green;
+                background-color: #fff;
+
+                a {
+                    display: inline-block;
+                    background-color: green;
+                    color: #fff;
+                    padding: 0.6em 1.6em;
+                    text-transform: uppercase;
+                    border-radius: 0.1em;
+                    box-shadow: 0 2px 4px 0px rgba(0, 0, 0, 0.45);
+                    margin: 0.8em 0 0.4em;
+                }
+
+                .price {
+                    font-size: 1.8em;
+                    margin-bottom: 0;
+                    padding-bottom: 0;
+                }
+
+                .price_description {
+                    font-size: 0.8em;
+                }
+            }
+        }
+
+        a.login {
+            text-decoration: underline;
+        }
+    }
+}
+
+// Layout for the paywalls
+// Centered Layout (Rows)
+.paywallLayoutCentered {
+    .inner {
+        padding: 1em;
+
+        .offers {
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+
+            .offer {
+                position: relative;
+                display: grid;
+                grid-template-columns: 1fr auto;
+                width: 100%;
+                text-align: left;
+
+                h4 {
+                    grid-column: 1;
+                    grid-row: 1;
+                    margin: 0;
+                    font-weight: bold;
+                }
+
+                h3.price {
+                    grid-column: 1;
+                    grid-row: 2;
+                    margin: 0;
+                    font-size: 1.5em;
+                }
+
+                .price_description {
+                    grid-column: 1;
+                    grid-row: 3;
+                    margin: 0;
+                    color: #666;
+                }
+
+                p:last-of-type {
+                    grid-column: 2;
+                    grid-row: 1 / span 3;
+                    margin: 0;
+                    align-content: center;
+                }
+            }
+        }
+
+        .sales-pitch {
+            .sales-pitch-content-wrapper {
+                text-align: left;
+            }
+        }
+    }
+    
+    .sales-pitch-image {
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+        }
+    }
+}
+
+// Centered Full Layout (Columns)
+.paywallLayoutCenteredFull {
+    .inner {
+        .offers {
+            text-align: center;
+            gap: 1em;
+
+            .offer {
+                margin: 0;
+                padding: 0;
+
+                p:last-of-type {
+                    padding-top: 2em;
+                    margin-bottom: 1em;
+                }
+
+                h4 {
+                    padding-top: 1em;
+                    padding-bottom: 0;
+                    margin-bottom: 0;
+                }
+            }
+        }
+
+        .sales-pitch {
+            .sales-pitch-content-wrapper {
+                text-align: center;
+            }
+        }
+    }
+
+    .sales-pitch-image {
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+        }
+    }
+}
+
+// Sidebar Right Layout, image on right
+.paywallLayoutSidebarRight {
+    &[slot="below-headline"] {
+        text-align: center;
+
+        @include mobile_up {
+            .sales-pitch-image {
+                width: 50%;
+            }
+
+            .sales-pitch {
+                width: 50%;
+                margin-right: $columns-gutter;
+            }
+        }
+    }
+
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+
+    .inner {
+        flex: 1;
+        padding: 1em;
+
+        .offers {
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+
+            .offer {
+                position: relative;
+                display: grid;
+                grid-template-columns: 1fr auto;
+                width: 100%;
+                text-align: left;
+
+                h4 {
+                    grid-column: 1;
+                    grid-row: 1;
+                    margin: 0;
+                    font-weight: bold;
+                }
+
+                h3.price {
+                    grid-column: 1;
+                    grid-row: 2;
+                    margin: 0;
+                    font-size: 1.5em;
+                }
+
+                .price_description {
+                    grid-column: 1;
+                    grid-row: 3;
+                    margin: 0;
+                    color: #666;
+                }
+
+                p:last-of-type {
+                    grid-column: 2;
+                    grid-row: 1 / span 3;
+                    margin: 0;
+                    align-content: center;
+                }
+            }
+        }
+    }
+
+    .sales-pitch {
+        @include desktop {
+            margin-right: $columns-gutter;
+        }
+    }
+
+    .sales-pitch-image {
+        width: 50%;
+        height: auto;
+        order: 1;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+    }
+}
+
+// Sidebar Layout, image on left
+.paywallLayoutSidebar {
+    &[slot="below-headline"] {
+        text-align: center;
+
+        @include mobile_up {
+            .sales-pitch-image {
+                width: 50%;
+            }
+
+            .sales-pitch {
+                width: 50%;
+                margin-left: $columns-gutter;
+            }
+        }
+    }
+
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+
+    .inner {
+        flex: 1;
+        padding: 1em;
+
+        .offers {
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+
+            .offer {
+                position: relative;
+                display: grid;
+                grid-template-columns: 1fr auto;
+                width: 100%;
+                text-align: left;
+
+                h4 {
+                    grid-column: 1;
+                    grid-row: 1;
+                    margin: 0;
+                    font-weight: bold;
+                }
+
+                h3.price {
+                    grid-column: 1;
+                    grid-row: 2;
+                    margin: 0;
+                    font-size: 1.5em;
+                }
+
+                .price_description {
+                    grid-column: 1;
+                    grid-row: 3;
+                    margin: 0;
+                    color: #666;
+                }
+
+                p:last-of-type {
+                    grid-column: 2;
+                    grid-row: 1 / span 3;
+                    margin: 0;
+                    align-content: center;
+                }
+            }
+        }
+    }
+
+    .sales-pitch {
+        @include desktop {
+            margin-left: $columns-gutter;
+        }
+    }
+
+    .sales-pitch-image {
+        width: 50%;
+        height: auto;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+    }
+}
+
+// Sidebar Full Layout, image on left
+.paywallLayoutSidebarFull {
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+
+    .inner {
+        flex: 1;
+        padding: 1em;
+
+        .offers {
+            text-align: center;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1em;
+            justify-content: center;
+
+            .offer:first-child {
+                flex-basis: 100%;
+                margin-bottom: 1em;
+            }
+
+            .offer {
+                padding: 0;
+
+                a {
+                    padding: .4em 1em;
+                }
+
+                p:last-of-type {
+                    padding-top: 2em;
+                    margin-bottom: 1em;
+                }
+
+                h4 {
+                    padding-top: 1em;
+                    padding-bottom: 0;
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+
+    .sales-pitch {
+        @include desktop {
+            margin-left: $columns-gutter;
+        }
+    }
+
+    .sales-pitch-image {
+        width: 40%;
+        height: auto;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+    }
+}
+
+// Remove padding from all paywall layouts, so images can fit the entire container
+.paywallLayoutCentered,
+.paywallLayoutCenteredFull,
+.paywallLayoutSidebar,
+.paywallLayoutSidebarRight,
+.paywallLayoutSidebarFull {
+    padding: 0 !important;
+}
+
+// Mobile
+@include mobile {
+    .paywallLayoutCentered,
+    .paywallLayoutCenteredFull,
+    .paywallLayoutSidebar,
+    .paywallLayoutSidebarRight,
+    .paywallLayoutSidebarFull {
+        width: 100%;
+
+        .inner {
+            .offers {
+                .offer {
+                    display: flex;
+                    flex-direction: column;
+                    text-align: center;
+
+                    h4, h3.price, .price_description {
+                        width: 100%;
+                    }
+
+                    p:last-of-type {
+                        grid-column: unset;
+                        grid-row: unset;
+                        width: 100%;
+                        text-align: center;
+                        margin-top: 10px;
+
+                        a {
+                            display: inline-block;
+                            width: auto;
+                            margin: 0 auto;
+                        }
+                    }
+                }
+            }
+        }
+
+        .sales-pitch-image {
+            float: none;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .inner .offers .offer {
+            flex-direction: column !important;
+        }
+    }
+
+    .paywallLayoutCenteredFull {
+        .inner {
+            .offers {
+                .offer {
+                    padding: 1em;
+                }
+            }
+        }
+    }
+
+    .paywallLayoutSidebarRight,
+    .paywallLayoutSidebar,
+    .paywallLayoutSidebarFull {
+        display: inline-block;
+
+        .inner {
+            padding-top: 1em;
+            
+            .offers {
+                .offer {
+                    padding: 1em;
+                }
+            }
+        }
+
+        .sales-pitch-image {
+            img {
+                height: 8em;
+                object-position: center top;
+            }
+        }
+    }
+
+    .paywallLayoutSidebarFull {
+        .inner {
+            .offers {
+                .offer {
+                    flex: auto;
+                }
+            }
+        }
+    }
+}
+
+// Desktop layouts
+@include desktop {
+    .paywallLayoutCentered,
+    .paywallLayoutSidebarRight,
+    .paywallLayoutSidebar,
+    .paywallLayoutSidebarFull {
+        .inner {
+            .offers {
+                .offer {
+                    flex-direction: row !important;
+                }
+            }
+        }
+    }
+}
+
+.sesamy-paywall-container sesamy-paywall {
+    [slot="below-headline"] {
+        text-align: center;
+    
+        @include mobile_up {
+            .sales-pitch {
+                * {
+                    width: 100%;
+                    display: block;
+                }
+            }
+        }
+    }
+}
+
+// Bodytext paragraph:
+.teaserContent {
+    position: relative;
+
+    &:before {
+        content: "";
+        position: absolute;
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+// Paywall locked class for hiding bodytext
+.bodytext.lab-paywall-locked {
+    > *:not(.lab-paywall-unlocked):not(.paywallTeaser):not(.sesamy-paywall-container):not(.iteras-offers):not(.piano-paywall):not([class*="tp"]):not(#nwprependblock) {
+        display: none;
+    }
+}
+
+@include mobile {
+    .paywallTeaser .inner {
+        padding: 2em 1em;
+
+        .offers {
+            flex-wrap: wrap;
+        }
+    }
+}
+
+.paywallPreview>.content {
+    overflow: visible;
+}
+
+@include setPaywallTeaserBackgroundGradient();
+
+// ITERAS PAYWALL STYLES
+body.iteras-paywall .article .bodytext {
+    .intro {
+        display: none;
+        position: relative;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(0deg, white 0%, rgba(255, 255, 255, 0) 60%, rgba(255, 255, 255, 0) 100%);
+        }
+    }
+
+    .intro>p,
+    .content-text>p {
+        width: 100%;
+        padding-inline: var(--bodytext-alignment);
+        overflow-wrap: break-word;
+    }
+
+    .iteras-offers {
+        @include mobile_up {
+            .sales-pitch {
+                text-align: center;
+
+                * {
+                    width: 100%;
+                    display: block;
+                }
+            }
+        }
+        @include mobile_up {
+            .paywallLayoutSidebar {
+                text-align: center;
+
+                .sales-pitch-image {
+                    width: 50%;
+                }
+
+                .sales-pitch {
+                    width: 50%;
+                    margin-left: $columns-gutter;
+                }
+            }
+
+            .paywallLayoutSidebarRight {
+                text-align: center;
+
+                .sales-pitch-image {
+                    width: 50%;
+                }
+
+                .sales-pitch {
+                    width: 50%;
+                    margin-right: $columns-gutter;
+                }
+            }
+        }
+
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        margin-top: var(--lab-iteras-offers-margin-top, var(--columns-gutter, 0.7rem));
+        background-color: var(--lab-iteras-offers-background-color, #f5f5f5);
+
+        .offer-title {
+            font-size: var(--lab-iteras-offer-title-font-size, 2em);
+            font-weight: var(--lab-iteras-offer-title-font-weight, 200);
+            color: var(--lab-iteras-offer-title-color, #333);
+        }
+
+        .already-subscribed {
+            color: var(--lab-iteras-already-subscribed-color, green);
+            text-decoration: var(--lab-iteras-already-subscribed-text-decoration, underline);
+        }
+
+        .offer-list {
+            width: 100%;
+            display: grid;
+            padding-inline: var(--lab-iteras-offer-list-padding-inline, var(--columns-gutter, 0.7rem));
+            padding-block: var(--lab-iteras-offer-list-padding-block, var(--columns-gutter, 0.7rem));
+            gap: var(--lab-iteras-offer-list-gap, var(--columns-gutter, 0.7rem));
+            grid-template-columns: var(--lab-iteras-offer-list-grid-template-columns, repeat(auto-fit, minmax(345px, 1fr)));
+
+            .offer {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                padding: var(--lab-iteras-offer-padding, var(--columns-gutter, 0.7rem));
+                background-color: var(--lab-iteras-offer-background-color, #ffffff);
+
+                .offer-image {
+                    flex: 0 0 auto;
+                    object-fit: contain;
+                    display: flex;
+                    width: 100%;
+                }
+
+                .offer-pros {
+                    flex: 1;
+                    width: 100%;
+                    padding: var(--lab-iteras-offer-pros-padding, var(--columns-gutter, 0.7rem));
+                    span::before {
+                        content: var(--iteras-offer-pros-marker-content, '✓');
+                        color: var(--iteras-offer-pros-marker-color, green);;
+                        margin-right: var(--iteras-offer-pros-marker-margin-right, 0.5rem);
+                    }
+                }
+
+                .offer-cta {
+                    flex: 0 0 auto;
+                    color: var(--lab-iteras-offer-cta-color, #ffffff);
+                    background-color: var(--lab-iteras-offer-cta-background-color, green);
+                    padding: var(--lab-iteras-offer-cta-padding, var(--columns-gutter, 0.7rem));
+                    width: var(--lab-iteras-offer-cta-width, 200px);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    text-decoration: none;
+                    line-height: 1;
+                    max-width: 100%;
+                }
+            }
+        }
+
+        .offer-description {
+            font-size: var(--lab-iteras-offer-description-font-size, 1rem);
+            color: var(--lab-iteras-offer-description-color, #333);
+            text-align: var(--lab-iteras-offer-description-text-align, center);
+            padding: var(--lab-iteras-offer-description-padding, var(--columns-gutter, 0.7rem));
+        }
+    }
+}

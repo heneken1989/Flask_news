@@ -1,0 +1,70 @@
+:root {
+    --dac-inline-audio-player-color: #92db71;
+    --dac-inline-audio-player-border-width: 1px;
+    --dac-inline-audio-player-border-type: solid;
+    --dac-inline-audio-player-border-color: var(--dac-inline-audio-player-color);
+    --dac-inline-audio-player-border-radius: 4px;
+    --dac-inline-audio-player-padding-left: 0.35em;
+    --dac-inline-audio-player-padding-right: 1.75em;
+    --dac-inline-audio-player-display: inline-block;
+}
+
+
+// Hidden player for inline audio
+.audio-inline-src {
+    display: none;
+}
+
+.dacInlineAudio {
+    display: var(--dac-inline-audio-player-display);
+    border-width: var(--dac-inline-audio-player-border-width);
+    border-style: var(--dac-inline-audio-player-border-type);
+    border-color: var(--dac-inline-audio-player-border-color);
+    border-radius: var(--dac-inline-audio-player-border-radius);
+    margin: -1px 0;
+    position: relative;
+    padding-left: var(--dac-inline-audio-player-padding-left);
+    padding-right: var(--dac-inline-audio-player-padding-right);
+    z-index: 1;
+    cursor: pointer;
+
+    // Uses fi-play etc from Foundation. Override
+    &:before {
+        position: absolute;
+        text-align: center;
+        width: fit-content;
+        height: 100%;
+        right: 0;
+        font-size: 1.2em;
+        padding-top: 0.2em;
+        padding-right: calc(var(--dac-inline-audio-player-padding-right) / 4);
+    }
+
+    // Progress bar
+    &:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: var(--progress-value);
+        height: 100%;
+        background-color: var(--dac-inline-audio-player-color);
+        z-index: -1;
+    }
+
+    &.audio-inline-loading {
+        animation: audioLoading 2s ease infinite;
+    }
+
+    @keyframes audioLoading {
+        0% {
+            border-bottom-color: var(--dac-inline-audio-player-color);
+        }
+        50% {
+            border-bottom-color: #000;
+        }
+        100% {
+            border-bottom-color: var(--dac-inline-audio-player-color);
+        }
+    }
+}
