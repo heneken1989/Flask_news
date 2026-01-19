@@ -67,9 +67,11 @@ class SermitsiaqCrawler:
                 # Scroll để load thêm articles (lazy loading)
                 print("📜 Scrolling to load articles...")
                 scroll_count = 0
-                max_scrolls = 10  # Tối đa scroll 10 lần
+                max_scrolls = 3  # Tối đa scroll 3 lần
+                previous_count = 0
+                no_new_articles_count = 0
                 
-                while scroll_count < max_scrolls and articles_crawled < max_articles:
+                while scroll_count < max_scrolls and (max_articles == 0 or articles_crawled < max_articles):
                     # Scroll down
                     sb.scroll_to_bottom()
                     time.sleep(scroll_pause)
@@ -77,19 +79,34 @@ class SermitsiaqCrawler:
                     # Get current page HTML
                     html_content = sb.get_page_source()
                     articles = parse_articles_from_html(html_content, self.base_url, is_home=False)
+                    current_count = len(articles)
                     
-                    if len(articles) >= max_articles:
-                        break
+                    # Kiểm tra xem có articles mới không
+                    if current_count == previous_count:
+                        no_new_articles_count += 1
+                        # Nếu 3 lần scroll liên tiếp không có articles mới, dừng lại
+                        if no_new_articles_count >= 3:
+                            print(f"  ⏹️  No new articles found after {no_new_articles_count} scrolls. Stopping.")
+                            break
+                    else:
+                        no_new_articles_count = 0
                     
+                    previous_count = current_count
                     scroll_count += 1
-                    print(f"  Scroll {scroll_count}: Found {len(articles)} articles")
+                    print(f"  Scroll {scroll_count}: Found {current_count} articles")
+                    
+                    if max_articles > 0 and current_count >= max_articles:
+                        break
                 
                 # Get final HTML
                 html_content = sb.get_page_source()
                 articles = parse_articles_from_html(html_content, self.base_url, is_home=False)
+                print(f"🔍 After parsing: {len(articles)} articles")
             
-            # Limit to max_articles
-            articles = articles[:max_articles]
+            # Limit to max_articles (0 = no limit, crawl all)
+            if max_articles > 0:
+                articles = articles[:max_articles]
+                print(f"🔍 After limiting to {max_articles}: {len(articles)} articles")
             articles_crawled = len(articles)
             
             print(f"✅ Crawled {articles_crawled} articles")

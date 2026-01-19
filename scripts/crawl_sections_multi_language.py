@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Script để crawl và translate articles từ các sections (tags) cho cả 3 ngôn ngữ
+Script để crawl và translate articles từ các sections (tags) và home page cho cả 3 ngôn ngữ
 
 Workflow cho mỗi section:
 1. Crawl DK từ https://www.sermitsiaq.ag/tag/{section} (hoặc /podcasti cho podcasti)
@@ -8,7 +8,13 @@ Workflow cho mỗi section:
 3. Match articles giữa DK và KL
 4. Translate DK articles sang EN
 
-Sections: erhverv, samfund, kultur, sport, podcasti
+Workflow cho home:
+1. Crawl DK từ https://www.sermitsiaq.ag/
+2. Crawl KL từ https://kl.sermitsiaq.ag/
+3. Match articles giữa DK và KL
+4. Translate DK articles sang EN
+
+Sections: erhverv, samfund, kultur, sport, podcasti, home
 Note: podcasti sử dụng URL /podcasti thay vì /tag/podcasti
 """
 
@@ -51,7 +57,7 @@ SECTION_URLS = {
 }
 
 
-def crawl_danish_section(section_name, max_articles=50):
+def crawl_danish_section(section_name, max_articles=0):
     """Crawl Danish section"""
     print("\n" + "="*60)
     print(f"🇩🇰 Crawling Danish (DK) section: {section_name}")
@@ -82,7 +88,7 @@ def crawl_danish_section(section_name, max_articles=50):
         return 0
 
 
-def crawl_greenlandic_section(section_name, max_articles=50):
+def crawl_greenlandic_section(section_name, max_articles=0):
     """Crawl Greenlandic section"""
     print("\n" + "="*60)
     print(f"🇬🇱 Crawling Greenlandic (KL) section: {section_name}")
@@ -227,7 +233,188 @@ def translate_dk_section_to_en(section_name):
     return translated, errors
 
 
-def process_section(section_name, max_articles=50, skip_crawl=False):
+def crawl_danish_home(max_articles=0):
+    """Crawl Danish home page"""
+    print("\n" + "="*60)
+    print(f"🇩🇰 Crawling Danish (DK) home page...")
+    print("="*60)
+    
+    crawler = SermitsiaqCrawler(
+        base_url='https://www.sermitsiaq.ag',
+        language='da'
+    )
+    
+    result = crawler.crawl_home(
+        home_url='https://www.sermitsiaq.ag',
+        max_articles=max_articles,  # 0 = crawl all articles (no limit)
+        headless=True
+    )
+    
+    if result['success']:
+        print(f"✅ Danish home crawl completed: {result['articles_created']} articles")
+        return result['articles_created']
+    else:
+        print(f"❌ Danish home crawl failed: {result['errors']}")
+        return 0
+
+
+def crawl_greenlandic_home(max_articles=0):
+    """Crawl Greenlandic home page"""
+    print("\n" + "="*60)
+    print(f"🇬🇱 Crawling Greenlandic (KL) home page...")
+    print("="*60)
+    
+    crawler = SermitsiaqCrawler(
+        base_url='https://kl.sermitsiaq.ag',
+        language='kl'
+    )
+    
+    result = crawler.crawl_home(
+        home_url='https://kl.sermitsiaq.ag',
+        max_articles=max_articles,  # 0 = crawl all articles (no limit)
+        headless=True
+    )
+    
+    if result['success']:
+        print(f"✅ Greenlandic home crawl completed: {result['articles_created']} articles")
+        return result['articles_created']
+    else:
+        print(f"❌ Greenlandic home crawl failed: {result['errors']}")
+        return 0
+
+
+def match_dk_kl_home_articles():
+    """Match DK và KL articles trong home"""
+    print("\n" + "="*60)
+    print(f"🔗 Matching DK and KL home articles")
+    print("="*60)
+    
+    # Get DK articles
+    dk_articles = Article.query.filter_by(
+        language='da',
+        is_home=True
+    ).all()
+    
+    # Get KL articles
+    kl_articles = Article.query.filter_by(
+        language='kl',
+        is_home=True
+    ).all()
+    
+    print(f"   Found {len(dk_articles)} DK articles")
+    print(f"   Found {len(kl_articles)} KL articles")
+    
+    if not dk_articles or not kl_articles:
+        print("⚠️  No articles to match")
+        return
+    
+    # Match and link
+    stats = match_and_link_articles(dk_articles, kl_articles)
+    
+    print(f"✅ Matching completed: {stats['matched_count']} articles matched")
+    return stats
+
+
+def translate_dk_home_to_en():
+    """Translate DK home articles to EN"""
+    print("\n" + "="*60)
+    print(f"🌐 Translating DK home articles to EN...")
+    print("="*60)
+    
+    # Get ALL DK home articles (sẽ tạo temp EN articles)
+    dk_articles = Article.query.filter_by(
+        language='da',
+        is_home=True
+    ).all()
+    
+    print(f"   Found {len(dk_articles)} DK articles to translate")
+    
+    if not dk_articles:
+        print("⚠️  No articles to translate")
+        return
+    
+    # Translate (tạo temp articles với is_temp=True)
+    translated, errors = translate_articles_batch(
+        dk_articles,
+        target_language='en',
+        save_to_db=True,
+        delay=0.5
+    )
+    
+    print(f"✅ Translation completed: {len(translated)} articles translated (temp)")
+    
+    # Sau khi translate xong, thay thế old EN articles bằng temp articles
+    print("\n" + "="*60)
+    print(f"🔄 Replacing old EN home articles with new translations")
+    print("="*60)
+    
+    # Đếm old EN articles (không phải temp)
+    old_en_count = Article.query.filter_by(
+        language='en',
+        is_home=True,
+        is_temp=False
+    ).count()
+    
+    print(f"   Found {old_en_count} old EN articles to remove")
+    
+    # Xóa old EN articles (không phải temp)
+    if old_en_count > 0:
+        deleted = Article.query.filter_by(
+            language='en',
+            is_home=True,
+            is_temp=False
+        ).delete()
+        db.session.commit()
+        print(f"   ✅ Deleted {deleted} old EN articles")
+    
+    # Đổi temp articles thành bình thường (is_temp=False)
+    temp_count = Article.query.filter_by(
+        language='en',
+        is_home=True,
+        is_temp=True
+    ).count()
+    
+    if temp_count > 0:
+        updated = Article.query.filter_by(
+            language='en',
+            is_home=True,
+            is_temp=True
+        ).update({'is_temp': False})
+        db.session.commit()
+        print(f"   ✅ Activated {updated} new EN articles (removed temp flag)")
+    
+    print(f"\n✅ Replacement completed for home articles!")
+    if errors:
+        print(f"⚠️  {len(errors)} errors occurred during translation")
+    
+    return translated, errors
+
+
+def process_home(max_articles=0, skip_crawl=False):
+    """Process home page: crawl, match, translate"""
+    print("\n" + "="*80)
+    print(f"🏠 PROCESSING HOME PAGE")
+    print("="*80)
+    
+    if not skip_crawl:
+        crawl_danish_home(max_articles)
+        crawl_greenlandic_home(max_articles)
+    
+    match_dk_kl_home_articles()
+    translate_dk_home_to_en()
+    
+    # Print summary
+    dk_count = Article.query.filter_by(language='da', is_home=True).count()
+    kl_count = Article.query.filter_by(language='kl', is_home=True).count()
+    en_count = Article.query.filter_by(language='en', is_home=True).count()
+    
+    print(f"\n📊 Summary for home:")
+    print(f"   - Danish (DK): {dk_count} articles")
+    print(f"   - Greenlandic (KL): {kl_count} articles")
+    print(f"   - English (EN): {en_count} articles")
+
+
+def process_section(section_name, max_articles=0, skip_crawl=False):
     """Process một section: crawl, match, translate"""
     print("\n" + "="*80)
     print(f"📰 PROCESSING SECTION: {section_name.upper()}")
@@ -253,33 +440,70 @@ def process_section(section_name, max_articles=50, skip_crawl=False):
 
 def main():
     """Main function"""
-    parser = argparse.ArgumentParser(description='Crawl and translate sections for multi-language')
-    parser.add_argument('--section', choices=['erhverv', 'samfund', 'kultur', 'sport', 'podcasti', 'all'],
-                       default='all', help='Section to process (default: all)')
-    parser.add_argument('--max-articles', type=int, default=50,
-                       help='Maximum articles per section (default: 50)')
+    parser = argparse.ArgumentParser(description='Crawl and translate sections and home for multi-language')
+    parser.add_argument('--section', choices=['erhverv', 'samfund', 'kultur', 'sport', 'podcasti', 'home', 'all'],
+                       default='all', help='Section to process (default: all). Use "home" for home page.')
+    parser.add_argument('--max-articles', type=int, default=0,
+                       help='Maximum articles per section (default: 0 = crawl all). Use 0 to crawl all articles without limit.')
     parser.add_argument('--skip-crawl', action='store_true',
                        help='Skip crawling, only match and translate')
     args = parser.parse_args()
     
     with app.app_context():
-        sections = ['erhverv', 'samfund', 'kultur', 'sport', 'podcasti'] if args.section == 'all' else [args.section]
-        
-        for section in sections:
+        # Handle home separately
+        if args.section == 'home':
             try:
-                process_section(section, max_articles=args.max_articles, skip_crawl=args.skip_crawl)
+                process_home(max_articles=args.max_articles, skip_crawl=args.skip_crawl)
             except Exception as e:
-                print(f"❌ Error processing section {section}: {e}")
+                print(f"❌ Error processing home: {e}")
                 import traceback
                 traceback.print_exc()
-                continue
+        elif args.section == 'all':
+            # Process all sections first
+            sections = ['erhverv', 'samfund', 'kultur', 'sport', 'podcasti']
+            for section in sections:
+                try:
+                    process_section(section, max_articles=args.max_articles, skip_crawl=args.skip_crawl)
+                except Exception as e:
+                    print(f"❌ Error processing section {section}: {e}")
+                    import traceback
+                    traceback.print_exc()
+                    continue
+            
+            # Then process home last
+            try:
+                process_home(max_articles=args.max_articles, skip_crawl=args.skip_crawl)
+            except Exception as e:
+                print(f"❌ Error processing home: {e}")
+                import traceback
+                traceback.print_exc()
+        else:
+            # Process single section
+            sections = [args.section]
+            for section in sections:
+                try:
+                    process_section(section, max_articles=args.max_articles, skip_crawl=args.skip_crawl)
+                except Exception as e:
+                    print(f"❌ Error processing section {section}: {e}")
+                    import traceback
+                    traceback.print_exc()
+                    continue
         
         print("\n" + "="*80)
-        print("✅ All sections processing completed!")
+        print("✅ All processing completed!")
         print("="*80)
         
         # Print overall summary
         print(f"\n📊 Overall Summary:")
+        
+        # Home summary
+        dk_home = Article.query.filter_by(language='da', is_home=True).count()
+        kl_home = Article.query.filter_by(language='kl', is_home=True).count()
+        en_home = Article.query.filter_by(language='en', is_home=True).count()
+        print(f"   HOME: DK={dk_home}, KL={kl_home}, EN={en_home}")
+        
+        # Sections summary
+        sections = ['erhverv', 'samfund', 'kultur', 'sport', 'podcasti']
         for section in sections:
             dk = Article.query.filter_by(language='da', section=section, is_home=False).count()
             kl = Article.query.filter_by(language='kl', section=section, is_home=False).count()

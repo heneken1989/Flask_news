@@ -1,6 +1,3 @@
-2026/01/19-12:08:44.137 894a7 Reusing MANIFEST /Users/hien/Desktop/Projects/GC_HRAI/flask/user_data/Default/shared_proto_db/MANIFEST-000001
-2026/01/19-12:08:44.137 894a7 Recovering log #45
-2026/01/19-12:08:44.137 894a7 Reusing old log /Users/hien/Desktop/Projects/GC_HRAI/flask/user_data/Default/shared_proto_db/000045.log 
-2026/01/19-12:08:44.144 8947f Level-0 table #50: started
-2026/01/19-12:08:44.147 8947f Level-0 table #50: 108226 bytes OK
-2026/01/19-12:08:44.149 8947f Delete type=0 #45
+2026/01/19-21:42:49.442 9d6b3 Reusing MANIFEST /Users/hien/Desktop/Projects/GC_HRAI/flask/user_data/Default/shared_proto_db/MANIFEST-000001
+2026/01/19-21:42:49.442 9d6b3 Recovering log #68
+2026/01/19-21:42:49.444 9d6b3 Reusing old log /Users/hien/Desktop/Projects/GC_HRAI/flask/user_data/Default/shared_proto_db/000068.log 

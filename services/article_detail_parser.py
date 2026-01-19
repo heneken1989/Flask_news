@@ -41,6 +41,82 @@ class ArticleDetailParser:
                 blocks.append(meta_block)
                 order += 1
         
+        # Parse subtitle (h2.subtitle) và header image caption từ articleHeader - nếu có
+        # Subtitle và header image caption thường nằm trong articleHeader, không phải bodytext
+        article_header = soup.find('div', class_='articleHeader')
+        if not article_header:
+            # Try alternative: find by class containing 'articleHeader'
+            article_header = soup.find('div', class_=lambda x: x and 'articleHeader' in ' '.join(x) if isinstance(x, list) else 'articleHeader' in str(x))
+        
+        if article_header:
+            # Parse subtitle - tìm h2 với class chứa 'subtitle'
+            subtitle_elem = None
+            # Try exact match first (BeautifulSoup tự động handle spaces trong class)
+            subtitle_elem = article_header.find('h2', class_='subtitle')
+            # If not found, try finding all h2 and check if any has subtitle in class
+            if not subtitle_elem:
+                h2_elements = article_header.find_all('h2')
+                for h2 in h2_elements:
+                    classes = h2.get('class', [])
+                    # Handle both list and string class attributes
+                    if isinstance(classes, list):
+                        class_list = [str(c).strip() for c in classes if c]
+                    else:
+                        class_list = [str(classes).strip()] if classes else []
+                    
+                    if 'subtitle' in class_list:
+                        subtitle_elem = h2
+                        break
+            
+            if subtitle_elem:
+                subtitle_text = subtitle_elem.get_text(strip=True)
+                if subtitle_text:
+                    blocks.append({
+                        'type': 'subtitle',
+                        'order': order,
+                        'level': 'h2',
+                        'html': str(subtitle_elem),
+                        'text': subtitle_text,
+                        'classes': subtitle_elem.get('class', [])
+                    })
+                    order += 1
+            
+            # Parse header image caption từ articleHeader
+            # Caption có thể nằm sau figure.headerImage hoặc trong div.caption
+            header_caption_div = article_header.find('div', class_='caption')
+            if header_caption_div:
+                caption_elem = header_caption_div.find('figcaption', itemprop='caption')
+                author_elem = header_caption_div.find('figcaption', itemprop='author')
+                
+                caption_text = ''
+                author_text = ''
+                
+                if caption_elem:
+                    caption_text = caption_elem.get_text(strip=True)
+                if author_elem:
+                    author_text = author_elem.get_text(strip=True)
+                    # Remove "Foto: " or "Assi: " prefix if exists (case insensitive)
+                    # "Assi: " is Greenlandic for "Foto: " (Photo)
+                    if author_text.lower().startswith('foto: '):
+                        author_text = author_text[6:].strip()
+                    elif author_text.lower().startswith('foto:'):
+                        author_text = author_text[5:].strip()
+                    elif author_text.lower().startswith('assi: '):
+                        author_text = author_text[6:].strip()
+                    elif author_text.lower().startswith('assi:'):
+                        author_text = author_text[5:].strip()
+                
+                # Nếu có caption hoặc author, tạo một block đặc biệt để lưu header image caption
+                if caption_text or author_text:
+                    blocks.append({
+                        'type': 'header_image_caption',
+                        'order': order,
+                        'caption': caption_text,
+                        'author': author_text,
+                        'html': str(header_caption_div)
+                    })
+                    order += 1
+        
         # Find bodytext container
         bodytext = soup.find('div', class_='bodytext')
         if not bodytext:
@@ -535,4 +611,5 @@ class ArticleDetailParser:
         if not article or not article.published_url:
             return None
         return ArticleDetailParser.get_article_detail(article.published_url)
+
 

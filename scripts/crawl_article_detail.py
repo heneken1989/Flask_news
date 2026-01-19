@@ -361,16 +361,24 @@ def crawl_article_detail(url: str, language: str = 'da'):
             except:
                 pass
             
-            # Get article meta (bylines and dates) - từ articleHeader
+            # Get articleHeader HTML (chứa subtitle và meta) - để parser có thể parse subtitle
+            article_header_html = None
             meta_html = None
             try:
-                # Try to find in articleHeader
+                # Try to find articleHeader
                 article_header = sb.find_element('.articleHeader', timeout=5)
                 if article_header:
-                    meta_elem = article_header.find_element('.meta', timeout=3)
-                    if meta_elem:
-                        meta_html = meta_elem.get_attribute('outerHTML')
-                        print(f"   ✅ Found article meta via Selenium ({len(meta_html)} chars)")
+                    article_header_html = article_header.get_attribute('outerHTML')
+                    print(f"   ✅ Found articleHeader via Selenium ({len(article_header_html)} chars)")
+                    
+                    # Extract meta từ articleHeader
+                    try:
+                        meta_elem = article_header.find_element('.meta', timeout=3)
+                        if meta_elem:
+                            meta_html = meta_elem.get_attribute('outerHTML')
+                            print(f"   ✅ Found article meta via Selenium ({len(meta_html)} chars)")
+                    except:
+                        pass
             except:
                 # Fallback: parse from page source
                 try:
@@ -379,12 +387,15 @@ def crawl_article_detail(url: str, language: str = 'da'):
                     soup = BeautifulSoup(page_source, 'html.parser')
                     article_header = soup.find('div', class_='articleHeader')
                     if article_header:
+                        article_header_html = str(article_header)
+                        print(f"   ✅ Found articleHeader from page source ({len(article_header_html)} chars)")
+                        
                         meta_div = article_header.find('div', class_='meta')
                         if meta_div:
                             meta_html = str(meta_div)
                             print(f"   ✅ Found article meta from page source ({len(meta_html)} chars)")
                 except Exception as e:
-                    print(f"   ⚠️  Could not find article meta: {e}")
+                    print(f"   ⚠️  Could not find articleHeader: {e}")
             
             # Get bodytext HTML - lấy toàn bộ bodytext container bao gồm cả intro và content-text
             # Sử dụng page source để đảm bảo lấy đầy đủ HTML
@@ -449,9 +460,14 @@ def crawl_article_detail(url: str, language: str = 'da'):
                 except Exception as e:
                     print(f"   ⚠️  Could not find articleFooter: {e}")
             
-            # Combine HTML - meta nên đặt đầu tiên (trước bodytext) để parser tìm thấy
+            # Combine HTML - articleHeader (chứa subtitle) nên đặt đầu tiên, sau đó meta, rồi bodytext
             full_html = ''
-            if meta_html:
+            if article_header_html:
+                # Sử dụng articleHeader HTML để parser có thể parse subtitle
+                full_html = article_header_html
+                print(f"   ✅ Added articleHeader to HTML ({len(article_header_html)} chars)")
+            elif meta_html:
+                # Fallback: chỉ có meta nếu không có articleHeader
                 full_html = meta_html
                 print(f"   ✅ Added article meta to HTML ({len(meta_html)} chars)")
             if bodytext_html:

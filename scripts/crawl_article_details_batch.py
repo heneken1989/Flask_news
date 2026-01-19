@@ -153,11 +153,21 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
         translated_block = block.copy()
         
         # Chỉ dịch các block có text content
-        if block.get('type') in ['paragraph', 'heading', 'intro']:
+        if block.get('type') in ['paragraph', 'heading', 'intro', 'subtitle']:
             # Dịch text
             if block.get('text'):
                 try:
-                    translated_text = translator.translate(block['text'])
+                    original_text = block['text']
+                    translated_text = translator.translate(original_text)
+                    
+                    # Sửa lỗi thiếu khoảng trắng sau khi dịch
+                    # Ví dụ: "candiesis" -> "candies is" (có thể do lỗi dịch hoặc HTML parsing)
+                    # Pattern: từ kết thúc bằng chữ cái + từ phổ biến bắt đầu bằng chữ cái (thiếu khoảng)
+                    # Chỉ sửa các trường hợp rõ ràng như "candiesis", "wordis", "wordof", etc.
+                    # Tránh sửa các từ hợp lệ như "this", "that", "what", etc.
+                    common_words = r'(is|are|was|were|has|have|had|will|would|can|could|should|may|might|of|to|in|on|at|for|with|from|the|a|an)\b'
+                    translated_text = re.sub(r'([a-zA-Z]+)' + common_words, r'\1 \2', translated_text, flags=re.IGNORECASE)
+                    
                     translated_block['text'] = translated_text
                     time.sleep(delay)  # Delay để tránh rate limit
                 except Exception as e:
@@ -169,6 +179,12 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
             if block.get('html'):
                 try:
                     html = block['html']
+                    
+                    # BƯỚC 1: Sửa lỗi thiếu khoảng trắng TRƯỚC KHI dịch
+                    # Thêm khoảng trắng trước tag nếu word kết thúc bằng chữ cái và tag bắt đầu bằng chữ cái
+                    # Ví dụ: "candies<span" -> "candies <span"
+                    html = re.sub(r'([a-zA-Z])(<[a-zA-Z/])', r'\1 \2', html)
+                    
                     # Tìm tất cả text nodes và dịch
                     def translate_html_text(match):
                         text = match.group(1)
@@ -183,11 +199,37 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
                     
                     # Dịch text giữa các tags
                     translated_html = re.sub(r'>([^<]+)<', translate_html_text, html)
+                    
+                    # BƯỚC 2: Sửa lại sau khi dịch (đảm bảo không có lỗi mới)
+                    # Thêm khoảng trắng nếu vẫn còn pattern "word<tag" sau khi dịch
+                    translated_html = re.sub(r'([a-zA-Z])(<[a-zA-Z/])', r'\1 \2', translated_html)
+                    
+                    # Sửa lỗi "candiesis" -> "candies is" nếu có
+                    translated_html = re.sub(r'candiesis', 'candies is', translated_html, flags=re.IGNORECASE)
+                    
                     translated_block['html'] = translated_html
                 except Exception as e:
                     print(f"      ⚠️  Translation error for HTML: {e}")
                     # Giữ nguyên HTML nếu dịch lỗi
                     translated_block['html'] = block['html']
+        
+        # Dịch header_image_caption block
+        if block.get('type') == 'header_image_caption':
+            # Dịch caption nếu có
+            if block.get('caption'):
+                try:
+                    translated_caption = translator.translate(block['caption'])
+                    translated_block['caption'] = translated_caption
+                    time.sleep(delay)
+                except Exception as e:
+                    print(f"      ⚠️  Translation error for header_image_caption caption: {e}")
+                    translated_block['caption'] = block['caption']
+            
+            # Author không cần dịch (tên người)
+            # Nhưng có thể cần xử lý prefix "Foto: " / "Assi: "
+            if block.get('author'):
+                # Author đã được xử lý prefix trong parser, chỉ giữ nguyên
+                translated_block['author'] = block['author']
         
         # Dịch article_meta block (bylines descriptions)
         if block.get('type') == 'article_meta':
@@ -759,14 +801,23 @@ def crawl_article_detail(url: str, language: str = 'da', headless: bool = True):
             except:
                 pass
             
-            # Get article meta (bylines and dates)
+            # Get articleHeader HTML (chứa subtitle và meta) - để parser có thể parse subtitle
+            article_header_html = None
             meta_html = None
             try:
+                # Try to find articleHeader
                 article_header = sb.find_element('.articleHeader', timeout=5)
                 if article_header:
-                    meta_elem = article_header.find_element('.meta', timeout=3)
-                    if meta_elem:
-                        meta_html = meta_elem.get_attribute('outerHTML')
+                    article_header_html = article_header.get_attribute('outerHTML')
+                    print(f"   ✅ Found articleHeader via Selenium ({len(article_header_html)} chars)")
+                    
+                    # Extract meta từ articleHeader
+                    try:
+                        meta_elem = article_header.find_element('.meta', timeout=3)
+                        if meta_elem:
+                            meta_html = meta_elem.get_attribute('outerHTML')
+                    except:
+                        pass
             except:
                 # Fallback: parse from page source
                 try:
@@ -775,6 +826,9 @@ def crawl_article_detail(url: str, language: str = 'da', headless: bool = True):
                     soup = BeautifulSoup(page_source, 'html.parser')
                     article_header = soup.find('div', class_='articleHeader')
                     if article_header:
+                        article_header_html = str(article_header)
+                        print(f"   ✅ Found articleHeader from page source ({len(article_header_html)} chars)")
+                        
                         meta_div = article_header.find('div', class_='meta')
                         if meta_div:
                             meta_html = str(meta_div)
@@ -830,9 +884,14 @@ def crawl_article_detail(url: str, language: str = 'da', headless: bool = True):
                 except:
                     pass
             
-            # Combine HTML
+            # Combine HTML - articleHeader (chứa subtitle) nên đặt đầu tiên, sau đó meta, rồi bodytext
             full_html = ''
-            if meta_html:
+            if article_header_html:
+                # Sử dụng articleHeader HTML để parser có thể parse subtitle
+                full_html = article_header_html
+                print(f"   ✅ Added articleHeader to HTML ({len(article_header_html)} chars)")
+            elif meta_html:
+                # Fallback: chỉ có meta nếu không có articleHeader
                 full_html = meta_html
             if bodytext_html:
                 full_html += bodytext_html

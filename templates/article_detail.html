@@ -94,19 +94,22 @@
                     
                     <h1 class="headline mainTitle" style="">{{ article.title }}</h1>
                     
-                    {# Get excerpt from article.excerpt or from article_detail content_blocks intro #}
-                    {% set article_excerpt = article.excerpt %}
-                    {% if article_detail and article_detail.content_blocks and not article_excerpt %}
-                        {# Try to get from first intro/paragraph block #}
-                        {% for block in article_detail.content_blocks %}
-                            {% if not article_excerpt and (block.type == 'intro' or block.type == 'paragraph') and block.text %}
-                                {% set article_excerpt = block.text %}
-                            {% endif %}
-                        {% endfor %}
+                    {# Get excerpt: Priority 1: subtitle block from content_blocks, Priority 2: article.excerpt, Priority 3: intro/paragraph #}
+                    {% set subtitle_block = None %}
+                    {% if article_detail and article_detail.content_blocks %}
+                        {% set subtitle_block = article_detail.content_blocks | selectattr('type', 'equalto', 'subtitle') | first %}
                     {% endif %}
                     
-                    {% if article_excerpt %}
-                    <h2 class="subtitle" style="">{{ article_excerpt }}</h2>
+                    {% if subtitle_block and subtitle_block.text %}
+                    <h2 class="subtitle" style="">{{ subtitle_block.text }}</h2>
+                    {% elif article.excerpt %}
+                    <h2 class="subtitle" style="">{{ article.excerpt }}</h2>
+                    {% elif article_detail and article_detail.content_blocks %}
+                        {# Priority 3: Get from first intro/paragraph block #}
+                        {% set first_paragraph = article_detail.content_blocks | selectattr('type', 'in', ['intro', 'paragraph']) | first %}
+                        {% if first_paragraph and first_paragraph.text %}
+                        <h2 class="subtitle" style="">{{ first_paragraph.text }}</h2>
+                        {% endif %}
                     {% endif %}
 
                     <div class="media">
@@ -156,13 +159,44 @@
                         <div class="floatingText"></div>
                     </div>
 
-                    {% if article.image_data and article.image_data.caption %}
+                    {# Header image caption: Priority 1: header_image_caption block, Priority 2: article.image_data, Priority 3: body image with headerImage class #}
+                    {% set header_caption_block = None %}
+                    {% if article_detail and article_detail.content_blocks %}
+                        {% set header_caption_block = article_detail.content_blocks | selectattr('type', 'equalto', 'header_image_caption') | first %}
+                    {% endif %}
+                    
+                    {% if header_caption_block %}
+                    {# Priority 1: header_image_caption block from articleHeader (most reliable) #}
+                    <div class="caption" data-showmore="Vis mere">
+                        {% if header_caption_block.caption %}
+                        <figcaption itemprop="caption" class="">{{ header_caption_block.caption }}</figcaption>
+                        {% endif %}
+                        {% if header_caption_block.author %}
+                        <figcaption itemprop="author" class="" data-byline-prefix="">Foto: {{ header_caption_block.author }}</figcaption>
+                        {% endif %}
+                    </div>
+                    {% elif article.image_data and article.image_data.caption %}
+                    {# Priority 2: article.image_data #}
                     <div class="caption" data-showmore="Vis mere">
                         <figcaption itemprop="caption" class="">{{ article.image_data.caption }}</figcaption>
                         {% if article.image_data.author %}
                         <figcaption itemprop="author" class="" data-byline-prefix="">Foto: {{ article.image_data.author }}</figcaption>
                         {% endif %}
                     </div>
+                    {% elif article_detail and article_detail.content_blocks %}
+                        {# Priority 3: body image with headerImage class #}
+                        {% set header_image_blocks = article_detail.content_blocks | selectattr('type', 'equalto', 'image') | selectattr('is_header_image', 'equalto', true) | selectattr('caption', 'defined') | list %}
+                        {% if header_image_blocks | length > 0 %}
+                            {% set first_header_image = header_image_blocks[0] %}
+                            <div class="caption" data-showmore="Vis mere">
+                                {% if first_header_image.caption %}
+                                <figcaption itemprop="caption" class="">{{ first_header_image.caption }}</figcaption>
+                                {% endif %}
+                                {% if first_header_image.author %}
+                                <figcaption itemprop="author" class="" data-byline-prefix="">Foto: {{ first_header_image.author }}</figcaption>
+                                {% endif %}
+                            </div>
+                        {% endif %}
                     {% endif %}
 
                     {# Article Meta (bylines and dates) - từ article_detail.content_blocks hoặc fallback #}
@@ -284,11 +318,15 @@
                                     {{ block.html|safe }}
                                 {% elif block.type == 'heading' %}
                                     <{{ block.level }}>{{ block.text }}</{{ block.level }}>
+                                {% elif block.type == 'subtitle' %}
+                                    {# Subtitle đã được hiển thị ở header, skip ở đây #}
                                 {% elif block.type == 'image' %}
+                                    {# Skip images with class headerImage in body - their captions will be moved to header #}
+                                    {# Check if block has headerImage class or is marked as header image #}
+                                    {% set is_header_img = block.is_header_image|default(false) or block.skip_in_body|default(false) or (block.classes and 'headerImage' in block.classes) %}
+                                    {% if not is_header_img %}
                                     <figure data-element-guid="{{ block.element_guid|default('') }}" class="{% if block.classes %}{{ block.classes|join(' ') }}{% endif %}">
-                                        {% if not block.is_header_image %}
                                         <div class="content" style="">
-                                        {% endif %}
                                             <div class="img fullwidthTarget">
                                                 <picture>
                                                     {% if block.image_sources.desktop_webp %}
@@ -338,10 +376,9 @@
                                                 {% endif %}
                                             </div>
                                             {% endif %}
-                                        {% if not block.is_header_image %}
                                         </div>
-                                        {% endif %}
                                     </figure>
+                                    {% endif %}
                                 {% elif block.type == 'ad' %}
                                     <div data-element-guid="{{ block.element_guid|default('') }}" class="column google-ad {% if block.classes %}{{ block.classes|join(' ') }}{% endif %}" style="">
                                         <span class="ad-label">{{ _('Annonce') }}</span>
