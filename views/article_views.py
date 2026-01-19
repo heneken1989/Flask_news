@@ -459,11 +459,20 @@ def article_detail(article_id=None, section=None, slug=None):
     article_detail = None
     if article.published_url:
         from services.article_detail_parser import ArticleDetailParser
-        # Lấy article_detail theo language hiện tại
-        article_detail = ArticleDetailParser.get_article_detail(article.published_url, language=current_language)
-        # Nếu không có bản language hiện tại, fallback về DA
-        if not article_detail and current_language != 'da':
-            article_detail = ArticleDetailParser.get_article_detail(article.published_url, language='da')
+        # Lấy article_detail theo language hiện tại (tự động chuyển đổi URL nếu cần)
+        article_detail = ArticleDetailParser.get_article_detail_by_article(article, language=current_language)
+        
+        # Nếu article_detail có published_url khác với article.published_url, 
+        # tìm article tương ứng và cập nhật title
+        if article_detail and article_detail.published_url != article.published_url:
+            # Tìm article với published_url của article_detail
+            article_by_url = Article.query.filter_by(published_url=article_detail.published_url).first()
+            if article_by_url and article_by_url.language == current_language:
+                # Cập nhật article title từ article tương ứng
+                article.title = article_by_url.title
+                # Cũng cập nhật excerpt nếu cần
+                if article_by_url.excerpt:
+                    article.excerpt = article_by_url.excerpt
     
     # Get 5 articles đầu tiên từ section "SAMFUND" để hiển thị dưới Job slider
     samfund_articles = Article.query.filter_by(
@@ -796,11 +805,8 @@ def article_detail_test():
     article_detail = None
     if article.published_url:
         from services.article_detail_parser import ArticleDetailParser
-        # Lấy article_detail theo language hiện tại
-        article_detail = ArticleDetailParser.get_article_detail(article.published_url, language=current_language)
-        # Nếu không có bản language hiện tại, fallback về DA
-        if not article_detail and current_language != 'da':
-            article_detail = ArticleDetailParser.get_article_detail(article.published_url, language='da')
+        # Lấy article_detail theo language hiện tại (tự động chuyển đổi URL nếu cần)
+        article_detail = ArticleDetailParser.get_article_detail_by_article(article, language=current_language)
     
     return render_template('article_detail.html',
         article=article,

@@ -1,3 +1,6 @@
-2026/01/19-21:43:01.631 9d9cd Reusing MANIFEST /Users/hien/Desktop/Projects/GC_HRAI/flask/user_data/Default/Session Storage/MANIFEST-000001
-2026/01/19-21:43:01.631 9d9cd Recovering log #120
-2026/01/19-21:43:01.631 9d9cd Reusing old log /Users/hien/Desktop/Projects/GC_HRAI/flask/user_data/Default/Session Storage/000120.log 
+2026/01/19-22:58:32.494 ccf98 Reusing MANIFEST /Users/hien/Desktop/Projects/GC_HRAI/flask/user_data/Default/Session Storage/MANIFEST-000001
+2026/01/19-22:58:32.495 ccf98 Recovering log #140
+2026/01/19-22:58:32.495 ccf98 Reusing old log /Users/hien/Desktop/Projects/GC_HRAI/flask/user_data/Default/Session Storage/000140.log 
+2026/01/19-22:58:33.443 ccf9b Level-0 table #144: started
+2026/01/19-22:58:33.445 ccf9b Level-0 table #144: 9228 bytes OK
+2026/01/19-22:58:33.447 ccf9b Delete type=0 #140

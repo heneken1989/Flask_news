@@ -153,7 +153,7 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
         translated_block = block.copy()
         
         # Chỉ dịch các block có text content
-        if block.get('type') in ['paragraph', 'heading', 'intro', 'subtitle']:
+        if block.get('type') in ['paragraph', 'heading', 'intro', 'subtitle', 'title']:
             # Dịch text
             if block.get('text'):
                 try:

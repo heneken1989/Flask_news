@@ -46,7 +46,7 @@ def translate_article_detail_content_blocks(content_blocks: list, delay=0.3) -> 
         translated_block = block.copy()
         
         # Chỉ dịch các block có text content
-        if block.get('type') in ['paragraph', 'heading', 'intro']:
+        if block.get('type') in ['paragraph', 'heading', 'intro', 'subtitle', 'title']:
             # Dịch text
             if block.get('text'):
                 try:

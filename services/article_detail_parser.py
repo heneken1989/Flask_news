@@ -6,6 +6,7 @@ from database import db, ArticleDetail
 from typing import List, Dict, Optional
 from datetime import datetime
 import json
+import re
 
 
 class ArticleDetailParser:
@@ -49,6 +50,28 @@ class ArticleDetailParser:
             article_header = soup.find('div', class_=lambda x: x and 'articleHeader' in ' '.join(x) if isinstance(x, list) else 'articleHeader' in str(x))
         
         if article_header:
+            # Parse title (h1.headline.mainTitle) - ưu tiên cao nhất
+            title_elem = article_header.find('h1', class_='headline')
+            if not title_elem:
+                # Try alternative: find h1 with mainTitle class
+                title_elem = article_header.find('h1', class_='mainTitle')
+            if not title_elem:
+                # Try finding any h1 in articleHeader
+                title_elem = article_header.find('h1')
+            
+            if title_elem:
+                title_text = title_elem.get_text(strip=True)
+                if title_text:
+                    blocks.append({
+                        'type': 'title',
+                        'order': order,
+                        'level': 'h1',
+                        'html': str(title_elem),
+                        'text': title_text,
+                        'classes': title_elem.get('class', [])
+                    })
+                    order += 1
+            
             # Parse subtitle - tìm h2 với class chứa 'subtitle'
             subtitle_elem = None
             # Try exact match first (BeautifulSoup tự động handle spaces trong class)
@@ -581,9 +604,52 @@ class ArticleDetailParser:
         return article_detail
     
     @staticmethod
+    def convert_url_between_languages(url: str, target_language: str) -> str:
+        """
+        Chuyển đổi URL giữa các ngôn ngữ:
+        - KL → DA/EN: Loại bỏ 'kl.' (kl.sermitsiaq.ag → www.sermitsiaq.ag)
+        - DA/EN → KL: Thêm 'kl.' (www.sermitsiaq.ag → kl.sermitsiaq.ag)
+        
+        Args:
+            url: URL gốc
+            target_language: Language code ('da', 'kl', 'en')
+            
+        Returns:
+            URL đã chuyển đổi
+        """
+        if not url:
+            return url
+        
+        # Xác định URL hiện tại là KL hay DA/EN
+        is_kl_url = 'kl.sermitsiaq.ag' in url or 'kl.sermitsiaq.gl' in url
+        
+        if target_language == 'kl':
+            # Chuyển sang KL: thêm 'kl.'
+            if not is_kl_url:
+                # Chỉ replace nếu chưa có 'kl.'
+                # Ưu tiên replace 'www.' trước, sau đó mới replace domain không có 'www.'
+                if 'www.sermitsiaq.ag' in url:
+                    url = url.replace('www.sermitsiaq.ag', 'kl.sermitsiaq.ag')
+                elif 'www.sermitsiaq.gl' in url:
+                    url = url.replace('www.sermitsiaq.gl', 'kl.sermitsiaq.gl')
+                elif 'sermitsiaq.ag' in url and 'kl.sermitsiaq.ag' not in url:
+                    # Chỉ replace nếu chưa có 'kl.' trong URL
+                    url = url.replace('sermitsiaq.ag', 'kl.sermitsiaq.ag', 1)
+                elif 'sermitsiaq.gl' in url and 'kl.sermitsiaq.gl' not in url:
+                    url = url.replace('sermitsiaq.gl', 'kl.sermitsiaq.gl', 1)
+        else:
+            # Chuyển sang DA/EN: loại bỏ 'kl.'
+            if is_kl_url:
+                url = url.replace('kl.sermitsiaq.ag', 'www.sermitsiaq.ag')
+                url = url.replace('kl.sermitsiaq.gl', 'www.sermitsiaq.gl')
+        
+        return url
+    
+    @staticmethod
     def get_article_detail(published_url: str, language: str = None) -> Optional[ArticleDetail]:
         """
         Get article detail by published_url and optionally language
+        Tự động chuyển đổi URL giữa các ngôn ngữ nếu không tìm thấy
         
         Args:
             published_url: URL của article
@@ -592,24 +658,207 @@ class ArticleDetailParser:
         Returns:
             ArticleDetail object or None
         """
+        # Ưu tiên 1: Tìm với URL và language chính xác
         query = ArticleDetail.query.filter_by(published_url=published_url)
         if language:
             query = query.filter_by(language=language)
-        return query.first()
+        article_detail = query.first()
+        
+        if article_detail:
+            return article_detail
+        
+        # Ưu tiên 2: Nếu không tìm thấy và có language, thử chuyển đổi URL
+        if language:
+            converted_url = ArticleDetailParser.convert_url_between_languages(published_url, language)
+            if converted_url != published_url:
+                query = ArticleDetail.query.filter_by(published_url=converted_url)
+                query = query.filter_by(language=language)
+                article_detail = query.first()
+                if article_detail:
+                    return article_detail
+        
+        # Ưu tiên 3: Fallback về DA nếu không tìm thấy
+        if language and language != 'da':
+            # Thử với URL gốc và language='da'
+            query = ArticleDetail.query.filter_by(published_url=published_url)
+            query = query.filter_by(language='da')
+            article_detail = query.first()
+            if article_detail:
+                return article_detail
+            
+            # Thử với URL đã chuyển đổi và language='da'
+            converted_url = ArticleDetailParser.convert_url_between_languages(published_url, 'da')
+            if converted_url != published_url:
+                query = ArticleDetail.query.filter_by(published_url=converted_url)
+                query = query.filter_by(language='da')
+                article_detail = query.first()
+                if article_detail:
+                    return article_detail
+        
+        # Nếu không có language, trả về bất kỳ match nào
+        if not language:
+            return ArticleDetail.query.filter_by(published_url=published_url).first()
+        
+        return None
     
     @staticmethod
-    def get_article_detail_by_article(article) -> Optional[ArticleDetail]:
+    def extract_image_id_from_article(article) -> Optional[str]:
         """
-        Get article detail from Article object
+        Extract imageId từ Article.image_data
         
         Args:
             article: Article object
+            
+        Returns:
+            imageId string hoặc None
+        """
+        if not article or not article.image_data:
+            return None
+        
+        image_data = article.image_data
+        if isinstance(image_data, str):
+            import json
+            try:
+                image_data = json.loads(image_data)
+            except:
+                return None
+        
+        # Tìm imageId trong các URL fields
+        url_fields = ['desktop_webp', 'desktop_jpeg', 'mobile_webp', 'mobile_jpeg', 'fallback']
+        for field in url_fields:
+            url = image_data.get(field, '')
+            if url and 'imageId=' in url:
+                # Extract imageId từ URL: imageId=2329158
+                match = re.search(r'imageId=(\d+)', url)
+                if match:
+                    return match.group(1)
+        
+        return None
+    
+    @staticmethod
+    def find_article_detail_by_image_id(image_id: str, language: str) -> Optional[ArticleDetail]:
+        """
+        Tìm ArticleDetail qua imageId bằng cách:
+        1. Tìm tất cả Article có cùng imageId trong image_data
+        2. Lấy published_url của Article đó
+        3. Tìm ArticleDetail với published_url và language
+        
+        Args:
+            image_id: Image ID (ví dụ: "2329158")
+            language: Language code ('da', 'kl', 'en')
+            
+        Returns:
+            ArticleDetail object hoặc None
+        """
+        if not image_id:
+            return None
+        
+        from database import Article
+        
+        # Tìm tất cả Article có imageId này trong image_data
+        # Query tất cả articles và filter trong Python (vì JSON field query phức tạp)
+        all_articles = Article.query.all()
+        
+        for article in all_articles:
+            if not article.image_data:
+                continue
+            
+            image_data = article.image_data
+            if isinstance(image_data, str):
+                import json
+                try:
+                    image_data = json.loads(image_data)
+                except:
+                    continue
+            
+            # Kiểm tra imageId trong image_data
+            url_fields = ['desktop_webp', 'desktop_jpeg', 'mobile_webp', 'mobile_jpeg', 'fallback']
+            for field in url_fields:
+                url = image_data.get(field, '')
+                if url and f'imageId={image_id}' in url:
+                    # Tìm thấy article có cùng imageId
+                    # Tìm ArticleDetail với published_url của article này và language
+                    if article.published_url:
+                        article_detail = ArticleDetail.query.filter_by(
+                            published_url=article.published_url,
+                            language=language
+                        ).first()
+                        if article_detail:
+                            return article_detail
+        
+        return None
+    
+    @staticmethod
+    def get_article_detail_by_article(article, language: str = None) -> Optional[ArticleDetail]:
+        """
+        Get article detail from Article object
+        Sử dụng imageId mapping nếu không tìm thấy qua URL
+        
+        Args:
+            article: Article object
+            language: Language code ('da', 'kl', 'en'). If None, uses article.language
             
         Returns:
             ArticleDetail object or None
         """
         if not article or not article.published_url:
             return None
-        return ArticleDetailParser.get_article_detail(article.published_url)
+        
+        # Sử dụng language từ article nếu không được cung cấp
+        if language is None:
+            language = article.language
+        
+        # Extract imageId một lần để dùng nhiều lần
+        image_id = ArticleDetailParser.extract_image_id_from_article(article)
+        
+        # Ưu tiên 1: Tìm với published_url và language (bao gồm URL conversion, KHÔNG fallback DA)
+        # Tạm thời disable fallback trong get_article_detail bằng cách gọi trực tiếp query
+        query = ArticleDetail.query.filter_by(published_url=article.published_url)
+        if language:
+            query = query.filter_by(language=language)
+        article_detail = query.first()
+        
+        if article_detail:
+            return article_detail
+        
+        # Thử URL conversion
+        if language:
+            converted_url = ArticleDetailParser.convert_url_between_languages(article.published_url, language)
+            if converted_url != article.published_url:
+                query = ArticleDetail.query.filter_by(published_url=converted_url)
+                query = query.filter_by(language=language)
+                article_detail = query.first()
+                if article_detail:
+                    return article_detail
+        
+        # Ưu tiên 2: Nếu không tìm thấy, thử mapping qua imageId với target language
+        if image_id:
+            article_detail = ArticleDetailParser.find_article_detail_by_image_id(image_id, language)
+            if article_detail:
+                return article_detail
+        
+        # Ưu tiên 3: Fallback về DA nếu không tìm thấy
+        if language != 'da':
+            # Thử URL gốc với DA
+            query = ArticleDetail.query.filter_by(published_url=article.published_url, language='da')
+            article_detail = query.first()
+            if article_detail:
+                return article_detail
+            
+            # Thử URL conversion với DA
+            converted_url = ArticleDetailParser.convert_url_between_languages(article.published_url, 'da')
+            if converted_url != article.published_url:
+                query = ArticleDetail.query.filter_by(published_url=converted_url, language='da')
+                article_detail = query.first()
+                if article_detail:
+                    return article_detail
+            
+            # Thử imageId với DA
+            if image_id:
+                article_detail = ArticleDetailParser.find_article_detail_by_image_id(image_id, 'da')
+                if article_detail:
+                    return article_detail
+        
+        return None
 
 
