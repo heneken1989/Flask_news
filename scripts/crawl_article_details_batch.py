@@ -39,7 +39,7 @@ from app import app
 from database import db, Article, ArticleDetail
 from services.article_detail_parser import ArticleDetailParser
 from seleniumbase import SB
-from googletrans import Translator
+from deep_translator import GoogleTranslator
 import re
 
 # User data directory để lưu session login
@@ -129,14 +129,16 @@ def convert_da_url_to_en_url(da_url: str) -> str:
     return en_url
 
 
-def translate_content_blocks(content_blocks: list, source_lang: str = 'da', target_lang: str = 'en') -> list:
+def translate_content_blocks(content_blocks: list, source_lang: str = 'da', target_lang: str = 'en', delay: float = 0.3) -> list:
     """
     Dịch content_blocks từ source_lang sang target_lang
+    Sử dụng GoogleTranslator từ deep_translator (giống translation_service)
     
     Args:
         content_blocks: List of content blocks
         source_lang: Source language code ('da')
         target_lang: Target language code ('en')
+        delay: Delay giữa các lần translate (giây) để tránh rate limit
         
     Returns:
         Translated content blocks
@@ -144,7 +146,7 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
     if not content_blocks:
         return []
     
-    translator = Translator()
+    translator = GoogleTranslator(source=source_lang, target=target_lang)
     translated_blocks = []
     
     for block in content_blocks:
@@ -155,28 +157,25 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
             # Dịch text
             if block.get('text'):
                 try:
-                    translated_text = translator.translate(
-                        block['text'], 
-                        src=source_lang, 
-                        dest=target_lang
-                    ).text
+                    translated_text = translator.translate(block['text'])
                     translated_block['text'] = translated_text
+                    time.sleep(delay)  # Delay để tránh rate limit
                 except Exception as e:
-                    print(f"   ⚠️  Translation error for text: {e}")
+                    print(f"      ⚠️  Translation error for text: {e}")
                     # Giữ nguyên text nếu dịch lỗi
                     translated_block['text'] = block['text']
             
             # Dịch HTML content (chỉ dịch text trong tags, giữ nguyên tags)
             if block.get('html'):
                 try:
-                    # Tách HTML thành tags và text
                     html = block['html']
                     # Tìm tất cả text nodes và dịch
                     def translate_html_text(match):
                         text = match.group(1)
                         if text.strip():
                             try:
-                                translated = translator.translate(text, src=source_lang, dest=target_lang).text
+                                translated = translator.translate(text)
+                                time.sleep(delay)
                                 return f'>{translated}<'
                             except:
                                 return match.group(0)
@@ -186,33 +185,102 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
                     translated_html = re.sub(r'>([^<]+)<', translate_html_text, html)
                     translated_block['html'] = translated_html
                 except Exception as e:
-                    print(f"   ⚠️  Translation error for HTML: {e}")
+                    print(f"      ⚠️  Translation error for HTML: {e}")
                     # Giữ nguyên HTML nếu dịch lỗi
                     translated_block['html'] = block['html']
         
-        # Giữ nguyên các block khác (images, ads, paywall_offers, etc.)
+        # Dịch article_meta block (bylines descriptions)
+        if block.get('type') == 'article_meta':
+            if block.get('bylines'):
+                translated_bylines = []
+                for byline in block.get('bylines', []):
+                    translated_byline = byline.copy()
+                    # Dịch description nếu có
+                    if byline.get('description'):
+                        try:
+                            translated_desc = translator.translate(byline['description'])
+                            translated_byline['description'] = translated_desc
+                            time.sleep(delay)
+                        except Exception as e:
+                            print(f"      ⚠️  Translation error for byline description: {e}")
+                            # Giữ nguyên nếu dịch lỗi
+                            translated_byline['description'] = byline['description']
+                    translated_bylines.append(translated_byline)
+                translated_block['bylines'] = translated_bylines
+        
+        # Dịch article_footer_tags block (tags text)
+        if block.get('type') == 'article_footer_tags':
+            if block.get('tags'):
+                translated_tags = []
+                for tag in block.get('tags', []):
+                    translated_tag = tag.copy()
+                    # Dịch tag text nếu có
+                    if tag.get('text'):
+                        try:
+                            translated_text = translator.translate(tag['text'])
+                            translated_tag['text'] = translated_text
+                            time.sleep(delay)
+                        except Exception as e:
+                            print(f"      ⚠️  Translation error for tag text: {e}")
+                            # Giữ nguyên nếu dịch lỗi
+                            translated_tag['text'] = tag['text']
+                    translated_tags.append(translated_tag)
+                translated_block['tags'] = translated_tags
+        
+        # Dịch image block (caption và author)
+        if block.get('type') == 'image':
+            # Dịch caption nếu có
+            if block.get('caption'):
+                try:
+                    translated_caption = translator.translate(block['caption'])
+                    translated_block['caption'] = translated_caption
+                    time.sleep(delay)
+                except Exception as e:
+                    print(f"      ⚠️  Translation error for image caption: {e}")
+                    # Giữ nguyên nếu dịch lỗi
+                    translated_block['caption'] = block['caption']
+            
+            # Dịch author nếu có
+            if block.get('author'):
+                try:
+                    translated_author = translator.translate(block['author'])
+                    translated_block['author'] = translated_author
+                    time.sleep(delay)
+                except Exception as e:
+                    print(f"      ⚠️  Translation error for image author: {e}")
+                    # Giữ nguyên nếu dịch lỗi
+                    translated_block['author'] = block['author']
+        
+        # Giữ nguyên các block khác (ads, paywall_offers, etc.)
         translated_blocks.append(translated_block)
     
     return translated_blocks
 
 
-def create_en_article_detail_from_da(da_article_detail: ArticleDetail) -> ArticleDetail:
+def create_en_article_detail_from_da(da_article_detail: ArticleDetail, delay: float = 0.3) -> ArticleDetail:
     """
     Tạo article_detail EN từ article_detail DA
     
     Args:
         da_article_detail: ArticleDetail object với language='da'
+        delay: Delay giữa các lần translate (giây) để tránh rate limit
         
     Returns:
-        ArticleDetail object với language='en' hoặc None nếu đã tồn tại
+        ArticleDetail object với language='en' hoặc existing nếu đã tồn tại
     """
+    if da_article_detail.language != 'da':
+        raise ValueError(f"Source article_detail must be in Danish (da), got {da_article_detail.language}")
+    
     # Convert URL từ DA sang EN
     en_url = convert_da_url_to_en_url(da_article_detail.published_url)
     
-    # Kiểm tra xem đã có EN version chưa
+    # CHỈ kiểm tra xem đã có EN version chưa (không check DA version)
+    # Vì unique constraint là (published_url, language), nên có thể có cả DA và EN với cùng URL
     existing_en_detail = ArticleDetail.query.filter_by(published_url=en_url, language='en').first()
+    
     if existing_en_detail:
-        print(f"   ℹ️  EN version already exists for {en_url}")
+        # Đã có EN version → skip
+        print(f"   ℹ️  EN version already exists (ID: {existing_en_detail.id}), skipping translation")
         return existing_en_detail
     
     # Dịch content_blocks
@@ -220,7 +288,8 @@ def create_en_article_detail_from_da(da_article_detail: ArticleDetail) -> Articl
     translated_blocks = translate_content_blocks(
         da_article_detail.content_blocks or [],
         source_lang='da',
-        target_lang='en'
+        target_lang='en',
+        delay=delay
     )
     
     # Tạo ArticleDetail mới với language='en'
@@ -231,11 +300,29 @@ def create_en_article_detail_from_da(da_article_detail: ArticleDetail) -> Articl
         element_guid=da_article_detail.element_guid
     )
     
-    db.session.add(en_article_detail)
-    db.session.commit()
-    
-    print(f"   ✅ Created EN article_detail (ID: {en_article_detail.id})")
-    return en_article_detail
+    try:
+        db.session.add(en_article_detail)
+        db.session.commit()
+        print(f"   ✅ Created EN article_detail (ID: {en_article_detail.id}, Blocks: {len(translated_blocks)})")
+        return en_article_detail
+    except Exception as e:
+        # Rollback nếu lỗi (đặc biệt là IntegrityError)
+        db.session.rollback()
+        
+        # Kiểm tra xem có phải do duplicate không (nếu migration chưa chạy, vẫn có thể bị lỗi unique)
+        from sqlalchemy.exc import IntegrityError
+        if isinstance(e, IntegrityError) or 'unique' in str(e).lower() or 'duplicate' in str(e).lower():
+            # Kiểm tra lại xem đã có EN version chưa
+            existing_en = ArticleDetail.query.filter_by(published_url=en_url, language='en').first()
+            if existing_en:
+                print(f"   ℹ️  EN version already exists (ID: {existing_en.id}), skipping translation")
+                return existing_en
+            else:
+                print(f"   ⚠️  Unique constraint error - might need to run migration script")
+                print(f"   ⚠️  Run: python deploy/migrate_article_details_composite_unique.py")
+        
+        print(f"   ❌ Error creating EN article_detail: {e}")
+        raise
 
 
 def translate_da_article_details_to_en(limit=None):
@@ -273,10 +360,10 @@ def translate_da_article_details_to_en(limit=None):
             # Convert URL sang EN
             en_url = convert_da_url_to_en_url(da_detail.published_url)
             
-            # Kiểm tra xem đã có EN version chưa
+            # CHỈ kiểm tra xem đã có EN version chưa (không check DA version)
             existing_en = ArticleDetail.query.filter_by(published_url=en_url, language='en').first()
             if existing_en:
-                print(f"   ⏭️  Skipped - EN version already exists")
+                print(f"   ⏭️  Skipped - EN version already exists (ID: {existing_en.id})")
                 skip_count += 1
                 continue
             
@@ -285,12 +372,17 @@ def translate_da_article_details_to_en(limit=None):
             if en_detail:
                 success_count += 1
             else:
-                fail_count += 1
+                skip_count += 1  # Không phải lỗi, chỉ là skip
                 
         except Exception as e:
             print(f"   ❌ Error: {e}")
             import traceback
             traceback.print_exc()
+            # Rollback session nếu có lỗi
+            try:
+                db.session.rollback()
+            except:
+                pass
             fail_count += 1
     
     print(f"\n{'='*60}")
@@ -801,7 +893,7 @@ def crawl_article_detail(url: str, language: str = 'da', headless: bool = True):
             return None
 
 
-def crawl_all(language=None, section=None, limit=None, headless=True, delay=2):
+def crawl_all(language=None, section=None, limit=None, headless=True, delay=2, auto_translate=True, translate_delay=0.3):
     """
     Crawl tất cả articles chưa có detail
     
@@ -811,11 +903,17 @@ def crawl_all(language=None, section=None, limit=None, headless=True, delay=2):
         limit: Giới hạn số lượng
         headless: Run browser in headless mode
         delay: Delay giữa các requests (seconds)
+        auto_translate: Tự động translate article_detail DA sang EN sau khi crawl xong
+        translate_delay: Delay giữa các lần translate (seconds)
     """
     articles = get_articles_to_crawl(language=language, section=section, limit=limit)
     
     if not articles:
         print("\n✅ Không có articles nào cần crawl!")
+        # Nếu auto_translate=True, vẫn chạy translate cho các article_detail DA đã có
+        if auto_translate:
+            print("\n🌐 Không có articles cần crawl, nhưng sẽ kiểm tra và translate các article_detail DA đã có...")
+            translate_da_article_details_to_en(limit=None)
         return
     
     print(f"\n🚀 Bắt đầu crawl {len(articles)} articles...")
@@ -826,7 +924,12 @@ def crawl_all(language=None, section=None, limit=None, headless=True, delay=2):
     if limit:
         print(f"   Limit: {limit}")
     print(f"   Headless: {headless}")
-    print(f"   Delay: {delay}s giữa các requests\n")
+    print(f"   Delay: {delay}s giữa các requests")
+    print(f"   Auto-translate: {auto_translate}")
+    if auto_translate:
+        print(f"   Translate delay: {translate_delay}s\n")
+    else:
+        print()
     
     # Tạo user_data_dir nếu chưa tồn tại
     os.makedirs(USER_DATA_DIR, exist_ok=True)
@@ -844,6 +947,7 @@ def crawl_all(language=None, section=None, limit=None, headless=True, delay=2):
     
     success_count = 0
     fail_count = 0
+    crawled_da_details = []  # Lưu các article_detail DA đã crawl để translate sau
     
     for i, article in enumerate(articles, 1):
         print(f"\n[{i}/{len(articles)}] Article ID: {article.id}")
@@ -856,6 +960,9 @@ def crawl_all(language=None, section=None, limit=None, headless=True, delay=2):
         
         if result:
             success_count += 1
+            # Lưu lại article_detail DA để translate sau (chỉ DA, không phải kl.sermitsiaq.ag)
+            if result.language == 'da' and 'kl.sermitsiaq.ag' not in result.published_url:
+                crawled_da_details.append(result)
         else:
             fail_count += 1
         
@@ -864,10 +971,63 @@ def crawl_all(language=None, section=None, limit=None, headless=True, delay=2):
             time.sleep(delay)
     
     print(f"\n{'='*60}")
-    print(f"✅ Hoàn thành!")
+    print(f"✅ Crawl hoàn thành!")
     print(f"   Success: {success_count}/{len(articles)}")
     print(f"   Failed: {fail_count}/{len(articles)}")
     print(f"{'='*60}\n")
+    
+    # Tự động translate article_detail DA sang EN sau khi crawl xong
+    if auto_translate and crawled_da_details:
+        print(f"\n{'='*60}")
+        print(f"🌐 Bắt đầu translate {len(crawled_da_details)} article_detail từ DA sang EN...")
+        print(f"{'='*60}\n")
+        
+        translate_success = 0
+        translate_skip = 0
+        translate_fail = 0
+        
+        for idx, da_detail in enumerate(crawled_da_details, 1):
+            try:
+                print(f"\n[{idx}/{len(crawled_da_details)}] Translating article_detail ID: {da_detail.id}")
+                print(f"   URL: {da_detail.published_url[:70]}...")
+                
+                # CHỈ kiểm tra xem đã có EN version chưa (không check DA version)
+                en_url = convert_da_url_to_en_url(da_detail.published_url)
+                existing_en = ArticleDetail.query.filter_by(published_url=en_url, language='en').first()
+                
+                if existing_en:
+                    print(f"   ⏭️  Skipped - EN version already exists (ID: {existing_en.id})")
+                    translate_skip += 1
+                    continue
+                
+                # Chỉ translate nếu chưa có ArticleDetail với URL này
+                en_detail = create_en_article_detail_from_da(da_detail, delay=translate_delay)
+                
+                if en_detail:
+                    translate_success += 1
+                else:
+                    translate_skip += 1  # Không phải lỗi, chỉ là skip
+                    
+            except Exception as e:
+                print(f"   ❌ Error translating: {e}")
+                import traceback
+                traceback.print_exc()
+                # Rollback session nếu có lỗi
+                try:
+                    db.session.rollback()
+                except:
+                    pass
+                translate_fail += 1
+                continue
+        
+        print(f"\n{'='*60}")
+        print(f"✅ Translation hoàn thành!")
+        print(f"   Success: {translate_success}/{len(crawled_da_details)}")
+        print(f"   Skipped: {translate_skip}/{len(crawled_da_details)}")
+        print(f"   Failed: {translate_fail}/{len(crawled_da_details)}")
+        print(f"{'='*60}\n")
+    elif auto_translate and not crawled_da_details:
+        print("\nℹ️  Không có article_detail DA nào để translate (tất cả đều là KL hoặc không crawl được)\n")
 
 
 def main():
@@ -876,27 +1036,36 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
+  # Mặc định: Crawl và translate tất cả articles chưa có detail
+  python scripts/crawl_article_details_batch.py
+  
   # List tất cả articles cần crawl
   python scripts/crawl_article_details_batch.py --list
   
-  # Crawl tất cả articles chưa có detail
+  # Crawl tất cả articles chưa có detail (tương đương với không có flag)
   python scripts/crawl_article_details_batch.py --crawl-all
   
   # Crawl theo language
-  python scripts/crawl_article_details_batch.py --crawl-all --language en
+  python scripts/crawl_article_details_batch.py --language en
   
   # Crawl theo section
-  python scripts/crawl_article_details_batch.py --crawl-all --section samfund
+  python scripts/crawl_article_details_batch.py --section samfund
   
   # Crawl giới hạn số lượng
-  python scripts/crawl_article_details_batch.py --crawl-all --limit 10
+  python scripts/crawl_article_details_batch.py --limit 10
+  
+  # Crawl nhưng không translate
+  python scripts/crawl_article_details_batch.py --no-auto-translate
+  
+  # Chỉ translate các article_detail DA đã có
+  python scripts/crawl_article_details_batch.py --translate-only
         """
     )
     
     parser.add_argument('--list', action='store_true',
                         help='List tất cả articles cần crawl')
     parser.add_argument('--crawl-all', action='store_true',
-                        help='Crawl tất cả articles chưa có detail')
+                        help='Crawl tất cả articles chưa có detail (mặc định: bật nếu không có flag khác)')
     parser.add_argument('--language', '-l', choices=['da', 'kl', 'en'],
                         help='Filter theo language')
     parser.add_argument('--section', '-s',
@@ -907,18 +1076,16 @@ Examples:
                         help='Run browser in no-headless mode (để debug)')
     parser.add_argument('--delay', '-d', type=float, default=2.0,
                         help='Delay giữa các requests (seconds, default: 2.0)')
-    parser.add_argument('--translate-da-to-en', action='store_true',
-                        help='Dịch article_detail từ DA sang EN sau khi crawl')
+    parser.add_argument('--no-auto-translate', action='store_true',
+                        help='Tắt tự động translate sau khi crawl (mặc định: bật)')
+    parser.add_argument('--translate-delay', type=float, default=0.3,
+                        help='Delay giữa các lần translate (seconds, default: 0.3)')
     parser.add_argument('--translate-only', action='store_true',
                         help='Chỉ dịch các article_detail DA đã có, không crawl mới')
     parser.add_argument('--translate-limit', type=int,
                         help='Giới hạn số lượng article_detail để dịch')
     
     args = parser.parse_args()
-    
-    if not args.list and not args.crawl_all:
-        parser.print_help()
-        return
     
     with app.app_context():
         if args.translate_only:
@@ -930,21 +1097,18 @@ Examples:
                 section=args.section,
                 limit=args.limit
             )
-        elif args.crawl_all:
+        else:
+            # Mặc định: crawl và translate (nếu không có flag --list hoặc --translate-only)
+            # Có thể dùng --crawl-all hoặc không cần flag gì cũng được
             crawl_all(
                 language=args.language,
                 section=args.section,
                 limit=args.limit,
                 headless=not args.no_headless,
-                delay=args.delay
+                delay=args.delay,
+                auto_translate=not args.no_auto_translate,  # Mặc định bật auto-translate
+                translate_delay=args.translate_delay
             )
-            
-            # Dịch DA sang EN sau khi crawl nếu được yêu cầu
-            if args.translate_da_to_en:
-                print("\n" + "="*60)
-                print("🌐 Starting translation from DA to EN...")
-                print("="*60 + "\n")
-                translate_da_article_details_to_en(limit=args.translate_limit)
 
 
 if __name__ == '__main__':

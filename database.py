@@ -171,18 +171,23 @@ class ArticleDetail(db.Model):
     __tablename__ = 'article_details'
     
     id = db.Column(db.Integer, primary_key=True)
-    published_url = db.Column(db.String(1000), unique=True, nullable=False, index=True, comment='URL của article (link với articles.published_url)')
+    published_url = db.Column(db.String(1000), nullable=False, index=True, comment='URL của article (link với articles.published_url)')
     
     # Structured content blocks (lưu dạng JSON)
     content_blocks = db.Column(db.JSON, comment='Array of content blocks: intro, paragraphs, headings, images, ads, paywall_offers')
     
     # Metadata
-    language = db.Column(db.String(10), default='en', comment='Language code: da, kl, en')
+    language = db.Column(db.String(10), default='en', nullable=False, index=True, comment='Language code: da, kl, en')
     element_guid = db.Column(db.String(100), comment='Element GUID từ HTML gốc')
     
     # Timestamps
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Composite unique constraint: (published_url, language) để cho phép cùng URL nhưng khác language
+    __table_args__ = (
+        db.UniqueConstraint('published_url', 'language', name='uq_article_details_url_language'),
+    )
     
     def to_dict(self):
         """Convert to dictionary"""

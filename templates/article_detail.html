@@ -94,8 +94,19 @@
                     
                     <h1 class="headline mainTitle" style="">{{ article.title }}</h1>
                     
-                    {% if article.excerpt %}
-                    <h2 class="subtitle" style="">{{ article.excerpt }}</h2>
+                    {# Get excerpt from article.excerpt or from article_detail content_blocks intro #}
+                    {% set article_excerpt = article.excerpt %}
+                    {% if article_detail and article_detail.content_blocks and not article_excerpt %}
+                        {# Try to get from first intro/paragraph block #}
+                        {% for block in article_detail.content_blocks %}
+                            {% if not article_excerpt and (block.type == 'intro' or block.type == 'paragraph') and block.text %}
+                                {% set article_excerpt = block.text %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    
+                    {% if article_excerpt %}
+                    <h2 class="subtitle" style="">{{ article_excerpt }}</h2>
                     {% endif %}
 
                     <div class="media">

@@ -455,11 +455,15 @@ def article_detail(article_id=None, section=None, slug=None):
                 'header_classes': layout_data.get('header_classes', ['t24', 'tm25', 'color_mobile_no_bg_color', 'primary', 'color_mobile_primary', 'align-left', 'mobile_text_align_align-left', 'font-IBMPlexSans'])
             }
     
-    # Get article detail content blocks
+    # Get article detail content blocks - filter theo language hiện tại
     article_detail = None
     if article.published_url:
         from services.article_detail_parser import ArticleDetailParser
-        article_detail = ArticleDetailParser.get_article_detail(article.published_url)
+        # Lấy article_detail theo language hiện tại
+        article_detail = ArticleDetailParser.get_article_detail(article.published_url, language=current_language)
+        # Nếu không có bản language hiện tại, fallback về DA
+        if not article_detail and current_language != 'da':
+            article_detail = ArticleDetailParser.get_article_detail(article.published_url, language='da')
     
     # Get 5 articles đầu tiên từ section "SAMFUND" để hiển thị dưới Job slider
     samfund_articles = Article.query.filter_by(
@@ -788,11 +792,15 @@ def article_detail_test():
         'header_classes': ['t24', 'tm25', 'color_mobile_no_bg_color', 'primary', 'color_mobile_primary', 'align-left', 'mobile_text_align_align-left', 'font-IBMPlexSans']
     }
     
-    # Get article detail content blocks
+    # Get article detail content blocks - filter theo language hiện tại
     article_detail = None
     if article.published_url:
         from services.article_detail_parser import ArticleDetailParser
-        article_detail = ArticleDetailParser.get_article_detail(article.published_url)
+        # Lấy article_detail theo language hiện tại
+        article_detail = ArticleDetailParser.get_article_detail(article.published_url, language=current_language)
+        # Nếu không có bản language hiện tại, fallback về DA
+        if not article_detail and current_language != 'da':
+            article_detail = ArticleDetailParser.get_article_detail(article.published_url, language='da')
     
     return render_template('article_detail.html',
         article=article,
@@ -818,8 +826,11 @@ def article_detail_test_structured():
     if not url:
         return "Please provide ?url parameter", 400
     
+    # Get language from query parameter, default to 'en'
+    lang = request.args.get('lang', 'en')
+    
     with app.app_context():
-        article_detail = ArticleDetailParser.get_article_detail(url)
+        article_detail = ArticleDetailParser.get_article_detail(url, language=lang)
         
         if not article_detail:
             return f"Article detail not found for URL: {url}<br><br>Run: python scripts/crawl_article_detail.py '{url}'", 404

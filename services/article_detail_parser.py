@@ -505,17 +505,21 @@ class ArticleDetailParser:
         return article_detail
     
     @staticmethod
-    def get_article_detail(published_url: str) -> Optional[ArticleDetail]:
+    def get_article_detail(published_url: str, language: str = None) -> Optional[ArticleDetail]:
         """
-        Get article detail by published_url
+        Get article detail by published_url and optionally language
         
         Args:
             published_url: URL của article
+            language: Language code ('da', 'kl', 'en'). If None, returns first match
             
         Returns:
             ArticleDetail object or None
         """
-        return ArticleDetail.query.filter_by(published_url=published_url).first()
+        query = ArticleDetail.query.filter_by(published_url=published_url)
+        if language:
+            query = query.filter_by(language=language)
+        return query.first()
     
     @staticmethod
     def get_article_detail_by_article(article) -> Optional[ArticleDetail]:
