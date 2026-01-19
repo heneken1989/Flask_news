@@ -114,11 +114,27 @@ class Article(db.Model):
     
     def to_dict(self):
         """Convert article to dictionary for API/template"""
+        from flask import url_for, has_request_context
+        
+        # Generate Flask app URL for article detail (internal link)
+        article_url = '#'
+        try:
+            if has_request_context():
+                # Generate URL using article_id route
+                article_url = url_for('article_views.article_detail', article_id=self.id)
+            else:
+                # Outside request context, use fallback
+                article_url = f'/article/{self.id}'
+        except Exception as e:
+            # Fallback nếu url_for fails
+            article_url = f'/article/{self.id}'
+        
         return {
             'id': self.id,
             'element_guid': self.element_guid,
             'title': self.title,
-            'url': self.published_url or f'/{self.section}/{self.slug}',
+            'url': article_url,  # Flask app URL - dùng cho internal links
+            'published_url': self.published_url,  # Giữ lại để dùng cho crawl hoặc external links
             'k5a_url': self.k5a_url or f'/a/{self.id}',
             'section': self.section,
             'site_alias': self.site_alias,
@@ -145,6 +161,44 @@ class Article(db.Model):
     
     def __repr__(self):
         return f'<Article {self.title[:50]}>'
+
+
+class ArticleDetail(db.Model):
+    """
+    Bảng lưu trữ cấu trúc chi tiết của bài viết
+    Sử dụng published_url để link với bảng articles
+    """
+    __tablename__ = 'article_details'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    published_url = db.Column(db.String(1000), unique=True, nullable=False, index=True, comment='URL của article (link với articles.published_url)')
+    
+    # Structured content blocks (lưu dạng JSON)
+    content_blocks = db.Column(db.JSON, comment='Array of content blocks: intro, paragraphs, headings, images, ads, paywall_offers')
+    
+    # Metadata
+    language = db.Column(db.String(10), default='en', comment='Language code: da, kl, en')
+    element_guid = db.Column(db.String(100), comment='Element GUID từ HTML gốc')
+    
+    # Timestamps
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    def to_dict(self):
+        """Convert to dictionary"""
+        import json
+        return {
+            'id': self.id,
+            'published_url': self.published_url,
+            'content_blocks': self.content_blocks if isinstance(self.content_blocks, list) else json.loads(self.content_blocks) if self.content_blocks else [],
+            'language': self.language,
+            'element_guid': self.element_guid,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'updated_at': self.updated_at.isoformat() if self.updated_at else None
+        }
+    
+    def __repr__(self):
+        return f'<ArticleDetail {self.published_url[:50]}>'
 
 
 class CrawlLog(db.Model):

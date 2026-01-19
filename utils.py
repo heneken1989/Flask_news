@@ -214,6 +214,40 @@ def prepare_home_layouts(articles):
                 print(f"🎠 Preparing slider '{slider_title}': {len(slider_articles)} articles")
                 if len(slider_articles) < 4:
                     print(f"   ⚠️  WARNING: Slider has only {len(slider_articles)} articles")
+                
+                # Convert slider_articles URLs từ published_url sang Flask app URL
+                from flask import url_for
+                from database import Article
+                updated_slider_articles = []
+                for item in slider_articles:
+                    updated_item = item.copy()
+                    # Nếu item có id, tìm Article và dùng to_dict() để get Flask URL
+                    if item.get('id'):
+                        try:
+                            article_obj = Article.query.get(item['id'])
+                            if article_obj:
+                                article_dict = article_obj.to_dict()
+                                updated_item['url'] = article_dict.get('url', item.get('url', '#'))
+                        except:
+                            # Fallback: dùng published_url nếu không tìm thấy Article
+                            updated_item['url'] = item.get('url', '#')
+                    else:
+                        # Nếu không có id, giữ nguyên url (có thể là published_url)
+                        # Hoặc có thể tìm Article bằng published_url
+                        published_url = item.get('url') or item.get('published_url')
+                        if published_url:
+                            try:
+                                article_obj = Article.query.filter_by(published_url=published_url).first()
+                                if article_obj:
+                                    article_dict = article_obj.to_dict()
+                                    updated_item['url'] = article_dict.get('url', published_url)
+                                else:
+                                    # Không tìm thấy, giữ nguyên published_url
+                                    updated_item['url'] = published_url
+                            except:
+                                updated_item['url'] = published_url
+                    updated_slider_articles.append(updated_item)
+                slider_articles = updated_slider_articles
             
             layout_item['data'] = {
                 'slider_title': slider_title,
@@ -238,6 +272,38 @@ def prepare_home_layouts(articles):
             header_classes = layout_data.get('header_classes', [])
             
             print(f"💼 Preparing JOB slider '{slider_title}': {len(slider_articles)} articles")
+            
+            # Convert slider_articles URLs từ published_url sang Flask app URL
+            if isinstance(slider_articles, list):
+                from flask import url_for
+                from database import Article
+                updated_slider_articles = []
+                for item in slider_articles:
+                    updated_item = item.copy()
+                    # Nếu item có id, tìm Article và dùng to_dict() để get Flask URL
+                    if item.get('id'):
+                        try:
+                            article_obj = Article.query.get(item['id'])
+                            if article_obj:
+                                article_dict = article_obj.to_dict()
+                                updated_item['url'] = article_dict.get('url', item.get('url', '#'))
+                        except:
+                            updated_item['url'] = item.get('url', '#')
+                    else:
+                        # Tìm Article bằng published_url
+                        published_url = item.get('url') or item.get('published_url')
+                        if published_url:
+                            try:
+                                article_obj = Article.query.filter_by(published_url=published_url).first()
+                                if article_obj:
+                                    article_dict = article_obj.to_dict()
+                                    updated_item['url'] = article_dict.get('url', published_url)
+                                else:
+                                    updated_item['url'] = published_url
+                            except:
+                                updated_item['url'] = published_url
+                    updated_slider_articles.append(updated_item)
+                slider_articles = updated_slider_articles
             
             layout_item['data'] = {
                 'slider_title': slider_title,

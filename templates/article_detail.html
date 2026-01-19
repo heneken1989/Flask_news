@@ -1,0 +1,752 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {% include 'partials/head.html' %}
+    <title>{{ article.title }} - Sermitsiaq</title>
+    <style>
+        /* Articlescroller navigation styles */
+        .articlescroller nav .arrow {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            border-radius: 100%;
+            background-color: rgba(0,0,0,0.5);
+            transform: translateY(-70%);
+            cursor: pointer;
+            border: 1px solid transparent;
+            z-index: 10;
+        }
+        .articlescroller nav .arrow:hover {
+            border-color: #fff;
+        }
+        .articlescroller nav .arrow span {
+            border-bottom: 2px solid #fff;
+            border-left: 2px solid #fff;
+            width: 1rem;
+            height: 1rem;
+            display: block;
+            margin: 1.2rem;
+            transform: translateX(0.2rem) rotate(45deg);
+        }
+        .articlescroller nav .arrow.right {
+            left: auto;
+            right: 10px;
+        }
+        .articlescroller nav .arrow.right span {
+            transform: translateX(-0.2rem) rotate(-135deg);
+        }
+        .articlescroller nav .arrow.nav-hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        
+        /* Mobile styles */
+        @media (max-width: 767px) {
+            .articlescroller nav .arrow {
+                top: 10%;
+                left: 0;
+            }
+            .articlescroller nav .arrow span {
+                width: 0.5rem;
+                height: 0.5rem;
+                margin: 0.6rem;
+            }
+            .articlescroller nav .arrow.right {
+                right: 0;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block body_class %}l4 article site_sermitsiaq section_{{ article.section }} iteras-paywall{% endblock %}
+
+{% block content %}
+<section id="mainArticleSection" class="main article">
+    <div data-element-guid="7d822755-62f3-40c3-c9d3-9e2ecd0411cd" class="placeholder placement-top">
+        <div data-element-guid="ac8983ec-0a70-4188-aa31-8dede9a0776e" class="column google-ad small-12 large-12 small-abs-12 large-abs-12" style="">
+            <span class="ad-label">{{ _('Annonce') }}</span>
+            <div class="adunit" id="2018-Top-Mega-banner" style="display: none;" data-google-query-id=""></div>
+            <script>
+                googletag.cmd.push(function() {
+                    googletag.display('2018-Top-Mega-banner');
+                });
+            </script>
+        </div>
+    </div>
+    
+    <main class="pageWidth">
+        <article class=" ">
+            <section class="main article k5a-article" id="main" data-k5a-trackerid="page-0">
+                <div></div>
+                <script>
+                (function() {
+                    let windowUrl = window.location.href;
+                    windowUrl = windowUrl.substring(windowUrl.indexOf('?') + 1);
+                    let messageElement = document.querySelector('.shareableMessage');
+                    if (windowUrl && windowUrl.includes('code') && windowUrl.includes('expires')) {
+                        messageElement.style.display = 'block';
+                    } 
+                })();
+                </script>
+                
+                <div data-element-guid="{{ article.element_guid|default('') }}" class="articleHeader column hasCaption">
+                    
+                    <h1 class="headline mainTitle" style="">{{ article.title }}</h1>
+                    
+                    {% if article.excerpt %}
+                    <h2 class="subtitle" style="">{{ article.excerpt }}</h2>
+                    {% endif %}
+
+                    <div class="media">
+                        {% if article.image_data %}
+                        <figure data-element-guid="{{ article.image_data.element_guid|default('') }}" class="headerImage">
+                            <div class="img fullwidthTarget">
+                                <picture>
+                                    {% if article.image_data.desktop_webp %}
+                                    <source srcset="{{ article.image_data.desktop_webp }}" 
+                                        width="{{ article.image_data.desktop_width|default('1058') }}"
+                                        height="{{ article.image_data.desktop_height|default('604') }}"
+                                        media="(min-width: 768px)"
+                                        type="image/webp">    
+                                    {% endif %}
+                                    {% if article.image_data.desktop_jpeg %}
+                                    <source srcset="{{ article.image_data.desktop_jpeg }}" 
+                                        width="{{ article.image_data.desktop_width|default('1058') }}"
+                                        height="{{ article.image_data.desktop_height|default('604') }}"
+                                        media="(min-width: 768px)"
+                                        type="image/jpeg">    
+                                    {% endif %}
+                                    {% if article.image_data.mobile_webp %}
+                                    <source srcset="{{ article.image_data.mobile_webp }}" 
+                                        width="{{ article.image_data.mobile_width|default('480') }}"
+                                        height="{{ article.image_data.mobile_height|default('274') }}"
+                                        media="(max-width: 767px)"
+                                        type="image/webp">    
+                                    {% endif %}
+                                    {% if article.image_data.mobile_jpeg %}
+                                    <source srcset="{{ article.image_data.mobile_jpeg }}" 
+                                        width="{{ article.image_data.mobile_width|default('480') }}"
+                                        height="{{ article.image_data.mobile_height|default('274') }}"
+                                        media="(max-width: 767px)"
+                                        type="image/jpeg">    
+                                    {% endif %}
+                                    <img src="{{ article.image_data.fallback|default(article.image_data.mobile_jpeg|default('')) }}"
+                                        width="{{ article.image_data.mobile_width|default('480') }}"
+                                        height="{{ article.image_data.mobile_height|default('274') }}"
+                                        title="{{ article.title }}"
+                                        alt="{{ article.image_data.alt|default('') }}"
+                                        style="">
+                                </picture>
+                            </div>
+                        </figure>
+                        {% endif %}
+                        
+                        <div class="floatingText"></div>
+                    </div>
+
+                    {% if article.image_data and article.image_data.caption %}
+                    <div class="caption" data-showmore="Vis mere">
+                        <figcaption itemprop="caption" class="">{{ article.image_data.caption }}</figcaption>
+                        {% if article.image_data.author %}
+                        <figcaption itemprop="author" class="" data-byline-prefix="">Foto: {{ article.image_data.author }}</figcaption>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    {# Article Meta (bylines and dates) - từ article_detail.content_blocks hoặc fallback #}
+                    {% if article_detail and article_detail.content_blocks %}
+                        {% for block in article_detail.content_blocks %}
+                            {% if block.type == 'article_meta' %}
+                                <div data-element-guid="{{ block.element_guid|default('') }}" class="meta">
+                                    {% if block.bylines %}
+                                    <div class="bylines">
+                                        {% for byline in block.bylines %}
+                                        <div data-element-guid="{{ byline.element_guid|default('') }}" class="byline column" itemscope="" itemtype="http://schema.org/Person">
+                                            <div class="content">
+                                                {% if byline.author_image %}
+                                                <figure data-element-guid="{{ byline.element_guid|default('') }}">
+                                                    <picture>
+                                                        <img itemprop="image" src="{{ byline.author_image.src }}" width="{{ byline.author_image.width|default('180') }}" height="{{ byline.author_image.height|default('180') }}" alt="{{ byline.author_image.alt }}">
+                                                    </picture>
+                                                </figure>
+                                                {% endif %}
+                                                <address class="name">
+                                                    {% if byline.author_url %}
+                                                    <a rel="author" itemprop="url" href="{{ byline.author_url }}">
+                                                    {% endif %}
+                                                        <span class="lab-hidden-byline-name" itemprop="name">{{ byline.fullname }}</span>
+                                                        {% if byline.firstname %}
+                                                        <span class="firstname">{{ byline.firstname }}</span>
+                                                        {% endif %}
+                                                        {% if byline.lastname %}
+                                                        <span class="lastname">{{ byline.lastname }}</span>
+                                                        {% endif %}
+                                                    {% if byline.author_url %}
+                                                    </a>
+                                                    {% endif %}
+                                                    {% if byline.description %}
+                                                    <span class="lab-hidden-byline-name" itemprop="name">{{ byline.fullname }}</span>
+                                                    <span class="description">{{ byline.description }}</span>
+                                                    {% endif %}
+                                                </address>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                    {% if block.dates %}
+                                    <div class="dates">
+                                        {% if block.dates.published %}
+                                        <span class="dateGroup datePublished">
+                                            <span class="dateLabel">{{ block.dates.published.label }}</span>
+                                            <time datetime="{{ block.dates.published.datetime }}" title="{{ block.dates.published.title }}">{{ block.dates.published.text }}</time>
+                                        </span>
+                                        {% endif %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                    {# Fallback: sử dụng article.layout_data #}
+                    <div data-element-guid="f68305b1-96ac-423b-f4b9-b27f1f691058" class="meta">
+                        <div class="bylines">
+                            {% if article.layout_data and article.layout_data.author %}
+                            <div data-element-guid="580d30ec-88c6-435a-bdc6-4663fa45a8f5" class="byline column" itemscope itemtype="http://schema.org/Person">
+                                <div class="content">
+                                    <address class="name">
+                                        <span class="lab-hidden-byline-name" itemprop="name">{{ article.layout_data.author }}</span>
+                                        <span class="firstname">{{ article.layout_data.author }}</span>
+                                    </address>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="dates">
+                            {% if published_date_str %}
+                            <span class="dateGroup datePublished">
+                                <span class="dateLabel">{{ _('Offentliggjort') }}</span>
+                                <time datetime="{{ article.published_date.isoformat() if article.published_date else '' }}" title="{{ published_date_str }}">{{ published_date_str }}</time>
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div data-element-guid="f68305b1-96ac-423b-f4b9-b27f1f691058" class="bodytext large-12 small-12 medium-12">
+                    {% if article_detail and article_detail.content_blocks %}
+                    {# Render structured content blocks theo đúng thứ tự #}
+                    <div class="article-content">
+                        {# Kiểm tra xem có intro section không #}
+                        {% set has_intro = false %}
+                        {% set intro_count = 0 %}
+                        {% for block in article_detail.content_blocks %}
+                            {% if block.type == 'paragraph' and loop.index <= 2 %}
+                                {% set intro_count = intro_count + 1 %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if intro_count >= 2 %}
+                            {% set has_intro = true %}
+                        {% endif %}
+                        
+                        {# Render intro section nếu có #}
+                        {% if has_intro %}
+                        <div class="bodytext intro">
+                            {% for block in article_detail.content_blocks[:2] %}
+                                {% if block.type == 'paragraph' %}
+                                {{ block.html|safe }}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        
+                        {# Render content-text section với tất cả blocks còn lại #}
+                        <div class="bodytext {% if has_intro %}content-text{% endif %}">
+                            {% for block in article_detail.content_blocks %}
+                                {% if has_intro and loop.index <= 2 %}
+                                    {# Skip intro blocks #}
+                                {% else %}
+                                {% if block.type == 'paragraph' %}
+                                    {{ block.html|safe }}
+                                {% elif block.type == 'heading' %}
+                                    <{{ block.level }}>{{ block.text }}</{{ block.level }}>
+                                {% elif block.type == 'image' %}
+                                    <figure data-element-guid="{{ block.element_guid|default('') }}" class="{% if block.classes %}{{ block.classes|join(' ') }}{% endif %}">
+                                        {% if not block.is_header_image %}
+                                        <div class="content" style="">
+                                        {% endif %}
+                                            <div class="img fullwidthTarget">
+                                                <picture>
+                                                    {% if block.image_sources.desktop_webp %}
+                                                    <source srcset="{{ block.image_sources.desktop_webp }}" 
+                                                        width="{{ block.image_sources.desktop_width|default('706') }}"
+                                                        height="{{ block.image_sources.desktop_height|default('530') }}"
+                                                        media="(min-width: 768px)"
+                                                        type="image/webp">
+                                                    {% endif %}
+                                                    {% if block.image_sources.desktop_jpeg %}
+                                                    <source srcset="{{ block.image_sources.desktop_jpeg }}" 
+                                                        width="{{ block.image_sources.desktop_width|default('706') }}"
+                                                        height="{{ block.image_sources.desktop_height|default('530') }}"
+                                                        media="(min-width: 768px)"
+                                                        type="image/jpeg">
+                                                    {% endif %}
+                                                    {% if block.image_sources.mobile_webp %}
+                                                    <source srcset="{{ block.image_sources.mobile_webp }}" 
+                                                        width="{{ block.image_sources.mobile_width|default('480') }}"
+                                                        height="{{ block.image_sources.mobile_height|default('360') }}"
+                                                        media="(max-width: 767px)"
+                                                        type="image/webp">
+                                                    {% endif %}
+                                                    {% if block.image_sources.mobile_jpeg %}
+                                                    <source srcset="{{ block.image_sources.mobile_jpeg }}" 
+                                                        width="{{ block.image_sources.mobile_width|default('480') }}"
+                                                        height="{{ block.image_sources.mobile_height|default('360') }}"
+                                                        media="(max-width: 767px)"
+                                                        type="image/jpeg">
+                                                    {% endif %}
+                                                    <img src="{{ block.image_sources.fallback|default('') }}" 
+                                                        width="{{ block.image_sources.mobile_width|default('480') }}"
+                                                        height="{{ block.image_sources.mobile_height|default('360') }}"
+                                                        title="{{ block.image_sources.title|default('') }}"
+                                                        alt="{{ block.image_sources.alt|default('') }}"
+                                                        loading="lazy"
+                                                        style="">
+                                                </picture>
+                                            </div>
+                                            {% if block.caption or block.author %}
+                                            <div class="caption" data-showmore="Vis mere">
+                                                {% if block.caption %}
+                                                <figcaption itemprop="caption" class="">{{ block.caption }}</figcaption>
+                                                {% endif %}
+                                                {% if block.author %}
+                                                <figcaption itemprop="author" class="" data-byline-prefix="">{{ block.author }}</figcaption>
+                                                {% endif %}
+                                            </div>
+                                            {% endif %}
+                                        {% if not block.is_header_image %}
+                                        </div>
+                                        {% endif %}
+                                    </figure>
+                                {% elif block.type == 'ad' %}
+                                    <div data-element-guid="{{ block.element_guid|default('') }}" class="column google-ad {% if block.classes %}{{ block.classes|join(' ') }}{% endif %}" style="">
+                                        <span class="ad-label">{{ _('Annonce') }}</span>
+                                        <div class="adunit" id="{{ block.ad_id }}" style="display: none;" data-google-query-id=""></div>
+                                        <script>
+                                            googletag.cmd.push(function() {
+                                                googletag.display('{{ block.ad_id }}');
+                                            });
+                                        </script>
+                                    </div>
+                                {% elif block.type == 'paywall_offer' %}
+                                    <div class="iteras-offers">
+                                        <div class=""></div>
+                                        <h2 class="offer-title">{{ _('Abonnementer') }}</h2>
+                                        <a class="already-subscribed" href="https://www.sermitsiaq.ag/login" style="display: none;">
+                                            {{ _('For at læse videre skal du være abonnent! Log ind') }}
+                                        </a>
+                                        <div class="offer-list">
+                                            {% for offer in block.offers %}
+                                            <div class="offer">
+                                                <h3 class="offer-name">{{ offer.name }}</h3>
+                                                <ul class="offer-pros">
+                                                    {% for pro in offer.pros %}
+                                                    <li><span>{{ pro }}</span></li>
+                                                    {% endfor %}
+                                                </ul>
+                                                <a class="offer-cta" href="{{ offer.cta_url }}">{{ offer.cta_text }}</a>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        {% if block.description %}
+                                        <p class="offer-description">{{ block.description }}</p>
+                                        {% endif %}
+                                    </div>
+                                {% elif block.type == 'article_footer_tags' %}
+                                    <div data-element-guid="{{ block.element_guid|default('') }}" class="column articleFooter">
+                                        <span class="tags">
+                                            {% for tag in block.tags %}
+                                            <a href="{{ tag.url }}">{{ tag.text }}</a>
+                                            {% endfor %}
+                                        </span>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        </div>
+                    </div>
+                    {% elif article.content %}
+                    {# Fallback to raw HTML content #}
+                    <div class="article-content">
+                        <p></p>
+                        <div data-element-guid="6ff57721-8253-4df9-9b56-de1caea0a3a4" class="column google-ad floatRight widthAuto" style="">
+                            <span class="ad-label">{{ _('Annonce') }}</span>
+                            <div class="adunit" id="2018-Artikelbanner" style="display: none;" data-google-query-id=""></div>
+                            <script>
+                                googletag.cmd.push(function() {
+                                    googletag.display('2018-Artikelbanner');
+                                });
+                            </script>
+                        </div>
+                        {{ article.content|safe }}
+                    </div>
+                    {% else %}
+                    <p>{{ _('Content not available') }}</p>
+                    {% endif %}
+                </div>
+
+                {% if article.layout_data and article.layout_data.tags %}
+                <div data-element-guid="f68305b1-96ac-423b-f4b9-b27f1f691058" class="column articleFooter">
+                    <span class="tags">
+                        {% for tag in article.layout_data.tags %}
+                        <a href="/tag/{{ tag|lower|replace(' ', '%20') }}">{{ tag }}</a>
+                        {% endfor %}
+                    </span>
+                </div>
+                {% endif %}
+
+                <div class="row social">
+                    <div class="column large-12 small-12">
+                        <a target="_blank" href="https://www.facebook.com/sharer.php?u={{ article.published_url|urlencode }}" class="fi-social-facebook" aria-label="{{ _('Del på Facebook') }}"></a>
+                        <a target="_blank" href="mailto:?subject={{ article.title|urlencode }}&body={{ article.excerpt|urlencode }}%0D{{ article.published_url|urlencode }}" class="fi-mail" aria-label="{{ _('Del via e-mail') }}"></a>
+                    </div>
+                </div>
+
+                <!-- Job Slider - từ home page -->
+                {% if job_slider_data %}
+                <div data-element-guid="34a64b31-751f-46cf-8f4d-1cbd636ff872" class="row small-12 large-12" style="">
+                    {% set row_guid = 'job-slider-detail' %}
+                    {% set slider_title = job_slider_data.slider_title %}
+                    {% set slider_articles = job_slider_data.slider_articles %}
+                    {% set slider_id = job_slider_data.slider_id %}
+                    {% set header_link = job_slider_data.header_link %}
+                    {% set extra_classes = job_slider_data.extra_classes %}
+                    {% set header_classes = job_slider_data.header_classes %}
+                    {% set source_class = job_slider_data.source_class %}
+                    {% set items_per_view = job_slider_data.items_per_view %}
+                    {% set has_nav = job_slider_data.has_nav %}
+                    {% include 'partials/layout_job_slider.html' %}
+                </div>
+                {% endif %}
+                
+                <!-- SAMFUND Articles: 2 articles row -->
+                {% if samfund_articles and samfund_articles|length >= 2 %}
+                <div data-element-guid="samfund-articles-2" class="row small-12 large-12" style="">
+                    {% set articles = samfund_articles[:2] %}
+                    {% set row_guid = 'samfund-articles-row-1' %}
+                    {% include 'partials/layout_2_articles.html' %}
+                </div>
+                {% endif %}
+                
+                <!-- SAMFUND Articles: 3 articles row -->
+                {% if samfund_articles and samfund_articles|length >= 5 %}
+                <div data-element-guid="samfund-articles-3" class="row small-12 large-12" style="">
+                    {% set articles = samfund_articles[2:5] %}
+                    {% set row_guid = 'samfund-articles-row-2' %}
+                    {% include 'partials/layout_3_articles.html' %}
+                </div>
+                {% endif %}
+
+                <!-- PODCASTI Slider (giống NYHEDER slider) -->
+                {% if podcasti_slider_detail_data %}
+                {% set slider_title = podcasti_slider_detail_data.slider_title %}
+                {% set slider_articles = podcasti_slider_detail_data.slider_articles %}
+                {% set slider_id = podcasti_slider_detail_data.slider_id %}
+                {% set source_class = podcasti_slider_detail_data.source_class %}
+                {% set items_per_view = podcasti_slider_detail_data.items_per_view %}
+                {% set has_nav = podcasti_slider_detail_data.has_nav %}
+                {% set row_guid = podcasti_slider_detail_data.row_guid %}
+                {% include 'partials/layout_slider.html' %}
+                {% endif %}
+
+            </section>
+        </article>
+        
+        <section class="related desktop-fullWidth mobile-fullWidth fullwidthTarget">
+            <div data-element-guid="fe102210-0307-4a5e-8ea8-67928d56ef99" class="page-content">
+                
+                <!-- Podcasti Slider -->
+                {% if podcasti_slider_data %}
+                <div data-element-guid="195ccd38-c013-4149-a96d-e95a7337138e" class="row small-12 large-12" style="" id="https://www.sermitsiaq.ag/podcasti">
+                    <!-- placeholder(#1) -->
+                    <div data-element-guid="{{ podcasti_slider_data.slider_id|default('article_list_podcasti') }}-podcasti" class="column articlescroller {{ podcasti_slider_data.source_class|default('source_podcasti_dk') }} {% if podcasti_slider_data.extra_classes %}{{ podcasti_slider_data.extra_classes|join(' ') }}{% else %}border-side-bottom mobile_border-side-bottom border_width_4 border_width_mobile_4{% endif %} small-12 large-12" style="" id="{{ podcasti_slider_data.slider_id|default('article_list_podcasti') }}">
+                        <div class="inner content fullwidthTarget">
+                            <h2 class="articlescroller-header {% if podcasti_slider_data.header_classes %}{{ podcasti_slider_data.header_classes|join(' ') }}{% else %}t24 tm25 color_mobile_no_bg_color primary color_mobile_primary align-left mobile_text_align_align-left font-IBMPlexSans{% endif %}" style="">{{ _(podcasti_slider_data.slider_title|default('PODCASTI')) }}</h2>
+                            <ul class="scroll-container swipehelper snap-container-x snap-element-start articles count_{{ podcasti_slider_data.items_per_view|default(4) }} ">
+                                {% for item in podcasti_slider_data.slider_articles %}
+                                <li data-section="{{ item.section|default('') }}" class="scroll-item snap-element column hasImage skipLeadText">
+                                    <a href="{{ item.url|default('#') }}">
+                                        {% if item.is_paywall %}
+                                        <figure>
+                                            <div class="paywallLabel"><span class="fi-plus"></span></div>
+                                            {% if item.image %}
+                                                {% if item.image.src %}
+                                            <img src="{{ item.image.src }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('172') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
+                                                {% elif item.image.fallback %}
+                                                <img src="{{ item.image.fallback }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('172') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
+                                                {% elif item.image.mobile_jpeg %}
+                                                <img src="{{ item.image.mobile_jpeg }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('172') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
+                                                {% endif %}
+                                            {% endif %}
+                                        </figure>
+                                        {% else %}
+                                        <figure>
+                                            {% if item.image %}
+                                                {% if item.image.src %}
+                                            <img src="{{ item.image.src }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('172') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
+                                                {% elif item.image.fallback %}
+                                                <img src="{{ item.image.fallback }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('172') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
+                                                {% elif item.image.mobile_jpeg %}
+                                                <img src="{{ item.image.mobile_jpeg }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('172') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
+                                                {% endif %}
+                                            {% endif %}
+                                        </figure>
+                                        {% endif %}
+                                        <div class="text-container">
+                                            {% if item.kicker %}
+                                            <h4>{{ item.kicker }}</h4>
+                                            {% endif %}
+                                            <h3>{{ item.title|default('Article Title') }}</h3>
+                                        </div>
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            {% if podcasti_slider_data.has_nav %}
+                            <nav>
+                                <span class="arrow left" role="button" aria-label="{{ _('Go left') }}">
+                                    <span></span>
+                                </span>
+                                <span class="arrow right" role="button" aria-label="{{ _('Go right') }}">
+                                    <span></span>
+                                </span>
+                            </nav>
+                            {% endif %}
+                        </div>
+                        {% set podcasti_slider_id = podcasti_slider_data.slider_id|default('article_list_podcasti') %}
+                        <script>
+                        (function () {
+                            window.dachserData.push('swipehelper', {
+                                selector: '#{{ podcasti_slider_id }}',
+                                itemsContainerSelector: '.scroll-container',
+                                itemsSelector: '.scroll-item',
+                                isHorizontal: true,
+                                autoScroll: {
+                                    enabled: true,
+                                    interval: '4000'
+                                },
+                                navItems: {
+                                    forwardSelector: 'nav .arrow.right',
+                                    backwardSelector: 'nav .arrow.left',
+                                },
+                                debug: false
+                            });
+                        }());
+                        </script>
+                    </div>
+                </div>
+                {% endif %}
+                
+            </div>
+        </section>
+    </main>
+    
+    <div data-element-guid="ac834632-8f4f-4d1f-b6c9-11178f4d4a12" class="placeholder placement-left">
+        <div data-element-guid="7c8b0f46-7b66-4aea-e7a9-4451489839c3" class="column google-ad small-12 large-12 small-abs-12 large-abs-12 sticky" style="top: 120px;">
+            <span class="ad-label">{{ _('Annonce') }}</span>
+            <div class="adunit" id="2018-Sticky-left" style="display: none;" data-google-query-id=""></div>
+            <script>
+                googletag.cmd.push(function() {
+                    googletag.display('2018-Sticky-left');
+                });
+            </script>
+        </div>
+    </div>
+    
+    <div data-element-guid="16fad7d2-0235-4292-940b-7c1c2202a52d" class="placeholder placement-right">
+        <div data-element-guid="b0246235-e4e8-4f2c-a84e-9261fd0127c4" class="column google-ad small-12 large-12 small-abs-12 large-abs-12 sticky" style="top: 120px;">
+            <span class="ad-label">{{ _('Annonce') }}</span>
+            <div class="adunit" id="2018-Sticky-right" style="display: none;" data-google-query-id=""></div>
+            <script>
+                googletag.cmd.push(function() {
+                    googletag.display('2018-Sticky-right');
+                });
+            </script>
+        </div>
+    </div>
+</section>
+
+<script>
+// Initialize SwipeHelper for sliders
+if (typeof window.dachserData === 'undefined') {
+    window.dachserData = [];
+}
+
+{% if job_slider_data %}
+(function() {
+    window.dachserData.push('swipehelper', {
+        selector: '#{{ job_slider_data.slider_id }}',
+        itemsContainerSelector: '.scroll-container',
+        itemsSelector: '.scroll-item',
+        isHorizontal: true,
+        autoScroll: {
+            enabled: true,
+            interval: '4000'
+        },
+        navItems: {
+            forwardSelector: 'nav .arrow.right',
+            backwardSelector: 'nav .arrow.left'
+        },
+        debug: false
+    });
+})();
+{% endif %}
+
+{% if podcasti_slider_detail_data %}
+(function() {
+    window.dachserData.push('swipehelper', {
+        selector: '#{{ podcasti_slider_detail_data.slider_id }}',
+        itemsContainerSelector: '.scroll-container',
+        itemsSelector: '.scroll-item',
+        isHorizontal: true,
+        autoScroll: {
+            enabled: true,
+            interval: '4000'
+        },
+        navItems: {
+            forwardSelector: 'nav .arrow.right',
+            backwardSelector: 'nav .arrow.left'
+        },
+        debug: false
+    });
+})();
+{% endif %}
+
+// Hàm tự build để xử lý slider navigation buttons
+function initSliderNavigation() {
+    console.log("🎠 Initializing custom slider navigation...");
+    
+    // Tìm tất cả các slider trên trang
+    const sliders = document.querySelectorAll('.articlescroller');
+    
+    sliders.forEach((slider, sliderIndex) => {
+        console.log(`  Processing slider ${sliderIndex + 1}...`);
+        
+        // Tìm scroll container và nav buttons trong slider này
+        const scrollContainer = slider.querySelector('.scroll-container');
+        const navLeft = slider.querySelector('nav .arrow.left');
+        const navRight = slider.querySelector('nav .arrow.right');
+        
+        if (!scrollContainer) {
+            console.warn(`  ⚠️  Slider ${sliderIndex + 1}: No scroll-container found`);
+            return;
+        }
+        
+        // Nếu không có nav buttons, skip slider này (ví dụ: slider NUUK)
+        if (!navLeft || !navRight) {
+            console.log(`  ℹ️  Slider ${sliderIndex + 1}: No nav buttons (static slider, e.g. NUUK)`);
+            return;
+        }
+        
+        console.log(`  ✅ Slider ${sliderIndex + 1}: Found container and nav buttons`);
+        
+        // Tính toán scroll amount: width của 4 items (1 viewport)
+        function getScrollAmount() {
+            const firstItem = scrollContainer.querySelector('.scroll-item');
+            if (!firstItem) return scrollContainer.clientWidth;
+            
+            // Lấy width của 1 item và nhân với 4
+            const itemWidth = firstItem.offsetWidth;
+            const scrollAmount = itemWidth * 4;
+            return scrollAmount;
+        }
+        
+        // Hàm scroll sang trái (back)
+        function scrollLeft() {
+            const scrollAmount = getScrollAmount();
+            const currentScroll = scrollContainer.scrollLeft;
+            const newScroll = Math.max(0, currentScroll - scrollAmount);
+            
+            scrollContainer.scrollTo({
+                left: newScroll,
+                behavior: 'smooth'
+            });
+            
+            console.log(`  ← Scrolled left: ${currentScroll} → ${newScroll}`);
+        }
+        
+        // Hàm scroll sang phải (next)
+        function scrollRight() {
+            const scrollAmount = getScrollAmount();
+            const currentScroll = scrollContainer.scrollLeft;
+            const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+            const newScroll = Math.min(maxScroll, currentScroll + scrollAmount);
+            
+            scrollContainer.scrollTo({
+                left: newScroll,
+                behavior: 'smooth'
+            });
+            
+            console.log(`  → Scrolled right: ${currentScroll} → ${newScroll}`);
+        }
+        
+        // Thêm event listeners cho nav buttons
+        navLeft.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            scrollLeft();
+        });
+        
+        navRight.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            scrollRight();
+        });
+        
+        // Cập nhật trạng thái nav buttons dựa trên vị trí scroll
+        function updateNavButtons() {
+            const currentScroll = scrollContainer.scrollLeft;
+            const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+            const threshold = 10; // 10px threshold
+            
+            // Ẩn/hiện nút left
+            if (currentScroll <= threshold) {
+                navLeft.classList.add('nav-hidden');
+            } else {
+                navLeft.classList.remove('nav-hidden');
+            }
+            
+            // Ẩn/hiện nút right
+            if (currentScroll >= maxScroll - threshold) {
+                navRight.classList.add('nav-hidden');
+            } else {
+                navRight.classList.remove('nav-hidden');
+            }
+        }
+        
+        // Cập nhật nav buttons khi scroll
+        scrollContainer.addEventListener('scroll', updateNavButtons);
+        
+        // Cập nhật nav buttons khi resize
+        window.addEventListener('resize', function() {
+            setTimeout(updateNavButtons, 100);
+        });
+        
+        // Cập nhật nav buttons ban đầu
+        setTimeout(updateNavButtons, 100);
+    });
+}
+
+// Khởi tạo khi DOM ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSliderNavigation);
+} else {
+    initSliderNavigation();
+}
+</script>
+
+{% endblock %}
+

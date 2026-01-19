@@ -17,14 +17,30 @@
 {% if item.is_paywall %}
                             <figure>
 <div class="paywallLabel  "><span class="fi-plus"></span> </div>
-{% if item.image and item.image.src %}
+{% if item.image %}
+    {% if item.image.src %}
                                 <img src="{{ item.image.src }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('159') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
+    {% elif item.image.fallback %}
+                                <img src="{{ item.image.fallback }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('159') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
+    {% elif item.image.desktop_jpeg %}
+                                <img src="{{ item.image.desktop_jpeg }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('159') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
+    {% elif item.image.mobile_jpeg %}
+                                <img src="{{ item.image.mobile_jpeg }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('159') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
+    {% endif %}
 {% endif %}
                             </figure>
 {% else %}
                             <figure>
-{% if item.image and item.image.src %}
+{% if item.image %}
+    {% if item.image.src %}
                                 <img src="{{ item.image.src }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('159') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
+    {% elif item.image.fallback %}
+                                <img src="{{ item.image.fallback }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('159') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
+    {% elif item.image.desktop_jpeg %}
+                                <img src="{{ item.image.desktop_jpeg }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('159') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
+    {% elif item.image.mobile_jpeg %}
+                                <img src="{{ item.image.mobile_jpeg }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('159') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
+    {% endif %}
 {% endif %}
                             </figure>
 {% endif %}

@@ -303,17 +303,546 @@ def tag_section(section):
 
 @article_view_bp.route('/article')
 @article_view_bp.route('/article/<int:article_id>')
-def article(article_id=None):
-    """Display article page - có thể dùng template mới hoặc 1.html"""
-    # Option 1: Dùng template mới với header/footer reuse
-    # return render_template('article.html', 
-    #     article_id=article_id,
-    #     article={'title': 'Article Title', 'description': 'Description'},
-    #     section='samfund',
-    #     tags='tag1,tag2'
-    # )
+@article_view_bp.route('/<section>/<slug>/<int:article_id>')
+def article_detail(article_id=None, section=None, slug=None):
+    """
+    Display article detail page
+    Routes:
+    - /article/<article_id>
+    - /<section>/<slug>/<article_id>
+    """
+    from database import db
+    from utils import get_article_with_fallback
     
-    # Option 2: Giữ nguyên 1.html (backward compatible)
-    return render_template('1.html', article_id=article_id)
+    # Get current language
+    current_language = session.get('language', 'en')
+    if request.args.get('lang'):
+        lang = request.args.get('lang')
+        if lang in ['da', 'kl', 'en']:
+            current_language = lang
+    
+    if not article_id:
+        from flask import abort
+        abort(404)
+    
+    # Get article với fallback language
+    article = get_article_with_fallback(article_id, preferred_language=current_language)
+    
+    if not article:
+        from flask import abort
+        abort(404)
+    
+    # Format published date
+    published_date_str = None
+    if article.published_date:
+        from flask_babel import format_date
+        published_date_str = format_date(article.published_date, format='long')
+    
+    # Get related articles (cùng section, cùng language, exclude current article)
+    related_articles = Article.query.filter_by(
+        section=article.section,
+        language=current_language,
+        is_temp=False,
+        is_home=False
+    ).filter(
+        Article.id != article.id
+    ).order_by(Article.published_date.desc()).limit(5).all()
+    
+    # Get job slider data từ home page (section='home', is_home=True)
+    job_slider_data = None
+    # Query tất cả job sliders từ home page và filter trong Python
+    all_home_sliders = Article.query.filter_by(
+        section='home',
+        language=current_language,
+        is_temp=False,
+        is_home=True,
+        layout_type='job_slider'
+    ).all()
+    
+    # Tìm job slider (có thể có nhiều, lấy cái đầu tiên)
+    job_articles = None
+    for slider in all_home_sliders:
+        if slider.layout_data and slider.layout_data.get('source_class') in ['source_job-dk', 'source_feed_random_kl_jobs', 'source_job']:
+            job_articles = slider
+            break
+    
+    if job_articles and job_articles.layout_data:
+        layout_data = job_articles.layout_data
+        if layout_data.get('slider_articles'):
+            # Lấy 10 articles đầu tiên
+            slider_articles = layout_data.get('slider_articles', [])[:10]
+            
+            # Update URLs từ published_url sang Flask app URL
+            from database import Article as ArticleModel
+            updated_slider_articles = []
+            for item in slider_articles:
+                updated_item = item.copy()
+                # Tìm Article bằng published_url hoặc id
+                if item.get('id'):
+                    try:
+                        article_obj = ArticleModel.query.get(item['id'])
+                        if article_obj:
+                            article_dict = article_obj.to_dict()
+                            updated_item['url'] = article_dict.get('url', item.get('url', '#'))
+                    except:
+                        updated_item['url'] = item.get('url', '#')
+                else:
+                    published_url = item.get('url') or item.get('published_url')
+                    if published_url:
+                        try:
+                            article_obj = ArticleModel.query.filter_by(published_url=published_url).first()
+                            if article_obj:
+                                article_dict = article_obj.to_dict()
+                                updated_item['url'] = article_dict.get('url', published_url)
+                            else:
+                                updated_item['url'] = published_url
+                        except:
+                            updated_item['url'] = published_url
+                updated_slider_articles.append(updated_item)
+            
+            job_slider_data = {
+                'slider_title': layout_data.get('slider_title', 'JOB'),
+                'slider_articles': updated_slider_articles,
+                'slider_id': layout_data.get('slider_id', 'job-slider-detail'),
+                'source_class': layout_data.get('source_class', 'source_job-dk'),
+                'items_per_view': layout_data.get('items_per_view', 4),
+                'has_nav': layout_data.get('has_nav', True),
+                'header_link': layout_data.get('header_link'),
+                'extra_classes': layout_data.get('extra_classes', []),
+                'header_classes': layout_data.get('header_classes', [])
+            }
+    
+    # Get podcasti slider data (từ home page hoặc section)
+    podcasti_slider_data = None
+    # Tìm podcasti slider từ home page trước
+    # Query tất cả sliders và filter trong Python (vì JSON field query phức tạp)
+    all_sliders = Article.query.filter_by(
+        section='home',
+        language=current_language,
+        is_temp=False,
+        is_home=True,
+        layout_type='slider'
+    ).all()
+    
+    # Filter trong Python để tìm podcasti slider
+    podcasti_articles = None
+    for slider in all_sliders:
+        if slider.layout_data and slider.layout_data.get('source_class') in ['source_podcasti_dk', 'source_podcasti']:
+            podcasti_articles = slider
+            break
+    
+    # Nếu không có trong home, tìm trong section podcasti
+    if not podcasti_articles:
+        podcasti_articles = Article.query.filter_by(
+            section='podcasti',
+            language=current_language,
+            is_temp=False,
+            is_home=False,
+            layout_type='slider'
+        ).first()
+    
+    if podcasti_articles and podcasti_articles.layout_data:
+        layout_data = podcasti_articles.layout_data
+        if layout_data.get('slider_articles'):
+            podcasti_slider_data = {
+                'slider_title': layout_data.get('slider_title', 'PODCASTI'),
+                'slider_articles': layout_data.get('slider_articles', [])[:10],
+                'slider_id': layout_data.get('slider_id', 'article_list_podcasti'),
+                'source_class': layout_data.get('source_class', 'source_podcasti_dk'),
+                'items_per_view': layout_data.get('items_per_view', 4),
+                'has_nav': layout_data.get('has_nav', True),
+                'extra_classes': layout_data.get('extra_classes', ['border-side-bottom', 'mobile_border-side-bottom', 'border_width_4', 'border_width_mobile_4']),
+                'header_classes': layout_data.get('header_classes', ['t24', 'tm25', 'color_mobile_no_bg_color', 'primary', 'color_mobile_primary', 'align-left', 'mobile_text_align_align-left', 'font-IBMPlexSans'])
+            }
+    
+    # Get article detail content blocks
+    article_detail = None
+    if article.published_url:
+        from services.article_detail_parser import ArticleDetailParser
+        article_detail = ArticleDetailParser.get_article_detail(article.published_url)
+    
+    # Get 5 articles đầu tiên từ section "SAMFUND" để hiển thị dưới Job slider
+    samfund_articles = Article.query.filter_by(
+        section='samfund',
+        language=current_language,
+        is_temp=False,
+        is_home=False
+    ).filter(
+        Article.id != article.id  # Exclude current article
+    ).order_by(Article.published_date.desc().nullslast()).limit(5).all()
+    
+    # Convert to dict và update URLs
+    samfund_articles_list = []
+    for art in samfund_articles:
+        art_dict = art.to_dict()
+        samfund_articles_list.append(art_dict)
+    
+    # Get 10 articles từ section "PODCASTI" để hiển thị slider dưới SAMFUND articles
+    podcasti_articles = Article.query.filter_by(
+        section='podcasti',
+        language=current_language,
+        is_temp=False,
+        is_home=False
+    ).filter(
+        Article.id != article.id  # Exclude current article
+    ).order_by(Article.published_date.desc().nullslast()).limit(10).all()
+    
+    # Convert to dict và update URLs
+    podcasti_articles_list = []
+    for art in podcasti_articles:
+        art_dict = art.to_dict()
+        podcasti_articles_list.append(art_dict)
+    
+    # Tạo slider data cho PODCASTI slider (giống NYHEDER slider)
+    podcasti_slider_detail_data = None
+    if podcasti_articles_list:
+        podcasti_slider_detail_data = {
+            'slider_title': 'PODCASTI',
+            'slider_articles': podcasti_articles_list,
+            'slider_id': 'article_list_podcasti_detail',
+            'source_class': 'source_nyheder',  # Giống NYHEDER slider
+            'items_per_view': 4,
+            'has_nav': True,
+            'row_guid': 'podcasti-slider-detail'
+        }
+    
+    return render_template('article_detail.html',
+        article=article,
+        published_date_str=published_date_str,
+        related_articles=related_articles,
+        job_slider_data=job_slider_data,
+        podcasti_slider_data=podcasti_slider_data,
+        article_detail=article_detail,
+        samfund_articles=samfund_articles_list,
+        podcasti_slider_detail_data=podcasti_slider_detail_data
+    )
+
+
+@article_view_bp.route('/article/test')
+def article_detail_test():
+    """
+    Test route với fake data để test UI
+    """
+    from datetime import datetime
+    from flask_babel import format_date
+    
+    # Mock article object
+    class MockArticle:
+        def __init__(self):
+            self.id = 9999
+            self.title = "Trump vil lægge told på Danmark på grund af Grønland"
+            self.excerpt = "Told mod Danmark og andre lande vil gælde, indtil USA og Danmark har en aftale om Grønland, skriver Trump."
+            self.content = """
+            <p><span data-lab-font_weight="font-weight-bold" class="font-weight-bold m-font-weight-bold">Der vil blive lagt</span> ti procent told på varer fra Danmark og flere andre europæiske lande fra 1. februar på grund af situationen omkring Grønland.</p>
+            <p>Det skriver USA's præsident, Donald Trump, på sit sociale medie, Truth Social, lørdag.</p>
+            <p>De øvrige lande er Norge, Sverige, Frankrig, Tyskland, Storbritannien, Holland og Finland.</p>
+            <p>Fra 1. juni 2026 vil tolden blive øget til 25 procent, skriver Trump.</p>
+            <p>Toldsatsen vil være gældende, indtil der er indgået en aftale om amerikansk "anskaffelse" af Grønland, skriver Trump.</p>
+            <p>- USA har forsøgt at gennemføre denne handel i over 150 år. Mange præsidenter har forsøgt - og med god grund - men Danmark har altid nægtet det, skriver præsidenten.</p>
+            <p>Trump gentager påstande om, at Grønland er truet af Kina og Rusland, som "vil have" øen.</p>
+            <p>- Verdensfreden er på spil, skriver den amerikanske præsident.</p>
+            """
+            self.section = "samfund"
+            self.language = "en"
+            self.element_guid = "2095b6bd-d14e-4712-aa41-c1e7d6a17169"
+            self.published_date = datetime.now()
+            self.published_url = "https://www.sermitsiaq.ag/samfund/trump-vil-laegge-told-pa-danmark-pa-grund-af-gronland/2331902"
+            self.image_data = {
+                'element_guid': 'c85f0d49-dda2-47e6-a3a1-81a4d65ffa50',
+                'desktop_webp': 'https://image.sermitsiaq.ag/2331906.webp?imageId=2331906&width=2116&height=1208&format=webp',
+                'desktop_jpeg': 'https://image.sermitsiaq.ag/2331906.webp?imageId=2331906&width=2116&height=1208&format=jpg',
+                'mobile_webp': 'https://image.sermitsiaq.ag/2331906.webp?imageId=2331906&width=960&height=548&format=webp',
+                'mobile_jpeg': 'https://image.sermitsiaq.ag/2331906.webp?imageId=2331906&width=960&height=548&format=jpg',
+                'desktop_width': 1058,
+                'desktop_height': 604,
+                'mobile_width': 480,
+                'mobile_height': 274,
+                'fallback': 'https://image.sermitsiaq.ag/2331906.webp?imageId=2331906&width=960&height=548&format=jpg',
+                'caption': '',
+                'author': 'Brendan Smialowski/AFP/Ritzau Scanpix',
+                'alt': ''
+            }
+            self.layout_data = {
+                'author': 'Ritzau',
+                'tags': ['grønland', 'donald trump', 'danmark', 'usa', 'told', 'samfund']
+            }
+        
+        def isoformat(self):
+            return self.published_date.isoformat()
+    
+    article = MockArticle()
+    published_date_str = format_date(article.published_date, format='long')
+    
+    # Mock related articles
+    class MockRelatedArticle:
+        def __init__(self, title, section, id_num):
+            self.id = id_num
+            self.title = title
+            self.section = section
+            self.element_guid = f"mock-{id_num}"
+            self.is_paywall = id_num % 2 == 0
+            self.site_alias = "sermitsiaq"
+            self.instance = f"mock{id_num}"
+            self.published_date = datetime.now()
+            self.published_url = f"https://www.sermitsiaq.ag/{section}/article-{id_num}"
+            self.k5a_url = f"https://www.sermitsiaq.ag/a/{id_num}"
+            self.image_data = {
+                'element_guid': f"img-{id_num}",
+                'desktop_webp': f'https://image.sermitsiaq.ag/{id_num}.webp?format=webp',
+                'desktop_jpeg': f'https://image.sermitsiaq.ag/{id_num}.jpg?format=jpg',
+                'mobile_webp': f'https://image.sermitsiaq.ag/{id_num}.webp?format=webp',
+                'mobile_jpeg': f'https://image.sermitsiaq.ag/{id_num}.jpg?format=jpg',
+                'desktop_width': 353,
+                'desktop_height': 230,
+                'mobile_width': 480,
+                'mobile_height': 312,
+                'fallback': f'https://image.sermitsiaq.ag/{id_num}.jpg',
+                'alt': title
+            }
+        
+        def to_dict(self):
+            return {
+                'id': self.id,
+                'title': self.title,
+                'section': self.section,
+                'element_guid': self.element_guid,
+                'is_paywall': self.is_paywall,
+                'site_alias': self.site_alias,
+                'instance': self.instance,
+                'published_date': self.published_date,
+                'published_url': self.published_url,
+                'k5a_url': self.k5a_url,
+                'image_data': self.image_data
+            }
+        
+        def isoformat(self):
+            return self.published_date.isoformat()
+    
+    related_articles = [
+        MockRelatedArticle("Mand sigtes for forsøg på manddrab i Aasiaat", "samfund", 1001),
+        MockRelatedArticle("Har vi glemt det største problem?", "samfund", 1002),
+        MockRelatedArticle("EU-ambassadører er indkaldt til hastemøde om Grønland", "samfund", 1003),
+        MockRelatedArticle("Ud i mørket med gule jakker, bolsjer og kondomer", "samfund", 1004),
+        MockRelatedArticle("Ny podcast: Formanden fylder 67 – men giver ikke slip", "samfund", 1005)
+    ]
+    
+    # Mock job slider data
+    job_slider_data = {
+        'slider_title': 'JOB',
+        'slider_articles': [
+            {
+                'title': 'Medarbejder søges som Flyver til institution Puiaq',
+                'url': 'https://www.sjob.gl/job-dk/medarbejder-soges-som-flyver-til-institution-puiaq/2319547',
+                'section': 'job dk',
+                'is_paywall': False,
+                'image': {
+                    'src': 'https://image.sermitsiaq.ag/2065376.jpg?imageId=2065376&width=530&height=344',
+                    'width': 265,
+                    'height': 172,
+                    'alt': ''
+                }
+            },
+            {
+                'title': '2 medhjælpere søges til Sikkersoq',
+                'url': 'https://www.sjob.gl/job-dk/2-medhjaelpere-soges-til-sikkersoq/2326433',
+                'section': 'job dk',
+                'is_paywall': False,
+                'image': {
+                    'src': 'https://image.sermitsiaq.ag/2065376.jpg?imageId=2065376&width=530&height=344',
+                    'width': 265,
+                    'height': 172,
+                    'alt': ''
+                }
+            },
+            {
+                'title': 'Departementet for Børn, Unge, Familier og Indenrigsanliggender søger en Juridisk Fuldmægtig',
+                'url': 'https://www.sjob.gl/job-dk/departementet-for-born-unge-familier-og-indenrigsanliggender-soger-en-juridisk-fuldmaegtig/2327006',
+                'section': 'job dk',
+                'is_paywall': False,
+                'image': {
+                    'src': 'https://image.sermitsiaq.ag/2200481.jpg?imageId=2200481&width=530&height=344',
+                    'width': 265,
+                    'height': 172,
+                    'alt': ''
+                }
+            },
+            {
+                'title': 'Tilsynsførende pædagogisk konsulent til Dagtilbudsafdelingen',
+                'url': 'https://www.sjob.gl/job-dk/tilsynsforende-paedagogisk-konsulent-til-dagtilbudsafdelingen/2326014',
+                'section': 'job dk',
+                'is_paywall': False,
+                'image': {
+                    'src': 'https://image.sermitsiaq.ag/2065376.jpg?imageId=2065376&width=530&height=344',
+                    'width': 265,
+                    'height': 172,
+                    'alt': ''
+                }
+            },
+            {
+                'title': 'GUX Nuuk søger en psykoterapeut',
+                'url': 'https://www.sjob.gl/job-dk/gux-nuuk-soger-en-psykoterapeut/2328017',
+                'section': 'job dk',
+                'is_paywall': False,
+                'image': {
+                    'src': 'https://image.sermitsiaq.ag/2136657.jpg?imageId=2136657&width=530&height=344',
+                    'width': 265,
+                    'height': 172,
+                    'alt': ''
+                }
+            }
+        ],
+        'slider_id': 'article_list_test_job',
+        'source_class': 'source_feed_random_dk_jobs',
+        'items_per_view': 4,
+        'has_nav': True,
+        'header_link': {
+            'url': 'https://www.sjob.gl/',
+            'text': 'Se alle jobs'
+        },
+        'extra_classes': ['bg-custom-2', 'color_mobile_bg-custom-2', 'hasContentPadding', 'mobile-hasContentPadding'],
+        'header_classes': ['t25', 'octonary', 'color_mobile_octonary', 'font-IBMPlexSans']
+    }
+    
+    # Mock podcasti slider data
+    podcasti_slider_data = {
+        'slider_title': 'PODCASTI',
+        'slider_articles': [
+            {
+                'title': 'Nuuk Lufthavn giver guld til taxaerne',
+                'url': 'https://www.sermitsiaq.ag/erhverv/nuuk-lufthavn-giver-guld-til-taxaerne/2283978',
+                'section': 'erhverv',
+                'is_paywall': False,
+                'image': {
+                    'src': 'https://image.sermitsiaq.ag/2283995.webp?imageId=2283995&width=530&height=344',
+                    'width': 265,
+                    'height': 172,
+                    'alt': ''
+                }
+            },
+            {
+                'title': 'Naja Lyberth: Der er stadig mange kampe at kæmpe',
+                'url': 'https://www.sermitsiaq.ag/samfund/naja-lyberth-der-er-stadig-mange-kampe-at-kaempe/2279487',
+                'section': 'samfund',
+                'is_paywall': True,
+                'image': {
+                    'src': 'https://image.sermitsiaq.ag/2279490.webp?imageId=2279490&width=530&height=344',
+                    'width': 265,
+                    'height': 172,
+                    'alt': ''
+                }
+            },
+            {
+                'title': 'Bentiaraq Ottosen: Vi kan ikke undvære udenlandsk arbejdskraft',
+                'url': 'https://www.sermitsiaq.ag/podcasti/bentiaraq-ottosen-vi-kan-ikke-undvaere-udenlandsk-arbejdskraft/2259171',
+                'section': 'podcasti',
+                'is_paywall': True,
+                'image': {
+                    'src': 'https://image.sermitsiaq.ag/2259182.webp?imageId=2259182&width=530&height=344',
+                    'width': 265,
+                    'height': 172,
+                    'alt': ''
+                }
+            },
+            {
+                'title': 'Kaos i lufthavnen – direktøren forklarer sig',
+                'url': 'https://www.sermitsiaq.ag/podcasti/kaos-i-lufthavnen-direktoren-forklarer-sig/2258058',
+                'section': 'podcasti',
+                'is_paywall': True,
+                'image': {
+                    'src': 'https://image.sermitsiaq.ag/2258165.webp?imageId=2258165&width=530&height=344',
+                    'width': 265,
+                    'height': 172,
+                    'alt': ''
+                }
+            },
+            {
+                'title': 'Stålkvinden er tilbage – men udenfor maskinrummet',
+                'url': 'https://www.sermitsiaq.ag/podcasti/stalkvinden-er-tilbage-men-udenfor-maskinrummet/2254259',
+                'section': 'podcasti',
+                'is_paywall': True,
+                'image': {
+                    'src': 'https://image.sermitsiaq.ag/2254269.webp?imageId=2254269&width=530&height=344',
+                    'width': 265,
+                    'height': 172,
+                    'alt': ''
+                }
+            },
+            {
+                'title': 'Voksede op i svigt og misbrug – i dag er han naalakkersuisoq',
+                'url': 'https://www.sermitsiaq.ag/samfund/voksede-op-i-svigt-og-misbrug-i-dag-er-han-naalakkersuisoq/2243782',
+                'section': 'samfund',
+                'is_paywall': True,
+                'image': {
+                    'src': 'https://image.sermitsiaq.ag/2243793.webp?imageId=2243793&width=530&height=344',
+                    'width': 265,
+                    'height': 172,
+                    'alt': ''
+                }
+            }
+        ],
+        'slider_id': 'article_list_test_podcasti',
+        'source_class': 'source_podcasti_dk',
+        'items_per_view': 4,
+        'has_nav': True,
+        'extra_classes': ['border-side-bottom', 'mobile_border-side-bottom', 'border_width_4', 'border_width_mobile_4'],
+        'header_classes': ['t24', 'tm25', 'color_mobile_no_bg_color', 'primary', 'color_mobile_primary', 'align-left', 'mobile_text_align_align-left', 'font-IBMPlexSans']
+    }
+    
+    # Get article detail content blocks
+    article_detail = None
+    if article.published_url:
+        from services.article_detail_parser import ArticleDetailParser
+        article_detail = ArticleDetailParser.get_article_detail(article.published_url)
+    
+    return render_template('article_detail.html',
+        article=article,
+        published_date_str=published_date_str,
+        related_articles=related_articles,
+        job_slider_data=job_slider_data,
+        podcasti_slider_data=podcasti_slider_data,
+        article_detail=article_detail
+    )
+
+
+@article_view_bp.route('/article/detail/test')
+def article_detail_test_structured():
+    """
+    Test route để xem structured article detail content
+    Usage: /article/detail/test?url=<published_url>
+    """
+    from services.article_detail_parser import ArticleDetailParser
+    from datetime import datetime
+    from app import app
+    
+    url = request.args.get('url')
+    if not url:
+        return "Please provide ?url parameter", 400
+    
+    with app.app_context():
+        article_detail = ArticleDetailParser.get_article_detail(url)
+        
+        if not article_detail:
+            return f"Article detail not found for URL: {url}<br><br>Run: python scripts/crawl_article_detail.py '{url}'", 404
+        
+        # Get article
+        article = Article.query.filter_by(published_url=url).first()
+        
+        return render_template('article_detail.html',
+            article=article or type('MockArticle', (), {
+                'id': 0,
+                'title': 'Test Article',
+                'excerpt': 'Test excerpt',
+                'section': 'kultur',
+                'published_url': url,
+                'published_date': datetime.now(),
+                'image_data': None,
+                'layout_data': {}
+            })(),
+            published_date_str='Test date',
+            related_articles=[],
+            job_slider_data=None,
+            podcasti_slider_data=None,
+            article_detail=article_detail
+        )
 
 
