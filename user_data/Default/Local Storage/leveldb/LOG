@@ -1,3 +1,17 @@
-2026/01/19-23:03:59.946 d04e6 Reusing MANIFEST /Users/hien/Desktop/Projects/GC_HRAI/flask/user_data/Default/Local Storage/leveldb/MANIFEST-000001
-2026/01/19-23:03:59.948 d04e6 Recovering log #78
-2026/01/19-23:03:59.948 d04e6 Reusing old log /Users/hien/Desktop/Projects/GC_HRAI/flask/user_data/Default/Local Storage/leveldb/000078.log 
+2026/01/19-23:05:06.067 d1349 Reusing MANIFEST /Users/hien/Desktop/Projects/GC_HRAI/flask/user_data/Default/Local Storage/leveldb/MANIFEST-000001
+2026/01/19-23:05:06.069 d1349 Recovering log #78
+2026/01/19-23:05:06.069 d1349 Level-0 table #81: started
+2026/01/19-23:05:06.072 d1349 Level-0 table #81: 11810 bytes OK
+2026/01/19-23:05:06.073 d1349 Recovering log #81
+2026/01/19-23:05:06.073 d1349 Reusing old log /Users/hien/Desktop/Projects/GC_HRAI/flask/user_data/Default/Local Storage/leveldb/000081.log 
+2026/01/19-23:05:06.075 d1349 Delete type=0 #78
+2026/01/19-23:05:06.075 d1349 Delete type=2 #82
+2026/01/19-23:05:06.076 d134c Compacting 4@0 + 1@1 files
+2026/01/19-23:05:06.077 d134c Generated table #82@0: 41 keys, 4785 bytes
+2026/01/19-23:05:06.077 d134c Compacted 4@0 + 1@1 files => 4785 bytes
+2026/01/19-23:05:06.079 d134c compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/01/19-23:05:06.079 d134c Delete type=2 #76
+2026/01/19-23:05:06.079 d134c Delete type=2 #70
+2026/01/19-23:05:06.079 d134c Delete type=2 #73
+2026/01/19-23:05:06.079 d134c Delete type=2 #81
+2026/01/19-23:05:06.079 d134c Delete type=2 #79
