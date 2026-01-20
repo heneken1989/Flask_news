@@ -1,5 +1,13 @@
         <header class="pageElement pageHeader">
     <style>
+        /* Hide subscription and login buttons */
+        .buy-btn,
+        .login-btn,
+        li.first-list-item a[href*="køb-abonnement"],
+        li.first-list-item a[href*="login"] {
+            display: none !important;
+        }
+        
         /* Language switcher separators - inline CSS */
         .pageHeader .mainrow .left-section {
             display: flex;
@@ -320,13 +328,10 @@
 				<a href="https://www.sermitsiaq.ag/køb-abonnement" target="_self">{{ _('Abonnement') }}</a>
 			</li>
 			<li class="first-list-item ">
-				<a href="https://www.sermitsiaq.ag/oversigtannoncer" target="_self">{{ _('Annoncer') }}</a>
+				<a href="/advertise" target="_self">{{ _('Annoncer') }}</a>
 			</li>
 			<li class="first-list-item ">
 				<a href="https://sermitsiaq.e-pages.pub/titles/" target="_blank">{{ _('E-aviser') }}</a>
-			</li>
-			<li class="first-list-item ">
-				<a href="https://www.sermitsiaq.ag/selvbetjening" target="_self">{{ _('Selvbetjening') }}</a>
 			</li>
 	</ul>
 </nav>
@@ -685,13 +690,10 @@
 				<a href="https://www.sermitsiaq.ag/køb-abonnement" target="_self">{{ _('Abonnement') }}</a>
 			</li>
 			<li class="first-list-item ">
-				<a href="https://www.sermitsiaq.ag/oversigtannoncer" target="_self">{{ _('Annoncer') }}</a>
+				<a href="/advertise" target="_self">{{ _('Annoncer') }}</a>
 			</li>
 			<li class="first-list-item ">
 				<a href="https://sermitsiaq.e-pages.pub/titles/" target="_blank">{{ _('E-aviser') }}</a>
-			</li>
-			<li class="first-list-item ">
-				<a href="https://www.sermitsiaq.ag/selvbetjening" target="_self">{{ _('Selvbetjening') }}</a>
 			</li>
 	</ul>
 </nav>

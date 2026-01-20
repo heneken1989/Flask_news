@@ -539,6 +539,13 @@ def article_detail_test():
     from datetime import datetime
     from flask_babel import format_date
     
+    # Get current language
+    current_language = session.get('language', 'en')
+    if request.args.get('lang'):
+        lang = request.args.get('lang')
+        if lang in ['da', 'kl', 'en']:
+            current_language = lang
+    
     # Mock article object
     class MockArticle:
         def __init__(self):
@@ -861,5 +868,43 @@ def article_detail_test_structured():
             podcasti_slider_data=None,
             article_detail=article_detail
         )
+
+
+@article_view_bp.route('/contact')
+@article_view_bp.route('/kontakt')
+def contact():
+    """
+    Contact page - hiển thị thông tin liên hệ
+    Hỗ trợ cả /contact (tiếng Anh) và /kontakt (tiếng Đan Mạch)
+    """
+    # Get current language from session or default
+    current_language = session.get('language', 'en')
+    
+    # Check URL parameter for language override
+    if request.args.get('lang'):
+        lang = request.args.get('lang')
+        if lang in ['da', 'kl', 'en']:
+            current_language = lang
+    
+    return render_template('contact.html', current_language=current_language)
+
+
+@article_view_bp.route('/advertise')
+@article_view_bp.route('/annoncer')
+def advertise():
+    """
+    Advertise page - hiển thị thông tin về quảng cáo
+    Hỗ trợ cả /advertise (tiếng Anh) và /annoncer (tiếng Đan Mạch)
+    """
+    # Get current language from session or default
+    current_language = session.get('language', 'en')
+    
+    # Check URL parameter for language override
+    if request.args.get('lang'):
+        lang = request.args.get('lang')
+        if lang in ['da', 'kl', 'en']:
+            current_language = lang
+    
+    return render_template('advertise.html', current_language=current_language)
 
 

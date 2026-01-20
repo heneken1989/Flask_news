@@ -136,6 +136,98 @@ msgstr "Akkunnut"
 msgid "Go right"
 msgstr "Kujammut"
 
+#: templates/contact.html:5
+msgid "Contact"
+msgstr "Kontakti"
+
+#: templates/contact.html:54
+msgid "ADMINISTRATION"
+msgstr "ADMINISTRATION"
+
+#: templates/contact.html:56
+msgid "adm. direktør & chefredaktør"
+msgstr "adm. direktør & chefredaktør"
+
+#: templates/contact.html:60
+msgid "Økonomichef"
+msgstr "Økonomichef"
+
+#: templates/contact.html:64
+msgid "Allaffik/administration"
+msgstr "Allaffik/administration"
+
+#: templates/contact.html:74
+msgid "REDAKTION"
+msgstr "REDAKTION"
+
+#: templates/contact.html:77
+msgid "Redaktion"
+msgstr "Redaktion"
+
+#: templates/contact.html:81
+msgid "Digitalredaktør"
+msgstr "Digitalredaktør"
+
+#: templates/contact.html:85
+msgid "Redaktør Sermitsiaq"
+msgstr "Redaktør Sermitsiaq"
+
+#: templates/contact.html:89
+msgid "Redaktør AG"
+msgstr "Redaktør AG"
+
+#: templates/contact.html:93
+msgid "Journalist"
+msgstr "Allakkat"
+
+#: templates/contact.html:133
+msgid "Debatvært"
+msgstr "Debatvært"
+
+#: templates/contact.html:139
+msgid "FOTOGRAF"
+msgstr "FOTOGRAF"
+
+#: templates/contact.html:142
+msgid "Fotojournalist"
+msgstr "Fotojournalist"
+
+#: templates/contact.html:148
+msgid "SALGSAFDELING"
+msgstr "SALGSAFDELING"
+
+#: templates/contact.html:151
+msgid "Salgschef"
+msgstr "Salgschef"
+
+#: templates/contact.html:155
+msgid "Salgskonsulent"
+msgstr "Salgskonsulent"
+
+#: templates/contact.html:176
+msgid "GRAFISK AFDELING"
+msgstr "GRAFISK AFDELING"
+
+#: templates/contact.html:178
+msgid "Designchef"
+msgstr "Designchef"
+
+#: templates/contact.html:182
+msgid "Mediegrafiker"
+msgstr "Mediegrafiker"
+
+#: templates/contact.html:187
+msgid "OVERSÆTTERKONTOR"
+msgstr "OVERSÆTTERKONTOR"
+
+#: templates/contact.html:189
+msgid "Cheftolk"
+msgstr "Cheftolk"
+
+#: templates/contact.html:193
+msgid "tolk"
+msgstr "tolk"
+
 #~ msgid ""
 #~ "Project-Id-Version: PROJECT VERSION\n"
 #~ "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
