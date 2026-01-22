@@ -9,6 +9,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from seleniumbase import SB
 from services.article_parser import parse_articles_from_html
+from services.image_downloader import download_and_update_image_data
 from database import Article, CrawlLog, db
 from datetime import datetime
 import time
@@ -140,6 +141,20 @@ class SermitsiaqCrawler:
                     # Determine language from base_url or parameter
                     article_language = language or self.language
                     
+                    # Download và cập nhật image_data nếu có
+                    image_data = article_data.get('image_data', {})
+                    if image_data:
+                        try:
+                            print(f"  📥 Downloading header image for article: {article_data.get('title', '')[:50]}...")
+                            image_data = download_and_update_image_data(
+                                image_data,
+                                base_url='https://www.sermitsiaq.com',
+                                download_all_formats=False  # Chỉ download desktop_webp và fallback
+                            )
+                        except Exception as e:
+                            print(f"  ⚠️  Error downloading image: {e}")
+                            # Giữ nguyên image_data gốc nếu lỗi
+                    
                     # Tạo article mới với ID mới
                     new_article = Article(
                         element_guid=article_data.get('element_guid'),  # Có thể None, không unique
@@ -153,7 +168,7 @@ class SermitsiaqCrawler:
                         published_date=article_data.get('published_date'),
                         is_paywall=article_data['is_paywall'],
                         paywall_class=article_data['paywall_class'],
-                        image_data=article_data.get('image_data', {}),
+                        image_data=image_data,  # Đã được download và cập nhật
                         display_order=idx,  # Set display_order để match pattern
                         language=article_language,  # Set language
                         original_language=article_language,  # Set original_language
@@ -338,6 +353,20 @@ class SermitsiaqCrawler:
                     # Determine language from base_url or parameter
                     article_language = language or self.language
                     
+                    # Download và cập nhật image_data nếu có
+                    image_data = article_data.get('image_data', {})
+                    if image_data:
+                        try:
+                            print(f"  📥 Downloading header image for article: {article_data.get('title', 'Untitled')[:50]}...")
+                            image_data = download_and_update_image_data(
+                                image_data,
+                                base_url='https://www.sermitsiaq.com',
+                                download_all_formats=False  # Chỉ download desktop_webp và fallback
+                            )
+                        except Exception as e:
+                            print(f"  ⚠️  Error downloading image: {e}")
+                            # Giữ nguyên image_data gốc nếu lỗi
+                    
                     # Tạo article mới với ID mới
                     new_article = Article(
                         element_guid=article_data.get('element_guid'),
@@ -353,7 +382,7 @@ class SermitsiaqCrawler:
                         published_date=article_data.get('published_date'),
                         is_paywall=article_data.get('is_paywall', False),
                         paywall_class=article_data.get('paywall_class', ''),
-                        image_data=article_data.get('image_data', {}),
+                        image_data=image_data,  # Đã được download và cập nhật
                         display_order=display_order,  # Sử dụng display_order từ parser
                         is_home=True,  # Đánh dấu thuộc home
                         layout_type=article_data.get('layout_type'),  # Layout type từ parser
