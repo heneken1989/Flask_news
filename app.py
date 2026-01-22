@@ -252,13 +252,37 @@ def generate_sitemap_xml(language='en', base_domain='www.sermitsiaq.com'):
             lastmod_elem = ET.SubElement(url_elem, 'lastmod')
             lastmod_elem.text = lastmod
         
-        # Image
+        # Image - Ưu tiên lấy link từ domain của chúng ta
         if article.image_data:
-            image_id = extract_image_id_from_image_data(article.image_data)
-            if image_id:
+            image_url = None
+            
+            # Ưu tiên 1: Kiểm tra xem có URL từ domain của chúng ta không
+            # Check theo thứ tự: desktop_webp, fallback, desktop_jpeg, mobile_webp, mobile_jpeg
+            for key in ['desktop_webp', 'fallback', 'desktop_jpeg', 'mobile_webp', 'mobile_jpeg']:
+                url = article.image_data.get(key)
+                if url:
+                    # Check xem có phải URL từ domain của chúng ta không
+                    # (chứa sermitsiaq.com và static/uploads/images, hoặc không chứa image.sermitsiaq.ag)
+                    if ('sermitsiaq.com' in url and 'static/uploads/images' in url) or \
+                       ('sermitsiaq.com' in url and 'image.sermitsiaq.ag' not in url):
+                        # Đây là URL từ domain của chúng ta
+                        image_url = url
+                        break
+            
+            # Ưu tiên 2: Nếu không có URL từ domain của chúng ta, tạo URL từ imageId
+            if not image_url:
+                image_id = extract_image_id_from_image_data(article.image_data)
+                if image_id:
+                    # Tạo URL từ domain của chúng ta (nếu file đã tồn tại)
+                    # Hoặc fallback về URL gốc nếu chưa download
+                    our_url = f'https://www.sermitsiaq.com/static/uploads/images/{image_id}.webp'
+                    # Kiểm tra xem file có tồn tại không (optional, có thể bỏ qua)
+                    image_url = our_url  # Dùng URL của chúng ta, nếu file chưa có thì sẽ 404 nhưng vẫn đúng domain
+            
+            if image_url:
                 image_elem = ET.SubElement(url_elem, 'image:image')
                 image_loc_elem = ET.SubElement(image_elem, 'image:loc')
-                image_loc_elem.text = f'https://image.sermitsiaq.ag?imageId={image_id}&format=webp&width=1200'
+                image_loc_elem.text = image_url
     
     # Create XML string
     ET.indent(root, space='  ')

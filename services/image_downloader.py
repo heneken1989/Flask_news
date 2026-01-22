@@ -162,17 +162,16 @@ def download_and_update_image_data(image_data: Dict, base_url: str = 'https://ww
                 print(f"      ⚠️  Failed to download {key}, keeping original URL")
     
     # Nếu không download all formats, copy URLs từ desktop_webp cho các format khác
+    # Chỉ copy nếu desktop_webp đã được download (có chứa domain của chúng ta)
     if not download_all_formats:
-        if updated_data.get('desktop_webp'):
-            # Copy desktop_webp cho desktop_jpeg nếu chưa có
-            if not updated_data.get('desktop_jpeg'):
-                updated_data['desktop_jpeg'] = updated_data['desktop_webp'].replace('.webp', '.jpeg')
+        if updated_data.get('desktop_webp') and ('sermitsiaq.com' in updated_data['desktop_webp'] or 'static/uploads/images' in updated_data['desktop_webp']):
+            # Copy desktop_webp cho desktop_jpeg (override URL gốc nếu có)
+            # Dùng cùng file webp cho jpeg (hoặc có thể tạo jpeg version sau)
+            updated_data['desktop_jpeg'] = updated_data['desktop_webp']
             
-            # Copy desktop_webp cho mobile nếu chưa có
-            if not updated_data.get('mobile_webp'):
-                updated_data['mobile_webp'] = updated_data['desktop_webp']
-            if not updated_data.get('mobile_jpeg'):
-                updated_data['mobile_jpeg'] = updated_data['desktop_webp'].replace('.webp', '.jpeg')
+            # Copy desktop_webp cho mobile (override URL gốc nếu có)
+            updated_data['mobile_webp'] = updated_data['desktop_webp']
+            updated_data['mobile_jpeg'] = updated_data['desktop_webp']
     
     return updated_data
 
