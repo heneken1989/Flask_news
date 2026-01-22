@@ -160,13 +160,10 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
                     original_text = block['text']
                     translated_text = translator.translate(original_text)
                     
-                    # Sửa lỗi thiếu khoảng trắng sau khi dịch
-                    # Ví dụ: "candiesis" -> "candies is" (có thể do lỗi dịch hoặc HTML parsing)
-                    # Pattern: từ kết thúc bằng chữ cái + từ phổ biến bắt đầu bằng chữ cái (thiếu khoảng)
-                    # Chỉ sửa các trường hợp rõ ràng như "candiesis", "wordis", "wordof", etc.
-                    # Tránh sửa các từ hợp lệ như "this", "that", "what", etc.
-                    common_words = r'(is|are|was|were|has|have|had|will|would|can|could|should|may|might|of|to|in|on|at|for|with|from|the|a|an)\b'
-                    translated_text = re.sub(r'([a-zA-Z]+)' + common_words, r'\1 \2', translated_text, flags=re.IGNORECASE)
+                    # Viết hoa chữ đầu câu nếu chưa viết hoa
+                    # Chỉ viết hoa nếu chữ đầu là chữ thường
+                    if translated_text and translated_text[0].islower():
+                        translated_text = translated_text[0].upper() + translated_text[1:]
                     
                     translated_block['text'] = translated_text
                     time.sleep(delay)  # Delay để tránh rate limit
@@ -185,12 +182,31 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
                     # Ví dụ: "candies<span" -> "candies <span"
                     html = re.sub(r'([a-zA-Z])(<[a-zA-Z/])', r'\1 \2', html)
                     
+                    # BƯỚC 1.5: Đảm bảo có khoảng trắng sau dấu phẩy và trước chữ cái (nếu thiếu)
+                    # Ví dụ: ",KNQK" -> ", KNQK" hoặc "</span>KNQK" -> "</span> KNQK"
+                    # Nhưng không sửa nếu đã có khoảng trắng hoặc tag
+                    html = re.sub(r'(,)([A-Za-z])', r'\1 \2', html)  # Dấu phẩy trước chữ cái
+                    html = re.sub(r'(</[^>]+>)([A-Za-z])', r'\1 \2', html)  # Closing tag trước chữ cái
+                    
                     # Tìm tất cả text nodes và dịch
+                    first_text_node = True  # Flag để biết text node đầu tiên
                     def translate_html_text(match):
+                        nonlocal first_text_node
                         text = match.group(1)
                         if text.strip():
                             try:
                                 translated = translator.translate(text)
+                                
+                                # Viết hoa chữ đầu của text node đầu tiên trong block
+                                # (thường là đầu câu/đoạn)
+                                if first_text_node and translated:
+                                    # Tìm chữ cái đầu tiên và viết hoa
+                                    for i, char in enumerate(translated):
+                                        if char.isalpha():
+                                            translated = translated[:i] + char.upper() + translated[i+1:]
+                                            break
+                                    first_text_node = False
+                                
                                 time.sleep(delay)
                                 return f'>{translated}<'
                             except:
@@ -204,10 +220,29 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
                     # Thêm khoảng trắng nếu vẫn còn pattern "word<tag" sau khi dịch
                     translated_html = re.sub(r'([a-zA-Z])(<[a-zA-Z/])', r'\1 \2', translated_html)
                     
+                    # Đảm bảo có khoảng trắng sau dấu phẩy (sau khi dịch có thể bị mất)
+                    translated_html = re.sub(r'(,)([A-Za-z])', r'\1 \2', translated_html)
+                    translated_html = re.sub(r'(</[^>]+>)([A-Za-z])', r'\1 \2', translated_html)
+                    
                     # Sửa lỗi "candiesis" -> "candies is" nếu có
                     translated_html = re.sub(r'candiesis', 'candies is', translated_html, flags=re.IGNORECASE)
                     
                     translated_block['html'] = translated_html
+                    
+                    # Cập nhật text field từ HTML sau khi dịch (để đảm bảo text và HTML đồng bộ)
+                    # Extract text từ HTML để có text chính xác
+                    try:
+                        from bs4 import BeautifulSoup
+                        soup = BeautifulSoup(translated_html, 'html.parser')
+                        extracted_text = soup.get_text(separator=' ', strip=True)
+                        # Normalize khoảng trắng (đảm bảo có khoảng sau dấu phẩy)
+                        extracted_text = re.sub(r'(,)([A-Za-z])', r'\1 \2', extracted_text)
+                        # Chỉ cập nhật nếu text field đã được dịch (tránh ghi đè text gốc)
+                        if block.get('text') and translated_block.get('text'):
+                            translated_block['text'] = extracted_text
+                    except:
+                        # Nếu không extract được, giữ nguyên text đã dịch
+                        pass
                 except Exception as e:
                     print(f"      ⚠️  Translation error for HTML: {e}")
                     # Giữ nguyên HTML nếu dịch lỗi
@@ -231,7 +266,7 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
                 # Author đã được xử lý prefix trong parser, chỉ giữ nguyên
                 translated_block['author'] = block['author']
         
-        # Dịch article_meta block (bylines descriptions)
+        # Dịch article_meta block (bylines descriptions và dates)
         if block.get('type') == 'article_meta':
             if block.get('bylines'):
                 translated_bylines = []
@@ -249,6 +284,50 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
                             translated_byline['description'] = byline['description']
                     translated_bylines.append(translated_byline)
                 translated_block['bylines'] = translated_bylines
+            
+            # Dịch dates
+            if block.get('dates'):
+                translated_dates = {}
+                for date_type, date_info in block.get('dates', {}).items():
+                    translated_date_info = date_info.copy()
+                    
+                    # Dịch label (ví dụ: "Offentliggjort" -> "Published")
+                    if date_info.get('label'):
+                        try:
+                            translated_label = translator.translate(date_info['label'])
+                            translated_date_info['label'] = translated_label
+                            time.sleep(delay)
+                        except Exception as e:
+                            print(f"      ⚠️  Translation error for date label: {e}")
+                            translated_date_info['label'] = date_info['label']
+                    
+                    # Dịch title (ví dụ: "Offentliggjort mandag 19. jan 2026 06:04" -> "Published Monday 19. Jan 2026 06:04")
+                    if date_info.get('title'):
+                        try:
+                            translated_title = translator.translate(date_info['title'])
+                            translated_date_info['title'] = translated_title
+                            time.sleep(delay)
+                        except Exception as e:
+                            print(f"      ⚠️  Translation error for date title: {e}")
+                            translated_date_info['title'] = date_info['title']
+                    
+                    # Dịch text (ví dụ: "mandag 19. jan 2026 06:04" -> "Monday 19. Jan 2026 06:04")
+                    if date_info.get('text'):
+                        try:
+                            translated_text = translator.translate(date_info['text'])
+                            translated_date_info['text'] = translated_text
+                            time.sleep(delay)
+                        except Exception as e:
+                            print(f"      ⚠️  Translation error for date text: {e}")
+                            translated_date_info['text'] = date_info['text']
+                    
+                    # datetime giữ nguyên (ISO format)
+                    if date_info.get('datetime'):
+                        translated_date_info['datetime'] = date_info['datetime']
+                    
+                    translated_dates[date_type] = translated_date_info
+                
+                translated_block['dates'] = translated_dates
         
         # Dịch article_footer_tags block (tags text)
         if block.get('type') == 'article_footer_tags':

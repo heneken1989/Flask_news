@@ -1,0 +1,820 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {% include 'partials/head.html' %}
+    <title>Edit Article Detail (Visual) - Admin - Sermitsiaq</title>
+    <style>
+        .admin-header-bar {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-bottom: 2px solid #007bff;
+            margin-bottom: 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .admin-header-bar .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .admin-header-bar h2 {
+            margin: 0;
+            font-size: 1.2em;
+            color: #333;
+        }
+        .admin-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn-save {
+            background: #28a745;
+            color: white;
+        }
+        .btn-save:hover {
+            background: #218838;
+        }
+        .btn-cancel {
+            background: #6c757d;
+            color: white;
+        }
+        .btn-cancel:hover {
+            background: #5a6268;
+        }
+        .btn-edit-block {
+            background: #007bff;
+            color: white;
+            padding: 4px 8px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        .btn-edit-block:hover {
+            background: #0056b3;
+        }
+        .btn-delete-block {
+            background: #dc3545;
+            color: white;
+            padding: 4px 8px;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        .btn-delete-block:hover {
+            background: #c82333;
+        }
+        .btn-add-block {
+            background: #17a2b8;
+            color: white;
+            padding: 6px 12px;
+            font-size: 12px;
+            margin: 10px 0;
+        }
+        .btn-add-block:hover {
+            background: #138496;
+        }
+        .editable-block {
+            position: relative;
+            margin: 10px 0;
+            padding: 10px;
+            border: 2px dashed transparent;
+            transition: all 0.3s;
+        }
+        .editable-block:hover {
+            border-color: #007bff;
+            background: #f8f9ff;
+        }
+        .editable-block.editing {
+            border-color: #28a745;
+            background: #f0fff4;
+            padding: 15px;
+        }
+        .block-controls {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .editable-block:hover .block-controls {
+            opacity: 1;
+        }
+        .block-type-badge {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            background: #6c757d;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        .edit-form {
+            display: none;
+            margin-top: 10px;
+            padding: 15px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .edit-form.active {
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .form-group textarea {
+            min-height: 100px;
+            font-family: monospace;
+        }
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .alert {
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .hidden {
+            display: none !important;
+        }
+        /* Preserve article detail styles */
+        .article-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block body_class %}l4 article site_sermitsiaq section_{{ article.section if article else 'samfund' }} iteras-paywall{% endblock %}
+
+{% block content %}
+<div class="admin-header-bar">
+    <div class="container">
+        <h2>Edit Article Detail (Visual Editor) - ID: {{ article_detail.id }}</h2>
+        <div class="admin-actions">
+            <button type="button" class="btn btn-save" onclick="saveAllChanges()">Save All Changes</button>
+            <a href="{{ url_for('admin.view_article_detail', detail_id=article_detail.id) }}" class="btn btn-cancel">Cancel</a>
+        </div>
+    </div>
+</div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}" style="max-width: 1200px; margin: 20px auto;">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<section id="mainArticleSection" class="main article">
+    <main class="pageWidth">
+        <article>
+            <section class="main article k5a-article" id="main">
+                <div class="articleHeader column hasCaption">
+                    {# Title Block #}
+                    {% set title_block = None %}
+                    {% if article_detail and article_detail.content_blocks %}
+                        {% set title_block = article_detail.content_blocks | selectattr('type', 'equalto', 'title') | first %}
+                    {% endif %}
+                    
+                    {% set title_block_index = -1 %}
+                    {% if article_detail and article_detail.content_blocks %}
+                        {% for block in article_detail.content_blocks %}
+                            {% if block.type == 'title' %}
+                                {% set title_block_index = loop.index0 %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    <div class="editable-block" data-block-index="{{ title_block_index }}" data-block-type="title">
+                        <span class="block-type-badge">TITLE</span>
+                        <div class="block-controls">
+                            <button class="btn btn-edit-block" onclick="editBlock(this)">Edit</button>
+                        </div>
+                        <h1 class="headline mainTitle" data-field="text">
+                            {% if title_block and title_block.text %}
+                                {{ title_block.text }}
+                            {% else %}
+                                {{ article.title if article else 'No Title' }}
+                            {% endif %}
+                        </h1>
+                        <div class="edit-form">
+                            <div class="form-group">
+                                <label>Title Text:</label>
+                                <input type="text" name="text" value="{{ title_block.text if title_block else (article.title if article else '') }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Level:</label>
+                                <select name="level">
+                                    <option value="h1" selected>H1</option>
+                                </select>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-save" onclick="saveBlock(this)">Save</button>
+                                <button type="button" class="btn btn-cancel" onclick="cancelEdit(this)">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {# Subtitle Block #}
+                    {% set subtitle_block = None %}
+                    {% if article_detail and article_detail.content_blocks %}
+                        {% set subtitle_block = article_detail.content_blocks | selectattr('type', 'equalto', 'subtitle') | first %}
+                    {% endif %}
+                    
+                    {% set subtitle_block_index = -1 %}
+                    {% if article_detail and article_detail.content_blocks %}
+                        {% for block in article_detail.content_blocks %}
+                            {% if block.type == 'subtitle' %}
+                                {% set subtitle_block_index = loop.index0 %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    <div class="editable-block" data-block-index="{{ subtitle_block_index }}" data-block-type="subtitle">
+                        <span class="block-type-badge">SUBTITLE</span>
+                        <div class="block-controls">
+                            <button class="btn btn-edit-block" onclick="editBlock(this)">Edit</button>
+                        </div>
+                        <h2 class="subtitle" data-field="text">
+                            {% if subtitle_block and subtitle_block.text %}
+                                {{ subtitle_block.text }}
+                            {% elif article.excerpt %}
+                                {{ article.excerpt }}
+                            {% else %}
+                                No subtitle
+                            {% endif %}
+                        </h2>
+                        <div class="edit-form">
+                            <div class="form-group">
+                                <label>Subtitle Text:</label>
+                                <textarea name="text" required>{% if subtitle_block %}{{ subtitle_block.text }}{% elif article.excerpt %}{{ article.excerpt }}{% endif %}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Level:</label>
+                                <select name="level">
+                                    <option value="h2" selected>H2</option>
+                                </select>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-save" onclick="saveBlock(this)">Save</button>
+                                <button type="button" class="btn btn-cancel" onclick="cancelEdit(this)">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bodytext large-12 small-12 medium-12">
+                    {% if article_detail and article_detail.content_blocks %}
+                    <div class="article-content">
+                        {% for block in article_detail.content_blocks %}
+                            {% if block.type == 'title' or block.type == 'subtitle' %}
+                                {# Skip - already rendered above #}
+                            {% elif block.type == 'paragraph' %}
+                                <div class="editable-block" data-block-index="{{ loop.index0 }}" data-block-type="paragraph">
+                                    <span class="block-type-badge">PARAGRAPH</span>
+                                    <div class="block-controls">
+                                        <button class="btn btn-edit-block" onclick="editBlock(this)">Edit</button>
+                                        <button class="btn btn-delete-block" onclick="deleteBlock(this)">Delete</button>
+                                    </div>
+                                    <div data-field="html">{{ block.html|safe }}</div>
+                                    <div class="edit-form">
+                                        <div class="form-group">
+                                            <label>HTML Content:</label>
+                                            <textarea name="html" required>{{ block.html }}</textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Text (plain):</label>
+                                            <textarea name="text">{{ block.text }}</textarea>
+                                        </div>
+                                        <div class="form-actions">
+                                            <button type="button" class="btn btn-save" onclick="saveBlock(this)">Save</button>
+                                            <button type="button" class="btn btn-cancel" onclick="cancelEdit(this)">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% elif block.type == 'heading' %}
+                                <div class="editable-block" data-block-index="{{ loop.index0 }}" data-block-type="heading">
+                                    <span class="block-type-badge">HEADING</span>
+                                    <div class="block-controls">
+                                        <button class="btn btn-edit-block" onclick="editBlock(this)">Edit</button>
+                                        <button class="btn btn-delete-block" onclick="deleteBlock(this)">Delete</button>
+                                    </div>
+                                    <{{ block.level }} data-field="text">{{ block.text }}</{{ block.level }}>
+                                    <div class="edit-form">
+                                        <div class="form-group">
+                                            <label>Heading Text:</label>
+                                            <input type="text" name="text" value="{{ block.text }}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Level:</label>
+                                            <select name="level">
+                                                <option value="h1" {% if block.level == 'h1' %}selected{% endif %}>H1</option>
+                                                <option value="h2" {% if block.level == 'h2' %}selected{% endif %}>H2</option>
+                                                <option value="h3" {% if block.level == 'h3' %}selected{% endif %}>H3</option>
+                                                <option value="h4" {% if block.level == 'h4' %}selected{% endif %}>H4</option>
+                                                <option value="h5" {% if block.level == 'h5' %}selected{% endif %}>H5</option>
+                                                <option value="h6" {% if block.level == 'h6' %}selected{% endif %}>H6</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-actions">
+                                            <button type="button" class="btn btn-save" onclick="saveBlock(this)">Save</button>
+                                            <button type="button" class="btn btn-cancel" onclick="cancelEdit(this)">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% elif block.type == 'image' %}
+                                {% set is_header_img = block.is_header_image|default(false) or block.skip_in_body|default(false) %}
+                                {% if not is_header_img %}
+                                <div class="editable-block" data-block-index="{{ loop.index0 }}" data-block-type="image">
+                                    <span class="block-type-badge">IMAGE</span>
+                                    <div class="block-controls">
+                                        <button class="btn btn-edit-block" onclick="editBlock(this)">Edit</button>
+                                        <button class="btn btn-delete-block" onclick="deleteBlock(this)">Delete</button>
+                                    </div>
+                                    <figure>
+                                        <div class="content">
+                                            <div class="img fullwidthTarget">
+                                                <picture>
+                                                    {% if block.image_sources.desktop_webp %}
+                                                    <source srcset="{{ block.image_sources.desktop_webp }}" media="(min-width: 768px)" type="image/webp">
+                                                    {% endif %}
+                                                    <img src="{{ block.image_sources.fallback|default('') }}" alt="{{ block.image_sources.alt|default('') }}">
+                                                </picture>
+                                            </div>
+                                            {% if block.caption or block.author %}
+                                            <div class="caption">
+                                                {% if block.caption %}
+                                                <figcaption data-field="caption">{{ block.caption }}</figcaption>
+                                                {% endif %}
+                                                {% if block.author %}
+                                                <figcaption data-field="author">{{ block.author }}</figcaption>
+                                                {% endif %}
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </figure>
+                                    <div class="edit-form">
+                                        <div class="form-group">
+                                            <label>Image URL (fallback):</label>
+                                            <input type="text" name="image_sources.fallback" value="{{ block.image_sources.fallback|default('') }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Caption:</label>
+                                            <textarea name="caption">{{ block.caption|default('') }}</textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Author:</label>
+                                            <input type="text" name="author" value="{{ block.author|default('') }}">
+                                        </div>
+                                        <div class="form-actions">
+                                            <button type="button" class="btn btn-save" onclick="saveBlock(this)">Save</button>
+                                            <button type="button" class="btn btn-cancel" onclick="cancelEdit(this)">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% elif block.type == 'ad' %}
+                                <div class="editable-block" data-block-index="{{ loop.index0 }}" data-block-type="ad">
+                                    <span class="block-type-badge">AD</span>
+                                    <div class="block-controls">
+                                        <button class="btn btn-edit-block" onclick="editBlock(this)">Edit</button>
+                                        <button class="btn btn-delete-block" onclick="deleteBlock(this)">Delete</button>
+                                    </div>
+                                    <div class="column google-ad">
+                                        <span class="ad-label">Annonce</span>
+                                        <div class="adunit" id="{{ block.ad_id }}"></div>
+                                    </div>
+                                    <div class="edit-form">
+                                        <div class="form-group">
+                                            <label>Ad ID:</label>
+                                            <input type="text" name="ad_id" value="{{ block.ad_id|default('') }}">
+                                        </div>
+                                        <div class="form-actions">
+                                            <button type="button" class="btn btn-save" onclick="saveBlock(this)">Save</button>
+                                            <button type="button" class="btn btn-cancel" onclick="cancelEdit(this)">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        <div style="margin-top: 20px;">
+                            <button class="btn btn-add-block" onclick="showAddBlockMenu(this)">+ Add Block</button>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </section>
+        </article>
+    </main>
+</section>
+
+<form id="save-form" method="POST" action="{{ url_for('admin.update_article_detail', detail_id=article_detail.id) }}" style="display: none;">
+    <input type="hidden" name="content_blocks" id="content-blocks-input">
+    <input type="hidden" name="from_visual_editor" value="true">
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script id="blocks-data" type="application/json">{{ article_detail.content_blocks|tojson|safe }}</script>
+<script>
+    // Store original blocks data
+    const blocksDataElement = document.getElementById('blocks-data');
+    const originalBlocks = blocksDataElement ? JSON.parse(blocksDataElement.textContent) : [];
+    let currentBlocks = JSON.parse(JSON.stringify(originalBlocks));
+    
+    function editBlock(button) {
+        const block = button.closest('.editable-block');
+        block.classList.add('editing');
+        const form = block.querySelector('.edit-form');
+        form.classList.add('active');
+    }
+    
+    function cancelEdit(button) {
+        const block = button.closest('.editable-block');
+        block.classList.remove('editing');
+        const form = block.querySelector('.edit-form');
+        form.classList.remove('active');
+    }
+    
+    function saveBlock(button) {
+        console.log('💾 Saving block...');
+        const block = button.closest('.editable-block');
+        const blockIndex = parseInt(block.dataset.blockIndex);
+        const blockType = block.dataset.blockType;
+        const formDiv = block.querySelector('.edit-form');
+        
+        console.log('   Block index:', blockIndex, 'Type:', blockType);
+        
+        // Helper function to get form values from div (not a real form element)
+        function getFormValues(formDiv) {
+            const values = {};
+            const inputs = formDiv.querySelectorAll('input, textarea, select');
+            inputs.forEach(input => {
+                const name = input.getAttribute('name');
+                if (name) {
+                    if (input.type === 'checkbox') {
+                        values[name] = input.checked;
+                    } else {
+                        values[name] = input.value;
+                    }
+                }
+            });
+            return values;
+        }
+        
+        if (blockIndex === -1) {
+            // Title or subtitle - find in blocks or create new
+            let existingBlock = currentBlocks.find(b => b.type === blockType);
+            console.log('   Existing block found:', !!existingBlock);
+            
+            // Get form values
+            const formValues = getFormValues(formDiv);
+            console.log('   Form values:', formValues);
+            
+            if (!existingBlock) {
+                // Create new block
+                const level = formValues.level || 'h1';
+                const text = formValues.text || '';
+                existingBlock = {
+                    type: blockType,
+                    order: blockType === 'title' ? 0 : (blockType === 'subtitle' ? 1 : currentBlocks.length),
+                    level: level,
+                    text: text,
+                    html: `<${level}>${text}</${level}>`,
+                    classes: []
+                };
+                console.log('   Created new block:', existingBlock);
+                
+                // Insert at correct position
+                if (blockType === 'title') {
+                    currentBlocks.unshift(existingBlock);
+                } else if (blockType === 'subtitle') {
+                    // Insert after title if exists
+                    const titleIndex = currentBlocks.findIndex(b => b.type === 'title');
+                    if (titleIndex >= 0) {
+                        currentBlocks.splice(titleIndex + 1, 0, existingBlock);
+                    } else {
+                        currentBlocks.unshift(existingBlock);
+                    }
+                } else {
+                    currentBlocks.push(existingBlock);
+                }
+            } else {
+                // Update existing
+                console.log('   Updating existing block...');
+                
+                // Update fields from form values
+                for (let [key, value] of Object.entries(formValues)) {
+                    console.log('     Setting', key, '=', value);
+                    if (key.includes('.')) {
+                        const [parent, child] = key.split('.');
+                        if (!existingBlock[parent]) existingBlock[parent] = {};
+                        existingBlock[parent][child] = value;
+                    } else {
+                        existingBlock[key] = value;
+                    }
+                }
+                
+                // Update HTML
+                if (existingBlock.level && existingBlock.text) {
+                    existingBlock.html = `<${existingBlock.level}>${existingBlock.text}</${existingBlock.level}>`;
+                }
+                console.log('   Updated block:', existingBlock);
+            }
+            // Update display
+            updateBlockDisplay(block, existingBlock);
+        } else if (blockIndex >= 0 && blockIndex < currentBlocks.length) {
+            // Update existing block
+            const blockData = currentBlocks[blockIndex];
+            
+            // Get form values
+            const formValues = getFormValues(formDiv);
+            
+            // Update fields from form values
+            for (let [key, value] of Object.entries(formValues)) {
+                if (key.includes('.')) {
+                    const [parent, child] = key.split('.');
+                    if (!blockData[parent]) blockData[parent] = {};
+                    blockData[parent][child] = value;
+                } else {
+                    blockData[key] = value;
+                }
+            }
+            
+            // Update HTML if text changed
+            if (blockType === 'heading' && blockData.text && blockData.level) {
+                blockData.html = `<${blockData.level}>${blockData.text}</${blockData.level}>`;
+            } else if (blockType === 'paragraph' && blockData.html) {
+                // Extract text from HTML if needed
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = blockData.html;
+                blockData.text = tempDiv.textContent || tempDiv.innerText || '';
+            }
+            
+            updateBlockDisplay(block, blockData);
+        }
+        
+        block.classList.remove('editing');
+        formDiv.classList.remove('active');
+    }
+    
+    function updateBlockDisplay(blockElement, blockData) {
+        if (blockData.type === 'title' || blockData.type === 'subtitle' || blockData.type === 'heading') {
+            const heading = blockElement.querySelector('h1, h2, h3, h4, h5, h6');
+            if (heading) {
+                heading.textContent = blockData.text;
+                if (blockData.level && heading.tagName.toLowerCase() !== blockData.level) {
+                    const newHeading = document.createElement(blockData.level);
+                    newHeading.textContent = blockData.text;
+                    newHeading.className = heading.className;
+                    heading.replaceWith(newHeading);
+                }
+            }
+        } else if (blockData.type === 'paragraph') {
+            const content = blockElement.querySelector('[data-field="html"]');
+            if (content) {
+                content.innerHTML = blockData.html;
+            }
+        } else if (blockData.type === 'image') {
+            if (blockData.caption) {
+                const caption = blockElement.querySelector('[data-field="caption"]');
+                if (caption) caption.textContent = blockData.caption;
+            }
+            if (blockData.author) {
+                const author = blockElement.querySelector('[data-field="author"]');
+                if (author) author.textContent = blockData.author;
+            }
+        }
+    }
+    
+    function deleteBlock(button) {
+        if (!confirm('Are you sure you want to delete this block?')) return;
+        
+        const block = button.closest('.editable-block');
+        const blockIndex = parseInt(block.dataset.blockIndex);
+        
+        if (blockIndex >= 0 && blockIndex < currentBlocks.length) {
+            currentBlocks.splice(blockIndex, 1);
+            block.remove();
+            // Re-index all blocks
+            document.querySelectorAll('.editable-block').forEach((b, idx) => {
+                b.dataset.blockIndex = idx;
+            });
+        }
+    }
+    
+    function showAddBlockMenu(button) {
+        const blockType = prompt('Enter block type (paragraph, heading, image, ad):');
+        if (!blockType) return;
+        
+        // Create new block
+        const newBlock = {
+            type: blockType,
+            order: currentBlocks.length,
+            text: '',
+            html: '',
+            level: 'h3'
+        };
+        
+        if (blockType === 'paragraph') {
+            newBlock.html = '<p></p>';
+            newBlock.text = '';
+        } else if (blockType === 'heading') {
+            newBlock.level = 'h3';
+            newBlock.text = 'New Heading';
+            newBlock.html = '<h3>New Heading</h3>';
+        }
+        
+        currentBlocks.push(newBlock);
+        
+        // Reload page to show new block
+        location.reload();
+    }
+    
+    function saveAllChanges() {
+        console.log('🔄 Starting saveAllChanges...');
+        console.log('   Current blocks before sync:', currentBlocks.length);
+        
+        // First, ensure all visible blocks are synced to currentBlocks
+        syncAllBlocksToCurrentBlocks();
+        
+        console.log('   Current blocks after sync:', currentBlocks.length);
+        
+        // Re-order blocks based on current order
+        currentBlocks.forEach((block, index) => {
+            block.order = index;
+        });
+        
+        // Validate currentBlocks
+        if (!Array.isArray(currentBlocks)) {
+            alert('Error: Content blocks is not an array');
+            console.error('currentBlocks:', currentBlocks);
+            return;
+        }
+        
+        if (currentBlocks.length === 0) {
+            if (!confirm('No content blocks to save. Are you sure you want to continue?')) {
+                return;
+            }
+        }
+        
+        // Update hidden input
+        const jsonString = JSON.stringify(currentBlocks);
+        const inputElement = document.getElementById('content-blocks-input');
+        if (!inputElement) {
+            alert('Error: Save form not found!');
+            console.error('content-blocks-input element not found');
+            return;
+        }
+        
+        inputElement.value = jsonString;
+        
+        // Debug: log what we're saving
+        console.log('✅ Saving blocks:', currentBlocks.length, 'blocks');
+        console.log('   JSON length:', jsonString.length);
+        console.log('   First block:', currentBlocks[0]);
+        
+        // Verify form exists
+        const formElement = document.getElementById('save-form');
+        if (!formElement) {
+            alert('Error: Save form not found!');
+            console.error('save-form element not found');
+            return;
+        }
+        
+        console.log('   Form action:', formElement.action);
+        console.log('   Form method:', formElement.method);
+        
+        // Show loading indicator
+        const saveButton = document.querySelector('.btn-save');
+        if (saveButton) {
+            saveButton.disabled = true;
+            saveButton.textContent = 'Saving...';
+        }
+        
+        // Submit form
+        try {
+            formElement.submit();
+        } catch (e) {
+            console.error('Error submitting form:', e);
+            alert('Error submitting form: ' + e.message);
+            if (saveButton) {
+                saveButton.disabled = false;
+                saveButton.textContent = 'Save All Changes';
+            }
+        }
+    }
+    
+    function syncAllBlocksToCurrentBlocks() {
+        // Sync all visible blocks to currentBlocks array
+        document.querySelectorAll('.editable-block').forEach((blockElement) => {
+            const blockIndex = parseInt(blockElement.dataset.blockIndex);
+            const blockType = blockElement.dataset.blockType;
+            
+            if (blockIndex === -1) {
+                // Title or subtitle - find in currentBlocks
+                let block = currentBlocks.find(b => b.type === blockType);
+                if (!block) {
+                    // Create if doesn't exist
+                    const heading = blockElement.querySelector('h1, h2, h3, h4, h5, h6');
+                    if (heading) {
+                        block = {
+                            type: blockType,
+                            order: blockType === 'title' ? 0 : 1,
+                            level: heading.tagName.toLowerCase(),
+                            text: heading.textContent || '',
+                            html: heading.outerHTML,
+                            classes: []
+                        };
+                        if (blockType === 'title') {
+                            currentBlocks.unshift(block);
+                        } else {
+                            const titleIndex = currentBlocks.findIndex(b => b.type === 'title');
+                            if (titleIndex >= 0) {
+                                currentBlocks.splice(titleIndex + 1, 0, block);
+                            } else {
+                                currentBlocks.unshift(block);
+                            }
+                        }
+                    }
+                } else {
+                    // Update from display
+                    const heading = blockElement.querySelector('h1, h2, h3, h4, h5, h6');
+                    if (heading) {
+                        block.text = heading.textContent || '';
+                        block.level = heading.tagName.toLowerCase();
+                        block.html = heading.outerHTML;
+                    }
+                }
+            } else if (blockIndex >= 0 && blockIndex < currentBlocks.length) {
+                // Update existing block from display
+                const block = currentBlocks[blockIndex];
+                if (blockType === 'paragraph') {
+                    const content = blockElement.querySelector('[data-field="html"]');
+                    if (content) {
+                        block.html = content.innerHTML;
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = block.html;
+                        block.text = tempDiv.textContent || tempDiv.innerText || '';
+                    }
+                } else if (blockType === 'heading') {
+                    const heading = blockElement.querySelector('h1, h2, h3, h4, h5, h6');
+                    if (heading) {
+                        block.text = heading.textContent || '';
+                        block.level = heading.tagName.toLowerCase();
+                        block.html = heading.outerHTML;
+                    }
+                } else if (blockType === 'image') {
+                    const caption = blockElement.querySelector('[data-field="caption"]');
+                    const author = blockElement.querySelector('[data-field="author"]');
+                    if (caption) block.caption = caption.textContent || '';
+                    if (author) block.author = author.textContent || '';
+                }
+            }
+        });
+    }
+</script>
+{% endblock %}
+

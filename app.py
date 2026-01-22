@@ -2,6 +2,7 @@ from flask import Flask, render_template, jsonify, send_from_directory, request,
 from flask_babel import Babel, gettext as _, lazy_gettext as _l, format_date, format_time, format_datetime
 from api.article_api import article_bp
 from views.article_views import article_view_bp
+from views.admin_views import admin_bp
 from database import db
 import os
 from pathlib import Path
@@ -139,6 +140,7 @@ def inject_translations():
 # Register blueprints
 app.register_blueprint(article_bp, url_prefix='/api')
 app.register_blueprint(article_view_bp)  # Register views blueprint
+app.register_blueprint(admin_bp)  # Register admin blueprint
 
 # Serve view-resources for local development
 # On VPS, Nginx will handle this directly

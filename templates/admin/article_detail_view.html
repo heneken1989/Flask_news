@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {% include 'partials/head.html' %}
+    <title>View Article Detail - Admin - Sermitsiaq</title>
+    <style>
+        .admin-container {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .admin-header {
+            margin-bottom: 30px;
+        }
+        .admin-header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        .breadcrumb {
+            margin-bottom: 20px;
+        }
+        .breadcrumb a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        .info-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .info-box p {
+            margin: 8px 0;
+        }
+        .info-box strong {
+            color: #333;
+            min-width: 150px;
+            display: inline-block;
+        }
+        .actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn-edit {
+            background: #28a745;
+            color: white;
+        }
+        .btn-edit:hover {
+            background: #218838;
+        }
+        .btn-back {
+            background: #6c757d;
+            color: white;
+        }
+        .btn-back:hover {
+            background: #5a6268;
+        }
+        .content-blocks {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .content-blocks h2 {
+            margin-bottom: 20px;
+        }
+        .block-item {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #f8f9fa;
+        }
+        .block-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .block-type {
+            font-weight: bold;
+            color: #007bff;
+            font-size: 18px;
+        }
+        .block-order {
+            color: #666;
+            font-size: 14px;
+        }
+        .block-content {
+            margin-top: 10px;
+        }
+        .block-content pre {
+            background: white;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .badge-da { background: #007bff; color: white; }
+        .badge-kl { background: #28a745; color: white; }
+        .badge-en { background: #ffc107; color: black; }
+        .no-blocks {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <div class="admin-header">
+        <div class="breadcrumb">
+            <a href="{{ url_for('admin.list_article_details') }}">← Back to List</a>
+        </div>
+        <h1>View Article Detail</h1>
+    </div>
+
+    <div class="info-box">
+        <p><strong>ID:</strong> {{ article_detail.id }}</p>
+        <p><strong>Published URL:</strong> {{ article_detail.published_url }}</p>
+        <p><strong>Language:</strong> 
+            <span class="badge badge-{{ article_detail.language }}">
+                {{ article_detail.language|upper }}
+            </span>
+        </p>
+        {% if article %}
+            <p><strong>Article Title:</strong> {{ article.title }}</p>
+        {% endif %}
+        <p><strong>Element GUID:</strong> {{ article_detail.element_guid or 'N/A' }}</p>
+        <p><strong>Created At:</strong> {{ article_detail.created_at.strftime('%Y-%m-%d %H:%M:%S') if article_detail.created_at else 'N/A' }}</p>
+        <p><strong>Updated At:</strong> {{ article_detail.updated_at.strftime('%Y-%m-%d %H:%M:%S') if article_detail.updated_at else 'N/A' }}</p>
+    </div>
+
+    <div class="actions">
+        <a href="{{ url_for('admin.edit_article_detail_visual', detail_id=article_detail.id) }}" class="btn btn-edit">Edit Visual</a>
+        <a href="{{ url_for('admin.edit_article_detail', detail_id=article_detail.id) }}" class="btn btn-edit" style="background: #17a2b8;">Edit JSON</a>
+        <a href="{{ url_for('admin.list_article_details') }}" class="btn btn-back">Back to List</a>
+    </div>
+
+    <div class="content-blocks">
+        <h2>Content Blocks ({{ article_detail.content_blocks|length if article_detail.content_blocks else 0 }})</h2>
+        
+        {% if article_detail.content_blocks %}
+            {% for block in article_detail.content_blocks %}
+            <div class="block-item">
+                <div class="block-header">
+                    <span class="block-type">{{ block.type|upper }}</span>
+                    <span class="block-order">Order: {{ block.order }}</span>
+                </div>
+                <div class="block-content">
+                    <pre>{{ block|tojson(indent=2) }}</pre>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-blocks">
+                <p>No content blocks found.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,284 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {% include 'partials/head.html' %}
+    <title>Article Details - Admin - Sermitsiaq</title>
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .admin-header {
+            margin-bottom: 30px;
+        }
+        .admin-header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        .search-filters {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .search-filters form {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: end;
+        }
+        .search-filters .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        .search-filters label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .search-filters input,
+        .search-filters select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .search-filters button {
+            padding: 8px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .search-filters button:hover {
+            background: #0056b3;
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #f8f9fa;
+            font-weight: bold;
+        }
+        tr:hover {
+            background: #f8f9fa;
+        }
+        .url-cell {
+            max-width: 400px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn-view {
+            background: #17a2b8;
+            color: white;
+        }
+        .btn-edit {
+            background: #28a745;
+            color: white;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        .pagination {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .pagination a,
+        .pagination span {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #007bff;
+        }
+        .pagination .current {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .badge-da { background: #007bff; color: white; }
+        .badge-kl { background: #28a745; color: white; }
+        .badge-en { background: #ffc107; color: black; }
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1>Article Details Management</h1>
+        <p>Manage and edit article detail content blocks</p>
+    </div>
+
+    <div class="search-filters">
+        <form method="GET" action="{{ url_for('admin.list_article_details') }}">
+            <div class="form-group">
+                <label for="search">Search (ID or URL):</label>
+                <input type="text" id="search" name="search" value="{{ search }}" placeholder="Article ID, Detail ID, or URL...">
+                <div class="help-text" style="font-size: 11px; color: #666; margin-top: 5px;">
+                    Enter article ID (e.g., 7080), article detail ID, or part of URL
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="language">Language:</label>
+                <select id="language" name="language">
+                    <option value="">All Languages</option>
+                    <option value="da" {% if language == 'da' %}selected{% endif %}>Danish (DA)</option>
+                    <option value="kl" {% if language == 'kl' %}selected{% endif %}>Greenlandic (KL)</option>
+                    <option value="en" {% if language == 'en' %}selected{% endif %}>English (EN)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit">Search</button>
+                <a href="{{ url_for('admin.list_article_details') }}" class="btn" style="background: #6c757d; color: white; margin-left: 10px;">Clear</a>
+            </div>
+        </form>
+    </div>
+
+    {% if article_details %}
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Detail ID</th>
+                    <th>Article ID</th>
+                    <th>Published URL</th>
+                    <th>Language</th>
+                    <th>Article Title</th>
+                    <th>Blocks Count</th>
+                    <th>Updated At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in article_details %}
+                <tr>
+                    <td><strong>{{ item.detail.id }}</strong></td>
+                    <td>
+                        {% if item.article %}
+                            <a href="/article/{{ item.article.id }}" target="_blank" style="color: #007bff; text-decoration: none;">
+                                {{ item.article.id }}
+                            </a>
+                        {% else %}
+                            <em>-</em>
+                        {% endif %}
+                    </td>
+                    <td class="url-cell" title="{{ item.detail.published_url }}">
+                        {{ item.detail.published_url[:60] }}{% if item.detail.published_url|length > 60 %}...{% endif %}
+                    </td>
+                    <td>
+                        <span class="badge badge-{{ item.detail.language }}">
+                            {{ item.detail.language|upper }}
+                        </span>
+                    </td>
+                    <td>
+                        {% if item.article %}
+                            {{ item.article.title[:50] }}{% if item.article.title|length > 50 %}...{% endif %}
+                        {% else %}
+                            <em>No article found</em>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if item.detail.content_blocks %}
+                            {{ item.detail.content_blocks|length }}
+                        {% else %}
+                            0
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if item.detail.updated_at %}
+                            {{ item.detail.updated_at.strftime('%Y-%m-%d %H:%M') }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="actions">
+                            <a href="{{ url_for('admin.view_article_detail', detail_id=item.detail.id) }}" class="btn btn-view">View</a>
+                            <a href="{{ url_for('admin.edit_article_detail_visual', detail_id=item.detail.id) }}" class="btn btn-edit">Edit Visual</a>
+                            <a href="{{ url_for('admin.edit_article_detail', detail_id=item.detail.id) }}" class="btn btn-edit" style="background: #17a2b8;">Edit JSON</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if pagination and pagination.pages > 1 %}
+    <div class="pagination">
+        {% if pagination.has_prev %}
+            <a href="{{ url_for('admin.list_article_details', page=pagination.prev_num, search=search, language=language) }}">Previous</a>
+        {% endif %}
+        
+        {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+            {% if page_num %}
+                {% if page_num == pagination.page %}
+                    <span class="current">{{ page_num }}</span>
+                {% else %}
+                    <a href="{{ url_for('admin.list_article_details', page=page_num, search=search, language=language) }}">{{ page_num }}</a>
+                {% endif %}
+            {% else %}
+                <span>...</span>
+            {% endif %}
+        {% endfor %}
+        
+        {% if pagination.has_next %}
+            <a href="{{ url_for('admin.list_article_details', page=pagination.next_num, search=search, language=language) }}">Next</a>
+        {% endif %}
+    </div>
+    {% endif %}
+    
+    {% if search and article_details|length == 1 %}
+    <div style="margin-top: 20px; padding: 15px; background: #d4edda; border: 1px solid #c3e6cb; border-radius: 4px; color: #155724;">
+        <strong>Single result found:</strong> Showing article detail for article ID {{ article_details[0].article.id if article_details[0].article else 'N/A' }}
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div class="no-results">
+        <p>No article details found.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+

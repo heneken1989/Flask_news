@@ -1,3 +1,3 @@
-2026/01/20-13:48:54.855 a2910 Reusing MANIFEST /Users/hien/Desktop/Projects/GC_HRAI/flask/user_data/Default/Sync Data/LevelDB/MANIFEST-000001
-2026/01/20-13:48:54.855 a2910 Recovering log #3
-2026/01/20-13:48:54.855 a2910 Reusing old log /Users/hien/Desktop/Projects/GC_HRAI/flask/user_data/Default/Sync Data/LevelDB/000003.log 
+2026/01/22-19:12:19.036 4e4ac Reusing MANIFEST /Users/hien/Desktop/Projects/GC_HRAI/flask/user_data/Default/Sync Data/LevelDB/MANIFEST-000001
+2026/01/22-19:12:19.036 4e4ac Recovering log #3
+2026/01/22-19:12:19.036 4e4ac Reusing old log /Users/hien/Desktop/Projects/GC_HRAI/flask/user_data/Default/Sync Data/LevelDB/000003.log 
