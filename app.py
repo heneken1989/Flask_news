@@ -7,6 +7,7 @@ from database import db
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from datetime import datetime, timedelta
 
 # Load environment variables from .env file
 load_dotenv()
@@ -149,6 +150,233 @@ def serve_view_resources(filename):
     """Serve files from view-resources directory for local development"""
     view_resources_dir = os.path.join(app.root_path, 'view-resources')
     return send_from_directory(view_resources_dir, filename)
+
+# Serve sitemap.xml
+# Helper function để generate sitemap cho một ngôn ngữ
+def generate_sitemap_xml(language='en', base_domain='www.sermitsiaq.com'):
+    """Generate sitemap XML cho một ngôn ngữ"""
+    from flask import Response
+    from database import Article
+    from datetime import datetime
+    from urllib.parse import urlparse, urlunparse
+    import xml.etree.ElementTree as ET
+    import re
+    
+    def extract_image_id_from_image_data(image_data):
+        """Extract imageId từ image_data"""
+        if not image_data:
+            return None
+        
+        image_urls = [
+            image_data.get('desktop_webp'),
+            image_data.get('desktop_jpeg'),
+            image_data.get('mobile_webp'),
+            image_data.get('mobile_jpeg'),
+            image_data.get('fallback')
+        ]
+        
+        for url in image_urls:
+            if not url:
+                continue
+            match = re.search(r'[?&]imageId=(\d+)', url)
+            if match:
+                return match.group(1)
+            match = re.search(r'/(\d+)\.(webp|jpg|jpeg)', url)
+            if match:
+                return match.group(1)
+        return None
+    
+    def get_article_url(article, lang, domain):
+        """Lấy URL của article theo ngôn ngữ"""
+        url_to_use = None
+        if lang == 'en' and article.published_url_en:
+            url_to_use = article.published_url_en
+        elif article.published_url:
+            url_to_use = article.published_url
+        else:
+            return None
+        
+        if not url_to_use:
+            return None
+        
+        parsed = urlparse(url_to_use)
+        return urlunparse(('https', domain, parsed.path, parsed.params, parsed.query, parsed.fragment))
+    
+    def format_lastmod(published_date):
+        """Format published_date thành format: 2026-01-22T00:00+01:00"""
+        if not published_date:
+            return None
+        if isinstance(published_date, datetime):
+            return published_date.strftime('%Y-%m-%dT00:00+01:00')
+        try:
+            if isinstance(published_date, str):
+                dt = datetime.fromisoformat(published_date.replace('Z', '+00:00'))
+                return dt.strftime('%Y-%m-%dT00:00+01:00')
+        except:
+            pass
+        date_str = str(published_date)[:10]
+        if len(date_str) == 10:
+            return f"{date_str}T00:00+01:00"
+        return None
+    
+    # Query articles theo language
+    articles = Article.query.filter_by(
+        language=language,
+        is_temp=False
+    ).filter(
+        Article.published_url.isnot(None),
+        Article.published_url != ''
+    ).order_by(
+        Article.published_date.desc().nullslast()
+    ).all()
+    
+    # Create XML root
+    root = ET.Element('urlset')
+    root.set('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9')
+    root.set('xmlns:image', 'http://www.google.com/schemas/sitemap-image/1.1')
+    
+    for article in articles:
+        article_url = get_article_url(article, language, base_domain)
+        if not article_url:
+            continue
+        
+        url_elem = ET.SubElement(root, 'url')
+        
+        # Loc
+        loc_elem = ET.SubElement(url_elem, 'loc')
+        loc_elem.text = article_url
+        
+        # Lastmod
+        lastmod = format_lastmod(article.published_date)
+        if lastmod:
+            lastmod_elem = ET.SubElement(url_elem, 'lastmod')
+            lastmod_elem.text = lastmod
+        
+        # Image
+        if article.image_data:
+            image_id = extract_image_id_from_image_data(article.image_data)
+            if image_id:
+                image_elem = ET.SubElement(url_elem, 'image:image')
+                image_loc_elem = ET.SubElement(image_elem, 'image:loc')
+                image_loc_elem.text = f'https://image.sermitsiaq.ag?imageId={image_id}&format=webp&width=1200'
+    
+    # Create XML string
+    ET.indent(root, space='  ')
+    xml_str = ET.tostring(root, encoding='utf-8', xml_declaration=True)
+    
+    return Response(xml_str, mimetype='application/xml')
+
+# Serve sitemap for EN
+@app.route('/sitemap.xml')
+def sitemap():
+    """Generate and serve sitemap.xml for EN"""
+    return generate_sitemap_xml(language='en', base_domain='www.sermitsiaq.com')
+
+# Serve sitemap for DA
+@app.route('/sitemap-DK.xml')
+def sitemap_dk():
+    """Generate and serve sitemap-DK.xml for DA"""
+    return generate_sitemap_xml(language='da', base_domain='www.sermitsiaq.com')
+
+# Serve sitemap for KL
+@app.route('/sitemap-KL.xml')
+def sitemap_kl():
+    """Generate and serve sitemap-KL.xml for KL"""
+    return generate_sitemap_xml(language='kl', base_domain='www.sermitsiaq.com')
+
+# Serve Google News sitemap
+@app.route('/sitemap_news.xml')
+def sitemap_news():
+    """Generate and serve Google News sitemap.xml"""
+    from flask import Response
+    from database import Article
+    from datetime import datetime, timedelta
+    import xml.etree.ElementTree as ET
+    
+    base_url = request.url_root.rstrip('/')
+    days = 2  # Google News requirement: last 2 days
+    
+    # Calculate date threshold
+    date_threshold = datetime.utcnow() - timedelta(days=days)
+    
+    # Create XML root
+    root = ET.Element('urlset')
+    root.set('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9')
+    root.set('xmlns:news', 'http://www.google.com/schemas/sitemap-news/0.9')
+    
+    # Query articles from last 2 days
+    articles = Article.query.filter_by(
+        is_temp=False
+    ).filter(
+        Article.published_date >= date_threshold
+    ).order_by(
+        Article.published_date.desc()
+    ).limit(1000).all()  # Google News limit: 1000 URLs per sitemap
+    
+    for article in articles:
+        url_elem = ET.SubElement(root, 'url')
+        
+        # Loc: Sử dụng published_url, thay domain thành sermitsiaq.com
+        if article.published_url:
+            from urllib.parse import urlparse, urlunparse
+            # Parse published_url để lấy path
+            parsed = urlparse(article.published_url)
+            # Tạo URL mới với domain sermitsiaq.com, giữ nguyên path
+            loc = urlunparse((
+                'https',
+                'sermitsiaq.com',
+                parsed.path,
+                parsed.params,
+                parsed.query,
+                parsed.fragment
+            ))
+        else:
+            # Fallback: tạo descriptive URL
+            loc = f"{base_url}/{article.section}/{article.slug}/{article.id}"
+        
+        loc_elem = ET.SubElement(url_elem, 'loc')
+        loc_elem.text = loc
+        
+        # News element
+        news_elem = ET.SubElement(url_elem, 'news:news')
+        
+        # Publication
+        publication_elem = ET.SubElement(news_elem, 'news:publication')
+        publication_name_elem = ET.SubElement(publication_elem, 'news:name')
+        publication_name_elem.text = 'Sermitsiaq'
+        publication_lang_elem = ET.SubElement(publication_elem, 'news:language')
+        publication_lang_elem.text = article.language or 'en'
+        
+        # Publication date
+        if article.published_date:
+            publication_date_elem = ET.SubElement(news_elem, 'news:publication_date')
+            pub_date = article.published_date
+            if isinstance(pub_date, datetime):
+                publication_date_elem.text = pub_date.strftime('%Y-%m-%dT%H:%M:%S+00:00')
+            else:
+                publication_date_elem.text = str(pub_date)
+        
+        # Title: Descriptive title
+        title_elem = ET.SubElement(news_elem, 'news:title')
+        title_elem.text = article.title
+        
+        # Keywords (optional)
+        if article.section:
+            keywords_elem = ET.SubElement(news_elem, 'news:keywords')
+            keywords = [article.section]
+            if article.category:
+                keywords.append(article.category.name)
+            keywords_elem.text = ', '.join(keywords)
+        
+        # Geo locations: Greenland
+        geo_locations_elem = ET.SubElement(news_elem, 'news:geo_locations')
+        geo_locations_elem.text = 'Greenland'
+    
+    # Create XML string
+    ET.indent(root, space='  ')
+    xml_str = ET.tostring(root, encoding='utf-8', xml_declaration=True)
+    
+    return Response(xml_str, mimetype='application/xml')
 
 # You can also define routes directly in app.py if preferred
 # @app.route('/')

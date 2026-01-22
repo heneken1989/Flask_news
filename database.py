@@ -44,7 +44,8 @@ class Article(db.Model):
     instance = db.Column(db.String(50))  # Instance ID
     site_alias = db.Column(db.String(50), default='sermitsiaq')
     k5a_url = db.Column(db.String(500))  # URL cho K5A
-    published_url = db.Column(db.String(500))  # URL đầy đủ từ website gốc
+    published_url = db.Column(db.String(500))  # URL đầy đủ từ website gốc (DA)
+    published_url_en = db.Column(db.String(500), index=True, comment='URL tiếng Anh (dịch từ DA)')
     
     # Phân loại
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=True)
@@ -114,27 +115,51 @@ class Article(db.Model):
     
     def to_dict(self):
         """Convert article to dictionary for API/template"""
-        from flask import url_for, has_request_context
+        from flask import url_for, has_request_context, request
+        from utils import get_article_url_from_published_url
+        from urllib.parse import urlparse
         
-        # Generate Flask app URL for article detail (internal link)
+        # Generate URL từ published_url hoặc published_url_en
+        # Nếu là Article EN và có published_url_en, dùng published_url_en
+        url_to_use = None
+        if self.language == 'en' and self.published_url_en:
+            url_to_use = self.published_url_en
+        elif self.published_url:
+            url_to_use = self.published_url
+        
         article_url = '#'
-        try:
+        if url_to_use:
+            # Lấy path từ published_url hoặc published_url_en
+            parsed = urlparse(url_to_use)
+            path_only = parsed.path
+            
+            # Nếu có request context, tạo full URL
             if has_request_context():
-                # Generate URL using article_id route
-                article_url = url_for('article_views.article_detail', article_id=self.id)
+                try:
+                    scheme = request.scheme
+                    host = request.host
+                    article_url = f"{scheme}://{host}{path_only}"
+                except:
+                    article_url = path_only
             else:
-                # Outside request context, use fallback
+                # Outside request context, chỉ dùng path
+                article_url = path_only
+        else:
+            # Fallback: dùng article_id route nếu không có published_url
+            try:
+                if has_request_context():
+                    article_url = url_for('article_views.article_detail', article_id=self.id)
+                else:
+                    article_url = f'/article/{self.id}'
+            except Exception as e:
                 article_url = f'/article/{self.id}'
-        except Exception as e:
-            # Fallback nếu url_for fails
-            article_url = f'/article/{self.id}'
         
         return {
             'id': self.id,
             'element_guid': self.element_guid,
             'title': self.title,
-            'url': article_url,  # Flask app URL - dùng cho internal links
-            'published_url': self.published_url,  # Giữ lại để dùng cho crawl hoặc external links
+            'url': article_url,  # URL với path gốc (giữ nguyên structure từ published_url)
+            'published_url': self.published_url,  # Giữ lại URL gốc để reference
             'k5a_url': self.k5a_url or f'/a/{self.id}',
             'section': self.section,
             'site_alias': self.site_alias,

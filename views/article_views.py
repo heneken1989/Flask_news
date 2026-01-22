@@ -304,15 +304,18 @@ def tag_section(section):
 @article_view_bp.route('/article')
 @article_view_bp.route('/article/<int:article_id>')
 @article_view_bp.route('/<section>/<slug>/<int:article_id>')
-def article_detail(article_id=None, section=None, slug=None):
+@article_view_bp.route('/<path:url_path>', methods=['GET'], strict_slashes=False)
+def article_detail(article_id=None, section=None, slug=None, url_path=None):
     """
     Display article detail page
     Routes:
     - /article/<article_id>
     - /<section>/<slug>/<article_id>
+    - /<path:url_path> - Match với published_url để giữ nguyên URL structure
     """
     from database import db
     from utils import get_article_with_fallback
+    from urllib.parse import urlparse
     
     # Get current language
     current_language = session.get('language', 'en')
@@ -321,12 +324,92 @@ def article_detail(article_id=None, section=None, slug=None):
         if lang in ['da', 'kl', 'en']:
             current_language = lang
     
-    if not article_id:
-        from flask import abort
-        abort(404)
+    article = None
     
-    # Get article với fallback language
-    article = get_article_with_fallback(article_id, preferred_language=current_language)
+    # Debug: Log tất cả parameters
+    print(f"🔍 article_detail called with:")
+    print(f"   article_id: {article_id}")
+    print(f"   section: {section}")
+    print(f"   slug: {slug}")
+    print(f"   url_path: {url_path}")
+    print(f"   request.path: {request.path}")
+    print(f"   request.url: {request.url}")
+    
+    # Ưu tiên: Tìm article bằng path từ published_url (giữ nguyên URL structure)
+    # Nếu có url_path HOẶC có section+slug (route /<section>/<slug>/<int:article_id> match)
+    # thì tìm bằng path thay vì dùng article_id
+    path_only = request.path
+    
+    # Nếu có section và slug, đây là route /<section>/<slug>/<int:article_id>
+    # article_id ở đây là số từ URL gốc, không phải ID trong database
+    # Nên cần tìm bằng path thay vì article_id
+    if url_path or (section and slug):
+        # Lấy path từ request (không có domain)
+        
+        # Debug logging
+        print(f"🔍 Looking for article with path: {path_only}")
+        
+        # Tìm article bằng cách match path với published_url
+        # published_url: https://www.sermitsiaq.ag/samfund/article/123
+        # path: /samfund/article/123
+        # Cần match path với path trong published_url
+        
+        # Query tất cả articles có published_url
+        all_articles = Article.query.filter(
+            Article.published_url.isnot(None),
+            Article.published_url != ''
+        ).all()
+        
+        print(f"   Found {len(all_articles)} articles with published_url")
+        
+        # Tìm tất cả articles có path match
+        # Check cả published_url (DA) và published_url_en (EN)
+        matching_articles = []
+        for art in all_articles:
+            # Check published_url (DA)
+            if art.published_url:
+                art_parsed = urlparse(art.published_url)
+                art_path = art_parsed.path
+                if art_path == path_only:
+                    matching_articles.append(art)
+                    continue  # Đã match, không cần check published_url_en
+            
+            # Check published_url_en (EN) nếu chưa match
+            if art.published_url_en:
+                art_en_parsed = urlparse(art.published_url_en)
+                art_en_path = art_en_parsed.path
+                if art_en_path == path_only:
+                    matching_articles.append(art)
+        
+        print(f"   Found {len(matching_articles)} articles with matching path")
+        
+        # Ưu tiên 1: Chọn article với language hiện tại
+        if matching_articles:
+            for art in matching_articles:
+                if art.language == current_language:
+                    article = art
+                    print(f"   ✅ Found match with language '{current_language}': Article #{article.id}")
+                    break
+            
+            # Ưu tiên 2: Nếu không có, chọn article đầu tiên
+            if not article:
+                article = matching_articles[0]
+                print(f"   ⚠️  No match with language '{current_language}', using first match: Article #{article.id} (lang: {article.language})")
+        
+        if not article:
+            print(f"   ❌ No article found for path: {path_only}")
+            # Debug: Show first few published_urls for reference
+            print(f"   Sample published_urls:")
+            for art in all_articles[:5]:
+                if art.published_url:
+                    art_parsed = urlparse(art.published_url)
+                    print(f"      - {art_parsed.path}")
+    
+    # Fallback: Nếu không tìm thấy bằng path và có article_id (route /article/<article_id>)
+    # Thì mới dùng article_id để tìm (đây là ID thực sự trong database)
+    if not article and article_id and not section and not slug:
+        # Chỉ dùng article_id nếu không có section/slug (route /article/<article_id>)
+        article = get_article_with_fallback(article_id, preferred_language=current_language)
     
     if not article:
         from flask import abort

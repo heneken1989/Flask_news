@@ -454,3 +454,48 @@ def get_home_articles_by_language(language='en', limit=100):
         limit=limit
     )
 
+
+def get_article_url_from_published_url(published_url: str, base_url: str = None) -> str:
+    """
+    Generate article URL từ published_url (giữ nguyên path, chỉ thay domain)
+    
+    Args:
+        published_url: URL gốc từ website sermitsiaq.ag
+        base_url: Base URL (scheme + host), nếu None sẽ dùng từ request context
+    
+    Returns:
+        URL mới với domain mới, giữ nguyên path
+    
+    Examples:
+        get_article_url_from_published_url('https://www.sermitsiaq.ag/samfund/article/123')
+        -> '/samfund/article/123' (nếu base_url=None)
+        -> 'https://sermitsiaq.com/samfund/article/123' (nếu base_url='https://sermitsiaq.com')
+    """
+    if not published_url:
+        return None
+    
+    from urllib.parse import urlparse
+    from flask import request, has_request_context
+    
+    # Parse published_url để lấy path
+    parsed = urlparse(published_url)
+    path_only = parsed.path
+    
+    # Nếu có base_url, tạo full URL
+    if base_url:
+        # Remove trailing slash từ base_url
+        base_url = base_url.rstrip('/')
+        return f"{base_url}{path_only}"
+    
+    # Nếu có request context, tạo full URL từ request
+    if has_request_context():
+        try:
+            scheme = request.scheme
+            host = request.host
+            return f"{scheme}://{host}{path_only}"
+        except:
+            pass
+    
+    # Fallback: chỉ trả về path
+    return path_only
+
