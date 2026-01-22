@@ -215,15 +215,12 @@ def generate_sitemap(language='en', output_file=None, base_domain='www.sermitsia
                             image_url = url
                             break
                 
-                # Ưu tiên 2: Nếu không có URL từ domain của chúng ta, tạo URL từ imageId
+                # Ưu tiên 2: Nếu không có URL từ domain của chúng ta, dùng URL từ trang gốc
                 if not image_url:
                     image_id = extract_image_id_from_image_data(article.image_data)
                     if image_id:
-                        # Tạo URL từ domain của chúng ta (nếu file đã tồn tại)
-                        # Hoặc fallback về URL gốc nếu chưa download
-                        our_url = f'https://www.sermitsiaq.com/static/uploads/images/{image_id}.webp'
-                        # Kiểm tra xem file có tồn tại không (optional, có thể bỏ qua)
-                        image_url = our_url  # Dùng URL của chúng ta, nếu file chưa có thì sẽ 404 nhưng vẫn đúng domain
+                        # Fallback về URL gốc từ image.sermitsiaq.ag
+                        image_url = f'https://image.sermitsiaq.ag?imageId={image_id}&format=webp&width=1200'
                 
                 if image_url:
                     image_elem = ET.SubElement(url_elem, 'image:image')
