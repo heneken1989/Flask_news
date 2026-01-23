@@ -794,8 +794,12 @@ def parse_articles_from_html(html_content, base_url='https://www.sermitsiaq.ag',
         
         # Nếu là home page, parse theo thứ tự rows để giữ đúng thứ tự
         if is_home and page_content:
-            # Parse theo thứ tự rows
+            total_rows = len(rows)
+            print(f"📐 Home page structure: {total_rows} rows found")
+            
+            # Parse theo thứ tự rows để giữ đúng thứ tự
             for row_idx, row in enumerate(rows):
+                print(f"   📐 Processing row {row_idx + 1}/{total_rows}")
                 # Check xem row có chứa slider không - tìm div có class chứa 'articlescroller'
                 slider_elem = row.find('div', class_=lambda x: x and 'articlescroller' in x)
                 if slider_elem:
@@ -814,6 +818,8 @@ def parse_articles_from_html(html_content, base_url='https://www.sermitsiaq.ag',
                         slider_data = parse_slider(slider_elem, base_url)
                         if slider_data:
                             slider_data['display_order'] = row_idx * 1000  # Đặt display_order dựa trên vị trí row
+                            slider_data['row_index'] = row_idx  # Lưu row_index
+                            slider_data['total_rows'] = total_rows  # Lưu tổng số rows
                             articles.append(slider_data)
                             slider_title = slider_data.get('layout_data', {}).get('slider_title', 'Untitled')
                             slider_articles_count = len(slider_data.get('layout_data', {}).get('slider_articles', []))
@@ -821,15 +827,36 @@ def parse_articles_from_html(html_content, base_url='https://www.sermitsiaq.ag',
                 
                 # Parse articles trong row này
                 row_articles = row.find_all('article', attrs={'data-element-guid': True})
+                total_articles_in_row = len(row_articles)
+                
+                print(f"      📐 Row {row_idx + 1} has {total_articles_in_row} articles")
+                
                 for article_idx, article_elem in enumerate(row_articles):
                     # Chỉ parse nếu article này chưa được parse (tránh duplicate)
                     if article_elem in article_elements:
                         article_data = parse_article_element(article_elem, base_url)
                         if article_data:
+                            # Lưu thông tin chi tiết về row
                             article_data['display_order'] = row_idx * 1000 + article_idx  # Đặt display_order
-                            # Detect layout_type
+                            article_data['row_index'] = row_idx  # Lưu row_index để biết article thuộc hàng nào
+                            article_data['article_index_in_row'] = article_idx  # Lưu vị trí trong row
+                            article_data['total_rows'] = total_rows  # Lưu tổng số rows
+                            
+                            # Detect layout_type từ "dạng" thực sự của article (CSS classes và row structure)
+                            # detect_layout_type_from_element sẽ check:
+                            # - CSS classes (large-4 = 3_articles, large-6 = 2_articles, large-12 = 1_full)
+                            # - Số lượng articles trong row (nếu có row_elem)
+                            # - Có list bên cạnh không (1_with_list_left/right)
                             layout_type = detect_layout_type_from_element(article_elem, row)
                             article_data['layout_type'] = layout_type
+                            
+                            # Log thông tin chi tiết về "dạng" và hàng
+                            article_classes = article_elem.get('class', [])
+                            class_str = ' '.join(article_classes) if article_classes else 'no-classes'
+                            # Extract grid size classes để log
+                            grid_classes = [c for c in article_classes if 'large-' in c]
+                            grid_str = ', '.join(grid_classes) if grid_classes else 'no-grid'
+                            print(f"      📰 Article {article_idx + 1}/{total_articles_in_row} in row {row_idx + 1}: display_order={article_data['display_order']}, layout_type={layout_type}, grid={grid_str}, title={article_data.get('title', 'N/A')[:40]}")
                             
                             # Detect layout_data nếu có
                             layout_data = {}

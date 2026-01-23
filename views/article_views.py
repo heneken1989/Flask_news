@@ -56,14 +56,20 @@ def index():
         # Log số lượng articles để debug
         print(f"📊 Found {len(article_objects)} articles for home page (language: {current_language})")
         
-        # Convert to dict
+        # Log display_order của 10 articles đầu để debug
+        if article_objects:
+            print(f"📐 Display order của 10 articles đầu:")
+            for idx, article in enumerate(article_objects[:10]):
+                print(f"   [{idx}] display_order={article.display_order}, layout_type={article.layout_type}, title={article.title[:50]}")
+        
+        # Convert to dict - giữ nguyên thứ tự
         articles = [article.to_dict() for article in article_objects]
         
         # Log số lượng articles để debug
         print(f"📊 Found {len(articles)} articles for home page")
         if articles:
-            print(f"   First article: {articles[0].get('title', 'N/A')[:50]}...")
-            print(f"   Last article: {articles[-1].get('title', 'N/A')[:50]}...")
+            print(f"   First article: display_order={articles[0].get('display_order', 'N/A')}, layout_type={articles[0].get('layout_type', 'N/A')}, title={articles[0].get('title', 'N/A')[:50]}...")
+            print(f"   Last article: display_order={articles[-1].get('display_order', 'N/A')}, layout_type={articles[-1].get('layout_type', 'N/A')}, title={articles[-1].get('title', 'N/A')[:50]}...")
         
         # Debug: Kiểm tra sliders
         sliders = [a for a in articles if a.get('layout_type') == 'slider']
@@ -195,11 +201,22 @@ def index():
 # def home():
 #     ... (code đã được chuyển sang route /)
 
+@article_view_bp.route('/podcasti')
+def podcasti_section():
+    """
+    Display podcasti articles
+    Route: /podcasti (direct route, không qua /tag/)
+    Shows 50 newest articles from podcasti section
+    """
+    # Gọi trực tiếp tag_section với section='podcasti'
+    return tag_section('podcasti')
+
+
 @article_view_bp.route('/tag/<section>')
 def tag_section(section):
     """
     Display articles by section/category
-    Route: /tag/samfund, /tag/erhverv, /tag/kultur, /tag/sport
+    Route: /tag/samfund, /tag/erhverv, /tag/kultur, /tag/sport, /tag/podcasti
     Shows 50 newest articles from the specified section
     """
     from database import db

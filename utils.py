@@ -110,10 +110,10 @@ def group_articles_by_row(articles, articles_per_row=2):
 def prepare_home_layouts(articles):
     """
     Chuẩn bị articles cho trang home với các layout types khác nhau
-    Group articles theo layout_type và chuẩn bị data cho rendering
+    Group articles theo row (dựa vào display_order) và layout_type
     
     Args:
-        articles: List of article dictionaries với layout_type
+        articles: List of article dictionaries với layout_type và display_order
     
     Returns:
         List of layout items, mỗi item có:
@@ -126,13 +126,25 @@ def prepare_home_layouts(articles):
     
     layouts = []
     i = 0
-    row_index = 0
+    
+    # Debug: Log display_order của articles đầu tiên
+    if articles:
+        print(f"📐 prepare_home_layouts: Processing {len(articles)} articles")
+        print(f"   First 5 articles display_order: {[a.get('display_order', 0) for a in articles[:5]]}")
     
     while i < len(articles):
         article = articles[i]
         layout_type = article.get('layout_type') or '1_full'  # Default to 1_full
+        display_order = article.get('display_order', 0)
         
+        # Tính row_index từ display_order (display_order = row_idx * 1000 + article_idx)
+        row_index = display_order // 1000
         row_guid = f"home-row-{row_index}"
+        
+        # Debug log cho 10 layouts đầu
+        if i < 10:
+            print(f"📐 Layout {i}: layout_type={layout_type}, display_order={display_order}, row_index={row_index}, title={article.get('title', 'N/A')[:40]}")
+        
         layout_item = {
             'layout_type': layout_type,
             'row_guid': row_guid,
@@ -147,25 +159,142 @@ def prepare_home_layouts(articles):
             i += 1
             
         elif layout_type == '2_articles':
-            # 2 articles 1 row
-            layout_item['data'] = {
-                'articles': articles[i:i+2]
-            }
-            i += 2
+            # 2 articles 1 row - chỉ lấy articles trong cùng row và cùng layout_type
+            row_articles = []
+            for j in range(i, min(i+2, len(articles))):
+                next_article = articles[j]
+                next_display_order = next_article.get('display_order', 0)
+                next_row_index = next_display_order // 1000
+                next_layout_type = next_article.get('layout_type') or '1_full'
+                
+                # Chỉ lấy nếu cùng row và cùng layout_type
+                if next_row_index == row_index and next_layout_type == '2_articles':
+                    row_articles.append(next_article)
+                else:
+                    break
+            
+            if len(row_articles) >= 2:
+                layout_item['data'] = {
+                    'articles': row_articles[:2]
+                }
+                i += len(row_articles)
+            else:
+                # Không đủ 2 articles trong cùng row với cùng layout_type, fallback to 1_full
+                layout_item['layout_type'] = '1_full'
+                layout_item['data'] = {
+                    'article': article
+                }
+                i += 1
             
         elif layout_type == '3_articles':
-            # 3 articles 1 row
-            layout_item['data'] = {
-                'articles': articles[i:i+3]
-            }
-            i += 3
+            # 3 articles 1 row - lấy tất cả articles trong cùng row
+            row_articles = []
+            
+            # Tìm tất cả articles trong cùng row (không chỉ 3 articles đầu tiên)
+            for j in range(i, len(articles)):
+                next_article = articles[j]
+                next_display_order = next_article.get('display_order', 0)
+                next_row_index = next_display_order // 1000
+                
+                # Chỉ lấy nếu cùng row
+                if next_row_index == row_index:
+                    row_articles.append(next_article)
+                else:
+                    # Đã qua row khác, dừng lại
+                    break
+            
+            print(f"   🔍 Row {row_index}: Found {len(row_articles)} articles in same row")
+            if row_articles:
+                article_info = [f"{a.get('id', 'N/A')} ({a.get('layout_type', 'N/A')})" for a in row_articles]
+                print(f"      Articles: {article_info}")
+            
+            # Nếu có đúng 3 articles trong cùng row, group lại
+            if len(row_articles) == 3:
+                layout_item['data'] = {
+                    'articles': row_articles
+                }
+                i += len(row_articles)
+                print(f"   ✅ Grouped 3 articles in row {row_index}: {[a.get('title', 'N/A')[:30] for a in row_articles]}")
+            elif len(row_articles) >= 3:
+                # Nếu có nhiều hơn 3, chỉ lấy 3 đầu tiên
+                layout_item['data'] = {
+                    'articles': row_articles[:3]
+                }
+                i += len(row_articles)
+                print(f"   ✅ Grouped 3 articles (from {len(row_articles)}) in row {row_index}")
+            elif len(row_articles) > 0:
+                # Không đủ 3 articles - tạo fake articles để debug
+                print(f"   ⚠️  Row {row_index} has only {len(row_articles)} articles, expected 3. Creating {3 - len(row_articles)} fake articles for debug")
+                
+                # Tạo fake articles
+                fake_articles = []
+                for fake_idx in range(len(row_articles), 3):
+                    fake_article = {
+                        'id': f'fake-{row_index}-{fake_idx}',
+                        'title': f'[FAKE] Article {fake_idx + 1} in row {row_index}',
+                        'url': '#',
+                        'k5a_url': '#',
+                        'section': article.get('section', 'home'),
+                        'site_alias': article.get('site_alias', 'sermitsiaq'),
+                        'instance': f'fake-{row_index}-{fake_idx}',
+                        'published_date': article.get('published_date'),
+                        'is_paywall': False,
+                        'paywall_class': '',
+                        'layout_type': '3_articles',
+                        'layout_data': {},
+                        'grid_size': 4,
+                        'display_order': row_index * 1000 + fake_idx,
+                        'row_index': row_index,
+                        'article_index_in_row': fake_idx,
+                        'image': None,
+                        'element_guid': f'fake-guid-{row_index}-{fake_idx}'
+                    }
+                    fake_articles.append(fake_article)
+                    print(f"      🎭 Created fake article {fake_idx + 1}: {fake_article['title']}")
+                
+                # Combine real + fake articles
+                all_articles = row_articles + fake_articles
+                layout_item['data'] = {
+                    'articles': all_articles
+                }
+                i += len(row_articles)  # Chỉ skip real articles, không skip fake
+                print(f"   ✅ Grouped {len(row_articles)} real + {len(fake_articles)} fake = 3 articles in row {row_index}")
+            else:
+                # Không có articles nào trong row, fallback
+                print(f"   ⚠️  Row {row_index} has no articles. Fallback to 1_full")
+                layout_item['layout_type'] = '1_full'
+                layout_item['data'] = {
+                    'article': article
+                }
+                i += 1
             
         elif layout_type == '5_articles':
-            # 5 articles 1 row (NUUK)
-            layout_item['data'] = {
-                'articles': articles[i:i+5]
-            }
-            i += 5
+            # 5 articles 1 row (NUUK) - chỉ lấy articles trong cùng row
+            row_articles = []
+            for j in range(i, min(i+5, len(articles))):
+                next_article = articles[j]
+                next_display_order = next_article.get('display_order', 0)
+                next_row_index = next_display_order // 1000
+                if next_row_index == row_index:
+                    row_articles.append(next_article)
+                else:
+                    break
+            
+            if len(row_articles) >= 5:
+                layout_item['data'] = {
+                    'articles': row_articles[:5]
+                }
+                i += len(row_articles)
+            else:
+                # Không đủ 5 articles, fallback
+                layout_item['layout_type'] = '3_articles' if len(row_articles) >= 3 else ('2_articles' if len(row_articles) >= 2 else '1_full')
+                if layout_item['layout_type'] == '3_articles':
+                    layout_item['data'] = {'articles': row_articles[:3]}
+                elif layout_item['layout_type'] == '2_articles':
+                    layout_item['data'] = {'articles': row_articles[:2]}
+                else:
+                    layout_item['data'] = {'article': article}
+                i += len(row_articles) if row_articles else 1
             
         elif layout_type == '1_special_bg':
             # 1 article với special background
@@ -381,7 +510,8 @@ def get_articles_by_language(language='en', section=None, is_home=False, limit=N
     if exclude_temp:
         query = query.filter_by(is_temp=False)
     
-    query = query.order_by(Article.display_order.asc(), Article.published_date.desc())
+    # Order theo display_order (quan trọng nhất), sau đó id để đảm bảo thứ tự ổn định
+    query = query.order_by(Article.display_order.asc(), Article.id.asc())
     
     if limit:
         query = query.limit(limit)

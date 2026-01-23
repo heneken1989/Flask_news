@@ -124,7 +124,7 @@ def translate_article(dk_article, target_language='en', delay=0.5):
                         part['text'] = translator.translate(part['text'])
                         time.sleep(delay)
         
-        # Create translated article (với is_temp=True để tránh duplicate khi đang translate)
+        # Create translated article (lưu trực tiếp, không dùng temp)
         en_article = Article(
             title=translated_title,
             slug=dk_article.slug,  # Giữ nguyên slug
@@ -133,7 +133,7 @@ def translate_article(dk_article, target_language='en', delay=0.5):
             language='en',
             canonical_id=dk_article.id,  # Link với DK version
             original_language='da',
-            is_temp=True,  # Đánh dấu là temp (chưa show) cho đến khi translate xong hết
+            is_temp=False,  # Lưu trực tiếp, không dùng temp
             # Copy other fields
             element_guid=dk_article.element_guid,
             instance=dk_article.instance,
@@ -187,13 +187,20 @@ def translate_articles_batch(dk_articles, target_language='en', save_to_db=True,
         try:
             print(f"\n[{idx}/{len(dk_articles)}] Translating article {dk_article.id}...")
             
-            # Check if translation already exists (skip nếu đã có)
+            # Check if translation already exists (skip nếu đã có và có đầy đủ data)
             existing = Article.query.filter_by(
                 canonical_id=dk_article.id,
                 language='en'
             ).first()
             
             if existing:
+                # Nếu article đã tồn tại, chỉ set is_temp=False nếu cần và skip
+                if existing.is_temp:
+                    # Chỉ set is_temp=False, không re-translate
+                    existing.is_temp = False
+                    db.session.commit()
+                    print(f"   ✅ Set is_temp=False for existing article (ID: {existing.id})")
+                
                 print(f"   ⏭️  Translation already exists (ID: {existing.id}). Skipping...")
                 translated_articles.append(existing)  # Add existing to list để đếm
                 skipped_count += 1
