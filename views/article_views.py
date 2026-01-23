@@ -33,7 +33,7 @@ def index():
     
     # Get current language from session or default
     # Use session.get() to avoid calling get_locale() which needs app context
-    current_language = session.get('language', 'en')  # Default to 'en'
+    current_language = session.get('language', 'da')  # Default to 'da'
     
     # Check URL parameter for language override
     if request.args.get('lang'):
@@ -238,7 +238,7 @@ def tag_section(section):
     }
     
     # Get current language from session or default
-    current_language = session.get('language', 'en')  # Default to 'en'
+    current_language = session.get('language', 'da')  # Default to 'da'
     
     # Check URL parameter for language override
     if request.args.get('lang'):
@@ -329,7 +329,7 @@ def article_detail(article_id=None, section=None, slug=None, url_path=None):
     from urllib.parse import urlparse
     
     # Get current language
-    current_language = session.get('language', 'en')
+    current_language = session.get('language', 'da')
     if request.args.get('lang'):
         lang = request.args.get('lang')
         if lang in ['da', 'kl', 'en']:
@@ -675,7 +675,7 @@ def article_detail_test():
     from flask_babel import format_date
     
     # Get current language
-    current_language = session.get('language', 'en')
+    current_language = session.get('language', 'da')
     if request.args.get('lang'):
         lang = request.args.get('lang')
         if lang in ['da', 'kl', 'en']:
@@ -1013,7 +1013,7 @@ def contact():
     Hỗ trợ cả /contact (tiếng Anh) và /kontakt (tiếng Đan Mạch)
     """
     # Get current language from session or default
-    current_language = session.get('language', 'en')
+    current_language = session.get('language', 'da')
     
     # Check URL parameter for language override
     if request.args.get('lang'):
@@ -1032,7 +1032,7 @@ def advertise():
     Hỗ trợ cả /advertise (tiếng Anh) và /annoncer (tiếng Đan Mạch)
     """
     # Get current language from session or default
-    current_language = session.get('language', 'en')
+    current_language = session.get('language', 'da')
     
     # Check URL parameter for language override
     if request.args.get('lang'):
