@@ -1,3 +1,15 @@
-2026/01/23-18:00:57.551 c070 Reusing MANIFEST /Users/hien/Desktop/Projects/GC_HRAI/flask/user_data/Default/Local Storage/leveldb/MANIFEST-000001
-2026/01/23-18:00:57.552 c070 Recovering log #152
-2026/01/23-18:00:57.553 c070 Reusing old log /Users/hien/Desktop/Projects/GC_HRAI/flask/user_data/Default/Local Storage/leveldb/000152.log 
+2026/01/23-22:08:22.745 a43fc Reusing MANIFEST /Users/hien/Desktop/Projects/GC_HRAI/flask/user_data/Default/Local Storage/leveldb/MANIFEST-000001
+2026/01/23-22:08:22.747 a43fc Recovering log #152
+2026/01/23-22:08:22.747 a43fc Reusing old log /Users/hien/Desktop/Projects/GC_HRAI/flask/user_data/Default/Local Storage/leveldb/000152.log 
+2026/01/23-22:09:10.300 a43ff Level-0 table #156: started
+2026/01/23-22:09:10.301 a43ff Level-0 table #156: 11887 bytes OK
+2026/01/23-22:09:10.303 a43ff Delete type=0 #152
+2026/01/23-22:09:10.304 a43ff Compacting 4@0 + 1@1 files
+2026/01/23-22:09:10.306 a43ff Generated table #157@0: 221 keys, 7123 bytes
+2026/01/23-22:09:10.306 a43ff Compacted 4@0 + 1@1 files => 7123 bytes
+2026/01/23-22:09:10.307 a43ff compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/01/23-22:09:10.307 a43ff Delete type=2 #156
+2026/01/23-22:09:10.307 a43ff Delete type=2 #147
+2026/01/23-22:09:10.307 a43ff Delete type=2 #153
+2026/01/23-22:09:10.307 a43ff Delete type=2 #150
+2026/01/23-22:09:10.307 a43ff Delete type=2 #144
