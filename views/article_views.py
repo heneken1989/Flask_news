@@ -249,14 +249,37 @@ def tag_section(section):
     # Query articles từ database theo section và language
     articles = []
     try:
-        # Query articles với language filter và exclude temp articles
-        articles = Article.query.filter_by(
+        # Query articles với language filter
+        # Đối với DA (Danish) - ngôn ngữ gốc, không cần filter is_temp
+        # Đối với EN/KL - chỉ show articles đã hoàn thành translate (is_temp=False)
+        query = Article.query.filter_by(
             section=section,
             language=current_language,
-            is_temp=False,  # Chỉ show articles đã hoàn thành translate
             is_home=False  # Section page, không phải home
-        ).order_by(Article.published_date.desc().nullslast())\
-         .limit(50).all()
+        )
+        
+        # Chỉ filter is_temp=False cho EN và KL (translated articles)
+        # DA articles không bao giờ là temp vì chúng là ngôn ngữ gốc
+        if current_language in ['en', 'kl']:
+            query = query.filter_by(is_temp=False)
+        
+        articles = query.order_by(Article.published_date.desc().nullslast())\
+                       .limit(50).all()
+        
+        # Loại bỏ duplicate articles (cùng published_url + language)
+        # Chỉ giữ lại article đầu tiên (theo published_date desc)
+        seen_urls = set()
+        unique_articles = []
+        for article in articles:
+            if article.published_url:
+                if article.published_url not in seen_urls:
+                    seen_urls.add(article.published_url)
+                    unique_articles.append(article)
+            else:
+                # Articles không có URL (sliders) vẫn giữ lại
+                unique_articles.append(article)
+        
+        articles = unique_articles
         
         # Set display_order cho pattern 2-3-2-3-2-3... (0, 1, 2, ...)
         for idx, article in enumerate(articles):
@@ -270,40 +293,11 @@ def tag_section(section):
         print(f"⚠️  Database query failed for section {section}: {e}")
         articles = []
     
-    # Nếu không có articles từ database, dùng mock data
+    # Nếu không có articles từ database, hiển thị view trống (không dùng mock data)
+    # Đặc biệt cho podcasti, nếu không có articles thì hiển thị trống
     if not articles:
-        # Tạo 50 mock articles với display_order từ 0-49
-        articles = []
-        for i in range(50):
-            articles.append({
-                'element_guid': f'mock-{section}-{i:03d}',
-                'title': f'Article {i+1} - {section_names.get(section, section).upper()}',
-                'url': f'/{section}/article-{i+1}/2329{i:04d}',
-                'k5a_url': f'/a/2329{i:04d}',
-                'section': section,
-                'site_alias': 'sermitsiaq',
-                'instance': f'1000{i:02d}',
-                'published_date': f'2026-01-{15-i%30:02d}T10:00:00+01:00',
-                'is_paywall': i % 3 == 0,
-                'paywall_class': 'paywall' if i % 3 == 0 else '',
-                'display_order': i,
-                'image': {
-                    'desktop_webp': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=1058&height=688&format=webp',
-                    'desktop_jpeg': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=1058&height=688&format=jpg',
-                    'mobile_webp': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=960&height=624&format=webp',
-                    'mobile_jpeg': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=960&height=624&format=jpg',
-                    'fallback': 'https://image.sermitsiaq.ag/2295465.jpg?imageId=2295465&width=960&height=624',
-                    'desktop_width': '529',
-                    'desktop_height': '344',
-                    'mobile_width': '480',
-                    'mobile_height': '312',
-                    'alt': '',
-                    'title': f'Article {i+1}'
-                }
-            })
-        
-        # Áp dụng pattern grid_size dựa trên display_order
-        articles = apply_grid_size_pattern(articles)
+        print(f"ℹ️  No articles found for section {section} (language: {current_language})")
+        articles = []  # Giữ empty list để hiển thị view trống
     
     # Section title
     section_title = f'Tag: {section_names.get(section, section)}'
@@ -446,7 +440,22 @@ def article_detail(article_id=None, section=None, slug=None, url_path=None):
         is_home=False
     ).filter(
         Article.id != article.id
-    ).order_by(Article.published_date.desc()).limit(5).all()
+    ).order_by(Article.published_date.desc().nullslast()).limit(10).all()  # Lấy nhiều hơn để filter duplicate
+    
+    # Loại bỏ duplicate articles (cùng published_url)
+    seen_urls = set()
+    unique_related_articles = []
+    for art in related_articles:
+        if art.published_url and art.published_url not in seen_urls:
+            seen_urls.add(art.published_url)
+            unique_related_articles.append(art)
+        elif not art.published_url:
+            # Articles không có URL vẫn giữ lại
+            unique_related_articles.append(art)
+        if len(unique_related_articles) >= 5:
+            break
+    
+    related_articles = unique_related_articles
     
     # Get job slider data từ home page (section='home', is_home=True)
     job_slider_data = None
@@ -582,11 +591,24 @@ def article_detail(article_id=None, section=None, slug=None, url_path=None):
         is_home=False
     ).filter(
         Article.id != article.id  # Exclude current article
-    ).order_by(Article.published_date.desc().nullslast()).limit(5).all()
+    ).order_by(Article.published_date.desc().nullslast()).limit(10).all()  # Lấy nhiều hơn để filter duplicate
+    
+    # Loại bỏ duplicate articles (cùng published_url)
+    seen_urls = set()
+    unique_samfund_articles = []
+    for art in samfund_articles:
+        if art.published_url and art.published_url not in seen_urls:
+            seen_urls.add(art.published_url)
+            unique_samfund_articles.append(art)
+        elif not art.published_url:
+            # Articles không có URL vẫn giữ lại
+            unique_samfund_articles.append(art)
+        if len(unique_samfund_articles) >= 5:
+            break
     
     # Convert to dict và update URLs
     samfund_articles_list = []
-    for art in samfund_articles:
+    for art in unique_samfund_articles:
         art_dict = art.to_dict()
         samfund_articles_list.append(art_dict)
     
@@ -598,11 +620,24 @@ def article_detail(article_id=None, section=None, slug=None, url_path=None):
         is_home=False
     ).filter(
         Article.id != article.id  # Exclude current article
-    ).order_by(Article.published_date.desc().nullslast()).limit(10).all()
+    ).order_by(Article.published_date.desc().nullslast()).limit(15).all()  # Lấy nhiều hơn để filter duplicate
+    
+    # Loại bỏ duplicate articles (cùng published_url)
+    seen_urls = set()
+    unique_podcasti_articles = []
+    for art in podcasti_articles:
+        if art.published_url and art.published_url not in seen_urls:
+            seen_urls.add(art.published_url)
+            unique_podcasti_articles.append(art)
+        elif not art.published_url:
+            # Articles không có URL vẫn giữ lại
+            unique_podcasti_articles.append(art)
+        if len(unique_podcasti_articles) >= 10:
+            break
     
     # Convert to dict và update URLs
     podcasti_articles_list = []
-    for art in podcasti_articles:
+    for art in unique_podcasti_articles:
         art_dict = art.to_dict()
         podcasti_articles_list.append(art_dict)
     

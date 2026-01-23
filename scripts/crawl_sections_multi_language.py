@@ -234,6 +234,122 @@ def translate_dk_section_to_en(section_name):
     if url_error_count > 0:
         print(f"   - Errors: {url_error_count}")
     
+    # Check và remove duplicate EN articles trong section
+    print("\n" + "="*60)
+    print(f"🔍 Checking for duplicate EN articles in section: {section_name}")
+    print("="*60)
+    
+    # Lấy tất cả EN articles trong section
+    all_en_articles = Article.query.filter_by(
+        language='en',
+        section=section_name,
+        is_home=False
+    ).all()
+    
+    # Group by published_url để tìm duplicate
+    url_to_articles = {}
+    for article in all_en_articles:
+        if article.published_url:
+            if article.published_url not in url_to_articles:
+                url_to_articles[article.published_url] = []
+            url_to_articles[article.published_url].append(article)
+    
+    # Tìm và xóa duplicate
+    duplicates_removed = 0
+    for published_url, articles in url_to_articles.items():
+        if len(articles) > 1:
+            # Có duplicate, giữ lại article đầu tiên (ID nhỏ nhất), xóa các article còn lại
+            articles_sorted = sorted(articles, key=lambda x: x.id)
+            article_to_keep = articles_sorted[0]
+            articles_to_delete = articles_sorted[1:]
+            
+            print(f"   ⚠️  Found {len(articles)} duplicate EN articles with published_url: {published_url[:60]}...")
+            print(f"      Keeping article ID: {article_to_keep.id}")
+            
+            for article_to_delete in articles_to_delete:
+                print(f"      Deleting duplicate article ID: {article_to_delete.id}")
+                db.session.delete(article_to_delete)
+                duplicates_removed += 1
+    
+    if duplicates_removed > 0:
+        db.session.commit()
+        print(f"✅ Removed {duplicates_removed} duplicate EN articles")
+    else:
+        print(f"✅ No duplicate EN articles found")
+    
+    # Check các DA articles chưa có EN version và tạo nếu chưa có
+    print("\n" + "="*60)
+    print(f"🔍 Checking DA articles without EN version in section: {section_name}")
+    print("="*60)
+    
+    # Lấy tất cả DA articles trong section
+    dk_articles = Article.query.filter_by(
+        language='da',
+        section=section_name,
+        is_home=False
+    ).all()
+    
+    missing_en_count = 0
+    translated_count = 0
+    error_count = 0
+    
+    for dk_article in dk_articles:
+        # Skip nếu không có published_url
+        if not dk_article.published_url or not dk_article.published_url.strip():
+            continue
+        
+        # Check xem đã có EN version chưa (dựa trên published_url + language='en' + section)
+        existing_en = Article.query.filter_by(
+            published_url=dk_article.published_url,
+            language='en',
+            section=section_name,
+            is_home=False
+        ).first()
+        
+        if not existing_en:
+            missing_en_count += 1
+            print(f"   ⚠️  DA article ID {dk_article.id} (URL: {dk_article.published_url[:60]}...) missing EN version")
+            
+            try:
+                # Translate article này
+                from services.translation_service import translate_article
+                en_article = translate_article(
+                    dk_article,
+                    target_language='en',
+                    delay=0.5
+                )
+                
+                if en_article:
+                    # Translate URL cho EN article mới
+                    if dk_article.published_url:
+                        en_url = translate_url(dk_article.published_url, delay=0.3)
+                        if en_url:
+                            en_article.published_url_en = en_url
+                    
+                    # Save vào database
+                    db.session.add(en_article)
+                    db.session.commit()
+                    
+                    translated_count += 1
+                    if translated_count % 5 == 0:
+                        print(f"   ✅ Translated {translated_count} missing EN articles...")
+                else:
+                    error_count += 1
+            except Exception as e:
+                print(f"   ❌ Error translating DA article {dk_article.id}: {e}")
+                error_count += 1
+                db.session.rollback()
+                continue
+    
+    if missing_en_count > 0:
+        print(f"✅ Missing EN articles check completed:")
+        print(f"   - Found {missing_en_count} DA articles without EN version")
+        print(f"   - Translated: {translated_count}")
+        if error_count > 0:
+            print(f"   - Errors: {error_count}")
+    else:
+        print(f"✅ All DA articles already have EN versions")
+    
     return translated, errors
 
 
@@ -395,6 +511,119 @@ def translate_dk_home_to_en():
     print(f"   - Skipped (already translated): {url_skipped_count}")
     if url_error_count > 0:
         print(f"   - Errors: {url_error_count}")
+    
+    # Check và remove duplicate EN articles trong home
+    print("\n" + "="*60)
+    print(f"🔍 Checking for duplicate EN articles in home")
+    print("="*60)
+    
+    # Lấy tất cả EN articles trong home
+    all_en_articles = Article.query.filter_by(
+        language='en',
+        is_home=True
+    ).all()
+    
+    # Group by published_url để tìm duplicate
+    url_to_articles = {}
+    for article in all_en_articles:
+        if article.published_url:
+            if article.published_url not in url_to_articles:
+                url_to_articles[article.published_url] = []
+            url_to_articles[article.published_url].append(article)
+    
+    # Tìm và xóa duplicate
+    duplicates_removed = 0
+    for published_url, articles in url_to_articles.items():
+        if len(articles) > 1:
+            # Có duplicate, giữ lại article đầu tiên (ID nhỏ nhất), xóa các article còn lại
+            articles_sorted = sorted(articles, key=lambda x: x.id)
+            article_to_keep = articles_sorted[0]
+            articles_to_delete = articles_sorted[1:]
+            
+            print(f"   ⚠️  Found {len(articles)} duplicate EN articles with published_url: {published_url[:60]}...")
+            print(f"      Keeping article ID: {article_to_keep.id}")
+            
+            for article_to_delete in articles_to_delete:
+                print(f"      Deleting duplicate article ID: {article_to_delete.id}")
+                db.session.delete(article_to_delete)
+                duplicates_removed += 1
+    
+    if duplicates_removed > 0:
+        db.session.commit()
+        print(f"✅ Removed {duplicates_removed} duplicate EN articles")
+    else:
+        print(f"✅ No duplicate EN articles found")
+    
+    # Check các DA articles chưa có EN version và tạo nếu chưa có
+    print("\n" + "="*60)
+    print(f"🔍 Checking DA articles without EN version in home")
+    print("="*60)
+    
+    # Lấy tất cả DA articles trong home
+    dk_articles = Article.query.filter_by(
+        language='da',
+        is_home=True
+    ).all()
+    
+    missing_en_count = 0
+    translated_count = 0
+    error_count = 0
+    
+    for dk_article in dk_articles:
+        # Skip nếu không có published_url
+        if not dk_article.published_url or not dk_article.published_url.strip():
+            continue
+        
+        # Check xem đã có EN version chưa (dựa trên published_url + language='en' + is_home=True)
+        existing_en = Article.query.filter_by(
+            published_url=dk_article.published_url,
+            language='en',
+            is_home=True
+        ).first()
+        
+        if not existing_en:
+            missing_en_count += 1
+            print(f"   ⚠️  DA article ID {dk_article.id} (URL: {dk_article.published_url[:60]}...) missing EN version")
+            
+            try:
+                # Translate article này
+                from services.translation_service import translate_article
+                en_article = translate_article(
+                    dk_article,
+                    target_language='en',
+                    delay=0.5
+                )
+                
+                if en_article:
+                    # Translate URL cho EN article mới
+                    if dk_article.published_url:
+                        en_url = translate_url(dk_article.published_url, delay=0.3)
+                        if en_url:
+                            en_article.published_url_en = en_url
+                    
+                    # Save vào database
+                    db.session.add(en_article)
+                    db.session.commit()
+                    
+                    translated_count += 1
+                    if translated_count % 5 == 0:
+                        print(f"   ✅ Translated {translated_count} missing EN articles...")
+                else:
+                    error_count += 1
+            except Exception as e:
+                print(f"   ❌ Error translating DA article {dk_article.id}: {e}")
+                error_count += 1
+                db.session.rollback()
+                continue
+    
+    if missing_en_count > 0:
+        print(f"✅ Missing EN articles check completed:")
+        print(f"   - Found {missing_en_count} DA articles without EN version")
+        print(f"   - Translated: {translated_count}")
+        if error_count > 0:
+            print(f"   - Errors: {error_count}")
+    else:
+        print(f"✅ All DA articles already have EN versions")
     
     return translated, errors
 

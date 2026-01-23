@@ -187,11 +187,17 @@ def translate_articles_batch(dk_articles, target_language='en', save_to_db=True,
         try:
             print(f"\n[{idx}/{len(dk_articles)}] Translating article {dk_article.id}...")
             
-            # Check if translation already exists (skip nếu đã có và có đầy đủ data)
-            existing = Article.query.filter_by(
-                canonical_id=dk_article.id,
-                language='en'
-            ).first()
+            # Check if translation already exists bằng published_url + language='en'
+            # Đảm bảo không tạo duplicate EN articles
+            existing = None
+            
+            if dk_article.published_url:
+                existing = Article.query.filter_by(
+                    published_url=dk_article.published_url,
+                    language='en',
+                    section=dk_article.section,
+                    is_home=dk_article.is_home
+                ).first()
             
             if existing:
                 # Nếu article đã tồn tại, chỉ set is_temp=False nếu cần và skip
@@ -201,7 +207,13 @@ def translate_articles_batch(dk_articles, target_language='en', save_to_db=True,
                     db.session.commit()
                     print(f"   ✅ Set is_temp=False for existing article (ID: {existing.id})")
                 
-                print(f"   ⏭️  Translation already exists (ID: {existing.id}). Skipping...")
+                # Đảm bảo canonical_id được set đúng (nếu chưa có)
+                if not existing.canonical_id:
+                    existing.canonical_id = dk_article.id
+                    db.session.commit()
+                    print(f"   ✅ Set canonical_id={dk_article.id} for existing article (ID: {existing.id})")
+                
+                print(f"   ⏭️  Translation already exists (ID: {existing.id}, published_url: {existing.published_url[:60] if existing.published_url else 'N/A'}...). Skipping...")
                 translated_articles.append(existing)  # Add existing to list để đếm
                 skipped_count += 1
                 continue

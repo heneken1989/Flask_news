@@ -352,26 +352,34 @@ class SermitsiaqCrawler:
             # Determine language from base_url or parameter
             article_language = language or self.language
             
-            # TẠM BỎ QUA: Check existing articles to avoid duplicates (chỉ cho home - force crawl tất cả)
-            # print(f"🔍 Checking for existing {article_language} home articles...")
-            existing_urls = set()  # Giữ empty để không skip bất kỳ article nào
-            # existing_articles = Article.query.filter_by(
-            #     section='home',
-            #     is_home=True,
-            #     language=article_language
-            # ).all()
-            # for art in existing_articles:
-            #     if art.published_url:
-            #         existing_urls.add(art.published_url)
-            print(f"   ⚠️  SKIP CHECK DISABLED: Will crawl all articles (existing_urls check bypassed for home)")
+            # Check existing articles trước khi crawl để biết articles nào đã tồn tại
+            print(f"🔍 Checking for existing {article_language} home articles...")
+            existing_articles_map = {}  # Dict: {published_url: Article} hoặc {(layout_type, display_order): Article} cho sliders
+            existing_articles = Article.query.filter_by(
+                section='home',
+                is_home=True,
+                language=article_language
+            ).all()
             
-            # Save new articles to database và update display_order cho articles cũ
-            print("💾 Saving new home articles and updating display_order...")
+            for art in existing_articles:
+                if art.published_url:
+                    existing_articles_map[art.published_url] = art
+                elif art.layout_type in ['slider', 'job_slider']:
+                    # Slider containers: key bằng (layout_type, display_order)
+                    key = (art.layout_type, art.display_order)
+                    existing_articles_map[key] = art
+            
+            print(f"   Found {len(existing_articles_map)} existing home articles (section='home', is_home=True, language='{article_language}')")
+            
+            # Save new articles to database (update sẽ làm sau)
+            print("💾 Saving new home articles...")
             articles_skipped = 0
             articles_updated = 0
             articles_not_found_in_home = 0  # Track articles không tìm thấy trong home
             updated_article_ids = set()  # Track IDs đã được update để tránh đếm trùng
             skipped_articles_info = []  # Track thông tin articles bị skip để debug
+            articles_to_update = []  # Track articles cần update sau khi save xong
+            existing_urls = set()  # Track URLs đã xử lý trong batch này để tránh duplicate
             for idx, article_data in enumerate(articles):
                 try:
                     # Set section='home' và is_home=True
@@ -539,68 +547,31 @@ class SermitsiaqCrawler:
                     # Determine language from base_url or parameter (cần xác định trước khi check skip)
                     article_language = language or self.language
                     
-                    # Logic: nếu article đã tồn tại trong home thì update display_order, layout_type, layout_data
+                    # Check xem article đã tồn tại chưa (chỉ check, không update ngay)
                     if is_slider_container:
-                        # Slider containers: check bằng display_order + layout_type
-                        existing_check = Article.query.filter_by(
-                            section='home',
-                            is_home=True,
-                            language=article_language,
-                            layout_type=layout_type,
-                            display_order=display_order
-                        ).first()
-                        
-                        if existing_check:
-                            # Slider container đã tồn tại, update display_order và layout_data
-                            existing_check.display_order = display_order
-                            existing_check.layout_type = layout_type
-                            layout_data = article_data.get('layout_data', {})
-                            layout_data['row_index'] = article_data.get('row_index', -1)
-                            layout_data['article_index_in_row'] = article_data.get('article_index_in_row', -1)
-                            layout_data['total_rows'] = article_data.get('total_rows', 0)
-                            existing_check.layout_data = layout_data
-                            existing_check.grid_size = article_data.get('grid_size', 6)
-                            existing_check.is_home = True
-                            existing_check.section = 'home'
-                            
-                            if existing_check.id not in updated_article_ids:
-                                updated_article_ids.add(existing_check.id)
-                                articles_updated += 1
-                                slider_title = article_data.get('layout_data', {}).get('slider_title', 'Untitled')
-                                print(f"  🔄 Updated slider container: {layout_type} '{slider_title}' (display_order={display_order})")
+                        # Slider containers: check bằng (layout_type, display_order)
+                        key = (layout_type, display_order)
+                        if key in existing_articles_map:
+                            # Đã tồn tại, sẽ update sau khi save xong tất cả articles mới
+                            articles_to_update.append({
+                                'type': 'slider',
+                                'key': key,
+                                'article': existing_articles_map[key],
+                                'article_data': article_data,
+                                'display_order': display_order
+                            })
                             continue
                     elif article_url:
                         # Articles có URL: check bằng published_url
-                        existing_check = Article.query.filter_by(
-                            published_url=article_url,
-                            language=article_language,
-                            section='home',
-                            is_home=True
-                        ).first()
-                        
-                        if existing_check:
-                            # Article đã tồn tại, update display_order, layout_type, layout_data
-                            existing_check.display_order = display_order
-                            existing_check.layout_type = article_data.get('layout_type')
-                            
-                            # Merge layout_data với thông tin row
-                            layout_data = article_data.get('layout_data', {})
-                            layout_data['row_index'] = article_data.get('row_index', -1)
-                            layout_data['article_index_in_row'] = article_data.get('article_index_in_row', -1)
-                            layout_data['total_rows'] = article_data.get('total_rows', 0)
-                            existing_check.layout_data = layout_data
-                            
-                            existing_check.grid_size = article_data.get('grid_size', 6)
-                            # Đảm bảo is_home=True và section='home'
-                            existing_check.is_home = True
-                            existing_check.section = 'home'
-                            
-                            # Chỉ đếm nếu chưa được update trước đó
-                            if existing_check.id not in updated_article_ids:
-                                updated_article_ids.add(existing_check.id)
-                                articles_updated += 1
-                                if articles_updated % 10 == 0:
-                                    print(f"  🔄 Updated display_order for {articles_updated} existing home articles...")
+                        if article_url in existing_articles_map:
+                            # Đã tồn tại, sẽ update sau khi save xong tất cả articles mới
+                            articles_to_update.append({
+                                'type': 'article',
+                                'key': article_url,
+                                'article': existing_articles_map[article_url],
+                                'article_data': article_data,
+                                'display_order': display_order
+                            })
                             continue
                     
                     # Luôn tạo mới article (nếu chưa tồn tại)
@@ -761,8 +732,69 @@ class SermitsiaqCrawler:
                     print(f"  ⚠️  {error_msg}")
                     continue
             
-            # Final commit
+            # Final commit cho articles mới
             db.session.commit()
+            print(f"✅ Successfully saved {articles_created} new home articles")
+            
+            # Sau khi save đầy đủ articles mới, mới chạy logic update cho articles đã tồn tại
+            print(f"\n🔄 Updating existing articles...")
+            for update_info in articles_to_update:
+                try:
+                    existing_article = update_info['article']
+                    article_data = update_info['article_data']
+                    display_order = update_info['display_order']
+                    layout_type = article_data.get('layout_type', '')
+                    
+                    if update_info['type'] == 'slider':
+                        # Update slider container
+                        existing_article.display_order = display_order
+                        existing_article.layout_type = layout_type
+                        layout_data = article_data.get('layout_data', {})
+                        layout_data['row_index'] = article_data.get('row_index', -1)
+                        layout_data['article_index_in_row'] = article_data.get('article_index_in_row', -1)
+                        layout_data['total_rows'] = article_data.get('total_rows', 0)
+                        existing_article.layout_data = layout_data
+                        existing_article.grid_size = article_data.get('grid_size', 6)
+                        existing_article.is_home = True
+                        existing_article.section = 'home'
+                        
+                        if existing_article.id not in updated_article_ids:
+                            updated_article_ids.add(existing_article.id)
+                            articles_updated += 1
+                            slider_title = article_data.get('layout_data', {}).get('slider_title', 'Untitled')
+                            print(f"  🔄 Updated slider container: {layout_type} '{slider_title}' (display_order={display_order})")
+                    else:
+                        # Update article có URL
+                        existing_article.display_order = display_order
+                        existing_article.layout_type = layout_type
+                        
+                        # Merge layout_data với thông tin row
+                        layout_data = article_data.get('layout_data', {})
+                        layout_data['row_index'] = article_data.get('row_index', -1)
+                        layout_data['article_index_in_row'] = article_data.get('article_index_in_row', -1)
+                        layout_data['total_rows'] = article_data.get('total_rows', 0)
+                        existing_article.layout_data = layout_data
+                        
+                        existing_article.grid_size = article_data.get('grid_size', 6)
+                        existing_article.is_home = True
+                        existing_article.section = 'home'
+                        
+                        if existing_article.id not in updated_article_ids:
+                            updated_article_ids.add(existing_article.id)
+                            articles_updated += 1
+                            if articles_updated % 10 == 0:
+                                print(f"  🔄 Updated display_order for {articles_updated} existing home articles...")
+                except Exception as e:
+                    error_msg = f"Error updating article {update_info.get('key', 'unknown')}: {str(e)}"
+                    errors.append(error_msg)
+                    print(f"  ⚠️  {error_msg}")
+                    continue
+            
+            # Commit tất cả updates
+            if articles_to_update:
+                db.session.commit()
+                print(f"✅ Updated {articles_updated} existing articles")
+            
             print(f"✅ Successfully saved {articles_created} new home articles, updated {articles_updated} existing articles (display_order)")
             if articles_not_found_in_home > 0:
                 print(f"   ⚠️  {articles_not_found_in_home} articles not found in database (should have been created)")

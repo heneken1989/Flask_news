@@ -137,8 +137,35 @@ def download_and_update_image_data(image_data: Dict, base_url: str = 'https://ww
                 break
     
     if not image_id:
-        print(f"      ⚠️  Could not extract imageId from image_data")
-        return image_data
+        print(f"      ⚠️  Could not extract imageId from image_data, keeping original URLs")
+        # Vẫn đảm bảo tất cả keys có giá trị (fallback chain)
+        updated_data = image_data.copy()
+        
+        # Đảm bảo tất cả các keys quan trọng đều có giá trị
+        # Nếu không có desktop_webp, dùng fallback
+        if not updated_data.get('desktop_webp') and updated_data.get('fallback'):
+            updated_data['desktop_webp'] = updated_data['fallback']
+        
+        # Nếu không có fallback, dùng desktop_webp
+        if not updated_data.get('fallback') and updated_data.get('desktop_webp'):
+            updated_data['fallback'] = updated_data['desktop_webp']
+        
+        # Đảm bảo desktop_jpeg, mobile_webp, mobile_jpeg có giá trị
+        if updated_data.get('desktop_webp'):
+            if not updated_data.get('desktop_jpeg'):
+                updated_data['desktop_jpeg'] = updated_data['desktop_webp']
+            if not updated_data.get('mobile_webp'):
+                updated_data['mobile_webp'] = updated_data['desktop_webp']
+            if not updated_data.get('mobile_jpeg'):
+                updated_data['mobile_jpeg'] = updated_data['desktop_webp']
+        elif updated_data.get('fallback'):
+            # Nếu không có desktop_webp, dùng fallback cho tất cả
+            updated_data['desktop_webp'] = updated_data['fallback']
+            updated_data['desktop_jpeg'] = updated_data['fallback']
+            updated_data['mobile_webp'] = updated_data['fallback']
+            updated_data['mobile_jpeg'] = updated_data['fallback']
+        
+        return updated_data
     
     updated_data = image_data.copy()
     
@@ -170,20 +197,51 @@ def download_and_update_image_data(image_data: Dict, base_url: str = 'https://ww
                 updated_data[key] = new_url
                 print(f"      ✅ Downloaded {key}: {new_url}")
             else:
-                # Giữ nguyên URL gốc nếu download lỗi
-                print(f"      ⚠️  Failed to download {key}, keeping original URL")
+                # Giữ nguyên URL gốc nếu download lỗi (fallback về URL từ trang gốc)
+                print(f"      ⚠️  Failed to download {key}, keeping original URL: {original_url}")
+                # Đảm bảo vẫn giữ URL gốc
+                updated_data[key] = original_url
+        else:
+            # Nếu key không có trong image_data, tìm fallback từ các keys khác
+            # Ưu tiên: fallback > desktop_webp > desktop_jpeg > mobile_webp > mobile_jpeg
+            fallback_keys = ['fallback', 'desktop_webp', 'desktop_jpeg', 'mobile_webp', 'mobile_jpeg']
+            for fb_key in fallback_keys:
+                if image_data.get(fb_key) and fb_key != key:
+                    updated_data[key] = image_data[fb_key]
+                    print(f"      ℹ️  Using {fb_key} as fallback for {key}: {image_data[fb_key]}")
+                    break
+    
+    # Đảm bảo tất cả các keys quan trọng đều có giá trị (fallback chain)
+    # Nếu không có desktop_webp, dùng fallback
+    if not updated_data.get('desktop_webp') and updated_data.get('fallback'):
+        updated_data['desktop_webp'] = updated_data['fallback']
+        print(f"      ℹ️  Using fallback for desktop_webp: {updated_data['fallback']}")
+    
+    # Nếu không có fallback, dùng desktop_webp
+    if not updated_data.get('fallback') and updated_data.get('desktop_webp'):
+        updated_data['fallback'] = updated_data['desktop_webp']
+        print(f"      ℹ️  Using desktop_webp for fallback: {updated_data['desktop_webp']}")
     
     # Nếu không download all formats, copy URLs từ desktop_webp cho các format khác
     # Chỉ copy nếu desktop_webp đã được download (có chứa domain của chúng ta)
     if not download_all_formats:
-        if updated_data.get('desktop_webp') and ('sermitsiaq.com' in updated_data['desktop_webp'] or 'static/uploads/images' in updated_data['desktop_webp']):
-            # Copy desktop_webp cho desktop_jpeg (override URL gốc nếu có)
-            # Dùng cùng file webp cho jpeg (hoặc có thể tạo jpeg version sau)
-            updated_data['desktop_jpeg'] = updated_data['desktop_webp']
+        # Luôn đảm bảo có desktop_jpeg, mobile_webp, mobile_jpeg
+        if updated_data.get('desktop_webp'):
+            # Copy desktop_webp cho desktop_jpeg nếu chưa có
+            if not updated_data.get('desktop_jpeg'):
+                updated_data['desktop_jpeg'] = updated_data['desktop_webp']
             
-            # Copy desktop_webp cho mobile (override URL gốc nếu có)
-            updated_data['mobile_webp'] = updated_data['desktop_webp']
-            updated_data['mobile_jpeg'] = updated_data['desktop_webp']
+            # Copy desktop_webp cho mobile nếu chưa có
+            if not updated_data.get('mobile_webp'):
+                updated_data['mobile_webp'] = updated_data['desktop_webp']
+            if not updated_data.get('mobile_jpeg'):
+                updated_data['mobile_jpeg'] = updated_data['desktop_webp']
+        elif updated_data.get('fallback'):
+            # Nếu không có desktop_webp, dùng fallback cho tất cả
+            updated_data['desktop_webp'] = updated_data['fallback']
+            updated_data['desktop_jpeg'] = updated_data['fallback']
+            updated_data['mobile_webp'] = updated_data['fallback']
+            updated_data['mobile_jpeg'] = updated_data['fallback']
     
     return updated_data
 
