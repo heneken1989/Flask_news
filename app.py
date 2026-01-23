@@ -287,6 +287,18 @@ def generate_sitemap_xml(language='en', base_domain='www.sermitsiaq.com'):
     
     return Response(xml_str, mimetype='application/xml')
 
+# Serve Google verification file
+@app.route('/googlef7214e31e303b929.html')
+def google_verification():
+    """Serve Google site verification file"""
+    try:
+        verification_path = os.path.join(os.path.dirname(__file__), 'templates', 'googlef7214e31e303b929.html')
+        with open(verification_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        return content, 200, {'Content-Type': 'text/html; charset=utf-8'}
+    except FileNotFoundError:
+        return "File not found", 404
+
 # Serve sitemap for EN
 @app.route('/sitemap.xml')
 def sitemap():

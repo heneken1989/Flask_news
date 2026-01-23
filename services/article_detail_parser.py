@@ -580,13 +580,15 @@ class ArticleDetailParser:
         # Parse content
         blocks = ArticleDetailParser.parse_html_content(html_content)
         
-        # Find existing or create new
-        article_detail = ArticleDetail.query.filter_by(published_url=published_url).first()
+        # Find existing by both published_url AND language (vì unique constraint là (published_url, language))
+        article_detail = ArticleDetail.query.filter_by(
+            published_url=published_url,
+            language=language
+        ).first()
         
         if article_detail:
             # Update existing
             article_detail.content_blocks = blocks
-            article_detail.language = language
             if element_guid:
                 article_detail.element_guid = element_guid
             article_detail.updated_at = datetime.utcnow()
