@@ -32,10 +32,15 @@ def index():
     print(f"   URL: {request.url}")
     
     # Get current language from session or default
-    # Use session.get() to avoid calling get_locale() which needs app context
-    current_language = session.get('language', 'da')  # Default to 'da'
+    # Use get_locale() from flask_babel to be consistent with app default
+    from flask_babel import get_locale
+    try:
+        current_language = str(get_locale()) if get_locale() else 'en'
+    except:
+        # Fallback: check session or default to 'en' (matching app.config['BABEL_DEFAULT_LOCALE'])
+        current_language = session.get('language', 'en')
     
-    # Check URL parameter for language override
+    # Check URL parameter for language override (highest priority)
     if request.args.get('lang'):
         lang = request.args.get('lang')
         if lang in ['da', 'kl', 'en']:
@@ -238,9 +243,15 @@ def tag_section(section):
     }
     
     # Get current language from session or default
-    current_language = session.get('language', 'da')  # Default to 'da'
+    # Use get_locale() from flask_babel to be consistent with app default
+    from flask_babel import get_locale
+    try:
+        current_language = str(get_locale()) if get_locale() else 'en'
+    except:
+        # Fallback: check session or default to 'en' (matching app.config['BABEL_DEFAULT_LOCALE'])
+        current_language = session.get('language', 'en')
     
-    # Check URL parameter for language override
+    # Check URL parameter for language override (highest priority)
     if request.args.get('lang'):
         lang = request.args.get('lang')
         if lang in ['da', 'kl', 'en']:
@@ -329,7 +340,11 @@ def article_detail(article_id=None, section=None, slug=None, url_path=None):
     from urllib.parse import urlparse
     
     # Get current language
-    current_language = session.get('language', 'da')
+    from flask_babel import get_locale
+    try:
+        current_language = str(get_locale()) if get_locale() else 'en'
+    except:
+        current_language = session.get('language', 'en')
     if request.args.get('lang'):
         lang = request.args.get('lang')
         if lang in ['da', 'kl', 'en']:
@@ -675,7 +690,11 @@ def article_detail_test():
     from flask_babel import format_date
     
     # Get current language
-    current_language = session.get('language', 'da')
+    from flask_babel import get_locale
+    try:
+        current_language = str(get_locale()) if get_locale() else 'en'
+    except:
+        current_language = session.get('language', 'en')
     if request.args.get('lang'):
         lang = request.args.get('lang')
         if lang in ['da', 'kl', 'en']:
@@ -1013,7 +1032,11 @@ def contact():
     Hỗ trợ cả /contact (tiếng Anh) và /kontakt (tiếng Đan Mạch)
     """
     # Get current language from session or default
-    current_language = session.get('language', 'da')
+    from flask_babel import get_locale
+    try:
+        current_language = str(get_locale()) if get_locale() else 'en'
+    except:
+        current_language = session.get('language', 'en')
     
     # Check URL parameter for language override
     if request.args.get('lang'):
@@ -1032,7 +1055,11 @@ def advertise():
     Hỗ trợ cả /advertise (tiếng Anh) và /annoncer (tiếng Đan Mạch)
     """
     # Get current language from session or default
-    current_language = session.get('language', 'da')
+    from flask_babel import get_locale
+    try:
+        current_language = str(get_locale()) if get_locale() else 'en'
+    except:
+        current_language = session.get('language', 'en')
     
     # Check URL parameter for language override
     if request.args.get('lang'):
