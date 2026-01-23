@@ -15,8 +15,27 @@ load_dotenv()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
 
+# Session configuration for production (HTTPS)
+# Detect if running in production
+is_production = os.environ.get('FLASK_ENV') == 'production' or os.environ.get('ENVIRONMENT') == 'production'
+
+# Session cookie settings
+# SESSION_COOKIE_SECURE: Only send cookies over HTTPS in production
+# In production behind nginx with HTTPS, this should be True
+# Nginx will set X-Forwarded-Proto header which Flask can detect
+app.config['SESSION_COOKIE_SECURE'] = is_production  # Only send cookies over HTTPS in production
+app.config['SESSION_COOKIE_HTTPONLY'] = True  # Prevent JavaScript access to cookies (XSS protection)
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  # CSRF protection
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=24)  # Session expires after 24 hours
+
+# Trust proxy headers (important for nginx reverse proxy)
+# This allows Flask to detect HTTPS from X-Forwarded-Proto header
+if is_production:
+    from werkzeug.middleware.proxy_fix import ProxyFix
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
+
 # Babel configuration for i18n
-app.config['BABEL_DEFAULT_LOCALE'] = 'da'  # Danish as default
+app.config['BABEL_DEFAULT_LOCALE'] = 'en'  # English as default
 app.config['BABEL_SUPPORTED_LOCALES'] = ['en', 'da', 'kl']  # English, Danish, Greenlandic
 app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'translations'
 
@@ -40,7 +59,7 @@ def get_locale():
     
     # Skip browser detection - always use default locale
     # This ensures consistent behavior and prevents unwanted language switching
-    # Default to Danish
+    # Default to English
     return app.config['BABEL_DEFAULT_LOCALE']
 
 # Initialize Babel with locale_selector
@@ -307,42 +326,76 @@ def login():
     from datetime import datetime
     import hashlib
     
+    # Debug logging
+    print(f"🔐 Login attempt - Method: {request.method}")
+    print(f"   Request scheme: {request.scheme}")
+    print(f"   Is secure: {request.is_secure}")
+    print(f"   Headers - X-Forwarded-Proto: {request.headers.get('X-Forwarded-Proto', 'None')}")
+    print(f"   Headers - X-Forwarded-For: {request.headers.get('X-Forwarded-For', 'None')}")
+    print(f"   Session cookie secure: {app.config.get('SESSION_COOKIE_SECURE')}")
+    print(f"   SECRET_KEY set: {bool(app.config.get('SECRET_KEY'))}")
+    
     # If already logged in, show logout button (don't redirect)
     if session.get('user_id') and request.method == 'GET':
+        print(f"   User already logged in: {session.get('user_id')}")
         return render_template('login.html')
     
     if request.method == 'POST':
         subscriber = request.form.get('subscriber', '').strip()
         password = request.form.get('password', '')
         
+        print(f"   Subscriber/Email: {subscriber[:10]}... (hidden)")
+        print(f"   Password provided: {bool(password)}")
+        
         if not subscriber or not password:
+            print("   ❌ Missing subscriber or password")
             return render_template('login.html', error='Vær venlig at udfylde alle felter')
         
         # Find user by email or subscriber_number
-        user = User.query.filter(
-            (User.email == subscriber) | (User.subscriber_number == subscriber)
-        ).first()
-        
-        if user and user.is_active:
-            # Check password
-            password_hash = hashlib.sha256(password.encode()).hexdigest()
-            if password_hash == user.password_hash:
-                # Login successful
-                session['user_id'] = user.id
-                session['user_email'] = user.email
-                session['user_subscriber'] = user.subscriber_number
+        try:
+            user = User.query.filter(
+                (User.email == subscriber) | (User.subscriber_number == subscriber)
+            ).first()
+            
+            print(f"   User found: {user is not None}")
+            if user:
+                print(f"   User ID: {user.id}, Email: {user.email}, Active: {user.is_active}")
+            
+            if user and user.is_active:
+                # Check password
+                password_hash = hashlib.sha256(password.encode()).hexdigest()
+                password_match = password_hash == user.password_hash
+                print(f"   Password match: {password_match}")
                 
-                # Update last_login
-                user.last_login = datetime.utcnow()
-                db.session.commit()
-                
-                # Redirect to article details list page for editing
-                next_page = request.args.get('next') or url_for('admin.list_article_details')
-                return redirect(next_page)
+                if password_match:
+                    # Login successful
+                    session['user_id'] = user.id
+                    session['user_email'] = user.email
+                    session['user_subscriber'] = user.subscriber_number
+                    session.permanent = True  # Make session permanent
+                    
+                    print(f"   ✅ Session set - user_id: {session.get('user_id')}")
+                    print(f"   Session keys: {list(session.keys())}")
+                    
+                    # Update last_login
+                    user.last_login = datetime.utcnow()
+                    db.session.commit()
+                    
+                    # Redirect to article details list page for editing
+                    next_page = request.args.get('next') or url_for('admin.list_article_details')
+                    print(f"   Redirecting to: {next_page}")
+                    return redirect(next_page)
+                else:
+                    print("   ❌ Password mismatch")
+                    return render_template('login.html', error='Forkert e-mail eller adgangskode')
             else:
+                print("   ❌ User not found or inactive")
                 return render_template('login.html', error='Forkert e-mail eller adgangskode')
-        else:
-            return render_template('login.html', error='Forkert e-mail eller adgangskode')
+        except Exception as e:
+            print(f"   ❌ Database error: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            return render_template('login.html', error='Der opstod en fejl. Prøv venligst igen.')
     
     # GET request - show login form
     return render_template('login.html')

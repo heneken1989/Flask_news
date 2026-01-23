@@ -272,4 +272,3 @@ class User(db.Model):
         import hashlib
         password_hash = hashlib.sha256(password.encode()).hexdigest()
         return password_hash == self.password_hash
-

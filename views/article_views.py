@@ -1041,5 +1041,3 @@ def advertise():
             current_language = lang
     
     return render_template('advertise.html', current_language=current_language)
-
-

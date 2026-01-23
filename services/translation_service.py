@@ -192,12 +192,12 @@ def translate_articles_batch(dk_articles, target_language='en', save_to_db=True,
             existing = None
             
             if dk_article.published_url:
-                existing = Article.query.filter_by(
+            existing = Article.query.filter_by(
                     published_url=dk_article.published_url,
-                    language='en',
+                language='en',
                     section=dk_article.section,
                     is_home=dk_article.is_home
-                ).first()
+            ).first()
             
             if existing:
                 # Nếu article đã tồn tại, chỉ set is_temp=False nếu cần và skip

@@ -356,7 +356,7 @@ class SermitsiaqCrawler:
             print(f"🔍 Checking for existing {article_language} home articles...")
             existing_articles_map = {}  # Dict: {published_url: Article} hoặc {(layout_type, display_order): Article} cho sliders
             existing_articles = Article.query.filter_by(
-                section='home',
+                section='home', 
                 is_home=True,
                 language=article_language
             ).all()
