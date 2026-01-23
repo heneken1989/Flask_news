@@ -1,12 +1,12 @@
         <header class="pageElement pageHeader">
     <style>
-        /* Hide subscription and login buttons */
-        .buy-btn,
+        /* Subscription and login buttons are now visible */
+        /* .buy-btn,
         .login-btn,
         li.first-list-item a[href*="køb-abonnement"],
         li.first-list-item a[href*="login"] {
             display: none !important;
-        }
+        } */
         
         /* Language switcher separators - inline CSS */
         .pageHeader .mainrow .left-section {
@@ -103,7 +103,7 @@
 				<a href="https://www.sermitsiaq.ag/køb-abonnement" target="_self">{{ _('Køb abonnement') }}</a>
 			</li>
 			<li class="first-list-item login-btn">
-				<a href="https://www.sermitsiaq.ag/login" target="_self">{{ _('Log ind') }}</a>
+				<a href="{{ url_for('login') }}" target="_self">{{ _('Log ind') }}</a>
 			</li>
 	</ul>
 </nav>
@@ -135,19 +135,19 @@
             <div class="hamburger-container" id="hamburger-container">        
 <nav class="navigation mainMenu expandable">
 	<ul class="menu-list">
-			<li class="first-list-item ">
+			<li class="first-list-item">
 				<a href="/tag/samfund" target="_self">{{ _('SAMFUND') }}</a>
 			</li>
-			<li class="first-list-item ">
+			<li class="first-list-item">
 				<a href="/tag/erhverv" target="_self">{{ _('ERHVERV') }}</a>
 			</li>
-			<li class="first-list-item ">
+			<li class="first-list-item">
 				<a href="/tag/kultur" target="_self">{{ _('KULTUR') }}</a>
 			</li>
-			<li class="first-list-item ">
+			<li class="first-list-item">
 				<a href="/tag/sport" target="_self">{{ _('SPORT') }}</a>
 			</li>
-			<li class="first-list-item job-link dac-hidden-desktop-down">
+			<li class="first-list-item job-link dac-hidden-desktop-down lab-link-active">
 				<a href="https://job.sermitsiaq.ag" target="_self">{{ _('JOB') }}</a>
 			</li>
 			<li class="first-list-item burger-link has-children">
@@ -184,11 +184,11 @@
 			<li class="first-list-item burger-link">
 				<a href="/tag/sport" target="_self">{{ _('SPORT') }}</a>
 			</li>
-			<li class="first-list-item burger-link job-link">
+			<li class="first-list-item burger-link job-link lab-link-active">
 				<a href="https://job.sermitsiaq.ag" target="_self">{{ _('JOB') }}</a>
 			</li>
 			<li class="first-list-item burger-link job-link">
-				<a href="/tag/podcasti" target="_self">{{ _('PODCASTI') }}</a>
+				<a href="/podcasti" target="_self">{{ _('PODCASTI') }}</a>
 			</li>
 	</ul>
 </nav>
@@ -321,17 +321,20 @@
 
 <nav class="navigation bottomBarMenu">
 	<ul class="menu-list">
-			<li class="first-list-item ">
+			<li class="first-list-item">
 				<a href="/kontakt" target="_self">{{ _('Kontakt') }}</a>
 			</li>
-			<li class="first-list-item ">
+			<li class="first-list-item">
 				<a href="https://www.sermitsiaq.ag/køb-abonnement" target="_self">{{ _('Abonnement') }}</a>
 			</li>
-			<li class="first-list-item ">
-				<a href="/advertise" target="_self">{{ _('Annoncer') }}</a>
+			<li class="first-list-item">
+				<a href="https://www.sermitsiaq.ag/oversigtannoncer" target="_self">{{ _('Annoncer') }}</a>
 			</li>
-			<li class="first-list-item ">
+			<li class="first-list-item">
 				<a href="https://sermitsiaq.e-pages.pub/titles/" target="_blank">{{ _('E-aviser') }}</a>
+			</li>
+			<li class="first-list-item">
+				<a href="https://www.sermitsiaq.ag/selvbetjening" target="_self">{{ _('Selvbetjening') }}</a>
 			</li>
 	</ul>
 </nav>
@@ -551,6 +554,12 @@
 			</li>
 			<li class="first-list-item job-link">
 				<a href="/tag/podcasti" target="_self">{{ _('PODCASTI') }}</a>
+			</li>
+			<li class="first-list-item buy-btn">
+				<a href="https://www.sermitsiaq.ag/køb-abonnement" target="_self">{{ _('Køb abonnement') }}</a>
+			</li>
+			<li class="first-list-item login-btn">
+				<a href="{{ url_for('login') }}" target="_self">{{ _('Log ind') }}</a>
 			</li>
 	</ul>
 </nav>

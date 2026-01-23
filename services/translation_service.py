@@ -176,63 +176,39 @@ def translate_articles_batch(dk_articles, target_language='en', save_to_db=True,
         delay: Delay giữa các lần translate (giây)
     
     Returns:
-        List of translated Article objects
+        tuple: (translated_articles, errors, stats) where stats is dict with 'new_count' and 'skipped_count'
     """
     translated_articles = []
     errors = []
+    new_count = 0
+    skipped_count = 0
     
     for idx, dk_article in enumerate(dk_articles, 1):
         try:
             print(f"\n[{idx}/{len(dk_articles)}] Translating article {dk_article.id}...")
             
-            # Check if temp translation already exists (nếu có thì update, không skip)
-            existing_temp = Article.query.filter_by(
-                canonical_id=dk_article.id,
-                language='en',
-                is_temp=True
-            ).first()
-            
-            if existing_temp:
-                print(f"   ⚠️  Temp translation already exists (ID: {existing_temp.id}). Updating...")
-                # Update existing temp article
-                try:
-                    en_article = translate_article(dk_article, target_language, delay)
-                    existing_temp.title = en_article.title
-                    existing_temp.content = en_article.content
-                    existing_temp.excerpt = en_article.excerpt
-                    existing_temp.layout_data = en_article.layout_data
-                    db.session.commit()
-                    print(f"   ✅ Updated temp article {existing_temp.id}")
-                    translated_articles.append(existing_temp)
-                    continue
-                except Exception as e:
-                    print(f"   ❌ Failed to update temp article: {e}")
-                    errors.append({
-                        'article_id': dk_article.id,
-                        'error': str(e)
-                    })
-                    db.session.rollback()
-                    continue
-            
-            # Check if non-temp translation exists (skip, sẽ được xóa sau)
+            # Check if translation already exists (skip nếu đã có)
             existing = Article.query.filter_by(
                 canonical_id=dk_article.id,
-                language='en',
-                is_temp=False
+                language='en'
             ).first()
             
             if existing:
-                print(f"   ℹ️  Old translation exists (ID: {existing.id}). Will be replaced after translation.")
+                print(f"   ⏭️  Translation already exists (ID: {existing.id}). Skipping...")
+                translated_articles.append(existing)  # Add existing to list để đếm
+                skipped_count += 1
+                continue
             
-            # Translate và tạo temp article (is_temp=True)
+            # Translate và lưu trực tiếp (không dùng temp)
             en_article = translate_article(dk_article, target_language, delay)
             
             if save_to_db:
                 db.session.add(en_article)
                 db.session.commit()
-                print(f"   ✅ Saved temp article to database (ID: {en_article.id}, is_temp=True)")
+                print(f"   ✅ Saved translation to database (ID: {en_article.id})")
             
             translated_articles.append(en_article)
+            new_count += 1
             
         except Exception as e:
             error_msg = f"Failed to translate article {dk_article.id}: {e}"
@@ -245,7 +221,8 @@ def translate_articles_batch(dk_articles, target_language='en', save_to_db=True,
             continue
     
     print(f"\n✅ Translation batch completed:")
-    print(f"   - Translated: {len(translated_articles)}")
+    print(f"   - New translations: {new_count}")
+    print(f"   - Skipped (already translated): {skipped_count}")
     print(f"   - Errors: {len(errors)}")
     
     if errors:
@@ -253,5 +230,10 @@ def translate_articles_batch(dk_articles, target_language='en', save_to_db=True,
         for error in errors:
             print(f"   - Article {error['article_id']}: {error['error']}")
     
-    return translated_articles, errors
+    stats = {
+        'new_count': new_count,
+        'skipped_count': skipped_count
+    }
+    
+    return translated_articles, errors, stats
 

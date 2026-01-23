@@ -249,3 +249,27 @@ class CrawlLog(db.Model):
     def __repr__(self):
         return f'<CrawlLog {self.crawl_type} - {self.status}>'
 
+
+class User(db.Model):
+    """User table cho login system"""
+    __tablename__ = 'users'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(255), unique=True, nullable=False, index=True)
+    subscriber_number = db.Column(db.String(50), unique=True, nullable=True, index=True)  # Abonnentnummer
+    password_hash = db.Column(db.String(255), nullable=False)  # Sẽ hash password
+    is_active = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    last_login = db.Column(db.DateTime)
+    
+    def __repr__(self):
+        return f'<User {self.email}>'
+    
+    def check_password(self, password):
+        """Check password - đơn giản, có thể nâng cấp sau với werkzeug.security"""
+        # Tạm thời dùng plain text comparison, nên upgrade sau với werkzeug.security.check_password_hash
+        import hashlib
+        password_hash = hashlib.sha256(password.encode()).hexdigest()
+        return password_hash == self.password_hash
+

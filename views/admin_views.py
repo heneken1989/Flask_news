@@ -4,6 +4,7 @@ Admin views để quản lý Article Detail
 from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify, session
 from database import db, ArticleDetail, Article
 from datetime import datetime
+from urllib.parse import urlparse
 import json
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
@@ -68,8 +69,80 @@ def list_article_details():
                         is_single_result=False
                     )
         else:
-            # Search in published_url (original behavior)
-            query = query.filter(ArticleDetail.published_url.ilike(f'%{search}%'))
+            # Check if search is a URL (contains http:// or https://)
+            search_path = None
+            if search.startswith('http://') or search.startswith('https://'):
+                # Parse URL and extract path
+                parsed = urlparse(search)
+                search_path = parsed.path
+                # Remove leading slash if present
+                if search_path.startswith('/'):
+                    search_path = search_path[1:]
+            elif search.startswith('/'):
+                # Already a path, remove leading slash
+                search_path = search[1:]
+            else:
+                # Check if it looks like a path (contains /)
+                if '/' in search:
+                    search_path = search.lstrip('/')
+            
+            if search_path:
+                # Normalize search_path: ensure it starts with /
+                if not search_path.startswith('/'):
+                    search_path = '/' + search_path
+                
+                # Search by path in Article.published_url and Article.published_url_en
+                # Find all articles that match the path
+                matching_articles = []
+                
+                # Search in published_url (DA)
+                articles_by_published_url = Article.query.filter(
+                    Article.published_url.isnot(None),
+                    Article.published_url != ''
+                ).all()
+                
+                for art in articles_by_published_url:
+                    # Check published_url (DA)
+                    if art.published_url:
+                        art_parsed = urlparse(art.published_url)
+                        art_path = art_parsed.path
+                        # Match exact path
+                        if art_path == search_path:
+                            matching_articles.append(art)
+                            continue
+                    
+                    # Check published_url_en (EN)
+                    if art.published_url_en:
+                        art_en_parsed = urlparse(art.published_url_en)
+                        art_en_path = art_en_parsed.path
+                        # Match exact path
+                        if art_en_path == search_path:
+                            matching_articles.append(art)
+                
+                if matching_articles:
+                    # Get all published_urls from matching articles
+                    published_urls = []
+                    for art in matching_articles:
+                        if art.published_url:
+                            published_urls.append(art.published_url)
+                        if art.published_url_en:
+                            published_urls.append(art.published_url_en)
+                    
+                    # Find all article_details with these published_urls
+                    query = query.filter(ArticleDetail.published_url.in_(published_urls))
+                else:
+                    # No matching articles found
+                    return render_template('admin/article_details_list.html',
+                        article_details=[],
+                        pagination=None,
+                        search=search,
+                        language=language,
+                        current_page=1,
+                        is_single_result=False
+                    )
+            else:
+                # Search in published_url (original behavior - text search)
+                query = query.filter(ArticleDetail.published_url.ilike(f'%{search}%'))
     
     # Filter by language
     if language:

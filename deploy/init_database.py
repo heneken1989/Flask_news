@@ -12,7 +12,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from app import app, db
-from database import Article, Category, CrawlLog
+from database import Article, Category, CrawlLog, User
 
 def init_database():
     """Tạo tất cả tables trong database"""

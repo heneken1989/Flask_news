@@ -112,26 +112,25 @@ class SermitsiaqCrawler:
             
             print(f"✅ Crawled {articles_crawled} articles")
             
-            # QUAN TRỌNG: Xóa articles cũ của section CÙNG LANGUAGE trước khi lưu articles mới
             # Determine language from base_url or parameter
             article_language = language or self.language
-            print(f"🗑️  Removing old {article_language} articles from section '{section_name}'...")
-            old_articles_count = Article.query.filter_by(
-                section=section_name,
-                language=article_language
-            ).count()
-            if old_articles_count > 0:
-                deleted_count = Article.query.filter_by(
-                    section=section_name,
-                    language=article_language
-                ).delete()
-                db.session.commit()
-                print(f"   ✅ Deleted {deleted_count} old {article_language} articles")
-            else:
-                print(f"   ℹ️  No old {article_language} articles to delete")
             
-            # Save new articles to database
+            # Check existing articles to avoid duplicates
+            print(f"🔍 Checking for existing {article_language} articles in section '{section_name}'...")
+            existing_urls = set()
+            existing_articles = Article.query.filter_by(
+                section=section_name,
+                language=article_language,
+                is_home=False
+            ).all()
+            for art in existing_articles:
+                if art.published_url:
+                    existing_urls.add(art.published_url)
+            print(f"   Found {len(existing_urls)} existing articles")
+            
+            # Save new articles to database (only if not exists)
             print("💾 Saving new articles to database...")
+            articles_skipped = 0
             for idx, article_data in enumerate(articles):
                 try:
                     # QUAN TRỌNG: Override section từ article_data với section_name đang crawl
@@ -140,6 +139,14 @@ class SermitsiaqCrawler:
                     
                     # Determine language from base_url or parameter
                     article_language = language or self.language
+                    
+                    # Check if article already exists (by published_url)
+                    article_url = article_data.get('url', '')
+                    if article_url in existing_urls:
+                        articles_skipped += 1
+                        if articles_skipped % 10 == 0:
+                            print(f"  ⏭️  Skipped {articles_skipped} existing articles...")
+                        continue
                     
                     # Download và cập nhật image_data nếu có
                     image_data = article_data.get('image_data', {})
@@ -155,7 +162,7 @@ class SermitsiaqCrawler:
                             print(f"  ⚠️  Error downloading image: {e}")
                             # Giữ nguyên image_data gốc nếu lỗi
                     
-                    # Tạo article mới với ID mới
+                    # Tạo article mới
                     new_article = Article(
                         element_guid=article_data.get('element_guid'),  # Có thể None, không unique
                         title=article_data['title'],
@@ -175,11 +182,12 @@ class SermitsiaqCrawler:
                     )
                     db.session.add(new_article)
                     articles_created += 1
+                    existing_urls.add(article_url)  # Add to set to avoid duplicates in same batch
                     
                     # Commit mỗi 10 articles để tránh timeout
                     if articles_created % 10 == 0:
                         db.session.commit()
-                        print(f"  💾 Saved {articles_created}/{articles_crawled} articles...")
+                        print(f"  💾 Saved {articles_created} new articles, skipped {articles_skipped} existing...")
                 
                 except Exception as e:
                     error_msg = f"Error saving article {article_data.get('element_guid', 'unknown')}: {str(e)}"
@@ -189,7 +197,7 @@ class SermitsiaqCrawler:
             
             # Final commit
             db.session.commit()
-            print(f"✅ Successfully saved {articles_created} new articles (replaced {old_articles_count} old articles)")
+            print(f"✅ Successfully saved {articles_created} new articles, skipped {articles_skipped} existing articles")
             
             # Update crawl log
             crawl_log.status = 'success' if not errors else 'partial'
@@ -320,32 +328,37 @@ class SermitsiaqCrawler:
             
             print(f"✅ Crawled {articles_crawled} articles from home page")
             
-            # QUAN TRỌNG: Xóa articles cũ của home CÙNG LANGUAGE trước khi lưu articles mới
             # Determine language from base_url or parameter
             article_language = language or self.language
-            print(f"🗑️  Removing old {article_language} articles from home...")
-            old_articles_count = Article.query.filter_by(
-                section='home', 
+            
+            # Check existing articles to avoid duplicates
+            print(f"🔍 Checking for existing {article_language} home articles...")
+            existing_urls = set()
+            existing_articles = Article.query.filter_by(
+                section='home',
                 is_home=True,
                 language=article_language
-            ).count()
-            if old_articles_count > 0:
-                deleted_count = Article.query.filter_by(
-                    section='home', 
-                    is_home=True,
-                    language=article_language
-                ).delete()
-                db.session.commit()
-                print(f"   ✅ Deleted {deleted_count} old {article_language} home articles")
-            else:
-                print(f"   ℹ️  No old {article_language} home articles to delete")
+            ).all()
+            for art in existing_articles:
+                if art.published_url:
+                    existing_urls.add(art.published_url)
+            print(f"   Found {len(existing_urls)} existing home articles")
             
-            # Save new articles to database
+            # Save new articles to database (only if not exists)
             print("💾 Saving new home articles to database...")
+            articles_skipped = 0
             for idx, article_data in enumerate(articles):
                 try:
                     # Set section='home' và is_home=True
                     article_data['section'] = 'home'
+                    
+                    # Check if article already exists (by published_url)
+                    article_url = article_data.get('url', '')
+                    if article_url and article_url in existing_urls:
+                        articles_skipped += 1
+                        if articles_skipped % 10 == 0:
+                            print(f"  ⏭️  Skipped {articles_skipped} existing home articles...")
+                        continue
                     
                     # Sử dụng display_order từ parser nếu có, nếu không thì dùng idx
                     display_order = article_data.get('display_order', idx)
@@ -367,7 +380,7 @@ class SermitsiaqCrawler:
                             print(f"  ⚠️  Error downloading image: {e}")
                             # Giữ nguyên image_data gốc nếu lỗi
                     
-                    # Tạo article mới với ID mới
+                    # Tạo article mới
                     new_article = Article(
                         element_guid=article_data.get('element_guid'),
                         title=article_data.get('title', 'Untitled'),  # Slider có thể không có title
@@ -391,6 +404,8 @@ class SermitsiaqCrawler:
                     )
                     db.session.add(new_article)
                     articles_created += 1
+                    if article_url:
+                        existing_urls.add(article_url)  # Add to set to avoid duplicates in same batch
                     
                     # Debug: Log slider info
                     if article_data.get('layout_type') == 'slider':
@@ -404,7 +419,7 @@ class SermitsiaqCrawler:
                     # Commit mỗi 10 articles để tránh timeout
                     if articles_created % 10 == 0:
                         db.session.commit()
-                        print(f"  💾 Saved {articles_created}/{articles_crawled} articles...")
+                        print(f"  💾 Saved {articles_created} new articles, skipped {articles_skipped} existing...")
                 
                 except Exception as e:
                     error_msg = f"Error saving article {article_data.get('element_guid', 'unknown')}: {str(e)}"
@@ -414,7 +429,7 @@ class SermitsiaqCrawler:
             
             # Final commit
             db.session.commit()
-            print(f"✅ Successfully saved {articles_created} new home articles (replaced {old_articles_count} old articles)")
+            print(f"✅ Successfully saved {articles_created} new home articles, skipped {articles_skipped} existing articles")
             
             # Update crawl log
             crawl_log.status = 'success' if not errors else 'partial'

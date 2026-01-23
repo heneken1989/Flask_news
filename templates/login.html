@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {% include 'partials/head.html' %}
+    <title>Log ind på Sermitsiaq</title>
+{% endblock %}
+
+{% block body_class %}l4 front site_sermitsiaq iteras-paywall{% endblock %}
+
+{% block content %}
+<section class="main front" id="main">
+    <h1 class="hidden-heading">Login - sermitsiaq</h1>
+    
+    <div data-element-guid="cff590ee-f136-4380-b434-91a2e34077d9" class="page-content">
+        <div data-element-guid="f4f558af-fa52-4427-85a8-1bfb0b4aca81" class="row small-12 large-12" style="">
+            <div data-element-guid="bf786c2b-324f-416e-bf16-59471e57ba2c" id="markup_2083212" class="markupbox column small-12 large-12 small-abs-12 large-abs-12">
+                <div class="content fullwidthTarget" style="">
+                    <div id="iteras-login-container">
+                        {% if session.get('user_id') %}
+                        <div style="text-align: center;">
+                            <a href="{{ url_for('logout') }}" style="display: inline-block; padding: 0.5rem 1rem; font-size: 0.875rem; border: 1px solid #ccc; background: white; cursor: pointer; text-decoration: none; color: #333; margin-bottom: 1rem;">Log ud</a>
+                            <br>
+                            <a href="{{ url_for('admin.list_article_details') }}" style="display: inline-block; padding: 0.5rem 1rem; font-size: 0.875rem; border: 1px solid #ccc; background: white; cursor: pointer; text-decoration: none; color: #333;">Edit Articles</a>
+                        </div>
+                        {% else %}
+                        <form method="post" role="form">
+                            <h2>Log ind</h2>
+                            
+                            {% if error %}
+                            <p>{{ error }}</p>
+                            {% endif %}
+                            
+                            <div>
+                                <label for="id_subscriber">Abonnent:</label>
+                                <input 
+                                    type="text" 
+                                    name="subscriber" 
+                                    placeholder="e-mail eller abonnentnummer" 
+                                    required 
+                                    id="id_subscriber"
+                                    value="{{ request.form.subscriber if request.form else '' }}"
+                                >
+                                <p>E-mail eller abonnentnummer (kan ses på din faktura)</p>
+                            </div>
+                            
+                            <div>
+                                <label for="id_password">Adgangskode:</label>
+                                <input 
+                                    type="password" 
+                                    name="password" 
+                                    placeholder="adgangskode eller engangskode" 
+                                    id="id_password"
+                                    required
+                                >
+                            </div>
+                            
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-top: 1.5rem;">
+                                <div>
+                                    <a href="#" onclick="alert('Forgot password feature coming soon'); return false;" style="display: block; margin-bottom: 0.5rem; color: #777; font-size: 0.875rem; text-decoration: none;">
+                                        Glemt/mangler din adgangskode?
+                                    </a>
+                                    <button type="button" onclick="alert('OTP feature coming soon'); return false;" style="padding: 0; border: none; background: none; color: #777; text-decoration: underline; cursor: pointer; font-size: 0.875rem;">
+                                        Send engangskode
+                                    </button>
+                                </div>
+                                <button type="submit" style="padding: 0.5rem 1rem; font-size: 0.875rem; border: 1px solid #ccc; background: white; cursor: pointer;">Log ind</button>
+                            </div>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+    {# Base scripts if needed #}
+{% endblock %}

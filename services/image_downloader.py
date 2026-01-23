@@ -68,12 +68,24 @@ def download_image(image_url: str, save_dir: str, image_id: str = None, format: 
         # Tạo thư mục nếu chưa có
         os.makedirs(save_dir, exist_ok=True)
         
+        # Tạo full file path
+        file_path = os.path.join(save_dir, file_name)
+        
+        # Check nếu file đã tồn tại, skip download
+        if os.path.exists(file_path):
+            print(f"      ⏭️  Image already exists, skipping download: {file_name}")
+            # Tạo relative path để dùng trong URL
+            relative_path = file_path.replace(os.path.dirname(os.path.dirname(os.path.dirname(save_dir))), '')
+            relative_path = relative_path.replace('\\', '/')  # Windows path fix
+            if not relative_path.startswith('/'):
+                relative_path = '/' + relative_path
+            return relative_path
+        
         # Download image
         response = requests.get(image_url, timeout=30, stream=True)
         response.raise_for_status()
         
         # Lưu file
-        file_path = os.path.join(save_dir, file_name)
         with open(file_path, 'wb') as f:
             for chunk in response.iter_content(chunk_size=8192):
                 f.write(chunk)

@@ -30,7 +30,9 @@ from database import db, Article
 from services.crawl_service import SermitsiaqCrawler
 from services.article_matcher import match_and_link_articles
 from services.translation_service import translate_articles_batch
+from scripts.translate_article_urls import translate_url
 import argparse
+import time
 
 # Section URLs mapping
 SECTION_URLS = {
@@ -172,63 +174,65 @@ def translate_dk_section_to_en(section_name):
         print("⚠️  No articles to translate")
         return
     
-    # Translate (tạo temp articles với is_temp=True)
-    translated, errors = translate_articles_batch(
+    # Translate articles (skip nếu đã có)
+    translated, errors, stats = translate_articles_batch(
         dk_articles,
         target_language='en',
         save_to_db=True,
         delay=0.5
     )
     
-    print(f"✅ Translation completed: {len(translated)} articles translated (temp)")
-    
-    # Sau khi translate xong, thay thế old EN articles bằng temp articles
-    print("\n" + "="*60)
-    print(f"🔄 Replacing old EN articles with new translations for section: {section_name}")
-    print("="*60)
-    
-    # Đếm old EN articles (không phải temp)
-    old_en_count = Article.query.filter_by(
-        language='en',
-        section=section_name,
-        is_home=False,
-        is_temp=False
-    ).count()
-    
-    print(f"   Found {old_en_count} old EN articles to remove")
-    
-    # Xóa old EN articles (không phải temp)
-    if old_en_count > 0:
-        deleted = Article.query.filter_by(
-            language='en',
-            section=section_name,
-            is_home=False,
-            is_temp=False
-        ).delete()
-        db.session.commit()
-        print(f"   ✅ Deleted {deleted} old EN articles")
-    
-    # Đổi temp articles thành bình thường (is_temp=False)
-    temp_count = Article.query.filter_by(
-        language='en',
-        section=section_name,
-        is_home=False,
-        is_temp=True
-    ).count()
-    
-    if temp_count > 0:
-        updated = Article.query.filter_by(
-            language='en',
-            section=section_name,
-            is_home=False,
-            is_temp=True
-        ).update({'is_temp': False})
-        db.session.commit()
-        print(f"   ✅ Activated {updated} new EN articles (removed temp flag)")
-    
-    print(f"\n✅ Replacement completed for section: {section_name}!")
+    print(f"✅ Translation completed for section: {section_name}")
     if errors:
         print(f"⚠️  {len(errors)} errors occurred during translation")
+    
+    # Translate URLs cho EN articles mới (skip nếu đã có published_url_en)
+    print("\n" + "="*60)
+    print(f"🌐 Translating URLs for EN articles in section: {section_name}")
+    print("="*60)
+    
+    en_articles = Article.query.filter_by(
+        language='en',
+        section=section_name,
+        is_home=False
+    ).all()
+    
+    url_translated_count = 0
+    url_skipped_count = 0
+    url_error_count = 0
+    
+    for article in en_articles:
+        # Skip nếu đã có published_url_en
+        if article.published_url_en and article.published_url_en.strip():
+            url_skipped_count += 1
+            continue
+        
+        # Skip nếu không có published_url
+        if not article.published_url or not article.published_url.strip():
+            continue
+        
+        try:
+            # Translate URL
+            en_url = translate_url(article.published_url, delay=0.3)
+            if en_url:
+                article.published_url_en = en_url
+                db.session.commit()
+                url_translated_count += 1
+                if url_translated_count % 10 == 0:
+                    print(f"   ✅ Translated {url_translated_count} URLs...")
+            else:
+                url_error_count += 1
+        except Exception as e:
+            print(f"   ⚠️  Error translating URL for article {article.id}: {e}")
+            url_error_count += 1
+            db.session.rollback()
+            continue
+    
+    print(f"✅ URL translation completed:")
+    print(f"   - Translated: {url_translated_count}")
+    print(f"   - Skipped (already translated): {url_skipped_count}")
+    if url_error_count > 0:
+        print(f"   - Errors: {url_error_count}")
     
     return translated, errors
 
@@ -333,59 +337,64 @@ def translate_dk_home_to_en():
         print("⚠️  No articles to translate")
         return
     
-    # Translate (tạo temp articles với is_temp=True)
-    translated, errors = translate_articles_batch(
+    # Translate articles (skip nếu đã có)
+    translated, errors, stats = translate_articles_batch(
         dk_articles,
         target_language='en',
         save_to_db=True,
         delay=0.5
     )
     
-    print(f"✅ Translation completed: {len(translated)} articles translated (temp)")
-    
-    # Sau khi translate xong, thay thế old EN articles bằng temp articles
-    print("\n" + "="*60)
-    print(f"🔄 Replacing old EN home articles with new translations")
-    print("="*60)
-    
-    # Đếm old EN articles (không phải temp)
-    old_en_count = Article.query.filter_by(
-        language='en',
-        is_home=True,
-        is_temp=False
-    ).count()
-    
-    print(f"   Found {old_en_count} old EN articles to remove")
-    
-    # Xóa old EN articles (không phải temp)
-    if old_en_count > 0:
-        deleted = Article.query.filter_by(
-            language='en',
-            is_home=True,
-            is_temp=False
-        ).delete()
-        db.session.commit()
-        print(f"   ✅ Deleted {deleted} old EN articles")
-    
-    # Đổi temp articles thành bình thường (is_temp=False)
-    temp_count = Article.query.filter_by(
-        language='en',
-        is_home=True,
-        is_temp=True
-    ).count()
-    
-    if temp_count > 0:
-        updated = Article.query.filter_by(
-            language='en',
-            is_home=True,
-            is_temp=True
-        ).update({'is_temp': False})
-        db.session.commit()
-        print(f"   ✅ Activated {updated} new EN articles (removed temp flag)")
-    
-    print(f"\n✅ Replacement completed for home articles!")
+    print(f"✅ Translation completed for home articles")
     if errors:
         print(f"⚠️  {len(errors)} errors occurred during translation")
+    
+    # Translate URLs cho EN home articles mới (skip nếu đã có published_url_en)
+    print("\n" + "="*60)
+    print(f"🌐 Translating URLs for EN home articles")
+    print("="*60)
+    
+    en_articles = Article.query.filter_by(
+        language='en',
+        is_home=True
+    ).all()
+    
+    url_translated_count = 0
+    url_skipped_count = 0
+    url_error_count = 0
+    
+    for article in en_articles:
+        # Skip nếu đã có published_url_en
+        if article.published_url_en and article.published_url_en.strip():
+            url_skipped_count += 1
+            continue
+        
+        # Skip nếu không có published_url
+        if not article.published_url or not article.published_url.strip():
+            continue
+        
+        try:
+            # Translate URL
+            en_url = translate_url(article.published_url, delay=0.3)
+            if en_url:
+                article.published_url_en = en_url
+                db.session.commit()
+                url_translated_count += 1
+                if url_translated_count % 10 == 0:
+                    print(f"   ✅ Translated {url_translated_count} URLs...")
+            else:
+                url_error_count += 1
+        except Exception as e:
+            print(f"   ⚠️  Error translating URL for article {article.id}: {e}")
+            url_error_count += 1
+            db.session.rollback()
+            continue
+    
+    print(f"✅ URL translation completed:")
+    print(f"   - Translated: {url_translated_count}")
+    print(f"   - Skipped (already translated): {url_skipped_count}")
+    if url_error_count > 0:
+        print(f"   - Errors: {url_error_count}")
     
     return translated, errors
 

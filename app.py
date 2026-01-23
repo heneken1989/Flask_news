@@ -299,6 +299,61 @@ def google_verification():
     except FileNotFoundError:
         return "File not found", 404
 
+# Login route
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    """Login page and authentication"""
+    from database import User
+    from datetime import datetime
+    import hashlib
+    
+    # If already logged in, show logout button (don't redirect)
+    if session.get('user_id') and request.method == 'GET':
+        return render_template('login.html')
+    
+    if request.method == 'POST':
+        subscriber = request.form.get('subscriber', '').strip()
+        password = request.form.get('password', '')
+        
+        if not subscriber or not password:
+            return render_template('login.html', error='Vær venlig at udfylde alle felter')
+        
+        # Find user by email or subscriber_number
+        user = User.query.filter(
+            (User.email == subscriber) | (User.subscriber_number == subscriber)
+        ).first()
+        
+        if user and user.is_active:
+            # Check password
+            password_hash = hashlib.sha256(password.encode()).hexdigest()
+            if password_hash == user.password_hash:
+                # Login successful
+                session['user_id'] = user.id
+                session['user_email'] = user.email
+                session['user_subscriber'] = user.subscriber_number
+                
+                # Update last_login
+                user.last_login = datetime.utcnow()
+                db.session.commit()
+                
+                # Redirect to article details list page for editing
+                next_page = request.args.get('next') or url_for('admin.list_article_details')
+                return redirect(next_page)
+            else:
+                return render_template('login.html', error='Forkert e-mail eller adgangskode')
+        else:
+            return render_template('login.html', error='Forkert e-mail eller adgangskode')
+    
+    # GET request - show login form
+    return render_template('login.html')
+
+# Logout route
+@app.route('/logout')
+def logout():
+    """Logout user"""
+    session.clear()
+    return redirect(url_for('article_views.index'))
+
 # Serve sitemap for EN
 @app.route('/sitemap.xml')
 def sitemap():

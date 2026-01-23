@@ -125,7 +125,7 @@ def translate_dk_to_en():
         return
     
     # Translate (tạo temp articles với is_temp=True)
-    translated, errors = translate_articles_batch(
+    translated, errors, stats = translate_articles_batch(
         dk_articles,
         target_language='en',
         save_to_db=True,

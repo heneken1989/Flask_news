@@ -233,9 +233,7 @@
                     </td>
                     <td>
                         <div class="actions">
-                            <a href="{{ url_for('admin.view_article_detail', detail_id=item.detail.id) }}" class="btn btn-view">View</a>
-                            <a href="{{ url_for('admin.edit_article_detail_visual', detail_id=item.detail.id) }}" class="btn btn-edit">Edit Visual</a>
-                            <a href="{{ url_for('admin.edit_article_detail', detail_id=item.detail.id) }}" class="btn btn-edit" style="background: #17a2b8;">Edit JSON</a>
+                            <a href="{{ url_for('admin.edit_article_detail_visual', detail_id=item.detail.id) }}" class="btn btn-edit">Edit</a>
                         </div>
                     </td>
                 </tr>
