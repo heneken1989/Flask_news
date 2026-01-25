@@ -192,8 +192,15 @@ def generate_sitemap(language='en', output_file=None, base_domain='www.sermitsia
             loc_elem = ET.SubElement(url_elem, 'loc')
             loc_elem.text = article_url
             
-            # Lastmod
-            lastmod = format_lastmod(article.published_date)
+            # Lastmod - Ưu tiên: published_date -> updated_at -> created_at
+            lastmod = None
+            if article.published_date:
+                lastmod = format_lastmod(article.published_date)
+            elif hasattr(article, 'updated_at') and article.updated_at:
+                lastmod = format_lastmod(article.updated_at)
+            elif hasattr(article, 'created_at') and article.created_at:
+                lastmod = format_lastmod(article.created_at)
+            
             if lastmod:
                 lastmod_elem = ET.SubElement(url_elem, 'lastmod')
                 lastmod_elem.text = lastmod

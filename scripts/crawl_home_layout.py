@@ -552,6 +552,29 @@ def crawl_home_layout(home_url='https://www.sermitsiaq.ag', language='da',
                                         if guid_elem:
                                             element_guid = guid_elem.get('data-element-guid', '')
                                         
+                                        # Extract published_date từ <time itemprop="datePublished" datetime="...">
+                                        published_date = None
+                                        time_elem = soup.find('time', attrs={'itemprop': 'datePublished'})
+                                        if time_elem:
+                                            datetime_attr = time_elem.get('datetime', '')
+                                            if datetime_attr:
+                                                try:
+                                                    # Parse ISO format: 2025-11-08T11:32:36+01:00
+                                                    # Thay Z thành +00:00 nếu có
+                                                    datetime_str = datetime_attr.replace('Z', '+00:00')
+                                                    published_date = datetime.fromisoformat(datetime_str)
+                                                    print(f"         ✅ Extracted published_date: {published_date}")
+                                                except Exception as e:
+                                                    print(f"         ⚠️  Could not parse datetime '{datetime_attr}': {e}")
+                                                    # Thử parse format khác nếu cần
+                                                    try:
+                                                        # Thử format: 2025-11-08T11:32:36
+                                                        if 'T' in datetime_attr and '+' not in datetime_attr and 'Z' not in datetime_attr:
+                                                            published_date = datetime.fromisoformat(datetime_attr)
+                                                            print(f"         ✅ Extracted published_date (no timezone): {published_date}")
+                                                    except:
+                                                        pass
+                                        
                                         article_data = {
                                             'element_guid': element_guid,
                                             'title': title,
@@ -560,7 +583,7 @@ def crawl_home_layout(home_url='https://www.sermitsiaq.ag', language='da',
                                             'k5a_url': article_url,
                                             'site_alias': 'sermitsiaq',
                                             'instance': instance,
-                                            'published_date': None,
+                                            'published_date': published_date,
                                             'is_paywall': False,
                                             'paywall_class': '',
                                             'image_data': image_data

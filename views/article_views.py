@@ -95,30 +95,70 @@ def home_test():
             
             # Xử lý slider containers
             if layout_type in ['slider', 'job_slider']:
-                slider_data = {
-                    'id': None,
-                    'title': layout_item.get('slider_title', ''),
-                    'layout_type': layout_type,
-                    'display_order': display_order,
-                    'layout_data': {
-                        'slider_title': layout_item.get('slider_title', ''),
-                        'slider_articles': []
-                    },
-                    'published_url': '',
-                    'is_home': True,
-                    'section': 'home'
-                }
+                # ⚠️ QUAN TRỌNG: Với job_slider, ưu tiên dùng dữ liệu từ DB container nếu có
+                # (vì EN job_slider có thể đã được translate và lưu trong DB)
+                db_slider_container = None
+                if layout_type == 'job_slider':
+                    # Tìm job_slider container trong DB với cùng display_order và language
+                    db_slider_container = Article.query.filter_by(
+                        layout_type='job_slider',
+                        section='home',
+                        language=current_language,
+                        display_order=display_order
+                    ).first()
+                    
+                    # Nếu không tìm thấy theo display_order, tìm bất kỳ job_slider nào
+                    if not db_slider_container:
+                        db_slider_container = Article.query.filter_by(
+                            layout_type='job_slider',
+                            section='home',
+                            language=current_language
+                        ).order_by(Article.display_order.desc()).first()
                 
-                # Link các articles trong slider
-                slider_articles = layout_item.get('slider_articles', [])
-                for slider_article in slider_articles:
-                    slider_url = slider_article.get('published_url', '')
-                    if slider_url and slider_url in articles_map:
-                        for article in articles_map[slider_url]:
-                            if article.language == current_language:
-                                article_dict = article.to_dict()
-                                slider_data['layout_data']['slider_articles'].append(article_dict)
-                                break
+                if db_slider_container and db_slider_container.layout_data:
+                    # Dùng dữ liệu từ DB container (đã được translate)
+                    slider_data = {
+                        'id': db_slider_container.id,
+                        'title': db_slider_container.title or db_slider_container.layout_data.get('slider_title', ''),
+                        'layout_type': layout_type,
+                        'display_order': display_order,
+                        'layout_data': db_slider_container.layout_data.copy(),
+                        'published_url': '',
+                        'is_home': True,
+                        'section': 'home'
+                    }
+                    print(f"      ✅ Using job_slider data from DB (ID: {db_slider_container.id})")
+                else:
+                    # Dùng dữ liệu từ layout file
+                    slider_data = {
+                        'id': None,
+                        'title': layout_item.get('slider_title', ''),
+                        'layout_type': layout_type,
+                        'display_order': display_order,
+                        'layout_data': {
+                            'slider_title': layout_item.get('slider_title', ''),
+                            'slider_articles': []
+                        },
+                        'published_url': '',
+                        'is_home': True,
+                        'section': 'home'
+                    }
+                    
+                    # Link các articles trong slider
+                    slider_articles = layout_item.get('slider_articles', [])
+                    for slider_article in slider_articles:
+                        # ⚠️ QUAN TRỌNG: Job slider articles có key 'url', không phải 'published_url'
+                        slider_url = slider_article.get('published_url') or slider_article.get('url', '')
+                        if slider_url and slider_url in articles_map:
+                            for article in articles_map[slider_url]:
+                                if article.language == current_language:
+                                    article_dict = article.to_dict()
+                                    slider_data['layout_data']['slider_articles'].append(article_dict)
+                                    break
+                        elif slider_url:
+                            # Nếu không tìm thấy trong articles_map, dùng dữ liệu từ layout_item trực tiếp
+                            # (cho job slider articles từ sjob.gl - không có trong DB)
+                            slider_data['layout_data']['slider_articles'].append(slider_article)
                 
                 articles.append(slider_data)
                 continue
@@ -131,18 +171,32 @@ def home_test():
             if published_url in articles_map:
                 matched_article = None
                 
-                # Ưu tiên article đã có section='home'
-                for article in articles_map[published_url]:
-                    if article.language == current_language and article.section == 'home':
-                        matched_article = article
-                        break
+                # ⚠️ QUAN TRỌNG: 
+                # - Với 1_with_list_left/right: chỉ lấy article có section='home'
+                # - Với các layout khác: lấy từ tất cả section (không ưu tiên section='home')
+                require_home_section = layout_type in ['1_with_list_left', '1_with_list_right']
                 
-                # Nếu không có, lấy article đầu tiên cùng language
-                if not matched_article:
+                if require_home_section:
+                    # Chỉ lấy article có section='home'
                     for article in articles_map[published_url]:
-                        if article.language == current_language:
+                        if article.language == current_language and article.section == 'home':
                             matched_article = article
                             break
+                else:
+                    # Lấy article đầu tiên cùng language (từ bất kỳ section nào)
+                    # ⚠️ QUAN TRỌNG: Ưu tiên article có is_home=True (vì đang ở home page)
+                    for article in articles_map[published_url]:
+                        if article.language == current_language:
+                            if article.is_home:
+                                matched_article = article
+                                break
+                    
+                    # Nếu không có article với is_home=True, lấy article đầu tiên
+                    if not matched_article:
+                        for article in articles_map[published_url]:
+                            if article.language == current_language:
+                                matched_article = article
+                                break
                 
                 if matched_article:
                     article_dict = matched_article.to_dict()
@@ -357,28 +411,46 @@ def index():
     
     if layouts_dir.exists():
         # Xác định layout file cần dùng dựa trên current_language
+        # ⚠️ Sử dụng tên file cố định (ghi đè mỗi lần crawl)
         if current_language == 'kl':
             # KL dùng layout KL riêng
-            json_files = list(layouts_dir.glob('home_layout_kl_*.json'))
+            layout_file = layouts_dir / 'home_layout_kl.json'
             layout_type_name = 'KL'
         else:
             # DA và EN đều dùng DA layout
-            json_files = list(layouts_dir.glob('home_layout_da_*.json'))
+            layout_file = layouts_dir / 'home_layout_da.json'
             layout_type_name = 'DA'
         
-        if json_files:
-            # Lấy file mới nhất
-            latest_json = max(json_files, key=lambda p: p.stat().st_mtime)
-            print(f"   📄 Loading {layout_type_name} layout from: {latest_json.name} (for language: {current_language})")
+        if layout_file.exists():
+            print(f"   📄 Loading {layout_type_name} layout from: {layout_file.name} (for language: {current_language})")
             
             try:
-                with open(latest_json, 'r', encoding='utf-8') as f:
+                with open(layout_file, 'r', encoding='utf-8') as f:
                     layout_data = json.load(f)
                     layout_items = layout_data.get('layout_items', [])
                 print(f"   ✅ Loaded {len(layout_items)} layout items from {layout_type_name} layout")
                 print(f"   ℹ️  Will use {current_language} articles")
             except Exception as e:
                 print(f"   ⚠️  Error loading JSON: {e}")
+        else:
+            # Fallback: Tìm file mới nhất nếu không có file cố định
+            if current_language == 'kl':
+                json_files = list(layouts_dir.glob('home_layout_kl_*.json'))
+            else:
+                json_files = list(layouts_dir.glob('home_layout_da_*.json'))
+            
+            if json_files:
+                latest_json = max(json_files, key=lambda p: p.stat().st_mtime)
+                print(f"   📄 Loading {layout_type_name} layout from: {latest_json.name} (fallback, for language: {current_language})")
+                
+                try:
+                    with open(latest_json, 'r', encoding='utf-8') as f:
+                        layout_data = json.load(f)
+                        layout_items = layout_data.get('layout_items', [])
+                    print(f"   ✅ Loaded {len(layout_items)} layout items from {layout_type_name} layout")
+                    print(f"   ℹ️  Will use {current_language} articles")
+                except Exception as e:
+                    print(f"   ⚠️  Error loading JSON: {e}")
     
     articles = []
     
@@ -435,30 +507,70 @@ def index():
             
             # Xử lý slider containers
             if layout_type in ['slider', 'job_slider']:
-                slider_data = {
-                    'id': None,
-                    'title': layout_item.get('slider_title', ''),
-                    'layout_type': layout_type,
-                    'display_order': display_order,
-                    'layout_data': {
-                        'slider_title': layout_item.get('slider_title', ''),
-                        'slider_articles': []
-                    },
-                    'published_url': '',
-                    'is_home': True,
-                    'section': 'home'
-                }
+                # ⚠️ QUAN TRỌNG: Với job_slider, ưu tiên dùng dữ liệu từ DB container nếu có
+                # (vì EN job_slider có thể đã được translate và lưu trong DB)
+                db_slider_container = None
+                if layout_type == 'job_slider':
+                    # Tìm job_slider container trong DB với cùng display_order và language
+                    db_slider_container = Article.query.filter_by(
+                        layout_type='job_slider',
+                        section='home',
+                        language=current_language,
+                        display_order=display_order
+                    ).first()
+                    
+                    # Nếu không tìm thấy theo display_order, tìm bất kỳ job_slider nào
+                    if not db_slider_container:
+                        db_slider_container = Article.query.filter_by(
+                            layout_type='job_slider',
+                            section='home',
+                            language=current_language
+                        ).order_by(Article.display_order.desc()).first()
                 
-                # Link các articles trong slider
-                slider_articles = layout_item.get('slider_articles', [])
-                for slider_article in slider_articles:
-                    slider_url = slider_article.get('published_url', '')
-                    if slider_url and slider_url in articles_map:
-                        for article in articles_map[slider_url]:
-                            if article.language == current_language:
-                                article_dict = article.to_dict()
-                                slider_data['layout_data']['slider_articles'].append(article_dict)
-                                break
+                if db_slider_container and db_slider_container.layout_data:
+                    # Dùng dữ liệu từ DB container (đã được translate)
+                    slider_data = {
+                        'id': db_slider_container.id,
+                        'title': db_slider_container.title or db_slider_container.layout_data.get('slider_title', ''),
+                        'layout_type': layout_type,
+                        'display_order': display_order,
+                        'layout_data': db_slider_container.layout_data.copy(),
+                        'published_url': '',
+                        'is_home': True,
+                        'section': 'home'
+                    }
+                    print(f"      ✅ Using job_slider data from DB (ID: {db_slider_container.id})")
+                else:
+                    # Dùng dữ liệu từ layout file
+                    slider_data = {
+                        'id': None,
+                        'title': layout_item.get('slider_title', ''),
+                        'layout_type': layout_type,
+                        'display_order': display_order,
+                        'layout_data': {
+                            'slider_title': layout_item.get('slider_title', ''),
+                            'slider_articles': []
+                        },
+                        'published_url': '',
+                        'is_home': True,
+                        'section': 'home'
+                    }
+                    
+                    # Link các articles trong slider
+                    slider_articles = layout_item.get('slider_articles', [])
+                    for slider_article in slider_articles:
+                        # ⚠️ QUAN TRỌNG: Job slider articles có key 'url', không phải 'published_url'
+                        slider_url = slider_article.get('published_url') or slider_article.get('url', '')
+                        if slider_url and slider_url in articles_map:
+                            for article in articles_map[slider_url]:
+                                if article.language == current_language:
+                                    article_dict = article.to_dict()
+                                    slider_data['layout_data']['slider_articles'].append(article_dict)
+                                    break
+                        elif slider_url:
+                            # Nếu không tìm thấy trong articles_map, dùng dữ liệu từ layout_item trực tiếp
+                            # (cho job slider articles từ sjob.gl - không có trong DB)
+                            slider_data['layout_data']['slider_articles'].append(slider_article)
                 
                 articles.append(slider_data)
                 continue
@@ -471,18 +583,32 @@ def index():
             if published_url in articles_map:
                 matched_article = None
                 
-                # Ưu tiên article đã có section='home'
-                for article in articles_map[published_url]:
-                    if article.language == current_language and article.section == 'home':
-                        matched_article = article
-                        break
+                # ⚠️ QUAN TRỌNG: 
+                # - Với 1_with_list_left/right: chỉ lấy article có section='home'
+                # - Với các layout khác: lấy từ tất cả section (không ưu tiên section='home')
+                require_home_section = layout_type in ['1_with_list_left', '1_with_list_right']
                 
-                # Nếu không có, lấy article đầu tiên cùng language
-                if not matched_article:
+                if require_home_section:
+                    # Chỉ lấy article có section='home'
                     for article in articles_map[published_url]:
-                        if article.language == current_language:
+                        if article.language == current_language and article.section == 'home':
                             matched_article = article
                             break
+                else:
+                    # Lấy article đầu tiên cùng language (từ bất kỳ section nào)
+                    # ⚠️ QUAN TRỌNG: Ưu tiên article có is_home=True (vì đang ở home page)
+                    for article in articles_map[published_url]:
+                        if article.language == current_language:
+                            if article.is_home:
+                                matched_article = article
+                                break
+                    
+                    # Nếu không có article với is_home=True, lấy article đầu tiên
+                    if not matched_article:
+                        for article in articles_map[published_url]:
+                            if article.language == current_language:
+                                matched_article = article
+                                break
                 
                 if matched_article:
                     article_dict = matched_article.to_dict()

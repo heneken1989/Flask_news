@@ -1,0 +1,4837 @@
+{
+  "language": "kl",
+  "crawled_at": "2026-01-25T22:09:44.354181",
+  "total_items": 193,
+  "layout_items": [
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/isumaga-usa-p-imminut-isiginera-kalaallit-nunaannik-paatsuuineq/2332801",
+      "layout_type": "1_full",
+      "display_order": 0,
+      "row_index": 0,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "ISUMAGA: ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "USA-p imminut isiginera - Kalaallit Nunaannik paatsuuineq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "1dea54ab-0da6-4ca8-b99b-940893029274",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2332801",
+      "title": "ISUMAGA: USA-p imminut isiginera - Kalaallit Nunaannik paatsuuineq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/kallerup-innerata-qaminnera-biilerluni-ajutoorneq-imigassarsorsimallunilu-biilerneq/2335147",
+      "layout_type": "2_articles",
+      "display_order": 2000,
+      "row_index": 2,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Kallerup innerata qaminnera, biilerluni ajutoorneq imigassarsorsimallunilu biilerneq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "551f3ca1-a909-4301-be3d-428231ed6a4f",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2335147",
+      "title": "Kallerup innerata qaminnera, biilerluni ajutoorneq imigassarsorsimallunilu biilerneq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/kreml-kalaallit-nunaat-isumannaallisaanermut-pingaaruteqarpoq/2326501",
+      "layout_type": "2_articles",
+      "display_order": 2001,
+      "row_index": 2,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Kreml: Kalaallit Nunaat isumannaallisaanermut pingaaruteqarpoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "1d5fd350-7cb4-4455-8d16-891ddd94e7f8",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2326501",
+      "title": "Kreml: Kalaallit Nunaat isumannaallisaanermut pingaaruteqarpoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/ullorissat-aningaasanut-inatsimmut-ilanngunneqartut/2333150",
+      "layout_type": "2_articles",
+      "display_order": 4000,
+      "row_index": 4,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Ullorissat aningaasanut inatsimmut ilanngunneqartut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "310870da-db7c-4965-9697-3d273287beb7",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2333150",
+      "title": "Ullorissat aningaasanut inatsimmut ilanngunneqartut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sooruna-vikingit-finlandimeersut-tusanngisaannarivut/2334627",
+      "layout_type": "2_articles",
+      "display_order": 4001,
+      "row_index": 4,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Sooruna vikingit Finlandimeersut tusanngisaannarivut?\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "070a9057-db01-473b-837a-98bf798c3274",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2334627",
+      "title": "Sooruna vikingit Finlandimeersut tusanngisaannarivut?"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/nuuk-sarfaaruttoorpoq-nukissiorfiit-iluarsiiniarlutik-suliaqarput/2335109",
+      "layout_type": "2_articles",
+      "display_order": 6000,
+      "row_index": 6,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "NUTARTERNEQARPOQ - VIDEO TAKUUK",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "Nuummi anorlerneranit sarfaaruttoortoqartoq - Atortut sarfatortut pisariaqanngitsut attaveeqquneqarput\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "c2db9dbb-af7e-4309-ad35-b99ebcfbfedb",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2335109",
+      "title": "Nuummi anorlerneranit sarfaaruttoortoqartoq - Atortut sarfatortut pisariaqanngitsut attaveeqquneqarput"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/isumaga-aningaasat-politikiuvoq/2333062",
+      "layout_type": "2_articles",
+      "display_order": 6001,
+      "row_index": 6,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_floating": "ISUMAGA",
+        "title_parts": [
+          {
+            "text": "Aningaasat politikiuvoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "f17a6a53-903a-40de-8f19-53ed4e30734f",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2333062",
+      "title": "Aningaasat politikiuvoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/samfund/nuummiut-peqqumaasersorlutik-aallartipput-sarfaliuutit-dunkillu-nungorartut/2333740",
+      "layout_type": "1_with_list_right",
+      "display_order": 7000,
+      "row_index": 7,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Nuummiut peqqumaasersorlutik aallartipput: Sarfaliuutit dunkillu nungorartut\n",
+            "color_class": null
+          }
+        ],
+        "list_title": "ATUARNEQARNERPAAT",
+        "list_items": [
+          {
+            "title": "Ulloq unnuarlu nalunaarusiaq: Biilinik ajutoornerit marluk, imigassartorsimallutik biilertut marluk imminullu toqunnissamik siorasaarisut arlaqartut",
+            "url": "/inuiaqatigiit/ulloq-unnuarlu-nalunaarusiaq-biilinik-ajutoornerit-marluk-imigassartorsimallutik-biilertut-marluk-imminullu-toqunnissamik-siorasaarisut-arlaqartut/2335063"
+          },
+          {
+            "title": "Psykologinngornermi 80-ikkunni ernguttarneq imigassamillu kultureqarneq nutaamik paasisaqarfiusoq",
+            "url": "/inuiaqatigiit/psykologinngornermi-80-ikkunni-ernguttarneq-imigassamillu-kultureqarneq-nutaamik-paasisaqarfiusoq/2334978"
+          },
+          {
+            "title": "Kreml: Kalaallit Nunaat isumannaallisaanermut pingaaruteqarpoq",
+            "url": "/inuiaqatigiit/kreml-kalaallit-nunaat-isumannaallisaanermut-pingaaruteqarpoq/2326501"
+          },
+          {
+            "title": "Nuummi anorlerneranit sarfaaruttoortoqartoq - Atortut sarfatortut pisariaqanngitsut attaveeqquneqarput",
+            "url": "/inuiaqatigiit/nuummi-anorlerneranit-sarfaaruttoortoqartoq-atortut-sarfatortut-pisariaqanngitsut-attaveeqquneqarput/2335109"
+          },
+          {
+            "title": "Kallerup innerata qaminnera, biilerluni ajutoorneq imigassarsorsimallunilu biilerneq",
+            "url": "/inuiaqatigiit/kallerup-innerata-qaminnera-biilerluni-ajutoorneq-imigassarsorsimallunilu-biilerneq/2335147"
+          }
+        ]
+      },
+      "element_guid": "679581e6-6a0e-46fc-806e-a0961e547556",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2333740",
+      "title": "Nuummiut peqqumaasersorlutik aallartipput: Sarfaliuutit dunkillu nungorartut",
+      "list_title": "ATUARNEQARNERPAAT",
+      "list_items": [
+        {
+          "title": "Ulloq unnuarlu nalunaarusiaq: Biilinik ajutoornerit marluk, imigassartorsimallutik biilertut marluk imminullu toqunnissamik siorasaarisut arlaqartut",
+          "url": "/inuiaqatigiit/ulloq-unnuarlu-nalunaarusiaq-biilinik-ajutoornerit-marluk-imigassartorsimallutik-biilertut-marluk-imminullu-toqunnissamik-siorasaarisut-arlaqartut/2335063"
+        },
+        {
+          "title": "Psykologinngornermi 80-ikkunni ernguttarneq imigassamillu kultureqarneq nutaamik paasisaqarfiusoq",
+          "url": "/inuiaqatigiit/psykologinngornermi-80-ikkunni-ernguttarneq-imigassamillu-kultureqarneq-nutaamik-paasisaqarfiusoq/2334978"
+        },
+        {
+          "title": "Kreml: Kalaallit Nunaat isumannaallisaanermut pingaaruteqarpoq",
+          "url": "/inuiaqatigiit/kreml-kalaallit-nunaat-isumannaallisaanermut-pingaaruteqarpoq/2326501"
+        },
+        {
+          "title": "Nuummi anorlerneranit sarfaaruttoortoqartoq - Atortut sarfatortut pisariaqanngitsut attaveeqquneqarput",
+          "url": "/inuiaqatigiit/nuummi-anorlerneranit-sarfaaruttoortoqartoq-atortut-sarfatortut-pisariaqanngitsut-attaveeqquneqarput/2335109"
+        },
+        {
+          "title": "Kallerup innerata qaminnera, biilerluni ajutoorneq imigassarsorsimallunilu biilerneq",
+          "url": "/inuiaqatigiit/kallerup-innerata-qaminnera-biilerluni-ajutoorneq-imigassarsorsimallunilu-biilerneq/2335147"
+        }
+      ]
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/kajumissutsiminnik-aallussisartut-pingaartuupput/2327858",
+      "layout_type": "1_full",
+      "display_order": 8000,
+      "row_index": 8,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Kajumissutsiminnik aallussisartut pingaartuupput\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "a8652465-5efa-491e-a515-6b1d952b3183",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2327858",
+      "title": "Kajumissutsiminnik aallussisartut pingaartuupput"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sakkutooqarfiugallartussat-marluk-pilersinneqartut/2335043",
+      "layout_type": "3_articles",
+      "display_order": 10000,
+      "row_index": 10,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Sakkutooqarfiugallartussat marluk pilersinneqartut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "6b906683-deea-4aaa-ae90-a53c82584f89",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2335043",
+      "title": "Sakkutooqarfiugallartussat marluk pilersinneqartut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/atuarfimmi-misilitsinnermi-misigisat/2331660",
+      "layout_type": "3_articles",
+      "display_order": 10001,
+      "row_index": 10,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Atuarfimmi misilitsinnermi misigisat\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "3504d763-1ab9-400e-b3c5-54edb8b4e46f",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2331660",
+      "title": "Atuarfimmi misilitsinnermi misigisat"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/kulturi/ministeriunerup-ukiortaami-oqalugiaataani-sermeq-aattoq/2329391",
+      "layout_type": "3_articles",
+      "display_order": 10002,
+      "row_index": 10,
+      "article_index_in_row": 2,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Ministeriunerup ukiortaami oqalugiaataani sermeq aattoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "4e6c3ee8-9323-4db0-96bd-639ab820318f",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329391",
+      "title": "Ministeriunerup ukiortaami oqalugiaataani sermeq aattoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/ulloq-unnuarlu-nalunaarusiaq-biilinik-ajutoornerit-marluk-imigassartorsimallutik-biilertut-marluk-imminullu-toqunnissamik-siorasaarisut-arlaqartut/2335063",
+      "layout_type": "2_articles",
+      "display_order": 12000,
+      "row_index": 12,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "ULLOQ UNNUARLU NALUNAARUSIAQ",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "Biilinik ajutoornerit marluk, imigassartorsimallutik biilertut marluk imminullu toqunnissamik siorasaarisut arlaqartut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "543b9455-45be-4792-9963-21167ea337d1",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2335063",
+      "title": "Biilinik ajutoornerit marluk, imigassartorsimallutik biilertut marluk imminullu toqunnissamik siorasaarisut arlaqartut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/psykologinngornermi-80-ikkunni-ernguttarneq-imigassamillu-kultureqarneq-nutaamik-paasisaqarfiusoq/2334978",
+      "layout_type": "2_articles",
+      "display_order": 12001,
+      "row_index": 12,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "INUIT",
+        "kicker_below_classes": "kicker below secondary color_mobile_secondary align-center mobile_text_align_align-center",
+        "title_parts": [
+          {
+            "text": "Psykologinngornermi 80-ikkunni ernguttarneq imigassamillu kultureqarneq nutaamik paasisaqarfiusoq",
+            "color_class": "font-weight-normal m-font-weight-normal"
+          }
+        ]
+      },
+      "element_guid": "ebd78f25-92e7-4392-a94b-340c57b142ee",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2334978",
+      "title": "Psykologinngornermi 80-ikkunni ernguttarneq imigassamillu kultureqarneq nutaamik paasisaqarfiusoq"
+    },
+    {
+      "published_url": "",
+      "layout_type": "slider",
+      "display_order": 14000,
+      "row_index": 14,
+      "article_index_in_row": -1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "slider_title": "NUTAARSIASSAT",
+        "slider_articles": [
+          {
+            "url": "https://kl.sermitsiaq.ag/inuiaqatigiit/isumaga-usa-p-imminut-isiginera-kalaallit-nunaannik-paatsuuineq/2332801",
+            "title": "ISUMAGA: USA-p imminut isiginera - Kalaallit Nunaannik  paatsuuineq",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2332767.jpg?imageId=2332767&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": true,
+            "section": "inuiaqatigiit",
+            "position": 0
+          },
+          {
+            "url": "https://kl.sermitsiaq.ag/inuiaqatigiit/kreml-kalaallit-nunaat-isumannaallisaanermut-pingaaruteqarpoq/2326501",
+            "title": "Kreml: Kalaallit Nunaat isumannaallisaanermut pingaaruteqarpoq",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2335163.jpg?imageId=2335163&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "inuiaqatigiit",
+            "position": 1
+          },
+          {
+            "url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sooruna-vikingit-finlandimeersut-tusanngisaannarivut/2334627",
+            "title": "Sooruna vikingit Finlandimeersut tusanngisaannarivut?",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2333714.jpg?imageId=2333714&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=51.07&heighty=0.00&heightw=34.76&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": true,
+            "section": "inuiaqatigiit",
+            "position": 2
+          },
+          {
+            "url": "https://kl.sermitsiaq.ag/inuiaqatigiit/kallerup-innerata-qaminnera-biilerluni-ajutoorneq-imigassarsorsimallunilu-biilerneq/2335147",
+            "title": "Kallerup innerata qaminnera, biilerluni ajutoorneq imigassarsorsimallunilu biilerneq",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2325276.jpg?imageId=2325276&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "inuiaqatigiit",
+            "position": 3
+          },
+          {
+            "url": "https://kl.sermitsiaq.ag/inuiaqatigiit/ullorissat-aningaasanut-inatsimmut-ilanngunneqartut/2333150",
+            "title": "Ullorissat aningaasanut inatsimmut ilanngunneqartut",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2333084.jpg?imageId=2333084&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": true,
+            "section": "inuiaqatigiit",
+            "position": 4
+          },
+          {
+            "url": "https://kl.sermitsiaq.ag/inuiaqatigiit/nuummi-anorlerneranit-sarfaaruttoortoqartoq-atortut-sarfatortut-pisariaqanngitsut-attaveeqquneqarput/2335109",
+            "title": "Nuummi anorlerneranit sarfaaruttoortoqartoq - Atortut sarfatortut pisariaqanngitsut attaveeqquneqarput",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2094011.jpg?imageId=2094011&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "inuiaqatigiit",
+            "position": 5
+          },
+          {
+            "url": "https://kl.sermitsiaq.ag/inuiaqatigiit/isumaga-aningaasat-politikiuvoq/2333062",
+            "title": "ISUMAGA: Aningaasat politikiuvoq",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2333057.jpg?imageId=2333057&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": true,
+            "section": "inuiaqatigiit",
+            "position": 6
+          },
+          {
+            "url": "https://kl.sermitsiaq.ag/inuiaqatigiit/atuarfimmi-misilitsinnermi-misigisat/2331660",
+            "title": "Atuarfimmi misilitsinnermi misigisat",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2331615.jpg?imageId=2331615&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "inuiaqatigiit",
+            "position": 7
+          },
+          {
+            "url": "https://kl.sermitsiaq.ag/kulturi/ministeriunerup-ukiortaami-oqalugiaataani-sermeq-aattoq/2329391",
+            "title": "Ministeriunerup ukiortaami oqalugiaataani sermeq aattoq",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2328752.jpg?imageId=2328752&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": true,
+            "section": "kulturi",
+            "position": 8
+          },
+          {
+            "url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sakkutooqarfiugallartussat-marluk-pilersinneqartut/2335043",
+            "title": "Sakkutooqarfiugallartussat marluk pilersinneqartut",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2332485.jpg?imageId=2332485&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "inuiaqatigiit",
+            "position": 9
+          }
+        ],
+        "slider_id": "article_list_2063790",
+        "has_nav": true,
+        "items_per_view": 4,
+        "source_class": "source_nyheder",
+        "header_link": null,
+        "extra_classes": [],
+        "header_classes": [
+          "articlescroller-header",
+          "primary",
+          "color_mobile_primary",
+          "align-left",
+          "mobile_text_align_align-left",
+          "font-PublicoHeadlineWeb"
+        ]
+      },
+      "element_guid": "69f937a6-e392-49d5-bceb-deb59a305a6f",
+      "k5a_url": "",
+      "title": "NUTAARSIASSAT",
+      "slider_title": "NUTAARSIASSAT",
+      "slider_articles": [
+        {
+          "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/isumaga-usa-p-imminut-isiginera-kalaallit-nunaannik-paatsuuineq/2332801",
+          "title": "ISUMAGA: USA-p imminut isiginera - Kalaallit Nunaannik  paatsuuineq",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/kreml-kalaallit-nunaat-isumannaallisaanermut-pingaaruteqarpoq/2326501",
+          "title": "Kreml: Kalaallit Nunaat isumannaallisaanermut pingaaruteqarpoq",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sooruna-vikingit-finlandimeersut-tusanngisaannarivut/2334627",
+          "title": "Sooruna vikingit Finlandimeersut tusanngisaannarivut?",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/kallerup-innerata-qaminnera-biilerluni-ajutoorneq-imigassarsorsimallunilu-biilerneq/2335147",
+          "title": "Kallerup innerata qaminnera, biilerluni ajutoorneq imigassarsorsimallunilu biilerneq",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/ullorissat-aningaasanut-inatsimmut-ilanngunneqartut/2333150",
+          "title": "Ullorissat aningaasanut inatsimmut ilanngunneqartut",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/nuummi-anorlerneranit-sarfaaruttoortoqartoq-atortut-sarfatortut-pisariaqanngitsut-attaveeqquneqarput/2335109",
+          "title": "Nuummi anorlerneranit sarfaaruttoortoqartoq - Atortut sarfatortut pisariaqanngitsut attaveeqquneqarput",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/isumaga-aningaasat-politikiuvoq/2333062",
+          "title": "ISUMAGA: Aningaasat politikiuvoq",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/atuarfimmi-misilitsinnermi-misigisat/2331660",
+          "title": "Atuarfimmi misilitsinnermi misigisat",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://kl.sermitsiaq.ag/kulturi/ministeriunerup-ukiortaami-oqalugiaataani-sermeq-aattoq/2329391",
+          "title": "Ministeriunerup ukiortaami oqalugiaataani sermeq aattoq",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sakkutooqarfiugallartussat-marluk-pilersinneqartut/2335043",
+          "title": "Sakkutooqarfiugallartussat marluk pilersinneqartut",
+          "image_data": {}
+        }
+      ]
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trumpip-illersornissamut-periusissiaani-nutaami-nunarput-arlaleriarluni-taaneqarpoq/2335013",
+      "layout_type": "3_articles",
+      "display_order": 16000,
+      "row_index": 16,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trumpip illersornissamut periusissiaani nutaami nunarput arlaleriarluni taaneqarpoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "96f7b857-81e5-474e-bb52-a20d59fd9568",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2335013",
+      "title": "Trumpip illersornissamut periusissiaani nutaami nunarput arlaleriarluni taaneqarpoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/mette-frederiksen-pissutsit-najummassimanarput/2334955",
+      "layout_type": "3_articles",
+      "display_order": 16001,
+      "row_index": 16,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Mette Frederiksen: Pissutsit najummassimanarput\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "05306684-846a-4a15-bf53-c041a9e2ffc9",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2334955",
+      "title": "Mette Frederiksen: Pissutsit najummassimanarput"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/kultur/nalaasaarfimmi-bamsit/2334465",
+      "layout_type": "3_articles",
+      "display_order": 16002,
+      "row_index": 16,
+      "article_index_in_row": 2,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Nalaasaarfimmi bamsit\n",
+            "color_class": null
+          }
+        ],
+        "has_bg_color": true,
+        "content_classes": "content bg-secondary color_mobile_bg-secondary border-bg-secondary mobile_border-bg-secondary border_width_14 border_width_mobile_14 hasContentPadding mobile-hasContentPadding hasBorder mobile-hasBorder"
+      },
+      "element_guid": "b49bc5d2-f1a6-4c3f-9b9f-0ecc3eb94a40",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2334465",
+      "title": "Nalaasaarfimmi bamsit"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/kulturi/isumassarsiamiit-nuna-tamakkerlugu-ukiuunerani-ileqqumut/2334425",
+      "layout_type": "2_articles",
+      "display_order": 17000,
+      "row_index": 17,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "KALAALLIT NUNAANNI UNNUK KULTURISIORFIK",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "Isumassarsiamiit nuna tamakkerlugu ukiuunerani ileqqumut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "6c603640-a1d2-4d3c-9168-3032b56db6df",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2334425",
+      "title": "Isumassarsiamiit nuna tamakkerlugu ukiuunerani ileqqumut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/samfund/oqallinnermi-meeqqat-tusaaneqarnerulernissaat-anguniaraa/2323842",
+      "layout_type": "2_articles",
+      "display_order": 17001,
+      "row_index": 17,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Oqallinnermi meeqqat tusaaneqarnerulernissaat anguniaraa\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "0f7afa0b-062a-4200-a742-44d3205dde27",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2323842",
+      "title": "Oqallinnermi meeqqat tusaaneqarnerulernissaat anguniaraa"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/mette-frederiksen-angunnguamut-aalaterivoq/2326501",
+      "layout_type": "1_full",
+      "display_order": 18000,
+      "row_index": 18,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "kicker_floating": "LIVEBLOG",
+        "title_parts": [
+          {
+            "text": "Naalakkersuisut siuttui meeqqerivimmut pulaartut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "36d097fc-39ec-402d-bd4d-1c9057c44279",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2326501",
+      "title": "Naalakkersuisut siuttui meeqqerivimmut pulaartut"
+    },
+    {
+      "published_url": "",
+      "layout_type": "job_slider",
+      "display_order": 19000,
+      "row_index": 19,
+      "article_index_in_row": -1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "slider_title": "– Atorfiit tamaasa takukkit",
+        "slider_articles": [
+          {
+            "url": "https://www.sjob.gl/job-kl/applikationssupporterinngorit/2327516",
+            "title": "Applikationssupporterinngorit",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2313963.jpg?imageId=2313963&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "job kl",
+            "position": 0
+          },
+          {
+            "url": "https://www.sjob.gl/job-kl/allagarsiuteqqitaq-kangerlussuarmi-sulisunut-aqutsisumik-pissarsiorpugut/2330636",
+            "title": "Allagarsiuteqqitaq - Kangerlussuarmi Sulisunut aqutsisumik pissarsiorpugut",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2114878.jpg?imageId=2114878&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "job kl",
+            "position": 1
+          },
+          {
+            "url": "https://www.sjob.gl/job-kl/tasiilami-qanganitsad-iddivanni-peqqinnissamut-ikiorti/assigisaalu/2326132",
+            "title": "Tasiilami Qanganitsad iddivanni peqqinnissamut ikiorti/assigisaalu",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "job kl",
+            "position": 2
+          },
+          {
+            "url": "https://www.sjob.gl/job-kl/faglaerer-okonomi/2334912",
+            "title": "Faglærer Økonomi",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2105287.jpg?imageId=2105287&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "job kl",
+            "position": 3
+          },
+          {
+            "url": "https://www.sjob.gl/job-kl/heldagsskolen-kaffiliortumik-sulisussarsiorpoq/2334762",
+            "title": "Heldagsskolen kaffiliortumik sulisussarsiorpoq",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "job kl",
+            "position": 4
+          },
+          {
+            "url": "https://www.sjob.gl/job-kl/atuakkialerinermik-paasissutissiisartoq/2328082",
+            "title": "Atuakkialerinermik paasissutissiisartoq",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2120994.jpg?imageId=2120994&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "job kl",
+            "position": 5
+          },
+          {
+            "url": "https://www.sjob.gl/job-kl/hrd-imi-manager/2331639",
+            "title": "HRD-imi Manager",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2216146.jpg?imageId=2216146&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "job kl",
+            "position": 6
+          },
+          {
+            "url": "https://www.sjob.gl/job-kl/saqqummiuteqqitaq-paamiuni-palasitut-atorfik-inuttaligassaq-kalaallit-nunaat/2328123",
+            "title": "Saqqummiuteqqitaq Paamiuni palasitut atorfik inuttaligassaq, Kalaallit Nunaat",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2119650.jpg?imageId=2119650&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "job kl",
+            "position": 7
+          },
+          {
+            "url": "https://www.sjob.gl/job-kl/najugaqatigiiffik-pakkutaq-peqqissaanermi-assistentimik-sygeplejerskemilluunniit-sulisussarsiorpoq/2328176",
+            "title": "Najugaqatigiiffik Pakkutaq peqqissaanermi assistentimik sygeplejerskemilluunniit sulisussarsiorpoq",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "job kl",
+            "position": 8
+          },
+          {
+            "url": "https://www.sjob.gl/job-kl/perorsaasoq-meeqqerivik-puiamut/2332387",
+            "title": "Perorsaasoq Meeqqerivik Puiamut",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "job kl",
+            "position": 9
+          }
+        ],
+        "slider_id": "article_list_2065427",
+        "has_nav": true,
+        "items_per_view": 4,
+        "source_class": "source_feed_random_kl_jobs",
+        "header_link": {
+          "url": "https://www.sjob.gl/kl",
+          "text": "– Atorfiit tamaasa takukkit"
+        },
+        "extra_classes": [
+          "bg-custom-2",
+          "color_mobile_bg-custom-2",
+          "hasContentPadding",
+          "mobile-hasContentPadding",
+          "layout-align-centered"
+        ],
+        "header_classes": [
+          "articlescroller-header",
+          "t22",
+          "octonary",
+          "color_mobile_octonary",
+          "align-left",
+          "mobile_text_align_align-left",
+          "font-IBMPlexSansCondensed",
+          "underline"
+        ]
+      },
+      "element_guid": "41869379-14b6-4f1e-8320-d4f475fee0eb",
+      "k5a_url": "",
+      "title": "– Atorfiit tamaasa takukkit",
+      "slider_title": "– Atorfiit tamaasa takukkit",
+      "slider_articles": [
+        {
+          "published_url": "https://www.sjob.gl/job-kl/applikationssupporterinngorit/2327516",
+          "title": "Applikationssupporterinngorit",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sjob.gl/job-kl/allagarsiuteqqitaq-kangerlussuarmi-sulisunut-aqutsisumik-pissarsiorpugut/2330636",
+          "title": "Allagarsiuteqqitaq - Kangerlussuarmi Sulisunut aqutsisumik pissarsiorpugut",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sjob.gl/job-kl/tasiilami-qanganitsad-iddivanni-peqqinnissamut-ikiorti/assigisaalu/2326132",
+          "title": "Tasiilami Qanganitsad iddivanni peqqinnissamut ikiorti/assigisaalu",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sjob.gl/job-kl/faglaerer-okonomi/2334912",
+          "title": "Faglærer Økonomi",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sjob.gl/job-kl/heldagsskolen-kaffiliortumik-sulisussarsiorpoq/2334762",
+          "title": "Heldagsskolen kaffiliortumik sulisussarsiorpoq",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sjob.gl/job-kl/atuakkialerinermik-paasissutissiisartoq/2328082",
+          "title": "Atuakkialerinermik paasissutissiisartoq",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sjob.gl/job-kl/hrd-imi-manager/2331639",
+          "title": "HRD-imi Manager",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sjob.gl/job-kl/saqqummiuteqqitaq-paamiuni-palasitut-atorfik-inuttaligassaq-kalaallit-nunaat/2328123",
+          "title": "Saqqummiuteqqitaq Paamiuni palasitut atorfik inuttaligassaq, Kalaallit Nunaat",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sjob.gl/job-kl/najugaqatigiiffik-pakkutaq-peqqissaanermi-assistentimik-sygeplejerskemilluunniit-sulisussarsiorpoq/2328176",
+          "title": "Najugaqatigiiffik Pakkutaq peqqissaanermi assistentimik sygeplejerskemilluunniit sulisussarsiorpoq",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sjob.gl/job-kl/perorsaasoq-meeqqerivik-puiamut/2332387",
+          "title": "Perorsaasoq Meeqqerivik Puiamut",
+          "image_data": {}
+        }
+      ]
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/usa-mik-oqaloqateqarnerup-pitsaanerulernissaa-ataatsimiititaliami-ilaasortap-neriuutigaa/2334750",
+      "layout_type": "3_articles",
+      "display_order": 20000,
+      "row_index": 20,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "USA-mik oqaloqateqarnerup pitsaanerulernissaa ataatsimiititaliami ilaasortap neriuutigaa\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "248e37af-a13d-4e9b-b210-a82b773e14e4",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2334750",
+      "title": "USA-mik oqaloqateqarnerup pitsaanerulernissaa ataatsimiititaliami ilaasortap neriuutigaa"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/mette-frederiksen-nuummut-mippoq/2334546",
+      "layout_type": "3_articles",
+      "display_order": 20001,
+      "row_index": 20,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Mette Frederiksen Nuummut mippoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "ab037c94-59e9-42b7-98ee-1b2fb82f62f2",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2334546",
+      "title": "Mette Frederiksen Nuummut mippoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/timersorneq/ironmanimi-vm-ertoqarnissaanut-piareeqqittoq/2329919",
+      "layout_type": "3_articles",
+      "display_order": 20002,
+      "row_index": 20,
+      "article_index_in_row": 2,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Ironmanimi VM-ertoqarnissaanut piareeqqittoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "e8eedf0e-9e08-44fa-8bca-c860d6c03e49",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329919",
+      "title": "Ironmanimi VM-ertoqarnissaanut piareeqqittoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sakkutuut-nuummi-aqqusinerni/2333139",
+      "layout_type": "2_articles",
+      "display_order": 21000,
+      "row_index": 21,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Sakkutuut nuummi aqqusinerni\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "23bfc947-390f-41e4-90b7-81b4e874a656",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2333139",
+      "title": "Sakkutuut nuummi aqqusinerni"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/boassen-maga-mi-festeqataasoq-nunatta-assinganik-kaagiliaq-usa-p-erfalasuanik-qalligaq/2334574",
+      "layout_type": "2_articles",
+      "display_order": 21001,
+      "row_index": 21,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Boassen MAGA-mi festeqataasoq: Nunatta",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " assinganik kaagiliaq USA-p erfalasuanik qalligaq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "64519348-0647-414c-bbdb-c43e787d4875",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2334574",
+      "title": "Boassen MAGA-mi festeqataasoq: Nunatta assinganik kaagiliaq USA-p erfalasuanik qalligaq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/qinngutsinni-nunaminertaq-sakkutuunut-immikkoortinneqartoq-pilersinneqarallartoq/2332100",
+      "layout_type": "1_with_list_left",
+      "display_order": 22000,
+      "row_index": 22,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Qinngutsinni nunaminertaq sakkutuunut immikkoortinneqartoq pilersinneqarallartoq\n",
+            "color_class": null
+          }
+        ],
+        "list_title": "NUTAARSIASSAT KINGULLIIT",
+        "list_items": [
+          {
+            "title": "ISUMAGA: USA-p imminut isiginera - Kalaallit Nunaannik  paatsuuineq",
+            "url": "/inuiaqatigiit/isumaga-usa-p-imminut-isiginera-kalaallit-nunaannik-paatsuuineq/2332801"
+          },
+          {
+            "title": "Kreml: Kalaallit Nunaat isumannaallisaanermut pingaaruteqarpoq",
+            "url": "/inuiaqatigiit/kreml-kalaallit-nunaat-isumannaallisaanermut-pingaaruteqarpoq/2326501"
+          },
+          {
+            "title": "Sooruna vikingit Finlandimeersut tusanngisaannarivut?",
+            "url": "/inuiaqatigiit/sooruna-vikingit-finlandimeersut-tusanngisaannarivut/2334627"
+          },
+          {
+            "title": "Kallerup innerata qaminnera, biilerluni ajutoorneq imigassarsorsimallunilu biilerneq",
+            "url": "/inuiaqatigiit/kallerup-innerata-qaminnera-biilerluni-ajutoorneq-imigassarsorsimallunilu-biilerneq/2335147"
+          },
+          {
+            "title": "Ullorissat aningaasanut inatsimmut ilanngunneqartut",
+            "url": "/inuiaqatigiit/ullorissat-aningaasanut-inatsimmut-ilanngunneqartut/2333150"
+          },
+          {
+            "title": "Nuummi anorlerneranit sarfaaruttoortoqartoq - Atortut sarfatortut pisariaqanngitsut attaveeqquneqarput",
+            "url": "/inuiaqatigiit/nuummi-anorlerneranit-sarfaaruttoortoqartoq-atortut-sarfatortut-pisariaqanngitsut-attaveeqquneqarput/2335109"
+          }
+        ]
+      },
+      "element_guid": "01a57a13-65f6-48f7-beb9-87696ff8eab6",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2332100",
+      "title": "Qinngutsinni nunaminertaq sakkutuunut immikkoortinneqartoq pilersinneqarallartoq",
+      "list_title": "NUTAARSIASSAT KINGULLIIT",
+      "list_items": [
+        {
+          "title": "ISUMAGA: USA-p imminut isiginera - Kalaallit Nunaannik  paatsuuineq",
+          "url": "/inuiaqatigiit/isumaga-usa-p-imminut-isiginera-kalaallit-nunaannik-paatsuuineq/2332801"
+        },
+        {
+          "title": "Kreml: Kalaallit Nunaat isumannaallisaanermut pingaaruteqarpoq",
+          "url": "/inuiaqatigiit/kreml-kalaallit-nunaat-isumannaallisaanermut-pingaaruteqarpoq/2326501"
+        },
+        {
+          "title": "Sooruna vikingit Finlandimeersut tusanngisaannarivut?",
+          "url": "/inuiaqatigiit/sooruna-vikingit-finlandimeersut-tusanngisaannarivut/2334627"
+        },
+        {
+          "title": "Kallerup innerata qaminnera, biilerluni ajutoorneq imigassarsorsimallunilu biilerneq",
+          "url": "/inuiaqatigiit/kallerup-innerata-qaminnera-biilerluni-ajutoorneq-imigassarsorsimallunilu-biilerneq/2335147"
+        },
+        {
+          "title": "Ullorissat aningaasanut inatsimmut ilanngunneqartut",
+          "url": "/inuiaqatigiit/ullorissat-aningaasanut-inatsimmut-ilanngunneqartut/2333150"
+        },
+        {
+          "title": "Nuummi anorlerneranit sarfaaruttoortoqartoq - Atortut sarfatortut pisariaqanngitsut attaveeqquneqarput",
+          "url": "/inuiaqatigiit/nuummi-anorlerneranit-sarfaaruttoortoqartoq-atortut-sarfatortut-pisariaqanngitsut-attaveeqquneqarput/2335109"
+        }
+      ]
+    },
+    {
+      "published_url": "",
+      "layout_type": "slider",
+      "display_order": 23000,
+      "row_index": 23,
+      "article_index_in_row": -1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "slider_title": "NUUK",
+        "slider_articles": [
+          {
+            "url": "https://kl.sermitsiaq.ag/inuiaqatigiit/kallerup-innerata-qaminnera-biilerluni-ajutoorneq-imigassarsorsimallunilu-biilerneq/2335147",
+            "title": "Kallerup innerata qaminnera, biilerluni ajutoorneq imigassarsorsimallunilu biilerneq",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2325276.jpg?imageId=2325276&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=424&height=274",
+              "alt": "",
+              "width": "212",
+              "height": "137"
+            },
+            "is_paywall": false,
+            "section": "inuiaqatigiit",
+            "position": 0
+          },
+          {
+            "url": "https://kl.sermitsiaq.ag/inuiaqatigiit/nuummi-anorlerneranit-sarfaaruttoortoqartoq-atortut-sarfatortut-pisariaqanngitsut-attaveeqquneqarput/2335109",
+            "title": "Nuummi anorlerneranit sarfaaruttoortoqartoq - Atortut sarfatortut pisariaqanngitsut attaveeqquneqarput",
+            "kicker": "SARFAARUTTOORNEQ",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2094011.jpg?imageId=2094011&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=424&height=274",
+              "alt": "",
+              "width": "212",
+              "height": "137"
+            },
+            "is_paywall": false,
+            "section": "inuiaqatigiit",
+            "position": 1
+          },
+          {
+            "url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sakkutooqarfiugallartussat-marluk-pilersinneqartut/2335043",
+            "title": "Sakkutooqarfiugallartussat marluk pilersinneqartut",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2332485.jpg?imageId=2332485&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=424&height=274",
+              "alt": "",
+              "width": "212",
+              "height": "137"
+            },
+            "is_paywall": false,
+            "section": "inuiaqatigiit",
+            "position": 2
+          },
+          {
+            "url": "https://kl.sermitsiaq.ag/inuiaqatigiit/mette-frederiksen-pissutsit-najummassimanarput/2334955",
+            "title": "Mette Frederiksen: Pissutsit najummassimanarput",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2334938.jpg?imageId=2334938&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=424&height=274",
+              "alt": "",
+              "width": "212",
+              "height": "137"
+            },
+            "is_paywall": false,
+            "section": "inuiaqatigiit",
+            "position": 3
+          },
+          {
+            "url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sakkutuut-nuummi-aqqusinerni/2333139",
+            "title": "Sakkutuut nuummi aqqusinerni",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2333104.jpg?imageId=2333104&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=424&height=274",
+              "alt": "",
+              "width": "212",
+              "height": "137"
+            },
+            "is_paywall": false,
+            "section": "inuiaqatigiit",
+            "position": 4
+          }
+        ],
+        "slider_id": "article_list_101018",
+        "has_nav": false,
+        "items_per_view": 5,
+        "source_class": "source_nuuk",
+        "header_link": null,
+        "extra_classes": [],
+        "header_classes": [
+          "articlescroller-header",
+          "t28",
+          "font-weight-black",
+          "m-font-weight-black",
+          "tertiary",
+          "color_mobile_tertiary",
+          "align-left",
+          "mobile_text_align_align-left",
+          "font-PublicoHeadlineWeb"
+        ]
+      },
+      "element_guid": "39ff4cfb-22f8-4643-9976-8d72dc5055da",
+      "k5a_url": "",
+      "title": "NUUK",
+      "slider_title": "NUUK",
+      "slider_articles": [
+        {
+          "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/kallerup-innerata-qaminnera-biilerluni-ajutoorneq-imigassarsorsimallunilu-biilerneq/2335147",
+          "title": "Kallerup innerata qaminnera, biilerluni ajutoorneq imigassarsorsimallunilu biilerneq",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/nuummi-anorlerneranit-sarfaaruttoortoqartoq-atortut-sarfatortut-pisariaqanngitsut-attaveeqquneqarput/2335109",
+          "title": "Nuummi anorlerneranit sarfaaruttoortoqartoq - Atortut sarfatortut pisariaqanngitsut attaveeqquneqarput",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sakkutooqarfiugallartussat-marluk-pilersinneqartut/2335043",
+          "title": "Sakkutooqarfiugallartussat marluk pilersinneqartut",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/mette-frederiksen-pissutsit-najummassimanarput/2334955",
+          "title": "Mette Frederiksen: Pissutsit najummassimanarput",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sakkutuut-nuummi-aqqusinerni/2333139",
+          "title": "Sakkutuut nuummi aqqusinerni",
+          "image_data": {}
+        }
+      ]
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/nunanut-allanut-ministerimiit-aatsitassarsiorfimmut-akerleriissutaalersumut-sunniiniartartunngorneq/2333587",
+      "layout_type": "1_full",
+      "display_order": 24000,
+      "row_index": 24,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Nunanut allanut ministerimiit aatsitassarsiorfimmut akerleriissutaalersumut sunniiniartartunngorneq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "0ad56f8f-c3f0-45c8-85fc-27dffb207564",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2333587",
+      "title": "Nunanut allanut ministerimiit aatsitassarsiorfimmut akerleriissutaalersumut sunniiniartartunngorneq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trumpip-nunarput-pillugu-isumaqatigiissummut-qanorluunniit-iliorsinnaavugut/2334492",
+      "layout_type": "2_articles",
+      "display_order": 25000,
+      "row_index": 25,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trumpip nunarput pillugu isumaqatigiissummut:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Qanorluunniit iliorsinnaavugut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "18635785-b209-4e0b-bebc-919b21d06044",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2334492",
+      "title": "Trumpip nunarput pillugu isumaqatigiissummut: Qanorluunniit iliorsinnaavugut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/pisassiissutinik-agguaassinermi-najukkami-ilisimasat-sammineqartut/2329499",
+      "layout_type": "2_articles",
+      "display_order": 25001,
+      "row_index": 25,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Pisassiissutinik agguaassinermi najukkami ilisimasat sammineqartut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "e64783d5-4f86-48aa-8401-b84ce955a55a",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329499",
+      "title": "Pisassiissutinik agguaassinermi najukkami ilisimasat sammineqartut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/kalaallit-nunaat-pissutigalugu-trumpip-danmarki-akitsuusiiviginiarpaa/2331935",
+      "layout_type": "1_with_list_right",
+      "display_order": 26000,
+      "row_index": 26,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Kalaallit Nunaat pissutigalugu",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Trumpip Danmarki akitsuusiiviginiarpaa\n",
+            "color_class": null
+          }
+        ],
+        "list_title": "NUUK",
+        "list_items": [
+          {
+            "title": "Kallerup innerata qaminnera, biilerluni ajutoorneq imigassarsorsimallunilu biilerneq",
+            "url": "/inuiaqatigiit/kallerup-innerata-qaminnera-biilerluni-ajutoorneq-imigassarsorsimallunilu-biilerneq/2335147"
+          },
+          {
+            "title": "Nuummi anorlerneranit sarfaaruttoortoqartoq - Atortut sarfatortut pisariaqanngitsut attaveeqquneqarput",
+            "url": "/inuiaqatigiit/nuummi-anorlerneranit-sarfaaruttoortoqartoq-atortut-sarfatortut-pisariaqanngitsut-attaveeqquneqarput/2335109"
+          },
+          {
+            "title": "Sakkutooqarfiugallartussat marluk pilersinneqartut",
+            "url": "/inuiaqatigiit/sakkutooqarfiugallartussat-marluk-pilersinneqartut/2335043"
+          },
+          {
+            "title": "Mette Frederiksen: Pissutsit najummassimanarput",
+            "url": "/inuiaqatigiit/mette-frederiksen-pissutsit-najummassimanarput/2334955"
+          }
+        ]
+      },
+      "element_guid": "feef5c32-9af7-424f-b8b4-396eeeeed8be",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2331935",
+      "title": "Kalaallit Nunaat pissutigalugu Trumpip Danmarki akitsuusiiviginiarpaa",
+      "list_title": "NUUK",
+      "list_items": [
+        {
+          "title": "Kallerup innerata qaminnera, biilerluni ajutoorneq imigassarsorsimallunilu biilerneq",
+          "url": "/inuiaqatigiit/kallerup-innerata-qaminnera-biilerluni-ajutoorneq-imigassarsorsimallunilu-biilerneq/2335147"
+        },
+        {
+          "title": "Nuummi anorlerneranit sarfaaruttoortoqartoq - Atortut sarfatortut pisariaqanngitsut attaveeqquneqarput",
+          "url": "/inuiaqatigiit/nuummi-anorlerneranit-sarfaaruttoortoqartoq-atortut-sarfatortut-pisariaqanngitsut-attaveeqquneqarput/2335109"
+        },
+        {
+          "title": "Sakkutooqarfiugallartussat marluk pilersinneqartut",
+          "url": "/inuiaqatigiit/sakkutooqarfiugallartussat-marluk-pilersinneqartut/2335043"
+        },
+        {
+          "title": "Mette Frederiksen: Pissutsit najummassimanarput",
+          "url": "/inuiaqatigiit/mette-frederiksen-pissutsit-najummassimanarput/2334955"
+        }
+      ]
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/issittumi-sakkulerngusaanneq-kalaallit-nunaata-isumannaatsuuneranut-iluaqutaanngilaq/2334156",
+      "layout_type": "2_articles",
+      "display_order": 27000,
+      "row_index": 27,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "STEEN FOLKE KØBENHAVNIMI AKERLIUSSUTSIMIK TAKUTITSINERMI PEQATAASOQ",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "– Issittumi sakkulerngusaanneq Kalaallit Nunaata isumannaatsuuneranut iluaqutaanngilaq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "c2723b4b-2584-4b94-82da-a45b30600311",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2334156",
+      "title": "– Issittumi sakkulerngusaanneq Kalaallit Nunaata isumannaatsuuneranut iluaqutaanngilaq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/atassut-naalagaaffeqatigiinneq-maanna-illersuutissaavoq-pitsaanerpaaq/2333627",
+      "layout_type": "2_articles",
+      "display_order": 27001,
+      "row_index": 27,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Atassut",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": ": Naalagaaffeqatigiinneq maanna illersuutissaavoq pitsaanerpaaq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "279aec7c-a3f8-424f-8038-c9042a3d8abd",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2333627",
+      "title": "Atassut: Naalagaaffeqatigiinneq maanna illersuutissaavoq pitsaanerpaaq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/jens-frederik-tusagassiortunik-katersortitsinermi-kunngeqarfik-eu-nato-lu-qinerpavut/2334170",
+      "layout_type": "2_articles",
+      "display_order": 28000,
+      "row_index": 28,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Jens-Frederik tusagassiortunik katersortitsinermi:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Unnuit tamaasa sioorasaarneqartarneq imaannaanngilaq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "16aa5040-aa23-4720-a492-58451cd40dfa",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2334170",
+      "title": "Jens-Frederik tusagassiortunik katersortitsinermi: Unnuit tamaasa sioorasaarneqartarneq imaannaanngilaq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/lektorip-trumpip-oqaasii-tupigusuutigai-golden-dome-pillugu-pilersaarut-siunissaq-pillugu-filmiliatullusooq-ippoq/2334107",
+      "layout_type": "2_articles",
+      "display_order": 28001,
+      "row_index": 28,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Lektorip Trumpip oqaasii tupigusuutigai:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Golden Dome pillugu pilersaarut siunissaq pillugu filmiliatullusooq ippoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "71a3d1c3-3f46-459b-9a71-a7a33b961b02",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2334107",
+      "title": "Lektorip Trumpip oqaasii tupigusuutigai: Golden Dome pillugu pilersaarut siunissaq pillugu filmiliatullusooq ippoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/naalakkersuisut-nato-kalaallit-nunaat-avaqqullugu-iliuuseqanngilaq/2334199",
+      "layout_type": "1_full",
+      "display_order": 29000,
+      "row_index": 29,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Naalakkersuisut: NATO Kalaallit Nunaat avaqqullugu iliuuseqanngilaq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "dde68b9b-05fe-4b06-b13d-43b9f472c4df",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2334199",
+      "title": "Naalakkersuisut: NATO Kalaallit Nunaat avaqqullugu iliuuseqanngilaq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/demokraatit-inatsisartuni-ataatsimiinneq-siuartinneqarpat-piffissami-ilungersunartumi-politikkikkut-ataatsimoorussamik-siunnerfiliissaaq/2334003",
+      "layout_type": "2_articles",
+      "display_order": 30000,
+      "row_index": 30,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Demokraatit: ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "Inatsisartuni ataatsimiinneq siuartinneqarpat piffissami ilungersunartumi politikkikkut ataatsimoorussamik siunnerfiliissaaq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "1d48e81e-2049-429e-8abc-8b4afb8bc1b0",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2334003",
+      "title": "Demokraatit: Inatsisartuni ataatsimiinneq siuartinneqarpat piffissami ilungersunartumi politikkikkut ataatsimoorussamik siunnerfiliissaaq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/jens-frederik-nielsen-nalunaaqutaq-1400-tusagassiortunik-katersortitsissaaq/2334062",
+      "layout_type": "2_articles",
+      "display_order": 30001,
+      "row_index": 30,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Jens-Frederik Nielsen nalunaaqutaq 14.00 tusagassiortunik katersortitsissaaq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "aadb60e7-88cd-4de5-8d4f-e8c29b8a6559",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2334062",
+      "title": "Jens-Frederik Nielsen nalunaaqutaq 14.00 tusagassiortunik katersortitsissaaq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/aaja-chemnitz-inissisimaffipput-pitsaavoq-piffissarli-suli-ilungersunarallassalluni/2333969",
+      "layout_type": "1_full",
+      "display_order": 31000,
+      "row_index": 31,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Aaja Chemnitz:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Inissisimaffipput pitsaavoq, piffissarli suli ilungersunarallassalluni\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "a500147a-f6d3-495a-8cc9-4ddd28cba611",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2333969",
+      "title": "Aaja Chemnitz: Inissisimaffipput pitsaavoq, piffissarli suli ilungersunarallassalluni"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/kulturi/nalunaaquttap-akunnerini-marlunnik-eqqissisimaneq/2333513",
+      "layout_type": "3_articles",
+      "display_order": 32000,
+      "row_index": 32,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Nalunaaquttap-akunnerini marlunnik eqqissisimaneq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "d0ebf880-523c-4c1b-9690-27b89536b240",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2333513",
+      "title": "Nalunaaquttap-akunnerini marlunnik eqqissisimaneq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuussutissarsiutit/sikoqanngikkaluartoq-umiarsuarnik-pajuttaateqanngilaq/2329882",
+      "layout_type": "3_articles",
+      "display_order": 32001,
+      "row_index": 32,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "kicker_below": "PILERSUINEQ",
+        "kicker_below_classes": "kicker below quaternary color_mobile_quaternary",
+        "title_parts": [
+          {
+            "text": "Sikoqanngikkaluartoq umiarsuarnik pajuttaateqanngilaq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "d75fb223-ff04-453b-aaf5-18bef0b587cd",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329882",
+      "title": "Sikoqanngikkaluartoq umiarsuarnik pajuttaateqanngilaq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/mette-f-oqartussaaneq-isumaqatiginninniutigineqanngilaq/2333948",
+      "layout_type": "3_articles",
+      "display_order": 32002,
+      "row_index": 32,
+      "article_index_in_row": 2,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Mette F.: Oqartussaaneq isumaqatiginninniutigineqanngilaq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "15cd7485-eb34-44dd-b963-0e22900fe2bb",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2333948",
+      "title": "Mette F.: Oqartussaaneq isumaqatiginninniutigineqanngilaq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trumpip-alfred-kamatsippaa/2331693",
+      "layout_type": "1_full",
+      "display_order": 33000,
+      "row_index": 33,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trumpip Alfred kamatsippaa\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "fa795338-b8da-461b-9c04-bec82e4de877",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2331693",
+      "title": "Trumpip Alfred kamatsippaa"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trump-kalaallit-nunaat-pillugu-isumaqatigiissummut-sinaakkutissat-piareerput/2333810",
+      "layout_type": "2_articles",
+      "display_order": 34000,
+      "row_index": 34,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trump: Kalaallit Nunaat pillugu isumaqatigiissummut sinaakkutissat piareerput\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "fe9c5956-7ec2-4315-8a90-3dc2a24277b4",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2333810",
+      "title": "Trump: Kalaallit Nunaat pillugu isumaqatigiissummut sinaakkutissat piareerput"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/samfund/angallannermut-aqutsisoqarfik-mittarfik-aatsaat-imeqarluarpat-ammassavarput/2332543",
+      "layout_type": "2_articles",
+      "display_order": 34001,
+      "row_index": 34,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Angallannermut Aqutsisoqarfik: Mittarfik aatsaat imeqarluarpat ammassavarput\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "c866d36c-bd40-4249-996c-bf5300d4dda7",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2332543",
+      "title": "Angallannermut Aqutsisoqarfik: Mittarfik aatsaat imeqarluarpat ammassavarput"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuussutissarsiutit/trumpip-akitsuusersuinera-royal-greenlandip-usa-mut-tunisisinnaajunnaarneranik-kinguneqassanersoq-oqaatigissallugu-siusippallaarpoq/2333551",
+      "layout_type": "2_articles",
+      "display_order": 35000,
+      "row_index": 35,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "PISORTAANEQ TOKE BINZER",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "- Trumpip akitsuusersuinera Royal Greenlandip USA-mut tunisisinnaajunnaarneranik kinguneqassanersoq oqaatigissallugu siusippallaarpoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "d1c368ad-eb29-410d-8ae5-80c14e4cc38e",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2333551",
+      "title": "- Trumpip akitsuusersuinera Royal Greenlandip USA-mut tunisisinnaajunnaarneranik kinguneqassanersoq oqaatigissallugu siusippallaarpoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/naalakkersuisut-ajornartoornermi-ilitsersuut-saqqummiuppaat-innuttaasut-ulluni-tallimani-imminut-napatissinnaasariaqarput/2329903",
+      "layout_type": "2_articles",
+      "display_order": 35001,
+      "row_index": 35,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Naalakkersuisut ajornartoornermi ilitsersuut",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " saqqummiuppaat: Innuttaasut ulluni tallimani imminut napatissinnaasariaqarput\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "5446c457-fd27-4f64-8b33-bccac89d89e5",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329903",
+      "title": "Naalakkersuisut ajornartoornermi ilitsersuut saqqummiuppaat: Innuttaasut ulluni tallimani imminut napatissinnaasariaqarput"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/mash-ip-timmisartuisa-qulimiguullit-kalaallit-nunaat-qulimiguuleqarfinngortikkaat/2329460",
+      "layout_type": "3_articles",
+      "display_order": 36000,
+      "row_index": 36,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "MASH-ip timmisartuisa qulimiguullit Kalaallit Nunaat qulimiguuleqarfinngortikkaat\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "3996879b-4fcf-48be-ac4f-5157ad9d138a",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329460",
+      "title": "MASH-ip timmisartuisa qulimiguullit Kalaallit Nunaat qulimiguuleqarfinngortikkaat"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/upalungaarsimaneq-pillugu-tusagassiortunik-katersortitsineq-ullunut-tallimanut-piareersarit/2333769",
+      "layout_type": "3_articles",
+      "display_order": 36001,
+      "row_index": 36,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Upalungaarsimaneq pillugu tusagassiortunik katersortitsineq: Ullunut tallimanut piareersarit\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "68277d70-9a03-49c8-9bd7-37849f5c64de",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2333769",
+      "title": "Upalungaarsimaneq pillugu tusagassiortunik katersortitsineq: Ullunut tallimanut piareersarit"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trump-oqalugiassaaq-davosimi-qanittukkut/2333612",
+      "layout_type": "3_articles",
+      "display_order": 36002,
+      "row_index": 36,
+      "article_index_in_row": 2,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trump Davosimi oqalugiartoq:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Kalaallit Nunaat pillugu isumaqaatigiinniarusuttoq- Attartornissamimmi isumaqatigiissut kia illersorusussagamiuk\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "5f753cf2-6903-403d-b60e-071acd29b1a7",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2333612",
+      "title": "Trump Davosimi oqalugiartoq: Kalaallit Nunaat pillugu isumaqaatigiinniarusuttoq- Attartornissamimmi isumaqatigiissut kia illersorusussagamiuk"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/usa-p-aningaasaqarnermut-ministeriata-indiap-kitaani-qeqertat-assersuutigai-kalaallit-nunaat-usa-mut-ilaassasoq-iligisatta-paasisariaqarpaat/2333578",
+      "layout_type": "2_articles",
+      "display_order": 37000,
+      "row_index": 37,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "USA-p aningaasaqarnermut ministeriata Indiap Kitaani qeqertat assersuutigai:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " - Kalaallit Nunaat USA-mut ilaassasoq iligisatta paasisariaqarpaat\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "5b4b2a83-a17f-4ef0-a76d-f4ee0aa374c4",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2333578",
+      "title": "USA-p aningaasaqarnermut ministeriata Indiap Kitaani qeqertat assersuutigai: - Kalaallit Nunaat USA-mut ilaassasoq iligisatta paasisariaqarpaat"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sullivinnik-nakkutilliisoqarfik-nuummi-takuniaareerluni-greenland-airportsimut-peqqusisoq/2328703",
+      "layout_type": "2_articles",
+      "display_order": 37001,
+      "row_index": 37,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Sullivinnik Nakkutilliisoqarfik Nuummi takuniaareerluni Greenland Airportsimut peqqusisoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "6827eefb-846a-4f25-b26f-45c0120d1701",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2328703",
+      "title": "Sullivinnik Nakkutilliisoqarfik Nuummi takuniaareerluni Greenland Airportsimut peqqusisoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/timersorneq/futsalimi-nunanut-allanut-unammisartut-kroatiami-nunat-tamalaat-unammiuaarneranni-peqataasut/2330105",
+      "layout_type": "2_articles",
+      "display_order": 38000,
+      "row_index": 38,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_floating": "UNNIA",
+        "title_parts": [
+          {
+            "text": "Futsalimi nunanut allanut unammisartut Kroatiami nunat tamalaat unammiuaarneranni peqataasut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "39668d7c-dd7b-442e-be39-407b66c43513",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2330105",
+      "title": "Futsalimi nunanut allanut unammisartut Kroatiami nunat tamalaat unammiuaarneranni peqataasut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/samfund/franskit-alpe-jaegerii-nuummi/2333004",
+      "layout_type": "2_articles",
+      "display_order": 38001,
+      "row_index": 38,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_floating": "UNNIA",
+        "title_parts": [
+          {
+            "text": "Franskit alpe-jægerii Nuummi\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "75ddb763-bb15-44ed-b616-d7d8f6b5ed5b",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2333004",
+      "title": "Franskit alpe-jægerii Nuummi"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/politiit-toqusoqarsimaneranik-paasiniaanermi-innuttaasunit-ikioqqusut/2332599",
+      "layout_type": "2_articles",
+      "display_order": 39000,
+      "row_index": 39,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "QAQORTOQ",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "Politiit toqusoqarsimaneranik paasiniaanermi innuttaasunit ikioqqusut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "4c9821f8-a39c-4b87-9d17-14141290cf41",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2332599",
+      "title": "Politiit toqusoqarsimaneranik paasiniaanermi innuttaasunit ikioqqusut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trumpip-nunarput-tigorusullugu-qanoq-iliuuseqarusutsinini-oqaatigiumanngikkaa/2333401",
+      "layout_type": "2_articles",
+      "display_order": 39001,
+      "row_index": 39,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trumpip nunarput tigorusullugu qanoq iliuuseqarusunnini oqaatigiumanngikkaa\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "6b82f6e7-fff4-4d3a-aa5e-b32ee0484f37",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2333401",
+      "title": "Trumpip nunarput tigorusullugu qanoq iliuuseqarusunnini oqaatigiumanngikkaa"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/kristian-jeremiassen-jeff-landrymut-neqeroorummik-tunuartitsineq-pillugu-pakatsivunga/2332972",
+      "layout_type": "2_articles",
+      "display_order": 40000,
+      "row_index": 40,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Kristian Jeremiassen Jeff Landrymut neqeroorummik tunuartitsineq pillugu: ",
+            "color_class": null
+          },
+          {
+            "text": "– Pakatsivunga\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "b63b8fbc-ffcf-4c10-815f-5c06be73e661",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2332972",
+      "title": "Kristian Jeremiassen Jeff Landrymut neqeroorummik tunuartitsineq pillugu: – Pakatsivunga"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/timersorneq/qatanngutigiit-slettemarkikkut-ol-imut-anngupput/2332745",
+      "layout_type": "2_articles",
+      "display_order": 40001,
+      "row_index": 40,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "USA-MUT ERSARISSUMIK OQARIARTUUTEQARUMASUT",
+        "kicker_below_classes": "kicker below quinary color_mobile_quinary",
+        "title_parts": [
+          {
+            "text": "Qatanngutigiit Slettemarkikkut OL-imut anngupput\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "ee7623ea-d53a-4875-b011-aa84a0642b9c",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2332745",
+      "title": "Qatanngutigiit Slettemarkikkut OL-imut anngupput"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/tikilluaqqusinermit-killitsinnartumit-assit-takukkit/2333287",
+      "layout_type": "2_articles",
+      "display_order": 41000,
+      "row_index": 41,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 7,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Tikilluaqqusinermit killitsinnartumit assit takukkit\n",
+            "color_class": null
+          }
+        ],
+        "has_bg_color": true,
+        "has_bg_black": true,
+        "content_classes": "content bg-black color_mobile_bg-black border-bg-black mobile_border-bg-black border_width_14 border_width_mobile_14 hasContentPadding mobile-hasContentPadding hasBorder mobile-hasBorder"
+      },
+      "element_guid": "57f27acd-ff1d-4732-a635-9072ba33c52b",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2333287",
+      "title": "Tikilluaqqusinermit killitsinnartumit assit takukkit"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/vivian-usa-miit-tikilluartinneqartoq/2333212",
+      "layout_type": "2_articles",
+      "display_order": 41001,
+      "row_index": 41,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 5,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Vivian USA-miit tikilluartinneqartoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "ea52cac9-2b85-452d-ae55-034028b23815",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2333212",
+      "title": "Vivian USA-miit tikilluartinneqartoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/nittartakkatigut-pisiniarfeeraq-taxartartut-aallaavigalugit-isumassarsiarineqartoq/2328912",
+      "layout_type": "3_articles",
+      "display_order": 42000,
+      "row_index": 42,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "kicker_floating": "UNNIA",
+        "title_parts": [
+          {
+            "text": "Nittartakkatigut pisiniarfeeraq taxartartut aallaavigalugit isumassarsiarineqartoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "bcf9755c-4b7d-447d-83e9-15515bd55829",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2328912",
+      "title": "Nittartakkatigut pisiniarfeeraq taxartartut aallaavigalugit isumassarsiarineqartoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/ministeriuneq-kalaallit-nunaat-imminiiginnarnavianngilara/2333225",
+      "layout_type": "3_articles",
+      "display_order": 42001,
+      "row_index": 42,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Ministeriuneq: Kalaallit Nunaat imminiiginnarnavianngilara\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "f0f409cf-291c-4e03-8e84-a608273fc5c1",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2333225",
+      "title": "Ministeriuneq: Kalaallit Nunaat imminiiginnarnavianngilara"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/jens-frederik-nielsen-mute-b-egedelu-pissutsit-pillugit-tusagassiortunik-katersortitsiniartut/2333014",
+      "layout_type": "3_articles",
+      "display_order": 42002,
+      "row_index": 42,
+      "article_index_in_row": 2,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Tusagassiortunik katersortitsineq:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Sakkutuulersorluni pissaaneqarniunnissaq ilimananngilaq, sillimasariaqarpugulli\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "48bca3e7-4761-4271-b087-20f222a04fe9",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2333014",
+      "title": "Tusagassiortunik katersortitsineq: Sakkutuulersorluni pissaaneqarniunnissaq ilimananngilaq, sillimasariaqarpugulli"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/partiit-siulittaasuisa-inatsisartuni-ataatsimiinneq-siuartikkusuppaat-kalaallit-nunaanni-pissutsit-oqallisigineqarlutillu-ataatsimoorussamik-siunniussisoqassaaq/2332941",
+      "layout_type": "1_full",
+      "display_order": 43000,
+      "row_index": 43,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Partiit siulittaasuisa Inatsisartuni ataatsimiinneq siuartikkusuppaat:",
+            "color_class": "primary color_mobile_primary t46"
+          },
+          {
+            "text": " Kalaallit Nunaanni pissutsit oqallisigineqarlutillu ataatsimoorussamik siunniussisoqassaaq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "bdfedcfe-3110-451a-ad68-870c5a04649f",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2332941",
+      "title": "Partiit siulittaasuisa Inatsisartuni ataatsimiinneq siuartikkusuppaat: Kalaallit Nunaanni pissutsit oqallisigineqarlutillu ataatsimoorussamik siunniussisoqassaaq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/von-der-leyen-kalaallit-nunaat-isumaqatiginninniutigineqarsinnaanngilaq/2332951",
+      "layout_type": "1_full",
+      "display_order": 44000,
+      "row_index": 44,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Von der Leyen:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Kalaallit Nunaat isumaqatiginninniutigineqar-sinnaanngilaq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "111b11da-8ee9-4a09-8467-caf6282d2bb0",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2332951",
+      "title": "Von der Leyen: Kalaallit Nunaat isumaqatiginninniutigineqar-sinnaanngilaq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuussutissarsiutit/kalaallit-nunaat-trumpip-pillaatitut-akitsuutaanik-eqqugaassanngilaq-aallaqqaammut/2332759",
+      "layout_type": "1_full",
+      "display_order": 45000,
+      "row_index": 45,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Kalaallit Nunaat Trumpip pillaatitut akitsuutaanik eqqugaassanngilaq ",
+            "color_class": "quaternary color_mobile_quaternary"
+          },
+          {
+            "text": "— aallaqqaammut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "7429bc0a-e854-49f0-a5e6-f4d49cb487f1",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2332759",
+      "title": "Kalaallit Nunaat Trumpip pillaatitut akitsuutaanik eqqugaassanngilaq — aallaqqaammut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trumpip-ataatsimeersuarnermi-kalaallit-nunaata-pisiarinissaa-eqqartorniarpaa/2332921",
+      "layout_type": "1_full",
+      "display_order": 46000,
+      "row_index": 46,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trumpip ataatsimeersuarnermi Kalaallit Nunaata pisiarinissaa eqqartorniarpaa\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "74db4acf-65a1-43e3-8a02-55c66b779b5a",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2332921",
+      "title": "Trumpip ataatsimeersuarnermi Kalaallit Nunaata pisiarinissaa eqqartorniarpaa"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sakkutuut-kalaallit-nunaata-illersornissaanut-ukioq-tamaat-sungiusassapput/2332609",
+      "layout_type": "2_articles",
+      "display_order": 47000,
+      "row_index": 47,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Sakkutuut Kalaallit Nunaata illersornissaanut ukioq tamaat sungiusassapput\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "e084d164-6764-479f-a402-0b7484b4ac81",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2332609",
+      "title": "Sakkutuut Kalaallit Nunaata illersornissaanut ukioq tamaat sungiusassapput"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/vivian-nato-mi-ataatsimiinnerup-kingorna-issittumi-isumannaallisaaneq-oqaluuseraarput/2332790",
+      "layout_type": "2_articles",
+      "display_order": 47001,
+      "row_index": 47,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Vivian NATO-mi ataatsimiinnerup kingorna: Issittumi isumannaallisaaneq oqaluuseraarput\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "d3653f3c-377a-4252-8b19-686b93f848b7",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2332790",
+      "title": "Vivian NATO-mi ataatsimiinnerup kingorna: Issittumi isumannaallisaaneq oqaluuseraarput"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/meeqqat-angerlarsimaffiup-avataanut-inissinneqarsimasut-kikkunnit-illersorneqarpat/2327143",
+      "layout_type": "1_full",
+      "display_order": 48000,
+      "row_index": 48,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Meeqqat angerlarsimaffiup avataanut inissinneqarsimasut kikkunnit illersorneqarpat?\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "eebfeabc-fa8d-4551-8be9-c986354073eb",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2327143",
+      "title": "Meeqqat angerlarsimaffiup avataanut inissinneqarsimasut kikkunnit illersorneqarpat?"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/samfund/ilaqutariit-heilmannikkut-kalaallit-nunaata-siunissaa-pillugu-akerliussutsimik-takutitsipput-maanna-qanoq-nukittutiginersugut-takusinnaavarput/2332450",
+      "layout_type": "2_articles",
+      "display_order": 49000,
+      "row_index": 49,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Ilaqutariit Heilmannikkut Kalaallit Nunaata siunissaa pillugu akerliussutsimik takutitsipput:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " - Maanna qanoq nukittutiginersugut takusinnaavarput\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "ad0a7758-a627-4341-9ed1-a430a40903b0",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2332450",
+      "title": "Ilaqutariit Heilmannikkut Kalaallit Nunaata siunissaa pillugu akerliussutsimik takutitsipput: - Maanna qanoq nukittutiginersugut takusinnaavarput"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/kuannersuarnut-suliniuteqartoq-trumpip-aqutsineranut-qanimut-attuumassuteqartumik-sunniuteqarluartumik-suleqateqalersoq/2332528",
+      "layout_type": "2_articles",
+      "display_order": 49001,
+      "row_index": 49,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Kuannersuarnut suliniuteqartoq Trumpip aqutsineranut qanimut attuumassuteqartumik sunniuteqarluartumik suleqateqataalersoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "d6da5690-e07d-4896-bc3d-64bf72904448",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2332528",
+      "title": "Kuannersuarnut suliniuteqartoq Trumpip aqutsineranut qanimut attuumassuteqartumik sunniuteqarluartumik suleqateqataalersoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/senator-murkowski-erseqqissumik-kajumissaarivoq-manna-partiilersornermit-pingaarneruvoq-pineqartoq-annertuallaarpoq/2332174",
+      "layout_type": "1_full",
+      "display_order": 50000,
+      "row_index": 50,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Senator Murkowski erseqqissumik kajumissaarivoq: ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "Manna partiilersornermit pingaarneruvoq – pineqartoq annertuallaarpoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "10b8f4f1-2a57-4825-8a37-d58ead506d03",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2332174",
+      "title": "Senator Murkowski erseqqissumik kajumissaarivoq: Manna partiilersornermit pingaarneruvoq – pineqartoq annertuallaarpoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/amerikamiut-trumpip-kalaallit-nunaat-pillugu-pilersaarutaanut-qularuteqartut-tamanna-uannut-peqqusiileqinarpoq/2332428",
+      "layout_type": "2_articles",
+      "display_order": 51000,
+      "row_index": 51,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Amerikamiut Trumpip Kalaallit Nunaat pillugu pilersaarutaanut qularuteqartut:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " - Tamanna uannut peqqusiileqinarpoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "93cdb565-d781-4b7e-a702-e8ad39557d30",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2332428",
+      "title": "Amerikamiut Trumpip Kalaallit Nunaat pillugu pilersaarutaanut qularuteqartut: - Tamanna uannut peqqusiileqinarpoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/nutaarsiassat-naatsut-timersoqatigiit-kattuffiata-usa-mik-mattussisinnaaneq-isumaliutigigaa/2329507",
+      "layout_type": "2_articles",
+      "display_order": 51001,
+      "row_index": 51,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Nutaarsiassat naatsut: ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "Timersoqatigiit Kattuffiata USA-mik mattussisinnaaneq isumaliutiginngikkaa\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "59f57c27-e05e-4ac5-959d-dcfad2d6c7f4",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329507",
+      "title": "Nutaarsiassat naatsut: Timersoqatigiit Kattuffiata USA-mik mattussisinnaaneq isumaliutiginngikkaa"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/timersorneq/qatanngutigiit-slettemarkikkut-ol-imut-peqataanissaminnut-innersuunneqartut/2332588",
+      "layout_type": "2_articles",
+      "display_order": 52000,
+      "row_index": 52,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Qatanngutigiit Slettemarkikkut OL-imut peqataanissaminnut innersuunneqartut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "bb4bb6f7-0b6d-4b53-ac69-96cb06d5329b",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2332588",
+      "title": "Qatanngutigiit Slettemarkikkut OL-imut peqataanissaminnut innersuunneqartut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/jens-frederik-sioorasaarisoqaqqereersoq-naqisimaneqarnianngilagut/2332475",
+      "layout_type": "2_articles",
+      "display_order": 52001,
+      "row_index": 52,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Jens-Frederik sioorasaarisoqaqqereersoq:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "- Naqisimaneqarnianngilagut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "d9921393-95d0-4dd9-a683-c71895d2ed10",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2332475",
+      "title": "Jens-Frederik sioorasaarisoqaqqereersoq: - Naqisimaneqarnianngilagut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sakkutuut-naalagaat-sakkutuullu-trumpip-sioorasaarinerata-kingorna-kalaallit-nunaannukartut/2332497",
+      "layout_type": "2_articles",
+      "display_order": 53000,
+      "row_index": 53,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Sakkutuut naalagaat sakkutuullu Trumpip sioorasaarinerata kingorna Kalaallit Nunaannukartut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "3711540f-f0c3-44fb-91c1-8a64d3f2ad81",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2332497",
+      "title": "Sakkutuut naalagaat sakkutuullu Trumpip sioorasaarinerata kingorna Kalaallit Nunaannukartut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuussutissarsiutit/kalaallit-nunaat-pillugu-ataatsimiititaliaq-qasigiannguanut-qaaqquneqartoq/2329238",
+      "layout_type": "2_articles",
+      "display_order": 53001,
+      "row_index": 53,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Kalaallit Nunaat pillugu ataatsimiititaliaq Qasigiannguanut qaaqquneqartoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "71ac386a-d5f6-4285-a5fb-00f4268712e5",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329238",
+      "title": "Kalaallit Nunaat pillugu ataatsimiititaliaq Qasigiannguanut qaaqquneqartoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/knqk-jeff-landrymut-qaaqqusissut-taamaatinneqarpoq/2332399",
+      "layout_type": "1_full",
+      "display_order": 54000,
+      "row_index": 54,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "KNQK: Jeff Landrymut qaaqqusissut taamaatinneqarpoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "23e6a430-5a54-4c22-b2c7-98c545ff9356",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2332399",
+      "title": "KNQK: Jeff Landrymut qaaqqusissut taamaatinneqarpoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trumpip-kalaallit-nunaata-tinguarnissaanut-nato-usa-mut-iliuuseqartariaqarpoq/2332368",
+      "layout_type": "2_articles",
+      "display_order": 55000,
+      "row_index": 55,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trumpip Kalaallit Nunaata tinguarnissaanut:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Nato USA-mut iliuuseqartariaqarpoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "3b5a674c-654a-4f15-8dd8-81ecdaf601b3",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2332368",
+      "title": "Trumpip Kalaallit Nunaata tinguarnissaanut: Nato USA-mut iliuuseqartariaqarpoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trump-nuummi-kisimi-sammineqanngilaq-tv-kkut-malinnaaqqissaarpugut/2330943",
+      "layout_type": "2_articles",
+      "display_order": 55001,
+      "row_index": 55,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trump Nuummi kisimi sammineqanngilaq: Tv-kkut malinnaaqqissaarpugut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "3d057928-f5f3-44f4-b60d-a97b99f7a8ee",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2330943",
+      "title": "Trump Nuummi kisimi sammineqanngilaq: Tv-kkut malinnaaqqissaarpugut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuussutissarsiutit/royal-greenland-milliardip-affaanik-aningaasaliiniartoq/2329844",
+      "layout_type": "1_full",
+      "display_order": 56000,
+      "row_index": 56,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Royal Greenland ",
+            "color_class": null
+          },
+          {
+            "text": "milliardip affaanik aningaasaliiniartoq",
+            "color_class": "quaternary color_mobile_quaternary"
+          }
+        ]
+      },
+      "element_guid": "b3e0f04d-7e2e-47c2-94dd-a3e459bb8580",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329844",
+      "title": "Royal Greenland milliardip affaanik aningaasaliiniartoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/assit-takukkit-nuummi-akerliussutsimik-takutitsineq/2332142",
+      "layout_type": "1_full",
+      "display_order": 57000,
+      "row_index": 57,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Assit takukkit: Nuummi akerliussutsimik takutitsineq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "6696dfdc-b1ae-4d27-b598-d99e0fbffbdc",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2332142",
+      "title": "Assit takukkit: Nuummi akerliussutsimik takutitsineq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/nunat-arlallit-sakkutuunik-kalaallit-nunaannut-aallartitsipput/2330469",
+      "layout_type": "2_articles",
+      "display_order": 58000,
+      "row_index": 58,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Nunat arlallit sakkutuunik Kalaallit Nunaannut aallartitsipput\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "1477d8c6-e070-4b42-974e-af0a72347b07",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2330469",
+      "title": "Nunat arlallit sakkutuunik Kalaallit Nunaannut aallartitsipput"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/danmarkip-usa-kalaallit-nunaanni-sakkutooqarnermi-sungiusarnernut-qaaqqugaa/2331758",
+      "layout_type": "2_articles",
+      "display_order": 58001,
+      "row_index": 58,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Danmarkip USA Kalaallit Nunaanni sakkutooqarnermi sungiusarnernut qaaqqugaa\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "525799ed-3c79-4a2f-b981-04e05067cf91",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2331758",
+      "title": "Danmarkip USA Kalaallit Nunaanni sakkutooqarnermi sungiusarnernut qaaqqugaa"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/ajornartorsiutit-annersaat-puigorsimanerparput/2329520",
+      "layout_type": "3_articles",
+      "display_order": 59000,
+      "row_index": 59,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "kicker_below": "NERISASSAT SULIAREQQISSAAKKAT",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "Ajornartorsiutit annersaat puigorsimanerparput?\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "7c6fabd9-157a-4226-b2c5-6a63a06f3af7",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329520",
+      "title": "Ajornartorsiutit annersaat puigorsimanerparput?"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/aasianni-angut-toqutseriarsimasutut-unnerluunneqartoq/2332119",
+      "layout_type": "3_articles",
+      "display_order": 59001,
+      "row_index": 59,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Aasianni angut toqutseriarsimasutut unnerluunneqartoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "679683a2-c265-468a-830a-afd3742336a4",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2332119",
+      "title": "Aasianni angut toqutseriarsimasutut unnerluunneqartoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/samfund/isumaga-ilerasuuteqarani-inupiluusertoq/2328900",
+      "layout_type": "3_articles",
+      "display_order": 59002,
+      "row_index": 59,
+      "article_index_in_row": 2,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "kicker_floating": "ISUMAGA",
+        "title_parts": [
+          {
+            "text": "Ilerasuuteqarani inupiluusertoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "f9531784-b328-4618-991f-4a2cf51313d3",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2328900",
+      "title": "Ilerasuuteqarani inupiluusertoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/assit-takukkit-ataatsimoorneq-ersersinniarlugu-erfalasulertut/2330084",
+      "layout_type": "2_articles",
+      "display_order": 60000,
+      "row_index": 60,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Assit takukkit:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Ataatsimoorneq ersersinniarlugu erfalasulertut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "dc97f16a-ffd0-4340-a806-bb512b8be6e9",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2330084",
+      "title": "Assit takukkit: Ataatsimoorneq ersersinniarlugu erfalasulertut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/eu-mi-aallartitat-kalaallit-nunaat-pillugu-piaartumik-ataatsimiigiaqquneqarput/2331969",
+      "layout_type": "2_articles",
+      "display_order": 60001,
+      "row_index": 60,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "EU-mi aallartitat Kalaallit Nunaat pillugu piaartumik ataatsimiigiaqquneqarput\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "811bc89f-6cd8-4fe5-a5cd-99880988e095",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2331969",
+      "title": "EU-mi aallartitat Kalaallit Nunaat pillugu piaartumik ataatsimiigiaqquneqarput"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/nuummiut-kalaallit-nunaat-sorsuutiginiarlugu-akerliussutsimik-takutitsipput/2331873",
+      "layout_type": "2_articles",
+      "display_order": 61000,
+      "row_index": 61,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Nuummiut Kalaallit Nunaat sorsuutiginiarlugu akerliussutsimik takutitsipput\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "d450fce9-9cea-4511-a066-66d423dd5fe1",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2331873",
+      "title": "Nuummiut Kalaallit Nunaat sorsuutiginiarlugu akerliussutsimik takutitsipput"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sungaartunik-kavaajaqarluni-sukkuaqqanik-usuullu-puuinik-nassarluni-taartumiinneq/2324544",
+      "layout_type": "2_articles",
+      "display_order": 61001,
+      "row_index": 61,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Sungaartunik kavaajaqarluni, sukkuaqqanik usuullu puuinik nassarluni taartumiinneq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "680379c8-dfaf-4d7e-8c50-202e84ade89e",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2324544",
+      "title": "Sungaartunik kavaajaqarluni, sukkuaqqanik usuullu puuinik nassarluni taartumiinneq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/usa-mut-ilaanngunnaveersaaritsi/2329970",
+      "layout_type": "1_full",
+      "display_order": 62000,
+      "row_index": 62,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "kicker_below": "ALASKAMI INUK KALAALLINUT",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "USA-mut ilaanngunnaveersaaritsi\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "753984b6-5b80-453b-8093-396e655b5e06",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329970",
+      "title": "USA-mut ilaanngunnaveersaaritsi"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/timersorneq/siulersorti-uummatigissartoq-sorlaqarfilik/2330925",
+      "layout_type": "1_full",
+      "display_order": 63000,
+      "row_index": 63,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "kicker_below": "INUIT",
+        "kicker_below_classes": "kicker below white color_mobile_white align-center mobile_text_align_align-center",
+        "title_parts": [
+          {
+            "text": "Siulersorti uummatigissartoq, sorlaqarfilik\n",
+            "color_class": null
+          }
+        ],
+        "has_bg_color": true,
+        "content_classes": "content bg-secondary color_mobile_bg-secondary border-bg-secondary mobile_border-bg-secondary border_width_14 border_width_mobile_14 hasContentPadding mobile-hasContentPadding hasBorder mobile-hasBorder"
+      },
+      "element_guid": "8aeb911d-1dd7-4b44-8575-9324a11052f4",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2330925",
+      "title": "Siulersorti uummatigissartoq, sorlaqarfilik"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/amerikamiut-angalaqatigiit-danmarkimut-tikeraarnerminni-kalaallit-nunaat-pillugu-paasisaqartut/2331807",
+      "layout_type": "2_articles",
+      "display_order": 64000,
+      "row_index": 64,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Amerikamiut angalaqatigiit Danmarkimut tikeraarnerminni Kalaallit Nunaat pillugu paasisaqartut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "2c4ebdaf-860c-4fde-b666-9ebabc85823c",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2331807",
+      "title": "Amerikamiut angalaqatigiit Danmarkimut tikeraarnerminni Kalaallit Nunaat pillugu paasisaqartut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/usa-mi-aallartitat-pillugit-immikkut-ilisimasalik-trump-sunnersinnaanngilaat/2331431",
+      "layout_type": "2_articles",
+      "display_order": 64001,
+      "row_index": 64,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "USA-mi aallartitat pillugit immikkut ilisimasalik: Trump sunnersinnaanngilaat\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "3d26b2ca-a952-4222-a946-55511e3e059c",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2331431",
+      "title": "USA-mi aallartitat pillugit immikkut ilisimasalik: Trump sunnersinnaanngilaat"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/jeff-landryp-neqeroorut-akuerisimaneraa-kristian-jeremiassenip-uppernarsarusunngilaa/2331470",
+      "layout_type": "2_articles",
+      "display_order": 65000,
+      "row_index": 65,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Jeff Landryp neqeroorut akuerisimaneraa Kristian Jeremiassenip uppernarsarusunngilaa\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "4f14e3a2-7826-4f5b-adac-46448180d158",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2331470",
+      "title": "Jeff Landryp neqeroorut akuerisimaneraa Kristian Jeremiassenip uppernarsarusunngilaa"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/kulturi/siiva-fleischer-erinnamik-saqqummersitsivoq-usa-p-nunatsinnik-persarinninnera-ernummatigisaqaarput/2330588",
+      "layout_type": "2_articles",
+      "display_order": 65001,
+      "row_index": 65,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Siiva Fleischer erinnamik saqqummersitsivoq:",
+            "color_class": "secondary color_mobile_secondary"
+          },
+          {
+            "text": " – USA-p nunatsinnik persarinninnera ernummatigisaqaarput\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "bc7c03ce-aade-4a9e-acdb-286fed473a72",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2330588",
+      "title": "Siiva Fleischer erinnamik saqqummersitsivoq: – USA-p nunatsinnik persarinninnera ernummatigisaqaarput"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trumpip-kalaallit-nunaannut-tunngatillugu-akitsuusiinissamik-sioorasaaruteqartoq/2331648",
+      "layout_type": "1_full",
+      "display_order": 66000,
+      "row_index": 66,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trump Kalaallit Nunaannut tunngatillugu akitsuusiinissamik sioorasaaruteqartoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "5870e0b9-1064-4d10-805c-ecc717c1aa84",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2331648",
+      "title": "Trump Kalaallit Nunaannut tunngatillugu akitsuusiinissamik sioorasaaruteqartoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/qallunaat-timmisartui-sorsuutit-kalaallit-nunaanni-sungiusartut/2331776",
+      "layout_type": "2_articles",
+      "display_order": 67000,
+      "row_index": 67,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Qallunaat timmisartui sorsuutit Kalaallit Nunaanni sungiusartut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "449e2857-9052-49b3-8df4-5384c0c8d7ea",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2331776",
+      "title": "Qallunaat timmisartui sorsuutit Kalaallit Nunaanni sungiusartut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/samfund/erik-jensen-kongressimi-ilaasortanik-ataatsimeeqateqareerlunga-eqqissiallappunga/2331591",
+      "layout_type": "2_articles",
+      "display_order": 67001,
+      "row_index": 67,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Erik Jensen: ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "Kongressimi ilaasortanik ataatsimeeqateqareerlunga eqqissiallappunga\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "ffe8a19f-535a-435d-87c4-1dfb7715630d",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2331591",
+      "title": "Erik Jensen: Kongressimi ilaasortanik ataatsimeeqateqareerlunga eqqissiallappunga"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/amerikamiut-tikeraarnerat-pillugu-tusagassiortunik-katersortitsineq/2331451",
+      "layout_type": "2_articles",
+      "display_order": 68000,
+      "row_index": 68,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "NUTARTERNEQARPOQ",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "Amerikamiut tikeraarnerat pillugu tusagassiortunik katersortitsineq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "f8a4be03-5ad4-458a-a8b5-5d05ca7d0659",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2331451",
+      "title": "Amerikamiut tikeraarnerat pillugu tusagassiortunik katersortitsineq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/akerliussutsimik-takutitsiniartut-amerliartortut/2331406",
+      "layout_type": "2_articles",
+      "display_order": 68001,
+      "row_index": 68,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Akerliussutsimik takutitsiniartut amerliartortut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "b2d94e42-c755-4802-b486-8b486a103798",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2331406",
+      "title": "Akerliussutsimik takutitsiniartut amerliartortut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trumpip-immikkut-aallartitaa-kalaallit-nunaannut-marsimi-tikeraassaaq-isumaqatigiissuteqartoqartariaqartoq-isumaqarpoq/2331366",
+      "layout_type": "2_articles",
+      "display_order": 69000,
+      "row_index": 69,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trumpip immikkut aallartitaa Kalaallit Nunaannut marsimi tikeraassaaq",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " – isumaqatigiissuteqartoqar-tariaqartoq isumaqarpoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "d896632b-b99e-4d0e-8ade-868726dc0dca",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2331366",
+      "title": "Trumpip immikkut aallartitaa Kalaallit Nunaannut marsimi tikeraassaaq – isumaqatigiissuteqartoqar-tariaqartoq isumaqarpoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuussutissarsiutit/trumpip-niuerneq-aallarteqqikkaa/2328922",
+      "layout_type": "2_articles",
+      "display_order": 69001,
+      "row_index": 69,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trumpip niuerneq aallarteqqikkaa\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "904edd13-ddfd-4c51-806c-2c9ed84aab28",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2328922",
+      "title": "Trumpip niuerneq aallarteqqikkaa"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/teknikkikkut-ajornartorsiut-tunumi-kinguaattoortitsisoq/2331335",
+      "layout_type": "3_articles",
+      "display_order": 70000,
+      "row_index": 70,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Teknikkikkut ajornartorsiut Tunumi kinguaattoortitsisoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "c2bb28b8-003e-4481-9099-948dbb8b14ee",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2331335",
+      "title": "Teknikkikkut ajornartorsiut Tunumi kinguaattoortitsisoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/morten-piareersalerpoq-pisoqariataarsinnaavormi-ilaa/2330244",
+      "layout_type": "3_articles",
+      "display_order": 70001,
+      "row_index": 70,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Morten piareersalerpoq: Pisoqariataarsinnaavormi ilaa?\n",
+            "color_class": null
+          }
+        ],
+        "has_bg_color": true,
+        "has_bg_black": true,
+        "content_classes": "content bg-black color_mobile_bg-black border-bg-black mobile_border-bg-black border_width_14 border_width_mobile_14 hasContentPadding mobile-hasContentPadding hasBorder mobile-hasBorder"
+      },
+      "element_guid": "6a2357d3-1646-419e-926b-3d72ceca48c4",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2330244",
+      "title": "Morten piareersalerpoq: Pisoqariataarsinnaavormi ilaa?"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trump-ukiunik-139-nik-kingusinaarluni-nunatsinnut-pivoq/2328935",
+      "layout_type": "3_articles",
+      "display_order": 70002,
+      "row_index": 70,
+      "article_index_in_row": 2,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trump ukiunik 139-nik kingusinaarluni Nunatsinnut pivoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "f09ff90f-e474-4c01-b89f-b8cd68cc91ab",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2328935",
+      "title": "Trump ukiunik 139-nik kingusinaarluni Nunatsinnut pivoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/maniitsumi-inuusuttoq-tillinniaq-tigusarineqartoq/2331285",
+      "layout_type": "2_articles",
+      "display_order": 71000,
+      "row_index": 71,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "ULLORMUT NALUNAARUSIAQ",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "Maniitsumi inuusuttoq tillinniaq tigusarineqartoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "dc6cfc09-a8d3-4fd8-a27a-94bf162878a7",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2331285",
+      "title": "Maniitsumi inuusuttoq tillinniaq tigusarineqartoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/vivian-motzfeldtip-kalaallit-toqqissisimannginnerat-pillugu-senatorit-oqaluttuuppai/2331154",
+      "layout_type": "2_articles",
+      "display_order": 71001,
+      "row_index": 71,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Vivian Motzfeldtip Kalaallit toqqissisimannginnerat pillugu senatorit oqaluttuuppai\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "b8d8e9e5-2d62-4921-ba77-2c1f78bf3a6b",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2331154",
+      "title": "Vivian Motzfeldtip Kalaallit toqqissisimannginnerat pillugu senatorit oqaluttuuppai"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/tuukkaq-suli-ajoquteqartoq-utaqqiisaarutaagallartumik-timmisartoq-atorneqartussaq-tallimanngornermi-tikisinneqarpoq/2331381",
+      "layout_type": "3_articles",
+      "display_order": 72000,
+      "row_index": 72,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Tuukkaq suli ajoquteqartoq – utaqqiisaarutaagallartumik timmisartoq atorneqartussaq tallimanngornermi tikisinneqarpoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "ec388ef5-9f9c-4012-92a0-faf1d7ff128a",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2331381",
+      "title": "Tuukkaq suli ajoquteqartoq – utaqqiisaarutaagallartumik timmisartoq atorneqartussaq tallimanngornermi tikisinneqarpoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuussutissarsiutit/tusagassiortut-nunatta-avataaneersut-nutaanik-suliassaqartitsilersut/2329418",
+      "layout_type": "3_articles",
+      "display_order": 72001,
+      "row_index": 72,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Tusagassiortut nunatta avataaneersut nutaanik suliassaqartitsilersut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "1259d9b8-1280-4f3c-848f-f7eb8fc64db1",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329418",
+      "title": "Tusagassiortut nunatta avataaneersut nutaanik suliassaqartitsilersut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trumpip-oqaaseqartartua-suleqatigiissitap-kalaallit-nunaata-tigunissaa-oqaluuserissavaat/2331116",
+      "layout_type": "3_articles",
+      "display_order": 72002,
+      "row_index": 72,
+      "article_index_in_row": 2,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trumpip oqaaseqartartua: Suleqatigiissitap Kalaallit Nunaata tigunissaa oqaluuserissavaat\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "022df2ab-2fb4-487c-84b2-fa42aecff114",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2331116",
+      "title": "Trumpip oqaaseqartartua: Suleqatigiissitap Kalaallit Nunaata tigunissaa oqaluuserissavaat"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/namminersorlutik-oqartussat-erfalasulertarnermi-malittarisassat-oqartussaaffigileraat/2330837",
+      "layout_type": "1_full",
+      "display_order": 73000,
+      "row_index": 73,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Namminersorlutik Oqartussat erfalasulertarnermi malittarisassat oqartussaaffigileraat\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "8634c53e-624f-40fc-9654-c2d228cb62c8",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2330837",
+      "title": "Namminersorlutik Oqartussat erfalasulertarnermi malittarisassat oqartussaaffigileraat"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/oqaluttuarisaaneq-allamik-oqaasiliinnarlugu-uteqqinneqassasoq-ernumassutigaara/2328659",
+      "layout_type": "2_articles",
+      "display_order": 74000,
+      "row_index": 74,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_floating": "ASASARA TRUMP...",
+        "title_parts": [
+          {
+            "text": "– Oqaluttuarisaaneq “allamik oqaasiliinnarlugu” uteqqinneqassasoq ernumassutigaara\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "9537e227-c06b-416a-b37c-b9efe22fcfba",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2328659",
+      "title": "– Oqaluttuarisaaneq “allamik oqaasiliinnarlugu” uteqqinneqassasoq ernumassutigaara"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/usa-mut-akerliussutsimik-takutitsisoqassasoq/2329865",
+      "layout_type": "2_articles",
+      "display_order": 74001,
+      "row_index": 74,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "USA-mut akerliussutsimik takutitsisoqassasoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "918a16da-5c22-41c4-88d5-07dc51e3f5e2",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329865",
+      "title": "USA-mut akerliussutsimik takutitsisoqassasoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/timmisartoq-hercules-pingasunngornermi-nuummut-mittoq/2330848",
+      "layout_type": "1_full",
+      "display_order": 75000,
+      "row_index": 75,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Timmisartoq Hercules Nuummut pingasunngornermi mittoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "99c29cc8-cf01-4124-9046-c418fcce8dea",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2330848",
+      "title": "Timmisartoq Hercules Nuummut pingasunngornermi mittoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/jens-frederik-nielsen-kobenhavnimi-ukiortaami-ilasseqatigiinnermi-oqalugiartoq/2330907",
+      "layout_type": "2_articles",
+      "display_order": 76000,
+      "row_index": 76,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Jens-Frederik Nielsen Københavnimi ukiortaami ilasseqatigiinnermi oqalugiartoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "ae4b41ca-8ac7-4f7b-988d-0621305f18eb",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2330907",
+      "title": "Jens-Frederik Nielsen Københavnimi ukiortaami ilasseqatigiinnermi oqalugiartoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/vivian-motzfeldt-ataatsimiinnerip-kingorna-usa-p-nunap-killeqarfii-ataqqissavai/2330403",
+      "layout_type": "2_articles",
+      "display_order": 76001,
+      "row_index": 76,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Vivian Motzfeldt ataatsimiinnerup kingorna: ",
+            "color_class": null
+          },
+          {
+            "text": "USA-p nunap killeqarfii ataqqissagai ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "naqissuserparput\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "b9c48074-b4d5-43bd-a572-809764645f56",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2330403",
+      "title": "Vivian Motzfeldt ataatsimiinnerup kingorna: USA-p nunap killeqarfii ataqqissagai naqissuserparput"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/illu-qisummik-sanaaq-naneruutip-uppinnerata-kingorna-ikuallattoq/2330685",
+      "layout_type": "1_full",
+      "display_order": 77000,
+      "row_index": 77,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Illu qisummik sanaaq naneruutip uppinnerata kingorna ikuallattoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "f41a1643-1a47-4943-8a9d-14b1928f53e1",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2330685",
+      "title": "Illu qisummik sanaaq naneruutip uppinnerata kingorna ikuallattoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/jens-frederik-nielsenip-vivian-motzfeldt-qujaffigaa-suleqatigiissitaq-alloriarneruvoq-pingaarutilik/2330734",
+      "layout_type": "3_articles",
+      "display_order": 78000,
+      "row_index": 78,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Jens-Frederik Nielsenip Vivian Motzfeldt qujaffigaa:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Suleqatigiissitaq alloriarneruvoq pingaarutilik\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "ae0a7b50-99b9-4fcf-8598-f1da68233f1d",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2330734",
+      "title": "Jens-Frederik Nielsenip Vivian Motzfeldt qujaffigaa: Suleqatigiissitaq alloriarneruvoq pingaarutilik"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/oqaloqatigiinnerup-aallartinnera-neriulluarnartoq-isumakuluutit-aaqqiivigineqarsinnaanersut-takussavarput/2330704",
+      "layout_type": "3_articles",
+      "display_order": 78001,
+      "row_index": 78,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Oqaloqatigiinnerup aallartinnera neriulluarnartoq — isumakuluutit aaqqiivigineqarsinnaanersut takussavarput\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "8d820fb6-7aee-4a84-9081-914219671dfe",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2330704",
+      "title": "Oqaloqatigiinnerup aallartinnera neriulluarnartoq — isumakuluutit aaqqiivigineqarsinnaanersut takussavarput"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/assit-takukkit-ataatsimiinnerup-oqaluttuarisaanermut-ilannguttup-tunuani-pisut-takukkit/2330598",
+      "layout_type": "3_articles",
+      "display_order": 78002,
+      "row_index": 78,
+      "article_index_in_row": 2,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "kicker_below": "WASHINGTONIMI ATAATSIMIINNEQ",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "Assit takukkit: Ataatsimiinnerup oqaluttuarisaanermut ilannguttup tunuani pisut takukkit\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "e83d58a1-9b4a-42c9-882e-686c68bfed1b",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2330598",
+      "title": "Assit takukkit: Ataatsimiinnerup oqaluttuarisaanermut ilannguttup tunuani pisut takukkit"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/usa-p-tiguaaniarluni-pilersaarutaanut-akerliussutsimik-takutitsisoqalerpoq/2330532",
+      "layout_type": "2_articles",
+      "display_order": 79000,
+      "row_index": 79,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "USA-p tiguaaniarluni pilersaarutaanut ",
+            "color_class": null
+          },
+          {
+            "text": "akerliussutsimik takutitsisoqalerpoq",
+            "color_class": "tertiary color_mobile_tertiary"
+          }
+        ]
+      },
+      "element_guid": "6a85386e-ba8f-4b56-9bf8-5877e2faaeb0",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2330532",
+      "title": "USA-p tiguaaniarluni pilersaarutaanut akerliussutsimik takutitsisoqalerpoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/kalaaleqatikka-qaa-aamma-ilissi-qaqqassinni-erfalasuliiartoritsi/2330297",
+      "layout_type": "2_articles",
+      "display_order": 79001,
+      "row_index": 79,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "JUKKU KIELSEN",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "– Kalaaleqatikka qaa aamma ilissi qaqqassinni erfalasuliiartoritsi!\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "3c87a79b-08a2-41b2-a605-75e3a0482aaa",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2330297",
+      "title": "– Kalaaleqatikka qaa aamma ilissi qaqqassinni erfalasuliiartoritsi!"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/angutit-marluk-toqutseriarsimasutut-unnerluutigineqartut/2329856",
+      "layout_type": "1_full",
+      "display_order": 80000,
+      "row_index": 80,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Angutit marluk toqutseriarsimasutut unnerluutigineqartut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "dd69d083-4d89-458c-800d-27b90e982811",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329856",
+      "title": "Angutit marluk toqutseriarsimasutut unnerluutigineqartut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/atlantikoq-qulaallugu-sisamanngornermi-timmisartuussinissaq-taamaatinneqartoq/2330579",
+      "layout_type": "2_articles",
+      "display_order": 81000,
+      "row_index": 81,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Atlantikoq qulaallugu sisamanngornermi timmisartuussinissaq taamaatinneqartoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "a8d12994-5ebf-44dc-a42a-ab397a32b70d",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2330579",
+      "title": "Atlantikoq qulaallugu sisamanngornermi timmisartuussinissaq taamaatinneqartoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/vivian-motzfeldt-prins-joachimip-washington-dc-mi-tikilluaqqugaa/2329823",
+      "layout_type": "2_articles",
+      "display_order": 81001,
+      "row_index": 81,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Vivian Motzfeldt Prins Joachimip Washington D.C-mi tikilluaqqugaa\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "cd03b3ae-98c0-4758-8e7d-d2b0d4189f08",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329823",
+      "title": "Vivian Motzfeldt Prins Joachimip Washington D.C-mi tikilluaqqugaa"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trumpip-kalaallit-nunaat-suli-kissaatigaa/2330451",
+      "layout_type": "2_articles",
+      "display_order": 82000,
+      "row_index": 82,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trumpip Kalaallit Nunaat suli kissaatigaa\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "3ad42709-3d5c-4eb1-8a7f-08ad5dd3640d",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2330451",
+      "title": "Trumpip Kalaallit Nunaat suli kissaatigaa"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trump-jens-frederiup-oqariartuuteqareernerata-kingorna-annertuumik-ajornartorsiutigissavaa/2329620",
+      "layout_type": "2_articles",
+      "display_order": 82001,
+      "row_index": 82,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trump Jens-Frederiup oqariartuuteqareernerata kingorna:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Annertuumik ajornartorsiutigissavaa\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "e7c009fb-5e4a-4cfd-8aeb-c64ee955b3b3",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329620",
+      "title": "Trump Jens-Frederiup oqariartuuteqareernerata kingorna: Annertuumik ajornartorsiutigissavaa"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/usa-mi-ataatsimiinnerup-kingorna-tusagassiortunik-katersortitsineq/2330309",
+      "layout_type": "2_articles",
+      "display_order": 83000,
+      "row_index": 83,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Motzfeldt Løkkelu ataatsimiinnerup kingorna: ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "Suli USA-lu isumaqatigiinngilagut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "147b23ea-12ac-4f46-b48e-f135e31cb71c",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2330309",
+      "title": "Motzfeldt Løkkelu ataatsimiinnerup kingorna: Suli USA-lu isumaqatigiinngilagut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/mute-b-egede-nuummi-tusagassiortunik-katersortitsivoq/2330392",
+      "layout_type": "2_articles",
+      "display_order": 83001,
+      "row_index": 83,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Múte B. Egede: ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "Oqaloqatigiinneq aallartipparput\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "a83f7211-ec1e-4839-8d59-45f9ec346b65",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2330392",
+      "title": "Múte B. Egede: Oqaloqatigiinneq aallartipparput"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/samfund/troels-lund-usa-p-kalaallit-nunaannut-saassussinissaa-takorlooruminaappoq/2330272",
+      "layout_type": "1_full",
+      "display_order": 84000,
+      "row_index": 84,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Troels Lund: USA-p Kalaallit Nunaannut saassussinissaa takorlooruminaappoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "cef27590-7ef9-48a9-ae88-5b5d0d5277fe",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2330272",
+      "title": "Troels Lund: USA-p Kalaallit Nunaannut saassussinissaa takorlooruminaappoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/ilisimatusartoq-ataatsimeereernerup-kingorna-tusagassiortunik-katersortitsinermi-uku-eqqumaffigikkit/2330155",
+      "layout_type": "3_articles",
+      "display_order": 85000,
+      "row_index": 85,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Ilisimatusartoq:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Ataatsimeereernerup kingorna tusagassiortunik katersortitsinermi uku eqqumaffigikkit\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "5c50eda1-7f23-453b-a526-9d01ca73cf7a",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2330155",
+      "title": "Ilisimatusartoq: Ataatsimeereernerup kingorna tusagassiortunik katersortitsinermi uku eqqumaffigikkit"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/ilisimatooq-kalaallit-nunaata-danmark-toqqarneratigut-usa-mut-nalunaarut-ersarilluinnarpoq/2329563",
+      "layout_type": "3_articles",
+      "display_order": 85001,
+      "row_index": 85,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Ilisimatooq: Kalaallit Nunaata Danmark toqqarneratigut USA-mut nalunaarut ersarilluinnarpoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "048055ef-7a96-4958-baf1-48cfed621b46",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329563",
+      "title": "Ilisimatooq: Kalaallit Nunaata Danmark toqqarneratigut USA-mut nalunaarut ersarilluinnarpoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/ataatsimiittoqaqqissappat-iluatsissimassaaq/2330017",
+      "layout_type": "3_articles",
+      "display_order": 85002,
+      "row_index": 85,
+      "article_index_in_row": 2,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "kicker_below": "AAQQISSUISUUNEQ USA-MIK ATAATSIMEEQATEQARNEQ PILLUGU",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "– Ataatsimiittoqaqqissappat iluatsissimassaaq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "92eec6bb-8cbf-4f7e-83c0-60820265be3b",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2330017",
+      "title": "– Ataatsimiittoqaqqissappat iluatsissimassaaq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/jukkup-politikkikkut-pisunik-sunnertisimanermini-erfalasorput-ukkusissanut-ullumi-amussamaarpaa/2330063",
+      "layout_type": "1_full",
+      "display_order": 86000,
+      "row_index": 86,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Jukkup politikkikkut pisunik sunnertisimanermini Erfalasorput Ukkusissanut ullumi amussamaarpaa\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "c78fe2ed-c5b2-48f5-b000-ef884d043829",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2330063",
+      "title": "Jukkup politikkikkut pisunik sunnertisimanermini Erfalasorput Ukkusissanut ullumi amussamaarpaa"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trump-nato-usa-p-kalaallit-nunaannik-tiguaanissaanut-aqqutissiuussisariaqartoq/2329928",
+      "layout_type": "2_articles",
+      "display_order": 87000,
+      "row_index": 87,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trump: Nato USA-p Kalaallit Nunaannik tiguaanissaanut aqqutissiuussisariaqartoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "5aac1221-5ea1-43f5-9ed7-c7d751a808a3",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329928",
+      "title": "Trump: Nato USA-p Kalaallit Nunaannik tiguaanissaanut aqqutissiuussisariaqartoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/tusagassiorfik-illersornissaqarfiup-sakkutuunik-amerlanerusunik-nunatsinnukartitsisoq/2329834",
+      "layout_type": "2_articles",
+      "display_order": 87001,
+      "row_index": 87,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Naalakkersuisut uppernarsarpaat:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Illersornissaqarfik sakkutuunik amerlanerusunik Kalaallit Nunaannukartitsissaaq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "e25cc2b3-83b2-48ce-97f5-4aa4979ea219",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329834",
+      "title": "Naalakkersuisut uppernarsarpaat: Illersornissaqarfik sakkutuunik amerlanerusunik Kalaallit Nunaannukartitsissaaq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/nammineq-aalajangiisinnaatitaanerput-navianartorsiortissanngilarput/2329763",
+      "layout_type": "1_full",
+      "display_order": 88000,
+      "row_index": 88,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "kicker_below": "JENS-FREDERIK NIELSEN",
+        "kicker_below_classes": "kicker below",
+        "title_parts": [
+          {
+            "text": "Nammineq aalajangiisinnaatitaanerput navianartorsiortissanngi-",
+            "color_class": null
+          },
+          {
+            "text": "larput\n",
+            "color_class": null
+          }
+        ],
+        "has_bg_color": true,
+        "has_bg_black": true,
+        "content_classes": "content bg-black color_mobile_bg-black border-bg-black mobile_border-bg-black border_width_14 border_width_mobile_14 hasContentPadding mobile-hasContentPadding hasBorder mobile-hasBorder"
+      },
+      "element_guid": "f9b88fb9-b1b5-4e1d-b68d-5e2797a318ed",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329763",
+      "title": "Nammineq aalajangiisinnaatitaanerput navianartorsiortissanngi-larput"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/frankrigip-nuummi-konsulateqarfimmik-ammaanissani-ullulerpaa/2329673",
+      "layout_type": "3_articles",
+      "display_order": 89000,
+      "row_index": 89,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Frankrigip Nuummi konsulateqarfimmik ammaanissani ullulerpaa\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "e17ec34f-7947-42cc-879e-23fde385b940",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329673",
+      "title": "Frankrigip Nuummi konsulateqarfimmik ammaanissani ullulerpaa"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/amerikamiut-politikerii-kalaallit-nunaannut-tunngatillugu-iliuuseqartut/2329186",
+      "layout_type": "3_articles",
+      "display_order": 89001,
+      "row_index": 89,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Amerikamiut politikerii Kalaallit Nunaannut tunngatillugu iliuuseqartut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "720042eb-5277-4768-88d8-6076e697d412",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329186",
+      "title": "Amerikamiut politikerii Kalaallit Nunaannut tunngatillugu iliuuseqartut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuussutissarsiutit/sulisitsisut-pisortaat-nunat-tamalaat-akornanni-politikkikkut-nalorninartut-suliffeqarfinnut-aningaasaliisarnerullu-silarsuaani-sunniuteqartarput/2328970",
+      "layout_type": "3_articles",
+      "display_order": 89002,
+      "row_index": 89,
+      "article_index_in_row": 2,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Sulisitsisut pisortaat: ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "Nunat tamalaat akornanni politikkikkut nalorninartut suliffeqarfinnut aningaasaliisarnerullu silarsuaani sunniuteqartarput\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "6e972391-9e0c-49d7-be07-19880a68d65a",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2328970",
+      "title": "Sulisitsisut pisortaat: Nunat tamalaat akornanni politikkikkut nalorninartut suliffeqarfinnut aningaasaliisarnerullu silarsuaani sunniuteqartarput"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trumpip-issittumut-kommissaeria-kalaallit-nunaanni-iliuuseqartoqangajalerpoq/2329590",
+      "layout_type": "2_articles",
+      "display_order": 90000,
+      "row_index": 90,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trumpip Issittumut kommissæria: ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "Kalaallit Nunaanni iliuuseqartoqangajalerpoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "c3d17f15-c97f-4c9d-8ed5-89993d0806bf",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329590",
+      "title": "Trumpip Issittumut kommissæria: Kalaallit Nunaanni iliuuseqartoqangajalerpoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/tassanngaannartumik-eqqissiviilliorneq-pissutigalugu-amerlanerusut-pisariaqartinneqalerput/2328684",
+      "layout_type": "2_articles",
+      "display_order": 90001,
+      "row_index": 90,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_floating": "ASASARA TRUMP...",
+        "title_parts": [
+          {
+            "text": "– Naammatsiffeqanngitsumik peqarusunneq qamuuna iluarusunnginnermik aallaaveqarpoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "abbaa5fa-3cb9-4416-86f2-0ab07aa49adb",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2328684",
+      "title": "– Naammatsiffeqanngitsumik peqarusunneq qamuuna iluarusunnginnermik aallaaveqarpoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/naalakkersuisut-naqissusiipput-kalaallit-nunaat-danmarkip-kunngeqarfiata-ilagaa-illersorneqarnissarlu-nato-aqqutigalugu-pissasoq-kissaatigaat/2328859",
+      "layout_type": "2_articles",
+      "display_order": 91000,
+      "row_index": 91,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Naalakkersuisut naqissusiipput: Kalaallit Nunaat Danmarkip kunngeqarfiata ilagaa – illersorneqarnissarlu NATO aqqutigalugu pissasoq kissaatigaat\n",
+            "color_class": null
+          }
+        ],
+        "has_bg_color": true,
+        "has_bg_black": true,
+        "content_classes": "content bg-black color_mobile_bg-black border-bg-black mobile_border-bg-black border_width_14 border_width_mobile_14 hasContentPadding mobile-hasContentPadding hasBorder mobile-hasBorder"
+      },
+      "element_guid": "abf7c718-56b1-4550-80c8-9da9216d5996",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2328859",
+      "title": "Naalakkersuisut naqissusiipput: Kalaallit Nunaat Danmarkip kunngeqarfiata ilagaa – illersorneqarnissarlu NATO aqqutigalugu pissasoq kissaatigaat"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sikuaq-trawlimi-pisortaq-carl-christensen-islandimi-savalimmiunilu-pinngitsooratik-illaruaatigaatigut/2326694",
+      "layout_type": "2_articles",
+      "display_order": 91001,
+      "row_index": 91,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Sikuaq Trawlimi pisortaq Carl Christensen: ",
+            "color_class": "quaternary color_mobile_quaternary"
+          },
+          {
+            "text": "– Islandimi Savalimmiunilu pinngitsooratik illaruaatigaatigut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "2001c124-70e5-422d-b0ab-5db83c654cd0",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2326694",
+      "title": "Sikuaq Trawlimi pisortaq Carl Christensen: – Islandimi Savalimmiunilu pinngitsooratik illaruaatigaatigut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/jens-frederik-nielsen-aamma-mette-f-tusagassiortunik-katersortitsinissamut-aggersaasut/2329276",
+      "layout_type": "3_articles",
+      "display_order": 92000,
+      "row_index": 92,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Tusagassiortunik katersortitsineq:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " – Kalaallit Nunaat ullumikkutut ittoq toqqarparput, Jens-Frederik oqarpoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "3e26876c-9927-4bb0-bd3e-0f85f9105bc9",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329276",
+      "title": "Tusagassiortunik katersortitsineq: – Kalaallit Nunaat ullumikkutut ittoq toqqarparput, Jens-Frederik oqarpoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/folketingimi-ilaasortat-kalaallit-nunaat-savalimmiullu-videokkut-isumannaatsumik-ataatsimeeqatigisinnaagaat/2329451",
+      "layout_type": "3_articles",
+      "display_order": 92001,
+      "row_index": 92,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Folketingimi ilaasortat Kalaallit Nunaat Savalimmiullu videokkut isumannaatsumik ataatsimeeqatigisinnaagaat\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "4270e410-be2f-4972-a567-44a42f03bcec",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329451",
+      "title": "Folketingimi ilaasortat Kalaallit Nunaat Savalimmiullu videokkut isumannaatsumik ataatsimeeqatigisinnaagaat"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/aaja-chemnitz-upn-imi-ataatsimiinnernermi-upalungaarsimanermut-pilersaarut-pisariaqarpoq/2329353",
+      "layout_type": "3_articles",
+      "display_order": 92002,
+      "row_index": 92,
+      "article_index_in_row": 2,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Aaja Chemnitz UPN-imi ataatsimeereernermi: Upalungaarsimanermut pilersaarut pisariaqarpoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "bceb18c3-d049-4bc3-9611-01e0b0c02d31",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329353",
+      "title": "Aaja Chemnitz UPN-imi ataatsimeereernermi: Upalungaarsimanermut pilersaarut pisariaqarpoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/mads-pedersenip-akisussaaffii-nivi-olsenip-tiguai/2329291",
+      "layout_type": "2_articles",
+      "display_order": 93000,
+      "row_index": 93,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Mads Pedersenip akisussaaffii Nivi Olsenip tiguai\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "527b8f1f-aea1-43df-a463-236bf7f7f29c",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329291",
+      "title": "Mads Pedersenip akisussaaffii Nivi Olsenip tiguai"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/tusagassiorfik-jd-vance-danmarkip-kalaallit-nunaatalu-ataatsimeeqatigineranni-ilaassasoq/2329176",
+      "layout_type": "2_articles",
+      "display_order": 93001,
+      "row_index": 93,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Tusagassiorfik: ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "J.D. Vance Danmarkip Kalaallit Nunaatalu ataatsimeeqatigineranni ilaassaaq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "2379d3ea-6763-4292-a0e2-2b12e7cdf9a5",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329176",
+      "title": "Tusagassiorfik: J.D. Vance Danmarkip Kalaallit Nunaatalu ataatsimeeqatigineranni ilaassaaq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/ataatsimiititaliami-siulittaasoq-isumalluartoq-usa-mik-ataatsimeeqateqarneq-oqaloqatigiilluartoqarnerulernissaanik-aallartitsissaaq/2329229",
+      "layout_type": "1_full",
+      "display_order": 94000,
+      "row_index": 94,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Ataatsimiititaliami siulittaasoq isumalluartoq:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " USA-mik ataatsimeeqateqarneq oqaloqatigiilluartoqarnerulernissaanik aallartitsissaaq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "ebee6b26-f9d1-4826-9373-ca29105c63c7",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329229",
+      "title": "Ataatsimiititaliami siulittaasoq isumalluartoq: USA-mik ataatsimeeqateqarneq oqaloqatigiilluartoqarnerulernissaanik aallartitsissaaq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/nuummi-isumannaallisaanermi-amigaateqarneq-kinguaattoortitseqqittoq/2326455",
+      "layout_type": "2_articles",
+      "display_order": 95000,
+      "row_index": 95,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Nuummi isumannaallisaanermi amigaateqarneq kinguaattoortitseqqittoq\n",
+            "color_class": null
+          }
+        ],
+        "has_bg_color": true,
+        "has_bg_black": true,
+        "content_classes": "content bg-black color_mobile_bg-black border-bg-black mobile_border-bg-black border_width_14 border_width_mobile_14 hasContentPadding mobile-hasContentPadding hasBorder mobile-hasBorder"
+      },
+      "element_guid": "75303209-5678-47cc-9378-595d3ca2e9c2",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2326455",
+      "title": "Nuummi isumannaallisaanermi amigaateqarneq kinguaattoortitseqqittoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/kulturi/usa-p-kalaallit-nunaannut-immikkut-aallartitaa-avannaata-qimussersuanut-qaaqquneqartoq-tamanna-naleqqutinngilluinnartoq-knqk-mit-isumaqarput/2329149",
+      "layout_type": "2_articles",
+      "display_order": 95001,
+      "row_index": 95,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "SIULERSUISUT PAASINIAANIARTUT",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "USA-p Kalaallit Nunaannut immikkut aallartitaa Avannaata Qimussersuanut qaaqquneqartoq – tamanna naleqqutinngilluinnartoq, KNQK-mit isumaqarput\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "1932f0bc-faed-4f86-94e5-c7b504697286",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329149",
+      "title": "USA-p Kalaallit Nunaannut immikkut aallartitaa Avannaata Qimussersuanut qaaqquneqartoq – tamanna naleqqutinngilluinnartoq, KNQK-mit isumaqarput"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/praesidentip-illorsuaniit-kalaallit-nunaata-nunap-assinga-siammarterneqartoq/2329137",
+      "layout_type": "1_full",
+      "display_order": 96000,
+      "row_index": 96,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Præsidentip illorsuaniit Kalaallit Nunaata nunap assinga siammarterneqartoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "3b8f0873-237f-46f7-840b-655fd367e75d",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329137",
+      "title": "Præsidentip illorsuaniit Kalaallit Nunaata nunap assinga siammarterneqartoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/pinngortitaleriffik-arferit-nipiliorneq-qimarratigineq-ajorpaat/2328156",
+      "layout_type": "1_full",
+      "display_order": 97000,
+      "row_index": 97,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Pinngortitaleriffik:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Arferit nipiliorneq qimarratigineq ajorpaat\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "59d27544-b52f-48df-a88e-2cd41c0015b4",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2328156",
+      "title": "Pinngortitaleriffik: Arferit nipiliorneq qimarratigineq ajorpaat"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/aki-matilda-nunarsuarmiut-tusarnaaraangata-kalaallit-nunaata-soqutigisai-siuarsarneqartariaqarput/2326255",
+      "layout_type": "1_full",
+      "display_order": 98000,
+      "row_index": 98,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "kicker_below": "AKI-MATILDA HØEGH-DAM",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "Nunarsuarmiut tusarnaaraangata Kalaallit Nunaata ",
+            "color_class": null
+          },
+          {
+            "text": "soqutigisai siuarsarneqartariaqarput",
+            "color_class": "primary color_mobile_primary"
+          }
+        ]
+      },
+      "element_guid": "721cf829-6978-46b8-be4f-d7dc0630fdfa",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2326255",
+      "title": "Nunarsuarmiut tusarnaaraangata Kalaallit Nunaata soqutigisai siuarsarneqartariaqarput"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trumpip-mianersoqqusinerata-kingorna-iran-sorsunnissamut-isumaqatigiinniarnernulluunniit-piareersimavoq/2328993",
+      "layout_type": "2_articles",
+      "display_order": 99000,
+      "row_index": 99,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trumpip mianersoqqusinerata kingorna Iran sorsunnissamut isumaqatigiinniarnernulluun-niit piareersimavoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "af371d42-a762-43d9-b1e2-c2291f625b6f",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2328993",
+      "title": "Trumpip mianersoqqusinerata kingorna Iran sorsunnissamut isumaqatigiinniarnernulluun-niit piareersimavoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sapiitsuliortut-nersorneqartut/2327837",
+      "layout_type": "2_articles",
+      "display_order": 99001,
+      "row_index": 99,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_floating": "UNNIA",
+        "title_parts": [
+          {
+            "text": "Sapiitsuliortut nersorneqartut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "9071676a-20e0-4c9a-88b0-9d697f1cd4d1",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2327837",
+      "title": "Sapiitsuliortut nersorneqartut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/akerleriittoqareersoq-folketingimi-ilaasortaq-kalaallit-nunaannut-qinnuiginnippoq/2328951",
+      "layout_type": "2_articles",
+      "display_order": 100000,
+      "row_index": 100,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Akerleriittoqareersoq:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Folketingimi ilaasortaq Kalaallit Nunaannut qinnuiginnippoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "fe5555cb-9c74-4251-8cf4-7bbb7bf4c10a",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2328951",
+      "title": "Akerleriittoqareersoq: Folketingimi ilaasortaq Kalaallit Nunaannut qinnuiginnippoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/danmarkip-isumaqatigiinngissutaa-oqaaseqaatillu-paatsoorneqarsinnaasut-amerikamiut-ilimagisaannut-ajornerpaamut-uppernarsaataapput/2328759",
+      "layout_type": "2_articles",
+      "display_order": 100001,
+      "row_index": 100,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "AQQALUK LYNGE ANNILAANGASOQ",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "Danmarkip isumaqatigiinngissutaa oqaaseqaatillu paatsoorneqarsinnaasut Amerikamiut ilimagisaannut ajornerpaamut uppernarsaataapput\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "16d75d24-1c9c-48bf-8f4a-fbac8b5666ab",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2328759",
+      "title": "Danmarkip isumaqatigiinngissutaa oqaaseqaatillu paatsoorneqarsinnaasut Amerikamiut ilimagisaannut ajornerpaamut uppernarsaataapput"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/samfund/inuit-anersaarsioriaasaat-ilinniarfigingaarsinnaavat/2327606",
+      "layout_type": "2_articles",
+      "display_order": 101000,
+      "row_index": 101,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_floating": "ASASARA TRUMP...",
+        "title_parts": [
+          {
+            "text": "– Inuit anersaarsioriaasaat ilinniarfigingaarsinnaavat\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "535cec69-d2e6-4b14-8ede-7268ecd563b3",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2327606",
+      "title": "– Inuit anersaarsioriaasaat ilinniarfigingaarsinnaavat"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/royal-greenland-tunisassiornermi-pisortartaartoq/2328671",
+      "layout_type": "2_articles",
+      "display_order": 101001,
+      "row_index": 101,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Royal Greenland ",
+            "color_class": "quaternary color_mobile_quaternary"
+          },
+          {
+            "text": "tunisassiornermi pisortartaartoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "0aeee3a1-4aa4-49dc-ac12-7ef130c73cdc",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2328671",
+      "title": "Royal Greenland tunisassiornermi pisortartaartoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trump-kalaallit-nunaat-isumaqatigiissuteqartariaqartoq/2328626",
+      "layout_type": "2_articles",
+      "display_order": 102000,
+      "row_index": 102,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trump:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Kalaallit Nunaat isumaqatigiissuteqarta-riaqarpoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "9a7029fb-cf04-4fd2-b6dc-8bb93f80fb5d",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2328626",
+      "title": "Trump: Kalaallit Nunaat isumaqatigiissuteqarta-riaqarpoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/avannaata-kommuniata-greenland-airportsillu-imermut-akiligassaq-isumaqatigiinngissutigaat/2328468",
+      "layout_type": "2_articles",
+      "display_order": 102001,
+      "row_index": 102,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "IKUALLATTOQARNERA IMERMIK PILERSUINERMIK APEQQUMMIK PILERSITSIVOQ",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "Avannaata Kommuniata Greenland Airportsillu imermut akiligassaq isumaqatigiinngissutigaat\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "4bb7ef5b-65fe-4230-bcc9-fc10fa0e9ee4",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2328468",
+      "title": "Avannaata Kommuniata Greenland Airportsillu imermut akiligassaq isumaqatigiinngissutigaat"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/usa-mi-senatorit-kalaallit-nunaat-pillugu-ajornartorsiuteqaleruttornerani-danmarkilialerput/2328499",
+      "layout_type": "1_full",
+      "display_order": 103000,
+      "row_index": 103,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "USA-mi senatorit Kalaallit Nunaat pillugu ajornartorsiuteqaleruttornerani Danmarkilialerput\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "40615ca0-acc2-493d-bb3b-280986b3a382",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2328499",
+      "title": "USA-mi senatorit Kalaallit Nunaat pillugu ajornartorsiuteqaleruttornerani Danmarkilialerput"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/samfund/aningaasaqarnikkut-naligiinnginneq-naatsorsuutit-kisiisa-tunngavigalugit-nalilersorneqarsinnaanngilaq/2326481",
+      "layout_type": "2_articles",
+      "display_order": 104000,
+      "row_index": 104,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Aningaasaqarnikkut naligiinnginneq naatsorsuutit kisiisa tunngavigalugit nalilersorneqarsinnaanngilaq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "4cc3c51a-564b-49b8-b886-2f5546ede7c3",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2326481",
+      "title": "Aningaasaqarnikkut naligiinnginneq naatsorsuutit kisiisa tunngavigalugit nalilersorneqarsinnaanngilaq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/kultur/aallussilluartut-nersorneqartut-sisimiuni-maniitsumi-napasumilu/2326904",
+      "layout_type": "2_articles",
+      "display_order": 104001,
+      "row_index": 104,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_floating": "UNNIA",
+        "title_parts": [
+          {
+            "text": "Aallussilluartut nersorneqartut: Sisimiuni, Maniitsumi Napasumilu\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "6519131b-a08c-456e-b70a-89110c5fba90",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2326904",
+      "title": "Aallussilluartut nersorneqartut: Sisimiuni, Maniitsumi Napasumilu"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/aleqa-hammond-21-mut-isumalioqatigiissitaq-pillugu-siumup-tunngaviusumik-inatsisissamut-siunnersuut-naatsorsuutigaa/2327264",
+      "layout_type": "2_articles",
+      "display_order": 105000,
+      "row_index": 105,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Aleqa Hammond §21-mut isumalioqatigiissitaq pillugu: Siumup tunngaviusumik inatsisissamut siunnersuut naatsorsuutigaa\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "ca7f28d8-2718-486d-bc7c-a24ad8540512",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2327264",
+      "title": "Aleqa Hammond §21-mut isumalioqatigiissitaq pillugu: Siumup tunngaviusumik inatsisissamut siunnersuut naatsorsuutigaa"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/aaja-chemnitz-illersornissaq-pillugu-suli-suliassaqarpugut/2324449",
+      "layout_type": "2_articles",
+      "display_order": 105001,
+      "row_index": 105,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Aaja Chemnitz:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Illersornissaq pillugu suli suliassaqarpugut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "f5b8e024-3d37-4645-8152-fefedaa071ed",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2324449",
+      "title": "Aaja Chemnitz: Illersornissaq pillugu suli suliassaqarpugut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/siu-tsiumi-suleqataaneq-qalipaasiutit-pilattuutit-kukkukuullu/2302949",
+      "layout_type": "1_full",
+      "display_order": 106000,
+      "row_index": 106,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "kicker_floating": "SAMMISAQ: TUNU PUIGUINNAGAQ",
+        "title_parts": [
+          {
+            "text": "Siu Tsiumi suleqataaneq: ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "Qalipaasiutit, pilattuutit kukkukuullu\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "f704d5a1-b9d4-42d2-92e9-1254afe7166b",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2302949",
+      "title": "Siu Tsiumi suleqataaneq: Qalipaasiutit, pilattuutit kukkukuullu"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/timersorneq/kalaallit-nunaanni-timersoqatigiit-kattuffianni-siulittaasup-tullia-nutaaq/2305875",
+      "layout_type": "1_full",
+      "display_order": 107000,
+      "row_index": 107,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "kicker_floating": "UNNIA",
+        "title_parts": [
+          {
+            "text": "Kalaallit Nunaanni\nTimersoqatigiit Kattuffianni\nsiulittaasup tullia nutaaq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "c988d4be-186f-4d1b-9193-8320d2796e4e",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2305875",
+      "title": "Kalaallit Nunaanni\nTimersoqatigiit Kattuffianni\nsiulittaasup tullia nutaaq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/isumannaallisaaneq-pingaarnerujussuusariaqarpoq/2305940",
+      "layout_type": "3_articles",
+      "display_order": 108000,
+      "row_index": 108,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "kicker_floating": "ISUMAGA",
+        "title_parts": [
+          {
+            "text": "Isumannaallisaaneq pingaarnerujussuusariaqarpoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "4c65c868-bfe2-4659-81d6-f6fbf217538a",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2305940",
+      "title": "Isumannaallisaaneq pingaarnerujussuusariaqarpoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/ilisimatusarfimmut-rektorinngortussaq-siulersuisunit-toqqarneqartoq/2306822",
+      "layout_type": "3_articles",
+      "display_order": 108001,
+      "row_index": 108,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Ilisimatusarfimmut rektorinngortussaq",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " siulersuisunit toqqarneqartoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "b0bddb86-a8ea-4b03-ad56-aaebf9cca805",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2306822",
+      "title": "Ilisimatusarfimmut rektorinngortussaq siulersuisunit toqqarneqartoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/arnaq-62-inik-ukiulik-savimmik-toqutseriarsimasutut-pineqaatissinneqartoq/2306733",
+      "layout_type": "3_articles",
+      "display_order": 108002,
+      "row_index": 108,
+      "article_index_in_row": 2,
+      "total_rows": 119,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Arnaq 62-inik ukiulik savimmik toqutseriarsimasutut pineqaatissinneqartoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "e926f5c5-e094-40c2-b731-04a749e1aa4f",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2306733",
+      "title": "Arnaq 62-inik ukiulik savimmik toqutseriarsimasutut pineqaatissinneqartoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/troels-lundip-usa-p-aallartitartaavanut-kunngeqarfimmut-ataqqinninnissaq-eqqartoraa/2306422",
+      "layout_type": "2_articles",
+      "display_order": 109000,
+      "row_index": 109,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Troels Lundip USA-p aallartitartaavanut Kunngeqarfimmut ataqqinninnissaq eqqartoraa\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "ff6414d4-5c94-4ccd-b580-d02cc10c3253",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2306422",
+      "title": "Troels Lundip USA-p aallartitartaavanut Kunngeqarfimmut ataqqinninnissaq eqqartoraa"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/kulturi/nunatta-eqqumiitsulianik-saqqummersitsiviani-suliniutinut-pisortaq-siulleq/2306683",
+      "layout_type": "2_articles",
+      "display_order": 109001,
+      "row_index": 109,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Nunatta Eqqumiitsulianik",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Saqqummersitsivianik suliniummut pisortaq siulleq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "92bbe252-3b22-491b-a631-6d70aeb61fb6",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2306683",
+      "title": "Nunatta Eqqumiitsulianik Saqqummersitsivianik suliniummut pisortaq siulleq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sulisoqarnermikkut-tatineqartorujussuusut/2306574",
+      "layout_type": "2_articles",
+      "display_order": 110000,
+      "row_index": 110,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Sulisoqarnermikkut tatineqartorujussuusut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "5bb331b3-2a62-4bf2-baae-29dc42011278",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2306574",
+      "title": "Sulisoqarnermikkut tatineqartorujussuusut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/tusagassiorfik-canada-nuummi-sapaatip-akunnerani-matumani-sinniisoqarfittaassasoq/2306662",
+      "layout_type": "2_articles",
+      "display_order": 110001,
+      "row_index": 110,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Tusagassiorfik:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Canada Nuummi sapaatip-akunnerani matumani sinniisoqarfittaassasoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "bd619725-f2d6-4505-bb19-404be482e0f4",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2306662",
+      "title": "Tusagassiorfik: Canada Nuummi sapaatip-akunnerani matumani sinniisoqarfittaassasoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuussutissarsiutit/minguinnerusumik-suliffissualiorneq-akinik-appasinnerusunik-pisariaqartitsivoq/2304106",
+      "layout_type": "1_full",
+      "display_order": 111000,
+      "row_index": 111,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Minguinnerusumik suliffissualiorneq akinik appasinnerusunik pisariaqartitsivoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "7f8365b5-8dc9-410c-878f-520cce4ab92f",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2304106",
+      "title": "Minguinnerusumik suliffissualiorneq akinik appasinnerusunik pisariaqartitsivoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/kultur/juullip-ulloriaa-taarseruttornerani-qaammarsaasartoq/2304268",
+      "layout_type": "2_articles",
+      "display_order": 112000,
+      "row_index": 112,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Juullip ulloriaa taarseruttornerani qaammarsaasartoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "d9b1a640-ad14-4687-a280-fd78ae299339",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2304268",
+      "title": "Juullip ulloriaa taarseruttornerani qaammarsaasartoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/erhverv/rubinit-safirillu-nunatsinneersut-suli-piumaneqarluartut/2304025",
+      "layout_type": "2_articles",
+      "display_order": 112001,
+      "row_index": 112,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Rubinit safirillu Nunatsinneersut suli piumaneqarluartut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "b5f23c13-5afa-4217-9a91-2f4173471c30",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2304025",
+      "title": "Rubinit safirillu Nunatsinneersut suli piumaneqarluartut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/kanunupe-p-siulittaasuata-tigussaasunik-iliuuseqartoqarnissaa-kissaatigaa/2306289",
+      "layout_type": "2_articles",
+      "display_order": 113000,
+      "row_index": 113,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "KANUNUPE-p siulittaasuata",
+            "color_class": "quaternary color_mobile_quaternary"
+          },
+          {
+            "text": " tigussaasunik iliuuseqartoqarnissaa kissaatigaa\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "0e9a4ba0-b588-4744-bd76-3b800f77e12b",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2306289",
+      "title": "KANUNUPE-p siulittaasuata tigussaasunik iliuuseqartoqarnissaa kissaatigaa"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/pinngortitaleriffimmi-pisortat-nutaat/2304695",
+      "layout_type": "2_articles",
+      "display_order": 113001,
+      "row_index": 113,
+      "article_index_in_row": 1,
+      "total_rows": 119,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Pinngortitaleriffimmi ",
+            "color_class": null
+          },
+          {
+            "text": "pisortat nutaat",
+            "color_class": "quaternary color_mobile_quaternary"
+          }
+        ]
+      },
+      "element_guid": "8af08014-8479-47a7-b139-ea8d20b44c8f",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2304695",
+      "title": "Pinngortitaleriffimmi pisortat nutaat"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/kultur/den-usynlige-kvinde-i-sneen/2309108",
+      "layout_type": "1_full",
+      "display_order": 114000,
+      "row_index": 114,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Den usynlige kvinde i sneen\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "3284defb-c37e-4061-905f-92c81d7ae7de",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2309108",
+      "title": "Den usynlige kvinde i sneen"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/kultur/den-usynlige-kvinde-i-sneen/2309108",
+      "layout_type": "1_full",
+      "display_order": 115000,
+      "row_index": 115,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Den usynlige kvinde i sneen\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "d0893e7c-4ef5-4202-aab3-f0acc14cf9fe",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2309108",
+      "title": "Den usynlige kvinde i sneen"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/kultur/den-usynlige-kvinde-i-sneen/2309108",
+      "layout_type": "1_full",
+      "display_order": 116000,
+      "row_index": 116,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Den usynlige kvinde i sneen\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "134415df-b705-4907-af07-00d6edd835ca",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2309108",
+      "title": "Den usynlige kvinde i sneen"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/kultur/den-usynlige-kvinde-i-sneen/2309108",
+      "layout_type": "1_full",
+      "display_order": 117000,
+      "row_index": 117,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Den usynlige kvinde i sneen\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "ddf86b8a-012c-4d95-a528-ee7ecbf76782",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2309108",
+      "title": "Den usynlige kvinde i sneen"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/timmisartortartup-ajunaartup-timaa-sermitsiamiit-aqqarneqartoq/2306368",
+      "layout_type": "1_full",
+      "display_order": 118000,
+      "row_index": 118,
+      "article_index_in_row": 0,
+      "total_rows": 119,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Timmisartortartup ajunaartup timaa Sermitsiamiit aqqarneqartoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "5fc2a1e1-a7ac-477b-bad1-e8ed3ea62fb2",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2306368",
+      "title": "Timmisartortartup ajunaartup timaa Sermitsiamiit aqqarneqartoq"
+    }
+  ]
+}

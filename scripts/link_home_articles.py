@@ -25,7 +25,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from app import app
 from database import db, Article
-from scripts.crawl_home_layout import crawl_home_layout
+from scripts.crawl_home_layout import crawl_home_layout, save_layout_to_file
 from services.translation_service import translate_article
 from scripts.translate_article_urls import translate_url
 from scripts.generate_sitemaps import generate_sitemap
@@ -262,7 +262,11 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                 # - Layout được crawl từ DA URL → published_url trong layout là DA URL
                 # - EN articles có: published_url = DA URL, published_url_en = EN URL
                 # - Khi link EN, cần tìm EN article có published_url = DA URL (từ layout)
+                # - Với 1_with_list_left/right: chỉ tìm articles có section='home' (vì chúng chỉ có ở home)
                 matched_article = None
+                
+                # ⚠️ QUAN TRỌNG: Với 1_with_list_left/right, chỉ tìm articles có section='home'
+                require_home_section = layout_type in ['1_with_list_left', '1_with_list_right']
                 
                 if published_url in articles_map:
                     # Tìm article cùng language
@@ -270,8 +274,14 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                     # Với DA: tìm DA article có published_url = DA URL (từ layout)
                     for article in articles_map[published_url]:
                         if article.language == language:
-                            matched_article = article
-                            break
+                            # Với 1_with_list_left/right: chỉ lấy article có section='home'
+                            if require_home_section:
+                                if article.section == 'home':
+                                    matched_article = article
+                                    break
+                            else:
+                                matched_article = article
+                                break
                     
                     # Nếu không tìm thấy và language='en', thử tìm bằng cách khác
                     if not matched_article and language == 'en':
@@ -279,22 +289,88 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                         da_article = None
                         for article in articles_map[published_url]:
                             if article.language == 'da':
-                                da_article = article
-                                break
+                                # Với 1_with_list_left/right: chỉ lấy article có section='home'
+                                if require_home_section:
+                                    if article.section == 'home':
+                                        da_article = article
+                                        break
+                                else:
+                                    da_article = article
+                                    break
                         
                         if da_article:
                             # Tìm EN version từ DA article
                             # Cách 1: Tìm bằng canonical_id (EN có canonical_id = DA.id)
-                            en_article = Article.query.filter_by(
+                            # Với 1_with_list_left/right: chỉ tìm EN article có section='home'
+                            query = Article.query.filter_by(
                                 canonical_id=da_article.id,
                                 language='en'
-                            ).first()
+                            )
+                            if require_home_section:
+                                query = query.filter_by(section='home')
+                            en_article = query.first()
                             
                             if en_article:
                                 matched_article = en_article
                                 print(f"      🔍 Found EN article via canonical_id (DA ID: {da_article.id}, EN ID: {en_article.id})")
                                 print(f"         EN published_url: {en_article.published_url[:60] if en_article.published_url else 'N/A'}...")
                                 print(f"         EN published_url_en: {en_article.published_url_en[:60] if en_article.published_url_en else 'N/A'}...")
+                                if require_home_section:
+                                    print(f"         ✅ Section='home' (required for {layout_type})")
+                            else:
+                                # Không tìm thấy EN article → tự động tạo
+                                if not dry_run:
+                                    print(f"      🌐 EN article not found, creating from DA article (ID: {da_article.id})...")
+                                    try:
+                                        from services.translation_service import translate_article
+                                        from scripts.translate_article_urls import translate_url
+                                        
+                                        # Translate article
+                                        en_article = translate_article(
+                                            da_article,
+                                            target_language='en',
+                                            delay=0.5
+                                        )
+                                        
+                                        if en_article:
+                                            # Translate URL cho EN article
+                                            if da_article.published_url:
+                                                en_url = translate_url(da_article.published_url, delay=0.3)
+                                                if en_url:
+                                                    en_article.published_url_en = en_url
+                                            
+                                            # Copy metadata từ DA article
+                                            en_article.display_order = da_article.display_order
+                                            en_article.layout_type = da_article.layout_type
+                                            
+                                            # ⚠️ QUAN TRỌNG: Với 1_with_list_left/right, EN article phải có section='home'
+                                            if da_article.layout_type in ['1_with_list_left', '1_with_list_right']:
+                                                en_article.section = 'home'
+                                                print(f"         ✅ Set section='home' for {da_article.layout_type}")
+                                            else:
+                                                en_article.section = da_article.section
+                                            
+                                            en_article.grid_size = da_article.grid_size
+                                            en_article.is_home = da_article.is_home
+                                            
+                                            # Save vào database
+                                            db.session.add(en_article)
+                                            db.session.commit()
+                                            
+                                            matched_article = en_article
+                                            print(f"      ✅ Created EN article (ID: {en_article.id})")
+                                            
+                                            # Add to articles_map để tránh query lại
+                                            if published_url not in articles_map:
+                                                articles_map[published_url] = []
+                                            articles_map[published_url].append(en_article)
+                                        else:
+                                            print(f"      ❌ Failed to translate article")
+                                    except Exception as e:
+                                        print(f"      ❌ Error creating EN article: {e}")
+                                        db.session.rollback()
+                                else:
+                                    print(f"      ⚠️  Would create EN article from DA (dry run)")
                     
                     if matched_article:
                         stats['articles_found'] += 1
@@ -357,19 +433,29 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                                 db.session.commit()
                         
                         print(f"      ✅ Updated article (ID: {matched_article.id})")
+                        if require_home_section:
+                            print(f"         ✅ Section='home' (required for {layout_type})")
                         
                         # Log list items nếu có
                         if list_items:
                             print(f"         📋 List items saved: {len(list_items)} items")
                     else:
-                        print(f"      ⚠️  Article found but language mismatch (need '{language}')")
+                        if require_home_section:
+                            print(f"      ⚠️  Article not found in DB with section='home' and language='{language}' (required for {layout_type}): {published_url[:60]}...")
+                        else:
+                            print(f"      ⚠️  Article found but language mismatch (need '{language}')")
                         stats['articles_not_found'] += 1
                 else:
-                    print(f"      ⚠️  Article not found in DB: {published_url[:60]}...")
+                    if require_home_section:
+                        print(f"      ⚠️  Article not found in DB with section='home' and language='{language}' (required for {layout_type}): {published_url[:60]}...")
+                    else:
+                        print(f"      ⚠️  Article not found in DB: {published_url[:60]}...")
                     stats['articles_not_found'] += 1
                     stats['errors'].append({
                         'url': published_url,
-                        'reason': 'not_found_in_db'
+                        'reason': 'not_found_in_db',
+                        'layout_type': layout_type,
+                        'require_home_section': require_home_section
                     })
                 
             except Exception as e:
@@ -461,12 +547,23 @@ def create_missing_en_articles(layout_items, language='da', dry_run=False, delay
                     stats['skipped'] += 1
                     continue
                 
+                # ⚠️ QUAN TRỌNG: Với 1_with_list_left/right, chỉ tạo EN nếu DA article có section='home'
+                if da_article.layout_type in ['1_with_list_left', '1_with_list_right']:
+                    if da_article.section != 'home':
+                        print(f"   [{idx}/{len(da_articles)}] ⚠️  Skipping {da_article.layout_type} article {da_article.id} (section='{da_article.section}', need 'home')")
+                        stats['skipped'] += 1
+                        continue
+                
                 # Check xem đã có EN version chưa
                 # EN articles có published_url = DA URL (từ layout)
-                existing_en = Article.query.filter_by(
+                # Với 1_with_list_left/right: chỉ tìm EN article có section='home'
+                query = Article.query.filter_by(
                     published_url=da_article.published_url,
                     language='en'
-                ).first()
+                )
+                if da_article.layout_type in ['1_with_list_left', '1_with_list_right']:
+                    query = query.filter_by(section='home')
+                existing_en = query.first()
                 
                 if existing_en:
                     # Đã có EN version → check và translate URL nếu chưa có published_url_en
@@ -545,7 +642,12 @@ def create_missing_en_articles(layout_items, language='da', dry_run=False, delay
                             
                             en_article.grid_size = da_article.grid_size
                             en_article.is_home = da_article.is_home
-                            en_article.section = da_article.section  # Giữ nguyên section gốc
+                            # ⚠️ QUAN TRỌNG: Với 1_with_list_left/right, EN article phải có section='home'
+                            if da_article.layout_type in ['1_with_list_left', '1_with_list_right']:
+                                en_article.section = 'home'
+                                print(f"         ✅ Set section='home' for {da_article.layout_type}")
+                            else:
+                                en_article.section = da_article.section  # Giữ nguyên section gốc
                             
                             # Save vào database
                             db.session.add(en_article)
@@ -643,20 +745,15 @@ Examples:
     
     args = parser.parse_args()
     
-    # Tự động tìm layout file DA mới nhất nếu không có --layout-file và không có --crawl
-    if not args.layout_file and not args.crawl:
-        # Tìm trong thư mục home_layouts (cùng thư mục với script)
-        script_dir = Path(__file__).parent
-        layouts_dir = script_dir / 'home_layouts'
-        
-        # Tìm file DA mới nhất
-        da_files = sorted(layouts_dir.glob('home_layout_da_*.json'), reverse=True)
-        if da_files:
-            args.layout_file = str(da_files[0])
-            print(f"✅ Auto-detected latest DA layout file: {da_files[0].name}")
-        else:
-            print(f"⚠️  No DA layout file found in {layouts_dir}, will crawl instead")
-            args.crawl = True
+    # ⚠️ BẮT BUỘC: Luôn crawl layout mới mỗi lần chạy (không load từ file)
+    # Chỉ load từ file nếu user chỉ định rõ --layout-file
+    if not args.layout_file:
+        # Không có --layout-file → bắt buộc crawl layout mới
+        args.crawl = True
+        print(f"🔄 Will crawl fresh layout (default: always crawl new layout)")
+    else:
+        # Có --layout-file → user muốn dùng file cụ thể (override default)
+        print(f"📄 Will use specified layout file: {args.layout_file}")
     
     # Nếu language='da' và không có --no-create-en, tự động xử lý KL -> DA -> EN
     should_process_all = (
@@ -678,11 +775,12 @@ Examples:
             ).count()
             print(f"   📊 Found {kl_articles_count} KL articles in DB (is_home=True)")
         
-        # Tìm layout file KL mới nhất hoặc crawl
+        # ⚠️ BẮT BUỘC: Luôn crawl KL layout mới mỗi lần chạy (giống DA)
+        # Chỉ load từ file nếu user chỉ định rõ --layout-file
         kl_layout_items = None
         
-        if args.layout_file:
-            # Nếu có layout file DA, tìm layout file KL tương ứng
+        if args.layout_file and not args.crawl:
+            # Nếu có layout file DA và không có --crawl, tìm layout file KL tương ứng
             layout_path = Path(args.layout_file)
             layout_dir = layout_path.parent
             # Tìm file KL mới nhất trong cùng thư mục
@@ -691,30 +789,28 @@ Examples:
                 kl_layout_items = load_layout_from_file(str(kl_files[0]))
                 print(f"   ✅ Loaded KL layout from: {kl_files[0].name}")
         
-        # Nếu chưa có KL articles trong DB hoặc có ít (< 10), crawl để tạo articles
-        # Ngay cả khi đã có layout file, vẫn cần crawl để tạo articles vào DB
-        should_crawl_kl = (
-            kl_articles_count < 10 or  # Có ít articles
-            not kl_layout_items or     # Không có layout file
-            args.crawl                 # User yêu cầu crawl
-        )
-        
-        if should_crawl_kl and not args.dry_run:
-            # Crawl KL layout để tạo articles vào DB
-            print(f"   🔄 Crawling KL layout to create articles in DB...")
-            kl_layout_items = crawl_home_layout(
-                home_url='https://kl.sermitsiaq.ag',
-                language='kl',
-                headless=not args.no_headless
-            )
-        elif not kl_layout_items and (args.crawl or not args.layout_file):
-            # Crawl KL layout (dry run hoặc không có layout file)
-            print(f"   🔄 Crawling KL layout...")
-            kl_layout_items = crawl_home_layout(
-                home_url='https://kl.sermitsiaq.ag',
-                language='kl',
-                headless=not args.no_headless
-            )
+        # Nếu không có layout file hoặc có --crawl, crawl KL layout mới
+        if not kl_layout_items or args.crawl:
+            if not args.dry_run:
+                # Crawl KL layout để tạo articles vào DB
+                print(f"   🔄 Crawling fresh KL layout...")
+                kl_layout_items = crawl_home_layout(
+                    home_url='https://kl.sermitsiaq.ag',
+                    language='kl',
+                    headless=not args.no_headless
+                )
+                
+                # Tự động lưu KL layout file (ghi đè file cũ)
+                if kl_layout_items:
+                    output_file = "home_layout_kl.json"  # Tên cố định, ghi đè file cũ
+                    saved_file = save_layout_to_file(
+                        layout_items=kl_layout_items,
+                        output_file=output_file,
+                        language='kl'
+                    )
+                    print(f"      💾 KL layout saved to: {saved_file} (overwrites existing file)")
+            else:
+                print(f"   🔄 Would crawl KL layout (dry run)")
         
         if kl_layout_items:
             # Link KL articles
@@ -746,8 +842,23 @@ Examples:
         if not layout_items:
             print("❌ Failed to crawl layout")
             return
+        
+        # ⚠️ QUAN TRỌNG: Tự động lưu layout file để EN có thể dùng
+        # EN dùng chung layout với DA, nên luôn lưu với language='da' cho DA layout
+        # Ghi đè file cũ (tên cố định) để không tạo quá nhiều file
+        if not args.dry_run:
+            # Tên file cố định: home_layout_da.json, home_layout_kl.json
+            output_file = f"home_layout_{args.language}.json"
+            saved_file = save_layout_to_file(
+                layout_items=layout_items,
+                output_file=output_file,  # Tên cố định, ghi đè file cũ
+                language=args.language
+            )
+            print(f"   💾 Layout saved to: {saved_file} (overwrites existing file)")
+            if args.language == 'da':
+                print(f"   ℹ️  EN will use this layout file (EN uses same layout as DA)")
     else:
-        # Load từ file
+        # Load từ file (chỉ khi user chỉ định rõ --layout-file)
         layout_items = load_layout_from_file(args.layout_file)
         if not layout_items:
             return

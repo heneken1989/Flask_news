@@ -113,7 +113,6 @@ def translate_article(dk_article, target_language='en', delay=0.5):
             # Translate list_items titles
             # ⚠️ QUAN TRỌNG: Tìm EN article tương ứng cho mỗi URL thay vì chỉ translate text
             if 'list_items' in translated_layout_data:
-                from database import Article
                 from urllib.parse import urljoin, urlparse
                 
                 base_url = 'https://www.sermitsiaq.ag'

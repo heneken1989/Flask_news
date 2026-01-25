@@ -31,8 +31,10 @@ from services.crawl_service import SermitsiaqCrawler
 from services.article_matcher import match_and_link_articles
 from services.translation_service import translate_articles_batch
 from scripts.translate_article_urls import translate_url
+from scripts.crawl_article_details_batch import crawl_all as crawl_article_details
 import argparse
 import time
+import subprocess
 
 # Section URLs mapping
 SECTION_URLS = {
@@ -119,6 +121,54 @@ def crawl_greenlandic_section(section_name, max_articles=0):
     else:
         print(f"❌ Greenlandic crawl failed: {result['errors']}")
         return 0
+
+
+def remove_duplicate_da_articles_in_section(section_name):
+    """Remove duplicate DA articles trong section (cùng published_url trong cùng section)"""
+    print("\n" + "="*60)
+    print(f"🔍 Checking for duplicate DA articles in section: {section_name}")
+    print("="*60)
+    
+    # ⚠️ QUAN TRỌNG: Chỉ xóa duplicate trong cùng section
+    # Lấy tất cả DA articles trong section (bao gồm cả is_home=True và is_home=False)
+    all_da_articles = Article.query.filter_by(
+        language='da',
+        section=section_name
+    ).all()
+    
+    # Group by published_url để tìm duplicate trong cùng section
+    url_to_articles = {}
+    for article in all_da_articles:
+        if article.published_url:
+            if article.published_url not in url_to_articles:
+                url_to_articles[article.published_url] = []
+            url_to_articles[article.published_url].append(article)
+    
+    # Tìm và xóa duplicate
+    duplicates_removed = 0
+    for published_url, articles in url_to_articles.items():
+        if len(articles) > 1:
+            # Có duplicate trong cùng section, ưu tiên giữ article có is_home=True (vì đã được link vào home)
+            # Nếu cả hai đều có is_home=True hoặc cả hai đều có is_home=False, giữ ID nhỏ nhất
+            articles_sorted = sorted(articles, key=lambda x: (not x.is_home, x.id))
+            article_to_keep = articles_sorted[0]
+            articles_to_delete = articles_sorted[1:]
+            
+            print(f"   ⚠️  Found {len(articles)} duplicate DA articles in section '{section_name}' with published_url: {published_url[:60]}...")
+            print(f"      Keeping article ID: {article_to_keep.id} (is_home: {article_to_keep.is_home})")
+            
+            for article_to_delete in articles_to_delete:
+                print(f"      Deleting duplicate article ID: {article_to_delete.id} (is_home: {article_to_delete.is_home})")
+                db.session.delete(article_to_delete)
+                duplicates_removed += 1
+    
+    if duplicates_removed > 0:
+        db.session.commit()
+        print(f"✅ Removed {duplicates_removed} duplicate DA articles in section '{section_name}'")
+    else:
+        print(f"✅ No duplicate DA articles found in section '{section_name}'")
+    
+    return duplicates_removed
 
 
 def match_dk_kl_section_articles(section_name):
@@ -403,6 +453,52 @@ def crawl_greenlandic_home(max_articles=0):
         return 0
 
 
+def remove_duplicate_da_home_articles():
+    """Remove duplicate DA articles trong home (cùng published_url)"""
+    print("\n" + "="*60)
+    print(f"🔍 Checking for duplicate DA articles in home")
+    print("="*60)
+    
+    # Lấy tất cả DA articles với is_home=True
+    all_da_articles = Article.query.filter_by(
+        language='da',
+        is_home=True
+    ).all()
+    
+    # Group by published_url để tìm duplicate
+    url_to_articles = {}
+    for article in all_da_articles:
+        if article.published_url:
+            if article.published_url not in url_to_articles:
+                url_to_articles[article.published_url] = []
+            url_to_articles[article.published_url].append(article)
+    
+    # Tìm và xóa duplicate
+    duplicates_removed = 0
+    for published_url, articles in url_to_articles.items():
+        if len(articles) > 1:
+            # Có duplicate, giữ article có ID nhỏ nhất (article cũ hơn)
+            articles_sorted = sorted(articles, key=lambda x: x.id)
+            article_to_keep = articles_sorted[0]
+            articles_to_delete = articles_sorted[1:]
+            
+            print(f"   ⚠️  Found {len(articles)} duplicate DA articles with published_url: {published_url[:60]}...")
+            print(f"      Keeping article ID: {article_to_keep.id}")
+            
+            for article_to_delete in articles_to_delete:
+                print(f"      Deleting duplicate article ID: {article_to_delete.id}")
+                db.session.delete(article_to_delete)
+                duplicates_removed += 1
+    
+    if duplicates_removed > 0:
+        db.session.commit()
+        print(f"✅ Removed {duplicates_removed} duplicate DA articles")
+    else:
+        print(f"✅ No duplicate DA articles found")
+    
+    return duplicates_removed
+
+
 def match_dk_kl_home_articles():
     """Match DK và KL articles trong home"""
     print("\n" + "="*60)
@@ -638,6 +734,9 @@ def process_home(max_articles=0, skip_crawl=False):
         crawl_danish_home(max_articles)
         crawl_greenlandic_home(max_articles)
     
+    # Remove duplicate DA articles trước khi match và translate
+    remove_duplicate_da_home_articles()
+    
     match_dk_kl_home_articles()
     translate_dk_home_to_en()
     
@@ -662,6 +761,9 @@ def process_section(section_name, max_articles=0, skip_crawl=False):
         crawl_danish_section(section_name, max_articles)
         crawl_greenlandic_section(section_name, max_articles)
     
+    # Remove duplicate DA articles trước khi match và translate
+    remove_duplicate_da_articles_in_section(section_name)
+    
     match_dk_kl_section_articles(section_name)
     translate_dk_section_to_en(section_name)
     
@@ -680,7 +782,7 @@ def main():
     """Main function"""
     parser = argparse.ArgumentParser(description='Crawl and translate sections and home for multi-language')
     parser.add_argument('--section', choices=['erhverv', 'samfund', 'kultur', 'sport', 'podcasti', 'home', 'all', 'sections'],
-                       default='all', help='Section to process (default: all). Use "home" for home page, "sections" for all sections without home, "all" for everything.')
+                       default='sections', help='Section to process (default: sections = all sections without home). Use "home" for home page, "sections" for all sections without home, "all" for everything.')
     parser.add_argument('--max-articles', type=int, default=0,
                        help='Maximum articles per section (default: 0 = crawl all). Use 0 to crawl all articles without limit.')
     parser.add_argument('--skip-crawl', action='store_true',
@@ -758,6 +860,52 @@ def main():
             kl = Article.query.filter_by(language='kl', section=section, is_home=False).count()
             en = Article.query.filter_by(language='en', section=section, is_home=False).count()
             print(f"   {section.upper()}: DK={dk}, KL={kl}, EN={en}")
+        
+        # Tự động chạy crawl article details sau khi hoàn thành
+        print("\n" + "="*80)
+        print("📄 Starting article details crawl...")
+        print("="*80)
+        try:
+            crawl_article_details(
+                language=None,  # Crawl tất cả languages (DA và KL)
+                section=None,   # Crawl tất cả sections
+                limit=None,     # Không giới hạn
+                headless=True,  # Headless mode
+                delay=2.0,      # Delay 2s giữa các requests
+                auto_translate=True,  # Tự động translate DA sang EN
+                translate_delay=0.3   # Delay 0.3s giữa các lần translate
+            )
+            print("\n" + "="*80)
+            print("✅ Article details crawl completed!")
+            print("="*80)
+        except Exception as e:
+            print(f"\n⚠️  Error during article details crawl: {e}")
+            import traceback
+            traceback.print_exc()
+        
+        # Tự động chạy link_home_articles sau khi crawl article details xong
+        print("\n" + "="*80)
+        print("🔗 Starting home articles linking...")
+        print("="*80)
+        try:
+            # Gọi script link_home_articles.py
+            script_path = Path(__file__).parent / 'link_home_articles.py'
+            result = subprocess.run(
+                [sys.executable, str(script_path)],
+                cwd=str(Path(__file__).parent),
+                check=False
+            )
+            
+            if result.returncode == 0:
+                print("\n" + "="*80)
+                print("✅ Home articles linking completed!")
+                print("="*80)
+            else:
+                print(f"\n⚠️  link_home_articles.py exited with code {result.returncode}")
+        except Exception as e:
+            print(f"\n⚠️  Error running link_home_articles.py: {e}")
+            import traceback
+            traceback.print_exc()
 
 
 if __name__ == '__main__':

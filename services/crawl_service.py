@@ -116,17 +116,20 @@ class SermitsiaqCrawler:
             article_language = language or self.language
             
             # Check existing articles to avoid duplicates
+            # ⚠️ QUAN TRỌNG: Chỉ check duplicate trong cùng section
+            # Vì một article có thể hợp lý xuất hiện ở nhiều section khác nhau (ví dụ: section='home' và section='sport')
+            # ⚠️ QUAN TRỌNG: Check TẤT CẢ articles trong section (bao gồm cả is_home=True và is_home=False)
+            # Vì nếu chỉ check is_home=False, sẽ bỏ qua articles với is_home=True trong cùng section → tạo duplicate
             print(f"🔍 Checking for existing {article_language} articles in section '{section_name}'...")
             existing_urls = set()
             existing_articles = Article.query.filter_by(
                 section=section_name,
-                language=article_language,
-                is_home=False
-            ).all()
+                language=article_language
+            ).all()  # ⚠️ Không filter is_home=False, check tất cả articles trong section
             for art in existing_articles:
                 if art.published_url:
                     existing_urls.add(art.published_url)
-            print(f"   Found {len(existing_urls)} existing articles")
+            print(f"   Found {len(existing_urls)} existing articles in section '{section_name}' (including is_home=True and is_home=False)")
             
             # Save new articles to database (only if not exists)
             print("💾 Saving new articles to database...")
