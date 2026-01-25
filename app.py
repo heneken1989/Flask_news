@@ -16,7 +16,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
 
 # Babel configuration for i18n
-app.config['BABEL_DEFAULT_LOCALE'] = 'en'  # English as default
+app.config['BABEL_DEFAULT_LOCALE'] = 'da'  # Danish as default
 app.config['BABEL_SUPPORTED_LOCALES'] = ['en', 'da', 'kl']  # English, Danish, Greenlandic
 app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'translations'
 
@@ -40,7 +40,7 @@ def get_locale():
     
     # Skip browser detection - always use default locale
     # This ensures consistent behavior and prevents unwanted language switching
-    # Default to English
+    # Default to Danish
     return app.config['BABEL_DEFAULT_LOCALE']
 
 # Initialize Babel with locale_selector

@@ -152,8 +152,27 @@ def home_test():
                     article_dict['display_order'] = display_order
                     article_dict['layout_type'] = layout_type
                     
+                    # ⚠️ QUAN TRỌNG: Nếu đang xem EN, xóa title_parts để template chỉ dùng article.title
+                    # Template ưu tiên title_parts hơn article.title, nên nếu có title_parts từ DA,
+                    # nó sẽ hiển thị DA title thay vì EN title
+                    if current_language == 'en':
+                        # Xóa title_parts từ article_dict nếu có (có thể từ DB)
+                        if 'title_parts' in article_dict:
+                            if display_order < 5:
+                                print(f"         🗑️  Removing title_parts from article_dict (EN language, will use article.title instead)")
+                            del article_dict['title_parts']
+                    
                     # Merge layout_data: giữ lại từ DB, update với data từ layout_item
                     existing_layout_data = article_dict.get('layout_data', {}) or {}
+                    
+                    # ⚠️ QUAN TRỌNG: Nếu đang xem EN, xóa title_parts từ layout_data
+                    if current_language == 'en':
+                        # Xóa title_parts từ existing_layout_data nếu có
+                        if 'title_parts' in existing_layout_data:
+                            if display_order < 5:
+                                print(f"         🗑️  Removing title_parts from layout_data (EN language, will use article.title instead)")
+                            del existing_layout_data['title_parts']
+                    
                     new_layout_data = {
                         'row_index': layout_item.get('row_index', -1),
                         'article_index_in_row': layout_item.get('article_index_in_row', -1),
@@ -162,14 +181,38 @@ def home_test():
                     
                     # Thêm list_items và list_title cho 1_with_list_left/right
                     if layout_type in ['1_with_list_left', '1_with_list_right']:
-                        list_items = layout_item.get('list_items', []) or layout_item.get('layout_data', {}).get('list_items', [])
-                        list_title = layout_item.get('list_title', '') or layout_item.get('layout_data', {}).get('list_title', '')
+                        # ⚠️ QUAN TRỌNG: Ưu tiên lấy từ EN article's layout_data (nếu đã được translate)
+                        # Nếu không có, mới lấy từ layout_item (DA layout)
+                        if current_language == 'en' and existing_layout_data.get('list_items'):
+                            # EN article đã có list_items được translate → dùng
+                            list_items = existing_layout_data.get('list_items', [])
+                            list_title = existing_layout_data.get('list_title', '')
+                            if display_order < 5:
+                                print(f"         📋 Using translated list_items from EN article's layout_data: {len(list_items)} items")
+                        else:
+                            # Lấy từ layout_item (DA layout)
+                            list_items = layout_item.get('list_items', []) or layout_item.get('layout_data', {}).get('list_items', [])
+                            list_title = layout_item.get('list_title', '') or layout_item.get('layout_data', {}).get('list_title', '')
+                            if current_language == 'en' and display_order < 5:
+                                print(f"         📋 Using list_items from DA layout (not translated): {len(list_items)} items")
+                        
                         if list_items:
                             new_layout_data['list_items'] = list_items
                         if list_title:
                             new_layout_data['list_title'] = list_title
                     
                     # Merge với existing (ưu tiên existing cho list_items và list_title nếu không có trong new)
+                    # ⚠️ QUAN TRỌNG: KHÔNG merge title_parts từ layout_item vào existing_layout_data khi language là EN
+                    layout_item_data = layout_item.get('layout_data', {}) or {}
+                    for key, value in layout_item_data.items():
+                        if current_language == 'en' and key == 'title_parts':
+                            # Skip title_parts khi language là EN (để template dùng article.title thay vì title_parts)
+                            if display_order < 5:
+                                print(f"         ⚠️  Skipping title_parts from layout_item (EN language, will use article.title)")
+                            continue
+                        existing_layout_data[key] = value
+                    
+                    # Merge new_layout_data vào existing
                     for key, value in new_layout_data.items():
                         if key in ['list_items', 'list_title']:
                             # Chỉ update nếu có giá trị mới
@@ -180,6 +223,11 @@ def home_test():
                             existing_layout_data[key] = value
                     
                     article_dict['layout_data'] = existing_layout_data
+                    
+                    # ⚠️ QUAN TRỌNG: Đảm bảo title_parts không có trong article_dict khi language là EN (double check)
+                    if current_language == 'en' and 'title_parts' in article_dict:
+                        del article_dict['title_parts']
+                    
                     article_dict['grid_size'] = layout_item.get('grid_size', 6)
                     article_dict['is_home'] = True
                     # KHÔNG set section='home' - giữ nguyên section gốc
@@ -252,25 +300,37 @@ def home_test():
 @article_view_bp.route('/')
 def index():
     """
-    Home page với nhiều layout types khác nhau
-    Layout types: 1_full, 2_articles, 3_articles, 1_special_bg, 1_with_list_left, 1_with_list_right
+    Home page - Load layout từ file và link với articles trong DB
+    Sử dụng logic từ home_test() đã được test và ổn định
+    
+    Flow:
+    1. Load layout structure từ JSON file mới nhất (luôn dùng DA layout)
+    2. Link với articles đã có trong DB (không update DB, chỉ trong memory)
+    3. Hiển thị view
+    
+    Nếu không có file JSON, sẽ query trực tiếp từ DB (articles đã được link trước đó)
     """
     from database import db
+    import json
+    from pathlib import Path
     
-    # Log request info để debug
-    user_agent = request.headers.get('User-Agent', 'Unknown')
-    print(f"🌐 / (home) request from: {user_agent[:50]}...")
-    print(f"   Method: {request.method}")
-    print(f"   URL: {request.url}")
+    # Get current language - Default to 'da' for home page
+    # Priority: URL param > Session > Flask-Babel locale > 'da' (default)
+    current_language = 'da'  # Default to 'da' for home page
     
-    # Get current language from session or default
-    # Use get_locale() from flask_babel to be consistent with app default
+    # Check Flask-Babel locale first
     from flask_babel import get_locale
     try:
-        current_language = str(get_locale()) if get_locale() else 'en'
+        locale = get_locale()
+        if locale and str(locale) in ['da', 'kl', 'en']:
+            current_language = str(locale)
     except:
-        # Fallback: check session or default to 'en' (matching app.config['BABEL_DEFAULT_LOCALE'])
-        current_language = session.get('language', 'en')
+        pass  # Keep default 'da'
+    
+    # Check session (override Flask-Babel if session has language)
+    session_lang = session.get('language')
+    if session_lang and session_lang in ['da', 'kl', 'en']:
+        current_language = session_lang  # Session có priority cao hơn Flask-Babel
     
     # Check URL parameter for language override (highest priority)
     if request.args.get('lang'):
@@ -278,141 +338,284 @@ def index():
         if lang in ['da', 'kl', 'en']:
             current_language = lang
     
-    # Query articles từ database cho trang home, filtered by language
+    print(f"\n{'='*60}")
+    print(f"🏠 Home Page")
+    print(f"{'='*60}")
+    print(f"   Language: {current_language}")
+    print(f"   Session language: {session.get('language', 'N/A')}")
+    print(f"   Request args: {dict(request.args)}")
+    
+    # ⚠️ QUAN TRỌNG: Luôn dùng DA layout cho tất cả languages
+    # Layout được crawl từ DA URL, sau đó thay thế articles bằng version tương ứng
+    layouts_dir = Path(__file__).parent.parent / 'scripts' / 'home_layouts'
+    layout_items = []
+    
+    if layouts_dir.exists():
+        # Luôn tìm DA layout (không phụ thuộc vào current_language)
+        json_files = list(layouts_dir.glob('home_layout_da_*.json'))
+        if json_files:
+            # Lấy file mới nhất
+            latest_json = max(json_files, key=lambda p: p.stat().st_mtime)
+            print(f"   📄 Loading DA layout from: {latest_json.name} (for language: {current_language})")
+            
+            try:
+                with open(latest_json, 'r', encoding='utf-8') as f:
+                    layout_data = json.load(f)
+                    layout_items = layout_data.get('layout_items', [])
+                print(f"   ✅ Loaded {len(layout_items)} layout items from DA layout")
+                print(f"   ℹ️  Will replace with {current_language} articles")
+            except Exception as e:
+                print(f"   ⚠️  Error loading JSON: {e}")
+    
     articles = []
-    try:
-        # Query articles với language filter
-        article_objects = get_home_articles_by_language(
-            language=current_language,
-            limit=None  # Không giới hạn để hiển thị tất cả
-        )
-        
-        # Filter chỉ lấy articles có layout_type
-        article_objects = [a for a in article_objects if a.layout_type]
-        
-        # Log số lượng articles để debug
-        print(f"📊 Found {len(article_objects)} articles for home page (language: {current_language})")
-        
-        # Log display_order của 10 articles đầu để debug
-        if article_objects:
-            print(f"📐 Display order của 10 articles đầu:")
-            for idx, article in enumerate(article_objects[:10]):
-                print(f"   [{idx}] display_order={article.display_order}, layout_type={article.layout_type}, title={article.title[:50]}")
-        
-        # Convert to dict - giữ nguyên thứ tự
-        articles = [article.to_dict() for article in article_objects]
-        
-        # Log số lượng articles để debug
-        print(f"📊 Found {len(articles)} articles for home page")
-        if articles:
-            print(f"   First article: display_order={articles[0].get('display_order', 'N/A')}, layout_type={articles[0].get('layout_type', 'N/A')}, title={articles[0].get('title', 'N/A')[:50]}...")
-            print(f"   Last article: display_order={articles[-1].get('display_order', 'N/A')}, layout_type={articles[-1].get('layout_type', 'N/A')}, title={articles[-1].get('title', 'N/A')[:50]}...")
-        
-        # Debug: Kiểm tra sliders
-        sliders = [a for a in articles if a.get('layout_type') == 'slider']
-        if sliders:
-            print(f"🎠 Found {len(sliders)} sliders:")
-            for idx, slider in enumerate(sliders):
-                layout_data = slider.get('layout_data', {})
-                slider_articles = layout_data.get('slider_articles', [])
-                slider_title = layout_data.get('slider_title', 'Untitled')
-                
-                # Debug chi tiết
-                print(f"   Slider {idx+1}: '{slider_title}' - {len(slider_articles)} articles")
-                print(f"      layout_data type: {type(layout_data)}")
-                print(f"      slider_articles type: {type(slider_articles)}")
-                if isinstance(slider_articles, list):
-                    print(f"      First 3 article titles: {[a.get('title', 'N/A')[:30] for a in slider_articles[:3]]}")
-                else:
-                    print(f"      ⚠️  slider_articles is not a list! Value: {slider_articles}")
-                
-                if len(slider_articles) < 4:
-                    print(f"      ⚠️  WARNING: Slider has only {len(slider_articles)} articles (expected >= 4)")
-        
-    except Exception as e:
-        print(f"⚠️  Database query failed: {e}")
-        articles = []
     
-    # Nếu không có articles từ database, dùng mock data với các layout types
-    if not articles:
-        articles = [
-            {
-                'element_guid': '1d8fc071-5df6-43e1-8879-f9eab34d3c45',
-                'title': 'Pressemøde om amerikansk delegations besøg i Danmark',
-                'url': '/samfund/pressemode-om-amerikansk-delegations-besog-i-danmark/2331441',
-                'k5a_url': '/a/2331441',
-                'section': 'samfund',
-                'site_alias': 'sermitsiaq',
-                'instance': '2331441',
-                'published_date': '2026-01-16T15:25:38+01:00',
-                'is_paywall': False,
-                'paywall_class': '',
-                'layout_type': '1_full',
-                'image': {
-                    'desktop_webp': 'https://image.sermitsiaq.ag/2331462.webp?imageId=2331462&width=2116&height=1418&format=webp',
-                    'desktop_jpeg': 'https://image.sermitsiaq.ag/2331462.webp?imageId=2331462&width=2116&height=1418&format=jpg',
-                    'mobile_webp': 'https://image.sermitsiaq.ag/2331462.webp?imageId=2331462&width=960&height=644&format=webp',
-                    'mobile_jpeg': 'https://image.sermitsiaq.ag/2331462.webp?imageId=2331462&width=960&height=644&format=jpg',
-                    'fallback': 'https://image.sermitsiaq.ag/2331462.webp?imageId=2331462&width=960&height=644&format=jpg',
-                    'desktop_width': '1058',
-                    'desktop_height': '709',
-                    'mobile_width': '480',
-                    'mobile_height': '322',
-                    'alt': '',
-                    'title': 'Pressemøde om amerikansk delegations besøg i Danmark'
+    if layout_items:
+        # Có layout structure → Link với articles trong DB
+        print(f"   🔗 Linking articles with layout...")
+        
+        # Pre-fetch articles - chỉ lấy articles có is_home=True cho home page
+        # ⚠️ QUAN TRỌNG: Chỉ lấy articles đã được link vào home (is_home=True)
+        all_articles = Article.query.filter(
+            Article.published_url.isnot(None),
+            Article.published_url != '',
+            Article.is_home == True  # Chỉ lấy articles đã được link vào home
+        ).all()
+        
+        articles_map = {}
+        for article in all_articles:
+            if article.published_url:
+                if article.published_url not in articles_map:
+                    articles_map[article.published_url] = []
+                articles_map[article.published_url].append(article)
+        
+        print(f"   📚 Found {len(articles_map)} unique URLs in database (is_home=True)")
+        
+        # Debug: Count articles by language
+        lang_counts = {}
+        for url, article_list in articles_map.items():
+            for article in article_list:
+                lang = article.language
+                lang_counts[lang] = lang_counts.get(lang, 0) + 1
+        print(f"   📊 Articles by language (is_home=True): {lang_counts}")
+        
+        # Debug: Show sample EN articles if current_language is EN
+        if current_language == 'en':
+            en_sample_count = 0
+            print(f"   🔍 Sample EN articles in articles_map:")
+            for url, article_list in articles_map.items():
+                for article in article_list:
+                    if article.language == 'en' and en_sample_count < 5:
+                        print(f"      - URL: {url[:60]}... | ID: {article.id} | Title: {article.title[:60]}...")
+                        en_sample_count += 1
+                if en_sample_count >= 5:
+                    break
+        
+        if len(articles_map) == 0:
+            print(f"   ⚠️  WARNING: No articles found in database! Cannot link layout.")
+            articles = []
+        
+        # Link articles với layout
+        for layout_item in layout_items:
+            published_url = layout_item.get('published_url', '')
+            layout_type = layout_item.get('layout_type', '')
+            display_order = layout_item.get('display_order', 0)
+            
+            # Xử lý slider containers
+            if layout_type in ['slider', 'job_slider']:
+                slider_data = {
+                    'id': None,
+                    'title': layout_item.get('slider_title', ''),
+                    'layout_type': layout_type,
+                    'display_order': display_order,
+                    'layout_data': {
+                        'slider_title': layout_item.get('slider_title', ''),
+                        'slider_articles': []
+                    },
+                    'published_url': '',
+                    'is_home': True,
+                    'section': 'home'
                 }
-            },
-            {
-                'element_guid': 'c6e0c689-1c51-4b97-80db-7b39988eca17',
-                'title': 'Trumps særlige udsending vil besøge Grønland i marts',
-                'url': '/samfund/trumps-saerlige-udsending-vil-besoge-gronland-i-marts/2331321',
-                'k5a_url': '/a/2331321',
-                'section': 'samfund',
-                'site_alias': 'sermitsiaq',
-                'instance': '2331321',
-                'published_date': '2026-01-16T13:23:06+01:00',
-                'is_paywall': False,
-                'paywall_class': '',
-                'layout_type': '2_articles',
-                'image': {
-                    'desktop_webp': 'https://image.sermitsiaq.ag/2331325.webp?imageId=2331325&width=1058&height=688&format=webp',
-                    'fallback': 'https://image.sermitsiaq.ag/2331325.webp?imageId=2331325&width=960&height=624&format=jpg',
-                    'desktop_width': '529',
-                    'desktop_height': '344',
-                    'mobile_width': '480',
-                    'mobile_height': '312',
-                    'alt': '',
-                    'title': 'Trumps særlige udsending vil besøge Grønland i marts'
-                }
-            },
-            {
-                'element_guid': 'c7ee8684-56fe-41de-91b7-b6ad1a91a888',
-                'title': 'Trump sætter igen gang i forretningen',
-                'url': '/erhverv/trump-saetter-igen-gang-i-forretningen/2328783',
-                'k5a_url': '/a/2328783',
-                'section': 'erhverv',
-                'site_alias': 'sermitsiaq',
-                'instance': '2328783',
-                'published_date': '2026-01-16T15:21:54+01:00',
-                'is_paywall': True,
-                'paywall_class': 'paywall',
-                'layout_type': '2_articles',
-                'image': {
-                    'desktop_webp': 'https://image.sermitsiaq.ag/2328786.webp?imageId=2328786&width=1058&height=688&format=webp',
-                    'fallback': 'https://image.sermitsiaq.ag/2328786.webp?imageId=2328786&width=960&height=624&format=jpg',
-                    'desktop_width': '529',
-                    'desktop_height': '344',
-                    'mobile_width': '480',
-                    'mobile_height': '312',
-                    'alt': '',
-                    'title': 'Trump sætter igen gang i forretningen'
-                }
-            }
-        ]
+                
+                # Link các articles trong slider
+                slider_articles = layout_item.get('slider_articles', [])
+                for slider_article in slider_articles:
+                    slider_url = slider_article.get('published_url', '')
+                    if slider_url and slider_url in articles_map:
+                        for article in articles_map[slider_url]:
+                            if article.language == current_language:
+                                article_dict = article.to_dict()
+                                slider_data['layout_data']['slider_articles'].append(article_dict)
+                                break
+                
+                articles.append(slider_data)
+                continue
+            
+            # Xử lý articles thông thường
+            if not published_url:
+                continue
+            
+            # Tìm article trong DB
+            if published_url in articles_map:
+                matched_article = None
+                
+                # Ưu tiên article đã có section='home'
+                for article in articles_map[published_url]:
+                    if article.language == current_language and article.section == 'home':
+                        matched_article = article
+                        break
+                
+                # Nếu không có, lấy article đầu tiên cùng language
+                if not matched_article:
+                    for article in articles_map[published_url]:
+                        if article.language == current_language:
+                            matched_article = article
+                            break
+                
+                if matched_article:
+                    article_dict = matched_article.to_dict()
+                    # Update metadata từ layout (chỉ trong memory)
+                    # ⚠️ QUAN TRỌNG: Giữ nguyên section gốc (samfund, sport, etc.)
+                    # Chỉ set is_home=True để articles vẫn hiển thị được ở các tag
+                    article_dict['display_order'] = display_order
+                    article_dict['layout_type'] = layout_type
+                    
+                    # ⚠️ QUAN TRỌNG: Nếu đang xem EN, xóa title_parts để template chỉ dùng article.title
+                    # Template ưu tiên title_parts hơn article.title, nên nếu có title_parts từ DA,
+                    # nó sẽ hiển thị DA title thay vì EN title
+                    if current_language == 'en':
+                        # Xóa title_parts từ article_dict nếu có (có thể từ DB)
+                        if 'title_parts' in article_dict:
+                            if display_order < 5:
+                                print(f"         🗑️  Removing title_parts from article_dict (EN language, will use article.title instead)")
+                            del article_dict['title_parts']
+                    
+                    # Merge layout_data: giữ lại từ DB, update với data từ layout_item
+                    existing_layout_data = article_dict.get('layout_data', {}) or {}
+                    
+                    # ⚠️ QUAN TRỌNG: Nếu đang xem EN, xóa title_parts từ layout_data
+                    if current_language == 'en':
+                        # Xóa title_parts từ existing_layout_data nếu có
+                        if 'title_parts' in existing_layout_data:
+                            if display_order < 5:
+                                print(f"         🗑️  Removing title_parts from layout_data (EN language, will use article.title instead)")
+                            del existing_layout_data['title_parts']
+                    
+                    new_layout_data = {
+                        'row_index': layout_item.get('row_index', -1),
+                        'article_index_in_row': layout_item.get('article_index_in_row', -1),
+                        'total_rows': layout_item.get('total_rows', 0)
+                    }
+                    
+                    # Thêm list_items và list_title cho 1_with_list_left/right
+                    if layout_type in ['1_with_list_left', '1_with_list_right']:
+                        # ⚠️ QUAN TRỌNG: Ưu tiên lấy từ EN article's layout_data (nếu đã được translate)
+                        # Nếu không có, mới lấy từ layout_item (DA layout)
+                        if current_language == 'en' and existing_layout_data.get('list_items'):
+                            # EN article đã có list_items được translate → dùng
+                            list_items = existing_layout_data.get('list_items', [])
+                            list_title = existing_layout_data.get('list_title', '')
+                            if display_order < 5:
+                                print(f"         📋 Using translated list_items from EN article's layout_data: {len(list_items)} items")
+                        else:
+                            # Lấy từ layout_item (DA layout)
+                            list_items = layout_item.get('list_items', []) or layout_item.get('layout_data', {}).get('list_items', [])
+                            list_title = layout_item.get('list_title', '') or layout_item.get('layout_data', {}).get('list_title', '')
+                            if current_language == 'en' and display_order < 5:
+                                print(f"         📋 Using list_items from DA layout (not translated): {len(list_items)} items")
+                        
+                        if list_items:
+                            new_layout_data['list_items'] = list_items
+                        if list_title:
+                            new_layout_data['list_title'] = list_title
+                    
+                    # Merge với existing (ưu tiên existing cho list_items và list_title nếu không có trong new)
+                    # ⚠️ QUAN TRỌNG: KHÔNG merge title_parts từ layout_item vào existing_layout_data khi language là EN
+                    layout_item_data = layout_item.get('layout_data', {}) or {}
+                    for key, value in layout_item_data.items():
+                        if current_language == 'en' and key == 'title_parts':
+                            # Skip title_parts khi language là EN (để template dùng article.title thay vì title_parts)
+                            if display_order < 5:
+                                print(f"         ⚠️  Skipping title_parts from layout_item (EN language, will use article.title)")
+                            continue
+                        existing_layout_data[key] = value
+                    
+                    # Merge new_layout_data vào existing
+                    for key, value in new_layout_data.items():
+                        if key in ['list_items', 'list_title']:
+                            # Chỉ update nếu có giá trị mới
+                            if value:
+                                existing_layout_data[key] = value
+                        else:
+                            # Update bình thường
+                            existing_layout_data[key] = value
+                    
+                    article_dict['layout_data'] = existing_layout_data
+                    
+                    # ⚠️ QUAN TRỌNG: Đảm bảo title_parts không có trong article_dict khi language là EN (double check)
+                    if current_language == 'en' and 'title_parts' in article_dict:
+                        del article_dict['title_parts']
+                    
+                    article_dict['grid_size'] = layout_item.get('grid_size', 6)
+                    article_dict['is_home'] = True
+                    # KHÔNG set section='home' - giữ nguyên section gốc
+                    # article_dict['section'] giữ nguyên từ matched_article
+                    articles.append(article_dict)
+        
+        # Sort theo display_order
+        articles.sort(key=lambda x: x.get('display_order', 0))
+        print(f"   ✅ Linked {len(articles)} articles with layout")
+    else:
+        # Không có layout file → Query trực tiếp từ DB (articles đã được link trước đó)
+        print(f"   📊 No layout file found, querying from DB...")
+        try:
+            article_objects = get_home_articles_by_language(
+                language=current_language,
+                limit=None
+            )
+            print(f"   📚 Query returned {len(article_objects)} articles (before filter)")
+            
+            # Filter chỉ lấy articles có layout_type
+            article_objects = [a for a in article_objects if a.layout_type]
+            print(f"   📐 After layout_type filter: {len(article_objects)} articles")
+            
+            if article_objects:
+                print(f"   📋 First 5 articles:")
+                for idx, art in enumerate(article_objects[:5], 1):
+                    print(f"      {idx}. ID={art.id}, layout_type={art.layout_type}, display_order={art.display_order}, title={art.title[:50]}...")
+            
+            articles = [article.to_dict() for article in article_objects]
+            print(f"   ✅ Found {len(articles)} articles from DB")
+        except Exception as e:
+            print(f"   ⚠️  Error loading articles: {e}")
+            import traceback
+            traceback.print_exc()
+            articles = []
     
-    # Chuẩn bị layouts cho rendering
-    layouts = prepare_home_layouts(articles)
-    print(f"📐 Prepared {len(layouts)} layouts from {len(articles)} articles")
+    # Debug: Log số lượng articles trước khi prepare
+    print(f"\n📊 Before prepare_home_layouts: {len(articles)} articles")
+    if articles:
+        first_article = articles[0]
+        print(f"   First article: layout_type={first_article.get('layout_type')}, display_order={first_article.get('display_order')}")
+        print(f"   First article title: {first_article.get('title', 'N/A')[:60]}...")
+        print(f"   First article language: {first_article.get('language', 'N/A')}")
+        print(f"   First article ID: {first_article.get('id', 'N/A')}")
+    
+    # Prepare layouts
+    layouts = []
+    if articles:
+        layouts = prepare_home_layouts(articles)
+        print(f"📐 After prepare_home_layouts: {len(layouts)} layouts")
+        
+        # Debug: Check first layout's article title
+        if layouts and len(layouts) > 0:
+            first_layout = layouts[0]
+            if first_layout.get('layout_type') == '1_full' and first_layout.get('data', {}).get('article'):
+                first_layout_article = first_layout['data']['article']
+                print(f"   🔍 First layout article title: {first_layout_article.get('title', 'N/A')[:60]}...")
+                print(f"   🔍 First layout article language: {first_layout_article.get('language', 'N/A')}")
+                print(f"   🔍 First layout article ID: {first_layout_article.get('id', 'N/A')}")
+    else:
+        print(f"⚠️  No articles to prepare, returning empty layouts")
     
     # Tạo response với headers để tránh cache issues
     response = make_response(render_template('home_page.html',
@@ -478,10 +681,10 @@ def tag_section(section):
     # Use get_locale() from flask_babel to be consistent with app default
     from flask_babel import get_locale
     try:
-        current_language = str(get_locale()) if get_locale() else 'en'
+        current_language = str(get_locale()) if get_locale() else 'da'
     except:
-        # Fallback: check session or default to 'en' (matching app.config['BABEL_DEFAULT_LOCALE'])
-        current_language = session.get('language', 'en')
+        # Fallback: check session or default to 'da'
+        current_language = session.get('language', 'da')
     
     # Check URL parameter for language override (highest priority)
     if request.args.get('lang'):
@@ -1225,8 +1428,8 @@ def article_detail_test_structured():
     if not url:
         return "Please provide ?url parameter", 400
     
-    # Get language from query parameter, default to 'en'
-    lang = request.args.get('lang', 'en')
+    # Get language from query parameter, default to 'da'
+    lang = request.args.get('lang', 'da')
     
     with app.app_context():
         article_detail = ArticleDetailParser.get_article_detail(url, language=lang)

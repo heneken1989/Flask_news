@@ -519,7 +519,29 @@ def create_missing_en_articles(layout_items, language='da', dry_run=False, delay
                             # Copy metadata từ DA article
                             en_article.display_order = da_article.display_order
                             en_article.layout_type = da_article.layout_type
-                            en_article.layout_data = da_article.layout_data  # Copy layout_data (bao gồm list_items)
+                            
+                            # ⚠️ QUAN TRỌNG: Copy layout_data nhưng giữ lại list_items đã được translate
+                            # translate_article() đã translate list_items trong en_article.layout_data
+                            # Nếu copy da_article.layout_data sẽ ghi đè list_items đã translate
+                            if en_article.layout_data and da_article.layout_data:
+                                # Giữ lại list_items và list_title đã được translate từ translate_article()
+                                translated_list_items = en_article.layout_data.get('list_items')
+                                translated_list_title = en_article.layout_data.get('list_title')
+                                
+                                # Copy layout_data từ DA article
+                                en_article.layout_data = da_article.layout_data.copy() if isinstance(da_article.layout_data, dict) else da_article.layout_data
+                                
+                                # Restore list_items và list_title đã được translate
+                                if translated_list_items:
+                                    en_article.layout_data['list_items'] = translated_list_items
+                                    print(f"         ✅ Preserved translated list_items: {len(translated_list_items)} items")
+                                if translated_list_title:
+                                    en_article.layout_data['list_title'] = translated_list_title
+                                    print(f"         ✅ Preserved translated list_title: '{translated_list_title}'")
+                            else:
+                                # Nếu không có layout_data đã translate, copy trực tiếp
+                                en_article.layout_data = da_article.layout_data
+                            
                             en_article.grid_size = da_article.grid_size
                             en_article.is_home = da_article.is_home
                             en_article.section = da_article.section  # Giữ nguyên section gốc

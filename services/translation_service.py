@@ -111,11 +111,76 @@ def translate_article(dk_article, target_language='en', delay=0.5):
                 time.sleep(delay)
             
             # Translate list_items titles
+            # ⚠️ QUAN TRỌNG: Tìm EN article tương ứng cho mỗi URL thay vì chỉ translate text
             if 'list_items' in translated_layout_data:
+                from database import Article
+                from urllib.parse import urljoin, urlparse
+                
+                base_url = 'https://www.sermitsiaq.ag'
+                translated_list_items = []
+                
                 for item in translated_layout_data['list_items']:
-                    if 'title' in item and item['title']:
-                        item['title'] = translator.translate(item['title'])
-                        time.sleep(delay)
+                    item_url = item.get('url', '')
+                    da_title = item.get('title', '')
+                    
+                    if not item_url:
+                        # Không có URL, giữ nguyên item
+                        translated_list_items.append(item)
+                        continue
+                    
+                    # Normalize URL: convert relative URL sang full URL để match
+                    normalized_url = item_url
+                    if item_url.startswith('/'):
+                        normalized_url = urljoin(base_url, item_url)
+                    
+                    # Tìm EN article tương ứng trong DB
+                    en_article = None
+                    try:
+                        # Tìm EN article có published_url = normalized_url (DA URL)
+                        en_article = Article.query.filter_by(
+                            published_url=normalized_url,
+                            language='en'
+                        ).first()
+                        
+                        # Nếu không tìm thấy, thử tìm bằng published_url_en
+                        if not en_article:
+                            en_article = Article.query.filter_by(
+                                published_url_en=normalized_url,
+                                language='en'
+                            ).first()
+                    except Exception as e:
+                        print(f"      ⚠️  Error finding EN article for URL {item_url}: {e}")
+                    
+                    if en_article and en_article.title:
+                        # Có EN article → dùng EN title
+                        translated_item = {
+                            'url': item_url,  # Giữ nguyên URL format
+                            'title': en_article.title
+                        }
+                        translated_list_items.append(translated_item)
+                        print(f"      ✅ Found EN article for list item: {en_article.title[:50]}...")
+                    else:
+                        # Không có EN article → translate text (fallback)
+                        if da_title:
+                            try:
+                                translated_title = translator.translate(da_title)
+                                translated_item = {
+                                    'url': item_url,
+                                    'title': translated_title
+                                }
+                                translated_list_items.append(translated_item)
+                                print(f"      🌐 Translated list item (no EN article found): {translated_title[:50]}...")
+                                time.sleep(delay)
+                            except Exception as e:
+                                print(f"      ⚠️  Error translating list item title: {e}")
+                                # Fallback: giữ nguyên DA title
+                                translated_list_items.append(item)
+                        else:
+                            # Không có title, giữ nguyên item
+                            translated_list_items.append(item)
+                
+                # Update với list_items đã được translate
+                translated_layout_data['list_items'] = translated_list_items
             
             # Translate title_parts nếu có (cho highlights)
             if 'title_parts' in translated_layout_data and isinstance(translated_layout_data['title_parts'], list):
