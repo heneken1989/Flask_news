@@ -1,3 +1,6 @@
-2026/01/25-11:47:56.891 3a59c3 Reusing MANIFEST /Users/hien/Desktop/Projects/GC_HRAI/flask/user_data/Default/Local Storage/leveldb/MANIFEST-000001
-2026/01/25-11:47:56.892 3a59c3 Recovering log #155
-2026/01/25-11:47:56.893 3a59c3 Reusing old log /Users/hien/Desktop/Projects/GC_HRAI/flask/user_data/Default/Local Storage/leveldb/000155.log 
+2026/01/25-12:44:30.442 3b6787 Reusing MANIFEST /Users/hien/Desktop/Projects/GC_HRAI/flask/user_data/Default/Local Storage/leveldb/MANIFEST-000001
+2026/01/25-12:44:30.444 3b6787 Recovering log #155
+2026/01/25-12:44:30.444 3b6787 Reusing old log /Users/hien/Desktop/Projects/GC_HRAI/flask/user_data/Default/Local Storage/leveldb/000155.log 
+2026/01/25-12:44:40.947 3b678a Level-0 table #160: started
+2026/01/25-12:44:40.948 3b678a Level-0 table #160: 11818 bytes OK
+2026/01/25-12:44:40.951 3b678a Delete type=0 #155

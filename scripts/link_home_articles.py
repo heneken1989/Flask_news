@@ -28,6 +28,7 @@ from database import db, Article
 from scripts.crawl_home_layout import crawl_home_layout
 from services.translation_service import translate_article
 from scripts.translate_article_urls import translate_url
+from scripts.generate_sitemaps import generate_sitemap
 import time
 
 
@@ -642,7 +643,91 @@ Examples:
     
     args = parser.parse_args()
     
-    # Load hoặc crawl layout
+    # Tự động tìm layout file DA mới nhất nếu không có --layout-file và không có --crawl
+    if not args.layout_file and not args.crawl:
+        # Tìm trong thư mục home_layouts (cùng thư mục với script)
+        script_dir = Path(__file__).parent
+        layouts_dir = script_dir / 'home_layouts'
+        
+        # Tìm file DA mới nhất
+        da_files = sorted(layouts_dir.glob('home_layout_da_*.json'), reverse=True)
+        if da_files:
+            args.layout_file = str(da_files[0])
+            print(f"✅ Auto-detected latest DA layout file: {da_files[0].name}")
+        else:
+            print(f"⚠️  No DA layout file found in {layouts_dir}, will crawl instead")
+            args.crawl = True
+    
+    # Nếu language='da' và không có --no-create-en, tự động xử lý KL -> DA -> EN
+    should_process_all = (
+        args.language == 'da' and 
+        not args.no_create_en  # Mặc định xử lý tất cả nếu không có --no-create-en
+    )
+    
+    # Step 1: Xử lý KL trước (nếu should_process_all)
+    if should_process_all:
+        print(f"\n{'='*60}")
+        print(f"🔗 Step 1: Processing KL articles")
+        print(f"{'='*60}")
+        
+        # Check xem có KL articles trong DB chưa
+        with app.app_context():
+            kl_articles_count = Article.query.filter_by(
+                language='kl',
+                is_home=True
+            ).count()
+            print(f"   📊 Found {kl_articles_count} KL articles in DB (is_home=True)")
+        
+        # Tìm layout file KL mới nhất hoặc crawl
+        kl_layout_items = None
+        
+        if args.layout_file:
+            # Nếu có layout file DA, tìm layout file KL tương ứng
+            layout_path = Path(args.layout_file)
+            layout_dir = layout_path.parent
+            # Tìm file KL mới nhất trong cùng thư mục
+            kl_files = sorted(layout_dir.glob('home_layout_kl_*.json'), reverse=True)
+            if kl_files:
+                kl_layout_items = load_layout_from_file(str(kl_files[0]))
+                print(f"   ✅ Loaded KL layout from: {kl_files[0].name}")
+        
+        # Nếu chưa có KL articles trong DB hoặc có ít (< 10), crawl để tạo articles
+        # Ngay cả khi đã có layout file, vẫn cần crawl để tạo articles vào DB
+        should_crawl_kl = (
+            kl_articles_count < 10 or  # Có ít articles
+            not kl_layout_items or     # Không có layout file
+            args.crawl                 # User yêu cầu crawl
+        )
+        
+        if should_crawl_kl and not args.dry_run:
+            # Crawl KL layout để tạo articles vào DB
+            print(f"   🔄 Crawling KL layout to create articles in DB...")
+            kl_layout_items = crawl_home_layout(
+                home_url='https://kl.sermitsiaq.ag',
+                language='kl',
+                headless=not args.no_headless
+            )
+        elif not kl_layout_items and (args.crawl or not args.layout_file):
+            # Crawl KL layout (dry run hoặc không có layout file)
+            print(f"   🔄 Crawling KL layout...")
+            kl_layout_items = crawl_home_layout(
+                home_url='https://kl.sermitsiaq.ag',
+                language='kl',
+                headless=not args.no_headless
+            )
+        
+        if kl_layout_items:
+            # Link KL articles
+            link_articles_with_layout(
+                kl_layout_items,
+                language='kl',
+                dry_run=args.dry_run,
+                reset_first=not args.no_reset
+            )
+        else:
+            print(f"   ⚠️  No KL layout found, skipping KL processing")
+    
+    # Load hoặc crawl layout cho language hiện tại
     if args.crawl or not args.layout_file:
         # Crawl trực tiếp
         if not args.url:
@@ -651,7 +736,7 @@ Examples:
             else:
                 args.url = 'https://www.sermitsiaq.ag'
         
-        print(f"🔄 Crawling layout structure...")
+        print(f"\n🔄 Crawling layout structure for {args.language.upper()}...")
         layout_items = crawl_home_layout(
             home_url=args.url,
             language=args.language,
@@ -667,7 +752,12 @@ Examples:
         if not layout_items:
             return
     
-    # Link articles với layout
+    # Step 2: Link articles với layout (DA)
+    if should_process_all:
+        print(f"\n{'='*60}")
+        print(f"🔗 Step 2: Processing DA articles")
+        print(f"{'='*60}")
+    
     link_articles_with_layout(
         layout_items, 
         language=args.language, 
@@ -675,10 +765,12 @@ Examples:
         reset_first=not args.no_reset  # Reset nếu không có --no-reset
     )
     
+    # Step 3 & 4: Tạo và link EN articles (nếu should_process_all)
     # Sau khi link DA articles, check và tạo EN articles nếu chưa có
     # Chỉ tạo nếu:
     # - language='da' (chỉ tạo EN từ DA)
     # - Không có --no-create-en (mặc định: tạo EN articles)
+    # Lưu ý: KL được xử lý độc lập, không tạo EN từ KL
     # Mặc định: Khi link DA articles, sẽ tự động tạo EN articles nếu chưa có
     should_create_en = (
         args.language == 'da' and 
@@ -686,8 +778,9 @@ Examples:
     )
     
     if should_create_en and not args.dry_run:
+        step_num = "3" if should_process_all else "2"
         print(f"\n{'='*60}")
-        print(f"🌐 Step 2: Creating missing EN articles")
+        print(f"🌐 Step {step_num}: Creating missing EN articles")
         print(f"{'='*60}")
         create_missing_en_articles(
             layout_items=layout_items,
@@ -696,9 +789,10 @@ Examples:
             delay=0.5
         )
         
-        # Step 3: Link EN articles với layout (sau khi đã tạo xong)
+        # Link EN articles với layout (sau khi đã tạo xong)
+        step_num = "4" if should_process_all else "3"
         print(f"\n{'='*60}")
-        print(f"🔗 Step 3: Linking EN articles with layout")
+        print(f"🔗 Step {step_num}: Linking EN articles with layout")
         print(f"{'='*60}")
         link_articles_with_layout(
             layout_items,
@@ -707,8 +801,9 @@ Examples:
             reset_first=not args.no_reset  # Reset EN articles trước khi link
         )
     elif should_create_en and args.dry_run:
+        step_num = "3" if should_process_all else "2"
         print(f"\n{'='*60}")
-        print(f"🌐 Would create missing EN articles (dry run)")
+        print(f"🌐 Step {step_num}: Would create missing EN articles (dry run)")
         print(f"{'='*60}")
         create_missing_en_articles(
             layout_items=layout_items,
@@ -717,9 +812,10 @@ Examples:
             delay=0.5
         )
         
-        # Step 3: Link EN articles với layout (dry run)
+        # Link EN articles với layout (dry run)
+        step_num = "4" if should_process_all else "3"
         print(f"\n{'='*60}")
-        print(f"🔗 Would link EN articles with layout (dry run)")
+        print(f"🔗 Step {step_num}: Would link EN articles with layout (dry run)")
         print(f"{'='*60}")
         link_articles_with_layout(
             layout_items,
@@ -727,6 +823,59 @@ Examples:
             dry_run=True,
             reset_first=not args.no_reset
         )
+    
+    # Step cuối cùng: Generate sitemaps (nếu đã xử lý xong và không phải dry_run)
+    # Chỉ generate khi:
+    # - Không phải dry_run
+    # - Đã xử lý xong (should_process_all hoặc should_create_en hoặc language='kl')
+    should_generate_sitemaps = (
+        not args.dry_run and
+        (should_process_all or should_create_en or args.language == 'kl')
+    )
+    
+    if should_generate_sitemaps:
+        step_num = "5" if should_process_all else "4" if should_create_en else "2"
+        print(f"\n{'='*60}")
+        print(f"🗺️  Step {step_num}: Generating sitemaps")
+        print(f"{'='*60}")
+        
+        # Xác định output directory (giống như generate_sitemaps.py mặc định: current directory)
+        output_dir = Path('.')
+        
+        # Generate sitemaps cho các ngôn ngữ đã xử lý
+        languages_to_generate = []
+        if should_process_all:
+            # Đã xử lý KL, DA, EN
+            languages_to_generate = ['kl', 'da', 'en']
+        elif args.language == 'kl':
+            # Chỉ xử lý KL
+            languages_to_generate = ['kl']
+        elif should_create_en:
+            # Đã xử lý DA và EN
+            languages_to_generate = ['da', 'en']
+        else:
+            # Chỉ xử lý language hiện tại
+            languages_to_generate = [args.language]
+        
+        for lang in languages_to_generate:
+            try:
+                file_names = {
+                    'en': 'sitemap.xml',
+                    'da': 'sitemap-DK.xml',
+                    'kl': 'sitemap-KL.xml'
+                }
+                output_file = output_dir / file_names.get(lang, f'sitemap-{lang.upper()}.xml')
+                
+                print(f"   📋 Generating sitemap for {lang.upper()}...")
+                generate_sitemap(
+                    language=lang,
+                    output_file=str(output_file),
+                    base_domain='www.sermitsiaq.com'
+                )
+            except Exception as e:
+                print(f"   ⚠️  Error generating sitemap for {lang.upper()}: {e}")
+        
+        print(f"   ✅ Sitemaps generated successfully!")
 
 
 if __name__ == '__main__':

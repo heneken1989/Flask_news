@@ -304,7 +304,10 @@ def index():
     Sử dụng logic từ home_test() đã được test và ổn định
     
     Flow:
-    1. Load layout structure từ JSON file mới nhất (luôn dùng DA layout)
+    1. Load layout structure từ JSON file mới nhất:
+       - KL: Dùng KL layout riêng (home_layout_kl_*.json)
+       - DA: Dùng DA layout (home_layout_da_*.json)
+       - EN: Dùng DA layout (vì EN articles link với DA articles)
     2. Link với articles đã có trong DB (không update DB, chỉ trong memory)
     3. Hiển thị view
     
@@ -345,25 +348,35 @@ def index():
     print(f"   Session language: {session.get('language', 'N/A')}")
     print(f"   Request args: {dict(request.args)}")
     
-    # ⚠️ QUAN TRỌNG: Luôn dùng DA layout cho tất cả languages
-    # Layout được crawl từ DA URL, sau đó thay thế articles bằng version tương ứng
+    # ⚠️ QUAN TRỌNG: 
+    # - KL: Dùng KL layout riêng (độc lập)
+    # - DA: Dùng DA layout
+    # - EN: Dùng DA layout (vì EN articles link với DA articles qua published_url)
     layouts_dir = Path(__file__).parent.parent / 'scripts' / 'home_layouts'
     layout_items = []
     
     if layouts_dir.exists():
-        # Luôn tìm DA layout (không phụ thuộc vào current_language)
-        json_files = list(layouts_dir.glob('home_layout_da_*.json'))
+        # Xác định layout file cần dùng dựa trên current_language
+        if current_language == 'kl':
+            # KL dùng layout KL riêng
+            json_files = list(layouts_dir.glob('home_layout_kl_*.json'))
+            layout_type_name = 'KL'
+        else:
+            # DA và EN đều dùng DA layout
+            json_files = list(layouts_dir.glob('home_layout_da_*.json'))
+            layout_type_name = 'DA'
+        
         if json_files:
             # Lấy file mới nhất
             latest_json = max(json_files, key=lambda p: p.stat().st_mtime)
-            print(f"   📄 Loading DA layout from: {latest_json.name} (for language: {current_language})")
+            print(f"   📄 Loading {layout_type_name} layout from: {latest_json.name} (for language: {current_language})")
             
             try:
                 with open(latest_json, 'r', encoding='utf-8') as f:
                     layout_data = json.load(f)
                     layout_items = layout_data.get('layout_items', [])
-                print(f"   ✅ Loaded {len(layout_items)} layout items from DA layout")
-                print(f"   ℹ️  Will replace with {current_language} articles")
+                print(f"   ✅ Loaded {len(layout_items)} layout items from {layout_type_name} layout")
+                print(f"   ℹ️  Will use {current_language} articles")
             except Exception as e:
                 print(f"   ⚠️  Error loading JSON: {e}")
     
