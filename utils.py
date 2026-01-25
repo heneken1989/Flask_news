@@ -307,10 +307,30 @@ def prepare_home_layouts(articles):
         elif layout_type == '1_with_list_left':
             # 1 article + list bên trái
             layout_data = article.get('layout_data', {})
+            
+            # Debug: Log layout_data structure
+            if i < 10:
+                print(f"   📋 1_with_list_left - Article ID: {article.get('id', 'N/A')}")
+                print(f"      layout_data type: {type(layout_data)}")
+                print(f"      layout_data keys: {list(layout_data.keys()) if isinstance(layout_data, dict) else 'Not a dict'}")
+            
+            list_title = layout_data.get('list_title', 'LIST') if isinstance(layout_data, dict) else 'LIST'
+            list_items = layout_data.get('list_items', []) if isinstance(layout_data, dict) else []
+            
+            # Debug logging
+            if i < 10:
+                print(f"      list_title='{list_title}', list_items count={len(list_items)}")
+                if list_items:
+                    print(f"      First list item: {list_items[0]}")
+                    print(f"      All list items: {list_items}")
+                else:
+                    print(f"      ⚠️  No list_items found!")
+                    print(f"      layout_data value: {layout_data}")
+            
             layout_item['data'] = {
                 'article': article,
-                'list_title': layout_data.get('list_title', 'LIST'),
-                'list_items': layout_data.get('list_items', []),
+                'list_title': list_title,
+                'list_items': list_items,
                 'list_position': 'left'
             }
             i += 1
@@ -318,10 +338,30 @@ def prepare_home_layouts(articles):
         elif layout_type == '1_with_list_right':
             # 1 article + list bên phải
             layout_data = article.get('layout_data', {})
+            
+            # Debug: Log layout_data structure
+            if i < 10:
+                print(f"   📋 1_with_list_right - Article ID: {article.get('id', 'N/A')}")
+                print(f"      layout_data type: {type(layout_data)}")
+                print(f"      layout_data keys: {list(layout_data.keys()) if isinstance(layout_data, dict) else 'Not a dict'}")
+            
+            list_title = layout_data.get('list_title', 'LIST') if isinstance(layout_data, dict) else 'LIST'
+            list_items = layout_data.get('list_items', []) if isinstance(layout_data, dict) else []
+            
+            # Debug logging
+            if i < 10:
+                print(f"      list_title='{list_title}', list_items count={len(list_items)}")
+                if list_items:
+                    print(f"      First list item: {list_items[0]}")
+                    print(f"      All list items: {list_items}")
+                else:
+                    print(f"      ⚠️  No list_items found!")
+                    print(f"      layout_data value: {layout_data}")
+            
             layout_item['data'] = {
                 'article': article,
-                'list_title': layout_data.get('list_title', 'LIST'),
-                'list_items': layout_data.get('list_items', []),
+                'list_title': list_title,
+                'list_items': list_items,
                 'list_position': 'right'
             }
             i += 1
@@ -575,12 +615,17 @@ def get_home_articles_by_language(language='en', limit=100):
     
     Returns:
         List of Article objects
+    
+    Note:
+        Chỉ filter by is_home=True, KHÔNG filter by section='home'
+        Để articles vẫn giữ nguyên section gốc (samfund, sport, etc.)
+        và có thể hiển thị được ở cả home và tag pages
     """
     # Convert Locale object to string if needed
     language_str = str(language) if language else 'en'
     return get_articles_by_language(
         language=language_str,
-        is_home=True,
+        is_home=True,  # Chỉ filter is_home=True, không filter section
         limit=limit
     )
 

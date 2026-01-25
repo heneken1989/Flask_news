@@ -679,8 +679,8 @@ def process_section(section_name, max_articles=0, skip_crawl=False):
 def main():
     """Main function"""
     parser = argparse.ArgumentParser(description='Crawl and translate sections and home for multi-language')
-    parser.add_argument('--section', choices=['erhverv', 'samfund', 'kultur', 'sport', 'podcasti', 'home', 'all'],
-                       default='all', help='Section to process (default: all). Use "home" for home page.')
+    parser.add_argument('--section', choices=['erhverv', 'samfund', 'kultur', 'sport', 'podcasti', 'home', 'all', 'sections'],
+                       default='all', help='Section to process (default: all). Use "home" for home page, "sections" for all sections without home, "all" for everything.')
     parser.add_argument('--max-articles', type=int, default=0,
                        help='Maximum articles per section (default: 0 = crawl all). Use 0 to crawl all articles without limit.')
     parser.add_argument('--skip-crawl', action='store_true',
@@ -696,6 +696,17 @@ def main():
                 print(f"❌ Error processing home: {e}")
                 import traceback
                 traceback.print_exc()
+        elif args.section == 'sections':
+            # Process all sections only (skip home)
+            sections = ['erhverv', 'samfund', 'kultur', 'sport', 'podcasti']
+            for section in sections:
+                try:
+                    process_section(section, max_articles=args.max_articles, skip_crawl=args.skip_crawl)
+                except Exception as e:
+                    print(f"❌ Error processing section {section}: {e}")
+                    import traceback
+                    traceback.print_exc()
+                    continue
         elif args.section == 'all':
             # Process all sections first
             sections = ['erhverv', 'samfund', 'kultur', 'sport', 'podcasti']
