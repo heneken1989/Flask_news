@@ -192,13 +192,18 @@ def prepare_home_layouts(articles):
                     'articles': row_articles[:2]
                 }
                 i += len(row_articles)
-            else:
-                # Không đủ 2 articles trong cùng row với cùng layout_type, fallback to 1_full
-                layout_item['layout_type'] = '1_full'
+            elif len(row_articles) > 0:
+                # Không đủ 2 articles, chỉ hiển thị articles có sẵn
+                print(f"   ⚠️  Row {row_index} has only {len(row_articles)} articles for 2_articles layout, expected 2. Displaying available articles only.")
                 layout_item['data'] = {
-                    'article': article
+                    'articles': row_articles
                 }
+                i += len(row_articles)
+            else:
+                # Không có articles nào, skip layout item
+                print(f"   ⚠️  Row {row_index} has no articles for 2_articles layout. Skipping this layout item.")
                 i += 1
+                continue
             
         elif layout_type == '3_articles':
             # 3 articles 1 row - lấy tất cả articles trong cùng row
@@ -245,50 +250,20 @@ def prepare_home_layouts(articles):
                 i += len(row_articles)
                 print(f"   ✅ Grouped 3 articles (from {len(row_articles)}) in row {row_index}")
             elif len(row_articles) > 0:
-                # Không đủ 3 articles - tạo fake articles để debug
-                print(f"   ⚠️  Row {row_index} has only {len(row_articles)} articles, expected 3. Creating {3 - len(row_articles)} fake articles for debug")
+                # Không đủ 3 articles - chỉ hiển thị articles có sẵn
+                print(f"   ⚠️  Row {row_index} has only {len(row_articles)} articles, expected 3. Displaying available articles only.")
                 
-                # Tạo fake articles
-                fake_articles = []
-                for fake_idx in range(len(row_articles), 3):
-                    fake_article = {
-                        'id': f'fake-{row_index}-{fake_idx}',
-                        'title': f'[FAKE] Article {fake_idx + 1} in row {row_index}',
-                        'url': '#',
-                        'k5a_url': '#',
-                        'section': article.get('section', 'home'),
-                        'site_alias': article.get('site_alias', 'sermitsiaq'),
-                        'instance': f'fake-{row_index}-{fake_idx}',
-                        'published_date': article.get('published_date'),
-                        'is_paywall': False,
-                        'paywall_class': '',
-                        'layout_type': '3_articles',
-                        'layout_data': {},
-                        'grid_size': 4,
-                        'display_order': row_index * 1000 + fake_idx,
-                        'row_index': row_index,
-                        'article_index_in_row': fake_idx,
-                        'image': None,
-                        'element_guid': f'fake-guid-{row_index}-{fake_idx}'
-                    }
-                    fake_articles.append(fake_article)
-                    print(f"      🎭 Created fake article {fake_idx + 1}: {fake_article['title']}")
-                
-                # Combine real + fake articles
-                all_articles = row_articles + fake_articles
+                # Chỉ dùng articles có sẵn, không tạo fake
                 layout_item['data'] = {
-                    'articles': all_articles
+                    'articles': row_articles
                 }
-                i += len(row_articles)  # Chỉ skip real articles, không skip fake
-                print(f"   ✅ Grouped {len(row_articles)} real + {len(fake_articles)} fake = 3 articles in row {row_index}")
+                i += len(row_articles)
+                print(f"   ✅ Grouped {len(row_articles)} articles in row {row_index} (expected 3, but only have {len(row_articles)})")
             else:
-                # Không có articles nào trong row, fallback
-                print(f"   ⚠️  Row {row_index} has no articles. Fallback to 1_full")
-                layout_item['layout_type'] = '1_full'
-                layout_item['data'] = {
-                    'article': article
-                }
+                # Không có articles nào trong row, skip layout item này
+                print(f"   ⚠️  Row {row_index} has no articles. Skipping this layout item.")
                 i += 1
+                continue  # Skip thêm layout item này vào result
             
         elif layout_type == '5_articles':
             # 5 articles 1 row (NUUK) - chỉ lấy articles trong cùng row
@@ -307,16 +282,18 @@ def prepare_home_layouts(articles):
                     'articles': row_articles[:5]
                 }
                 i += len(row_articles)
+            elif len(row_articles) > 0:
+                # Không đủ 5 articles, chỉ hiển thị những articles có sẵn
+                print(f"   ⚠️  Row {row_index} has only {len(row_articles)} articles for 5_articles layout, expected 5. Displaying available articles only.")
+                layout_item['data'] = {
+                    'articles': row_articles
+                }
+                i += len(row_articles)
             else:
-                # Không đủ 5 articles, fallback
-                layout_item['layout_type'] = '3_articles' if len(row_articles) >= 3 else ('2_articles' if len(row_articles) >= 2 else '1_full')
-                if layout_item['layout_type'] == '3_articles':
-                    layout_item['data'] = {'articles': row_articles[:3]}
-                elif layout_item['layout_type'] == '2_articles':
-                    layout_item['data'] = {'articles': row_articles[:2]}
-                else:
-                    layout_item['data'] = {'article': article}
-                i += len(row_articles) if row_articles else 1
+                # Không có articles nào, skip layout item
+                print(f"   ⚠️  Row {row_index} has no articles for 5_articles layout. Skipping this layout item.")
+                i += 1
+                continue
             
         elif layout_type == '1_special_bg':
             # 1 article với special background

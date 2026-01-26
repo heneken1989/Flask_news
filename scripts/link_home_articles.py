@@ -490,6 +490,202 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
         return stats
 
 
+def translate_slider_containers(language='da', dry_run=False, delay=0.5):
+    """
+    Translate slider/job_slider containers từ DA sang EN
+    
+    Args:
+        language: Language của source sliders (chỉ 'da' được support)
+        dry_run: Nếu True, chỉ log không translate
+        delay: Delay giữa các lần translate (giây)
+    
+    Returns:
+        dict: Statistics về quá trình translate
+    """
+    if language != 'da':
+        print(f"⚠️  Only 'da' language is supported for translating slider containers")
+        return {'translated': 0, 'skipped': 0, 'errors': 0}
+    
+    print(f"\n{'='*60}")
+    print(f"🌐 Translating slider containers from DA to EN")
+    print(f"{'='*60}")
+    print(f"   Dry run: {dry_run}")
+    
+    stats = {
+        'checked': 0,
+        'translated': 0,
+        'skipped': 0,
+        'errors': 0,
+        'error_list': []
+    }
+    
+    with app.app_context():
+        # Tìm DA sliders
+        da_sliders = Article.query.filter(
+            Article.layout_type.in_(['slider', 'job_slider']),
+            Article.section == 'home',
+            Article.language == 'da',
+            Article.is_home == True
+        ).order_by(Article.display_order).all()
+        
+        print(f"   Found {len(da_sliders)} DA slider containers to check")
+        
+        for idx, da_slider in enumerate(da_sliders, 1):
+            try:
+                stats['checked'] += 1
+                
+                print(f"   [{idx}/{len(da_sliders)}] Processing {da_slider.layout_type} (display_order={da_slider.display_order})")
+                
+                # Check xem đã có EN version chưa
+                en_slider = Article.query.filter_by(
+                    layout_type=da_slider.layout_type,
+                    section='home',
+                    language='en',
+                    display_order=da_slider.display_order,
+                    is_home=True
+                ).first()
+                
+                if en_slider:
+                    print(f"      ✅ EN version exists (ID: {en_slider.id}), checking if needs update...")
+                    
+                    # Check nếu EN slider title vẫn là DA
+                    en_title = en_slider.title
+                    da_title = da_slider.title
+                    
+                    needs_translation = (
+                        en_title == da_title or 
+                        not en_title or 
+                        (en_slider.layout_data and en_slider.layout_data.get('slider_title') == da_slider.layout_data.get('slider_title'))
+                    )
+                    
+                    if not needs_translation:
+                        print(f"         ✅ Already translated, skipping")
+                        stats['skipped'] += 1
+                        continue
+                    
+                    print(f"         🔄 Needs translation (title: '{en_title}' == '{da_title}')")
+                else:
+                    # Chưa có EN version → tạo mới
+                    print(f"      🌐 Creating EN slider container...")
+                    
+                    if not dry_run:
+                        en_slider = Article(
+                            published_url='',
+                            layout_type=da_slider.layout_type,
+                            display_order=da_slider.display_order,
+                            layout_data={},
+                            grid_size=da_slider.grid_size,
+                            section='home',
+                            is_home=True,
+                            language='en',
+                            title='',
+                            slug='',
+                            k5a_url=da_slider.k5a_url,
+                            site_alias='sermitsiaq',
+                            instance='',
+                            is_paywall=False,
+                            paywall_class=''
+                        )
+                        db.session.add(en_slider)
+                        db.session.flush()  # Get ID but don't commit yet
+                        print(f"         ✅ Created EN slider container (ID: {en_slider.id})")
+                
+                # Translate slider content
+                if not dry_run:
+                    try:
+                        from deep_translator import GoogleTranslator
+                        translator = GoogleTranslator(source='da', target='en')
+                        
+                        # Translate title
+                        if da_slider.title:
+                            en_slider.title = translator.translate(da_slider.title)
+                            print(f"         📝 Translated title: '{da_slider.title}' → '{en_slider.title}'")
+                        
+                        # Translate layout_data
+                        if da_slider.layout_data:
+                            en_layout_data = da_slider.layout_data.copy()
+                            
+                            # Translate slider_title
+                            if 'slider_title' in en_layout_data and en_layout_data['slider_title']:
+                                translated_title = translator.translate(en_layout_data['slider_title'])
+                                en_layout_data['slider_title'] = translated_title
+                                print(f"         📝 Translated slider_title: '{en_layout_data.get('slider_title')}' → '{translated_title}'")
+                                time.sleep(delay)
+                            
+                            # Translate header_link text (for job_slider)
+                            if 'header_link' in en_layout_data and en_layout_data['header_link']:
+                                header_link = en_layout_data['header_link']
+                                if isinstance(header_link, dict) and 'text' in header_link:
+                                    translated_text = translator.translate(header_link['text'])
+                                    en_layout_data['header_link']['text'] = translated_text
+                                    print(f"         📝 Translated header_link: '{header_link['text']}' → '{translated_text}'")
+                                    time.sleep(delay)
+                            
+                            # Translate slider_articles titles
+                            if 'slider_articles' in en_layout_data and isinstance(en_layout_data['slider_articles'], list):
+                                translated_articles = []
+                                for article in en_layout_data['slider_articles']:
+                                    if isinstance(article, dict):
+                                        article_copy = article.copy()
+                                        # Translate title
+                                        if 'title' in article_copy and article_copy['title']:
+                                            article_copy['title'] = translator.translate(article_copy['title'])
+                                            time.sleep(delay)
+                                        # Translate kicker if exists
+                                        if 'kicker' in article_copy and article_copy['kicker']:
+                                            article_copy['kicker'] = translator.translate(article_copy['kicker'])
+                                            time.sleep(delay)
+                                        translated_articles.append(article_copy)
+                                
+                                en_layout_data['slider_articles'] = translated_articles
+                                print(f"         📝 Translated {len(translated_articles)} slider articles")
+                            
+                            en_slider.layout_data = en_layout_data
+                        
+                        db.session.commit()
+                        stats['translated'] += 1
+                        print(f"      ✅ Translated and saved EN slider container")
+                        
+                    except Exception as e:
+                        stats['errors'] += 1
+                        stats['error_list'].append({
+                            'da_id': da_slider.id,
+                            'error': str(e)
+                        })
+                        print(f"      ❌ Error translating slider: {e}")
+                        db.session.rollback()
+                else:
+                    # Dry run
+                    stats['translated'] += 1
+                    print(f"      ⚠️  Would translate slider (dry run)")
+            
+            except Exception as e:
+                stats['errors'] += 1
+                stats['error_list'].append({
+                    'da_id': da_slider.id if 'da_slider' in locals() else 'N/A',
+                    'error': str(e)
+                })
+                print(f"   [{idx}/{len(da_sliders)}] ❌ Error: {e}")
+                if not dry_run:
+                    db.session.rollback()
+                continue
+        
+        # Print summary
+        print(f"\n{'='*60}")
+        print(f"✅ Slider translation completed")
+        print(f"{'='*60}")
+        print(f"   Sliders checked: {stats['checked']}")
+        print(f"   Sliders translated: {stats['translated']}")
+        print(f"   Sliders skipped: {stats['skipped']}")
+        print(f"   Errors: {stats['errors']}")
+        if stats['error_list']:
+            print(f"\n   First 5 errors:")
+            for error in stats['error_list'][:5]:
+                print(f"      - DA ID {error['da_id']}: {error['error']}")
+        
+        return stats
+
+
 def create_missing_en_articles(layout_items, language='da', dry_run=False, delay=0.5):
     """
     Check và tạo EN articles cho các DA articles có trong layout chưa có EN version
@@ -903,8 +1099,19 @@ Examples:
             delay=0.5
         )
         
+        # Translate slider containers
+        step_num_slider = str(int(step_num) + 1) if step_num.isdigit() else "3a"
+        print(f"\n{'='*60}")
+        print(f"🎠 Step {step_num_slider}: Translating slider containers")
+        print(f"{'='*60}")
+        translate_slider_containers(
+            language=args.language,
+            dry_run=args.dry_run,
+            delay=0.5
+        )
+        
         # Link EN articles với layout (sau khi đã tạo xong)
-        step_num = "4" if should_process_all else "3"
+        step_num = "5" if should_process_all else "4"
         print(f"\n{'='*60}")
         print(f"🔗 Step {step_num}: Linking EN articles with layout")
         print(f"{'='*60}")
@@ -926,8 +1133,19 @@ Examples:
             delay=0.5
         )
         
+        # Translate slider containers (dry run)
+        step_num_slider = str(int(step_num) + 1) if step_num.isdigit() else "3a"
+        print(f"\n{'='*60}")
+        print(f"🎠 Step {step_num_slider}: Would translate slider containers (dry run)")
+        print(f"{'='*60}")
+        translate_slider_containers(
+            language=args.language,
+            dry_run=True,
+            delay=0.5
+        )
+        
         # Link EN articles với layout (dry run)
-        step_num = "4" if should_process_all else "3"
+        step_num = "5" if should_process_all else "4"
         print(f"\n{'='*60}")
         print(f"🔗 Step {step_num}: Would link EN articles with layout (dry run)")
         print(f"{'='*60}")
@@ -948,7 +1166,7 @@ Examples:
     )
     
     if should_generate_sitemaps:
-        step_num = "5" if should_process_all else "4" if should_create_en else "2"
+        step_num = "6" if should_process_all else "5" if should_create_en else "2"
         print(f"\n{'='*60}")
         print(f"🗺️  Step {step_num}: Generating sitemaps")
         print(f"{'='*60}")
