@@ -10,6 +10,10 @@ Group=www-data
 WorkingDirectory=/var/www/flask/nococo
 Environment="PATH=/var/www/flask/nococo/venv/bin:/usr/local/bin:/usr/bin:/bin"
 Environment="PYTHONPATH=/var/www/flask/nococo"
+# Tạo thư mục downloaded_files trước khi chạy (SeleniumBase cần)
+ExecStartPre=/bin/mkdir -p /var/www/flask/nococo/downloaded_files
+ExecStartPre=/bin/chown -R www-data:www-data /var/www/flask/nococo/downloaded_files
+ExecStartPre=/bin/chmod -R 755 /var/www/flask/nococo/downloaded_files
 ExecStart=/var/www/flask/nococo/venv/bin/python /var/www/flask/nococo/scripts/crawl_sections_multi_language.py --section all
 StandardOutput=journal
 StandardError=journal
