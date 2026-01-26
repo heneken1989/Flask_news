@@ -1,7 +1,7 @@
 {
   "language": "da",
-  "crawled_at": "2026-01-26T16:44:25.372073",
-  "total_items": 224,
+  "crawled_at": "2026-01-26T18:58:05.231082",
+  "total_items": 226,
   "layout_items": [
     {
       "published_url": "https://www.sermitsiaq.ag/kultur/gronlandsk-mad-som-medicin/2327563",
@@ -17,20 +17,64 @@
             "text": "Grønlandsk mad som medicin\n",
             "color_class": null
           }
-        ]
+        ],
+        "has_bg_color": true,
+        "content_classes": "content bg-secondary color_mobile_bg-secondary border-bg-secondary mobile_border-bg-secondary border_width_14 border_width_mobile_14 hasContentPadding mobile-hasContentPadding hasBorder mobile-hasBorder"
       },
       "element_guid": "eadde19c-3555-448a-a7f3-77bf8174bdf0",
       "k5a_url": "https://www.sermitsiaq.ag/a/2327563",
       "title": "Grønlandsk mad som medicin"
     },
     {
-      "published_url": "https://www.sermitsiaq.ag/erhverv/nye-boreaktiviteter-ved-ivittuut-og-gronnedal/2333035",
-      "layout_type": "1_full",
+      "published_url": "https://www.sermitsiaq.ag/sport/fire-langrendslobere-skal-til-junior-vm/2335195",
+      "layout_type": "3_articles",
       "display_order": 2000,
       "row_index": 2,
       "article_index_in_row": 0,
       "total_rows": 128,
-      "grid_size": 12,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Fire langrendsløbere skal til Junior-VM\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "5c2ba683-b4af-4c75-9fd6-3edca7650030",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2335195",
+      "title": "Fire langrendsløbere skal til Junior-VM"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/forer-anholdt-for-spirituskorsel-efter-faerdselsuheld/2335225",
+      "layout_type": "3_articles",
+      "display_order": 2001,
+      "row_index": 2,
+      "article_index_in_row": 1,
+      "total_rows": 128,
+      "grid_size": 4,
+      "layout_data": {
+        "kicker_below": "DØGNRAPPORT",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "Fører anholdt for spirituskørsel efter færdselsuheld\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "cd5db245-e01f-43fa-b36f-5f3dd92245bb",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2335225",
+      "title": "Fører anholdt for spirituskørsel efter færdselsuheld"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/erhverv/nye-boreaktiviteter-ved-ivittuut-og-gronnedal/2333035",
+      "layout_type": "3_articles",
+      "display_order": 2002,
+      "row_index": 2,
+      "article_index_in_row": 2,
+      "total_rows": 128,
+      "grid_size": 4,
       "layout_data": {
         "title_parts": [
           {
@@ -165,8 +209,8 @@
             "url": "/samfund/usas-selvbillede-og-misforstaelsen-af-gronland/2332756"
           },
           {
-            "title": "Kreml: Grønland er strategisk vigtig for sikkerheden",
-            "url": "/samfund/kreml-gronland-er-strategisk-vigtig-for-sikkerheden/2326415"
+            "title": "Ny nationaldragtsyerske",
+            "url": "/samfund/ny-nationaldragtsyerske/2328292"
           }
         ]
       },
@@ -192,8 +236,8 @@
           "url": "/samfund/usas-selvbillede-og-misforstaelsen-af-gronland/2332756"
         },
         {
-          "title": "Kreml: Grønland er strategisk vigtig for sikkerheden",
-          "url": "/samfund/kreml-gronland-er-strategisk-vigtig-for-sikkerheden/2326415"
+          "title": "Ny nationaldragtsyerske",
+          "url": "/samfund/ny-nationaldragtsyerske/2328292"
         }
       ]
     },
@@ -340,6 +384,34 @@
         "slider_title": "NYHEDER",
         "slider_articles": [
           {
+            "url": "https://www.sermitsiaq.ag/sport/fire-langrendslobere-skal-til-junior-vm/2335195",
+            "title": "Fire langrendsløbere skal til Junior-VM",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2335199.jpg?imageId=2335199&panox=0.00&panoy=39.58&panow=100.00&panoh=35.83&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=318",
+              "alt": "",
+              "width": "265",
+              "height": "159"
+            },
+            "is_paywall": false,
+            "section": "sport",
+            "position": 0
+          },
+          {
+            "url": "https://www.sermitsiaq.ag/samfund/forer-anholdt-for-spirituskorsel-efter-faerdselsuheld/2335225",
+            "title": "Fører anholdt for spirituskørsel efter færdselsuheld",
+            "kicker": "DØGNRAPPORT",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2259306.jpg?imageId=2259306&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=318",
+              "alt": "",
+              "width": "265",
+              "height": "159"
+            },
+            "is_paywall": false,
+            "section": "samfund",
+            "position": 1
+          },
+          {
             "url": "https://www.sermitsiaq.ag/kultur/gronlandsk-mad-som-medicin/2327563",
             "title": "Grønlandsk mad som medicin",
             "kicker": "",
@@ -351,7 +423,7 @@
             },
             "is_paywall": true,
             "section": "kultur",
-            "position": 0
+            "position": 2
           },
           {
             "url": "https://www.sermitsiaq.ag/samfund/obama-drab-i-minneapolis-bor-vaere-wakeupcall-for-alle/2335211",
@@ -365,7 +437,7 @@
             },
             "is_paywall": false,
             "section": "samfund",
-            "position": 1
+            "position": 3
           },
           {
             "url": "https://www.sermitsiaq.ag/erhverv/nye-boreaktiviteter-ved-ivittuut-og-gronnedal/2333035",
@@ -379,7 +451,7 @@
             },
             "is_paywall": true,
             "section": "erhverv",
-            "position": 2
+            "position": 4
           },
           {
             "url": "https://www.sermitsiaq.ag/samfund/ny-nationaldragtsyerske/2328292",
@@ -393,7 +465,7 @@
             },
             "is_paywall": false,
             "section": "samfund",
-            "position": 3
+            "position": 5
           },
           {
             "url": "https://www.sermitsiaq.ag/kultur/debut-ep-fra-max-5-tassa/2331684",
@@ -407,7 +479,7 @@
             },
             "is_paywall": false,
             "section": "kultur",
-            "position": 4
+            "position": 6
           },
           {
             "url": "https://www.sermitsiaq.ag/samfund/usas-selvbillede-og-misforstaelsen-af-gronland/2332756",
@@ -421,7 +493,7 @@
             },
             "is_paywall": true,
             "section": "samfund",
-            "position": 5
+            "position": 7
           },
           {
             "url": "https://www.sermitsiaq.ag/samfund/kreml-gronland-er-strategisk-vigtig-for-sikkerheden/2326415",
@@ -435,7 +507,7 @@
             },
             "is_paywall": false,
             "section": "samfund",
-            "position": 6
+            "position": 8
           },
           {
             "url": "https://www.sermitsiaq.ag/samfund/hvorfor-horer-vi-aldrig-om-vikinger-fra-finland/2333707",
@@ -443,34 +515,6 @@
             "kicker": "",
             "image": {
               "src": "https://image.sermitsiaq.ag/2333714.jpg?imageId=2333714&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=51.07&heighty=0.00&heightw=34.76&heighth=100.00&width=1058&height=688&format=webp&width=530&height=318",
-              "alt": "",
-              "width": "265",
-              "height": "159"
-            },
-            "is_paywall": true,
-            "section": "samfund",
-            "position": 7
-          },
-          {
-            "url": "https://www.sermitsiaq.ag/samfund/stromafbrydelse-faerdselsuheld-og-spritkorsel/2335134",
-            "title": "Strømafbrydelse, færdselsuheld og spritkørsel",
-            "kicker": "DØGNRAPPORT",
-            "image": {
-              "src": "https://image.sermitsiaq.ag/2325276.jpg?imageId=2325276&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=318",
-              "alt": "",
-              "width": "265",
-              "height": "159"
-            },
-            "is_paywall": false,
-            "section": "samfund",
-            "position": 8
-          },
-          {
-            "url": "https://www.sermitsiaq.ag/samfund/ullorissat-er-kommet-pa-finansloven/2333080",
-            "title": "Ullorissat er kommet på finansloven",
-            "kicker": "",
-            "image": {
-              "src": "https://image.sermitsiaq.ag/2333084.jpg?imageId=2333084&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=318",
               "alt": "",
               "width": "265",
               "height": "159"
@@ -490,6 +534,16 @@
       "title": "NYHEDER",
       "slider_title": "NYHEDER",
       "slider_articles": [
+        {
+          "published_url": "https://www.sermitsiaq.ag/sport/fire-langrendslobere-skal-til-junior-vm/2335195",
+          "title": "Fire langrendsløbere skal til Junior-VM",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sermitsiaq.ag/samfund/forer-anholdt-for-spirituskorsel-efter-faerdselsuheld/2335225",
+          "title": "Fører anholdt for spirituskørsel efter færdselsuheld",
+          "image_data": {}
+        },
         {
           "published_url": "https://www.sermitsiaq.ag/kultur/gronlandsk-mad-som-medicin/2327563",
           "title": "Grønlandsk mad som medicin",
@@ -529,16 +583,6 @@
           "published_url": "https://www.sermitsiaq.ag/samfund/hvorfor-horer-vi-aldrig-om-vikinger-fra-finland/2333707",
           "title": "Hvorfor hører vi aldrig om vikinger fra Finland?",
           "image_data": {}
-        },
-        {
-          "published_url": "https://www.sermitsiaq.ag/samfund/stromafbrydelse-faerdselsuheld-og-spritkorsel/2335134",
-          "title": "Strømafbrydelse, færdselsuheld og spritkørsel",
-          "image_data": {}
-        },
-        {
-          "published_url": "https://www.sermitsiaq.ag/samfund/ullorissat-er-kommet-pa-finansloven/2333080",
-          "title": "Ullorissat er kommet på finansloven",
-          "image_data": {}
         }
       ]
     },
@@ -560,6 +604,14 @@
         "list_title": "SENESTE",
         "list_items": [
           {
+            "title": "Fire langrendsløbere skal til Junior-VM",
+            "url": "/sport/fire-langrendslobere-skal-til-junior-vm/2335195"
+          },
+          {
+            "title": "Fører anholdt for spirituskørsel efter færdselsuheld",
+            "url": "/samfund/forer-anholdt-for-spirituskorsel-efter-faerdselsuheld/2335225"
+          },
+          {
             "title": "Grønlandsk mad som medicin",
             "url": "/kultur/gronlandsk-mad-som-medicin/2327563"
           },
@@ -574,14 +626,6 @@
           {
             "title": "Ny nationaldragtsyerske",
             "url": "/samfund/ny-nationaldragtsyerske/2328292"
-          },
-          {
-            "title": "Debut-EP fra Max 5 Tassa",
-            "url": "/kultur/debut-ep-fra-max-5-tassa/2331684"
-          },
-          {
-            "title": "USA’s selvbillede – og misforståelsen af Grønland",
-            "url": "/samfund/usas-selvbillede-og-misforstaelsen-af-gronland/2332756"
           }
         ]
       },
@@ -590,6 +634,14 @@
       "title": "To midlertidigt militærområder etableres",
       "list_title": "SENESTE",
       "list_items": [
+        {
+          "title": "Fire langrendsløbere skal til Junior-VM",
+          "url": "/sport/fire-langrendslobere-skal-til-junior-vm/2335195"
+        },
+        {
+          "title": "Fører anholdt for spirituskørsel efter færdselsuheld",
+          "url": "/samfund/forer-anholdt-for-spirituskorsel-efter-faerdselsuheld/2335225"
+        },
         {
           "title": "Grønlandsk mad som medicin",
           "url": "/kultur/gronlandsk-mad-som-medicin/2327563"
@@ -605,14 +657,6 @@
         {
           "title": "Ny nationaldragtsyerske",
           "url": "/samfund/ny-nationaldragtsyerske/2328292"
-        },
-        {
-          "title": "Debut-EP fra Max 5 Tassa",
-          "url": "/kultur/debut-ep-fra-max-5-tassa/2331684"
-        },
-        {
-          "title": "USA’s selvbillede – og misforståelsen af Grønland",
-          "url": "/samfund/usas-selvbillede-og-misforstaelsen-af-gronland/2332756"
         }
       ]
     },
@@ -713,6 +757,20 @@
         "slider_title": "Se alle jobs",
         "slider_articles": [
           {
+            "url": "https://www.sjob.gl/job-dk/sagsbehandler-til-areal-bygningsmyndigheden/2335275",
+            "title": "Sagsbehandler til Areal- & Bygningsmyndigheden",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sjob.gl/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "job dk",
+            "position": 0
+          },
+          {
             "url": "https://www.sjob.gl/job-dk/faglaerer-okonomi/2334900",
             "title": "Faglærer Økonomi",
             "kicker": "",
@@ -724,7 +782,7 @@
             },
             "is_paywall": false,
             "section": "job dk",
-            "position": 0
+            "position": 1
           },
           {
             "url": "https://www.sjob.gl/job-dk/ressourceperson-til-atuarfik-inussuk/2334878",
@@ -738,7 +796,7 @@
             },
             "is_paywall": false,
             "section": "job dk",
-            "position": 1
+            "position": 2
           },
           {
             "url": "https://www.sjob.gl/job-dk/tikiusaaq-soger-en-paedagog/2334860",
@@ -752,7 +810,7 @@
             },
             "is_paywall": false,
             "section": "job dk",
-            "position": 2
+            "position": 3
           },
           {
             "url": "https://www.sjob.gl/job-dk/kti-jern-og-metalskolen-i-nuuk-soger-en-vaerksteds-assistent-/-skole-praktik-instruktor/2334844",
@@ -766,7 +824,7 @@
             },
             "is_paywall": false,
             "section": "job dk",
-            "position": 3
+            "position": 4
           },
           {
             "url": "https://www.sjob.gl/job-dk/daginstitution-tikiusaaq-soger-stottepersoner/2334824",
@@ -780,7 +838,7 @@
             },
             "is_paywall": false,
             "section": "job dk",
-            "position": 4
+            "position": 5
           },
           {
             "url": "https://www.sjob.gl/job-dk/atuarfik-inussuk-soger-stottepersoner/2334803",
@@ -794,7 +852,7 @@
             },
             "is_paywall": false,
             "section": "job dk",
-            "position": 5
+            "position": 6
           },
           {
             "url": "https://www.sjob.gl/job-dk/socialradgiver-til-heldagsskolen/2334787",
@@ -808,7 +866,7 @@
             },
             "is_paywall": false,
             "section": "job dk",
-            "position": 6
+            "position": 7
           },
           {
             "url": "https://www.sjob.gl/job-dk/heldagsskolen-soger-stottepersoner/2334771",
@@ -822,25 +880,11 @@
             },
             "is_paywall": false,
             "section": "job dk",
-            "position": 7
+            "position": 8
           },
           {
             "url": "https://www.sjob.gl/job-dk/heldagsskolen-soger-kaffedame/2334746",
             "title": "Heldagsskolen søger kaffedame",
-            "kicker": "",
-            "image": {
-              "src": "https://image.sjob.gl/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
-              "alt": "",
-              "width": "265",
-              "height": "172"
-            },
-            "is_paywall": false,
-            "section": "job dk",
-            "position": 8
-          },
-          {
-            "url": "https://www.sjob.gl/job-dk/atuarfik-inussuk-soger-stottepersoner/2334730",
-            "title": "Atuarfik Inussuk søger støttepersoner",
             "kicker": "",
             "image": {
               "src": "https://image.sjob.gl/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
@@ -885,6 +929,11 @@
       "slider_title": "Se alle jobs",
       "slider_articles": [
         {
+          "published_url": "https://www.sjob.gl/job-dk/sagsbehandler-til-areal-bygningsmyndigheden/2335275",
+          "title": "Sagsbehandler til Areal- & Bygningsmyndigheden",
+          "image_data": {}
+        },
+        {
           "published_url": "https://www.sjob.gl/job-dk/faglaerer-okonomi/2334900",
           "title": "Faglærer Økonomi",
           "image_data": {}
@@ -927,11 +976,6 @@
         {
           "published_url": "https://www.sjob.gl/job-dk/heldagsskolen-soger-kaffedame/2334746",
           "title": "Heldagsskolen søger kaffedame",
-          "image_data": {}
-        },
-        {
-          "published_url": "https://www.sjob.gl/job-dk/atuarfik-inussuk-soger-stottepersoner/2334730",
-          "title": "Atuarfik Inussuk søger støttepersoner",
           "image_data": {}
         }
       ]
@@ -1000,6 +1044,10 @@
         "list_title": "NUUK",
         "list_items": [
           {
+            "title": "Fører anholdt for spirituskørsel efter færdselsuheld",
+            "url": "/samfund/forer-anholdt-for-spirituskorsel-efter-faerdselsuheld/2335225"
+          },
+          {
             "title": "Strømafbrydelse, færdselsuheld og spritkørsel",
             "url": "/samfund/stromafbrydelse-faerdselsuheld-og-spritkorsel/2335134"
           },
@@ -1018,10 +1066,6 @@
           {
             "title": "Soldater i gaderne i Nuuk",
             "url": "/samfund/soldater-i-gaderne-i-nuuk/2333100"
-          },
-          {
-            "title": "Mette Frederiksen i Nuuk: Vil vise opbakning til den grønlandske befolkning",
-            "url": "/samfund/mette-frederiksen-i-nuuk-vil-vise-opbakning-til-den-gronlandske-befolkning/2334524"
           }
         ]
       },
@@ -1030,6 +1074,10 @@
       "title": "Fra lille idé til landsdækkende vintertradition",
       "list_title": "NUUK",
       "list_items": [
+        {
+          "title": "Fører anholdt for spirituskørsel efter færdselsuheld",
+          "url": "/samfund/forer-anholdt-for-spirituskorsel-efter-faerdselsuheld/2335225"
+        },
         {
           "title": "Strømafbrydelse, færdselsuheld og spritkørsel",
           "url": "/samfund/stromafbrydelse-faerdselsuheld-og-spritkorsel/2335134"
@@ -1049,10 +1097,6 @@
         {
           "title": "Soldater i gaderne i Nuuk",
           "url": "/samfund/soldater-i-gaderne-i-nuuk/2333100"
-        },
-        {
-          "title": "Mette Frederiksen i Nuuk: Vil vise opbakning til den grønlandske befolkning",
-          "url": "/samfund/mette-frederiksen-i-nuuk-vil-vise-opbakning-til-den-gronlandske-befolkning/2334524"
         }
       ]
     },
@@ -1123,9 +1167,22 @@
       "title": "Bamser på briksen"
     },
     {
-      "published_url": "https://www.sermitsiaq.ag/samfund/stromafbrydelse-faerdselsuheld-og-spritkorsel/2335134",
+      "published_url": "https://www.sermitsiaq.ag/samfund/forer-anholdt-for-spirituskorsel-efter-faerdselsuheld/2335225",
       "layout_type": "5_articles",
       "display_order": 23000,
+      "row_index": -1,
+      "article_index_in_row": -1,
+      "total_rows": 0,
+      "grid_size": 6,
+      "layout_data": {},
+      "element_guid": "",
+      "k5a_url": "",
+      "title": "Fører anholdt for spirituskørsel efter færdselsuheld"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/stromafbrydelse-faerdselsuheld-og-spritkorsel/2335134",
+      "layout_type": "5_articles",
+      "display_order": 23001,
       "row_index": -1,
       "article_index_in_row": -1,
       "total_rows": 0,
@@ -1138,7 +1195,7 @@
     {
       "published_url": "https://www.sermitsiaq.ag/samfund/kraftig-vinde-skyld-i-stromsvigt-i-nuuk-stromforsyning-er-blevet-genetableret/2335099",
       "layout_type": "5_articles",
-      "display_order": 23001,
+      "display_order": 23002,
       "row_index": -1,
       "article_index_in_row": -1,
       "total_rows": 0,
@@ -1151,7 +1208,7 @@
     {
       "published_url": "https://www.sermitsiaq.ag/samfund/to-midlertidigt-militaeromrader-etableres/2335027",
       "layout_type": "5_articles",
-      "display_order": 23002,
+      "display_order": 23003,
       "row_index": -1,
       "article_index_in_row": -1,
       "total_rows": 0,
@@ -1164,19 +1221,6 @@
     {
       "published_url": "https://www.sermitsiaq.ag/samfund/mette-frederiksen-det-er-en-alvorlig-situation/2334931",
       "layout_type": "5_articles",
-      "display_order": 23003,
-      "row_index": -1,
-      "article_index_in_row": -1,
-      "total_rows": 0,
-      "grid_size": 6,
-      "layout_data": {},
-      "element_guid": "",
-      "k5a_url": "",
-      "title": "Mette Frederiksen: Det er en alvorlig situation"
-    },
-    {
-      "published_url": "https://www.sermitsiaq.ag/samfund/soldater-i-gaderne-i-nuuk/2333100",
-      "layout_type": "5_articles",
       "display_order": 23004,
       "row_index": -1,
       "article_index_in_row": -1,
@@ -1185,7 +1229,7 @@
       "layout_data": {},
       "element_guid": "",
       "k5a_url": "",
-      "title": "Soldater i gaderne i Nuuk"
+      "title": "Mette Frederiksen: Det er en alvorlig situation"
     },
     {
       "published_url": "https://www.sermitsiaq.ag/erhverv/for-tidligt-at-sige-om-trumps-toldregime-vil-stoppe-royal-greenlands-usa-eksport/2333365",

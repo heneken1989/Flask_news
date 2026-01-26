@@ -474,40 +474,44 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                         if not was_home:
                             needs_update = True  # Cần enable is_home
                         
-                        # Check layout_data có thay đổi không
+                        # ⚠️ QUAN TRỌNG: Check layout_data có thay đổi không
+                        # Chỉ merge các field metadata, KHÔNG ghi đè các field đã được translate
                         existing_layout_data = matched_article.layout_data or {}
-                        new_layout_data = {
-                            'row_index': layout_item.get('row_index', -1),
-                            'article_index_in_row': layout_item.get('article_index_in_row', -1),
-                            'total_rows': layout_item.get('total_rows', 0)
-                        }
                         
-                        # Merge với data từ layout_item nếu có
-                        if layout_item.get('layout_data'):
-                            layout_item_data = layout_item['layout_data'].copy()
-                            layout_item_data.pop('list_items', None)
-                            layout_item_data.pop('list_title', None)
-                            new_layout_data.update(layout_item_data)
+                        # Chỉ merge các field metadata từ layout_item (không ghi đè field đã translate)
+                        # Các field đã được translate: kicker_below, kicker_floating, title_parts, list_items, list_title
+                        metadata_fields = ['row_index', 'article_index_in_row', 'total_rows', 'kicker_below_classes']
+                        layout_data_changed = False
                         
-                        # Thêm list_items và list_title cho 1_with_list_left/right
-                        if layout_type in ['1_with_list_left', '1_with_list_right']:
-                            if list_title:
-                                new_layout_data['list_title'] = list_title
-                            if list_items:
-                                new_layout_data['list_items'] = list_items
+                        # Check và merge chỉ các field metadata
+                        for field in metadata_fields:
+                            layout_value = layout_item.get(field) or (layout_item.get('layout_data', {}).get(field) if layout_item.get('layout_data') else None)
+                            existing_value = existing_layout_data.get(field)
+                            
+                            if layout_value is not None and layout_value != existing_value:
+                                existing_layout_data[field] = layout_value
+                                layout_data_changed = True
                         
-                        # Merge với existing data
-                        merged_layout_data = existing_layout_data.copy()
-                        for key, value in new_layout_data.items():
-                            if key in ['list_items', 'list_title']:
-                                if value:
-                                    merged_layout_data[key] = value
-                            else:
-                                merged_layout_data[key] = value
+                        # ⚠️ QUAN TRỌNG: Với 1_with_list_left/right và EN articles:
+                        # - KHÔNG update list_items và list_title từ layout file (vì layout file là DA)
+                        # - Chỉ update nếu là DA articles (language='da')
+                        # - EN articles đã có list_items và list_title đã được translate từ translate_article()
+                        if layout_type in ['1_with_list_left', '1_with_list_right'] and language == 'da':
+                            # Chỉ update cho DA articles
+                            if list_title and list_title != existing_layout_data.get('list_title'):
+                                existing_layout_data['list_title'] = list_title
+                                layout_data_changed = True
+                            if list_items and list_items != existing_layout_data.get('list_items'):
+                                existing_layout_data['list_items'] = list_items
+                                layout_data_changed = True
+                        # Với EN articles: giữ nguyên list_items và list_title đã được translate
                         
                         # Check nếu layout_data có thay đổi
-                        if existing_layout_data != merged_layout_data:
+                        if layout_data_changed:
                             needs_update = True
+                        
+                        # merged_layout_data = existing_layout_data (đã được update ở trên)
+                        merged_layout_data = existing_layout_data
                         
                         # Update metadata chỉ khi cần
                         if not dry_run and needs_update:
