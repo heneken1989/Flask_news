@@ -366,6 +366,7 @@ def crawl_home_layout(home_url='https://www.sermitsiaq.ag', language='da',
                                 continue
                             
                             # Update existing article: set is_home=True, section='home'
+                            # ⚠️ KHÔNG set is_temp=True khi update (chỉ set khi tạo mới)
                             if not existing.is_home or existing.section != 'home':
                                 existing.is_home = True
                                 existing.section = 'home'
@@ -638,6 +639,11 @@ def crawl_home_layout(home_url='https://www.sermitsiaq.ag', language='da',
                             # ⚠️ QUAN TRỌNG: Tất cả articles từ home page đều có section='home' và is_home=True
                             
                             # Create Article record
+                            # ⚠️ QUAN TRỌNG: Set is_temp=True cho 1_article, 2_article, 3_article
+                            # (cần crawl detail trước khi show trên home)
+                            layout_type_final = layout_type or source
+                            is_temp_value = layout_type_final in ['1_article', '2_articles', '3_articles']
+                            
                             new_article = Article(
                                 element_guid=article_data.get('element_guid', '') or article_info.get('element_guid', ''),
                                 title=article_data.get('title', article_title),
@@ -654,8 +660,9 @@ def crawl_home_layout(home_url='https://www.sermitsiaq.ag', language='da',
                                 language=language,
                                 original_language=language,
                                 is_home=True,  # ⚠️ Tất cả articles từ home page có is_home=True
-                                layout_type=layout_type or source,
-                                display_order=article_info.get('display_order', 0)
+                                layout_type=layout_type_final,
+                                display_order=article_info.get('display_order', 0),
+                                is_temp=is_temp_value  # ⚠️ Set is_temp=True cho 1_article, 2_article, 3_article
                             )
                             
                             db.session.add(new_article)

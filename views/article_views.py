@@ -298,7 +298,8 @@ def home_test():
         try:
             article_objects = get_home_articles_by_language(
                 language=current_language,
-                limit=None
+                limit=None,
+                exclude_temp=True  # ⚠️ Chỉ lấy articles đã hoàn thành (is_temp=False)
             )
             print(f"   📚 Query returned {len(article_objects)} articles (before filter)")
             
@@ -460,11 +461,12 @@ def index():
         print(f"   🔗 Linking articles with layout...")
         
         # Pre-fetch articles - chỉ lấy articles có is_home=True cho home page
-        # ⚠️ QUAN TRỌNG: Chỉ lấy articles đã được link vào home (is_home=True)
+        # ⚠️ QUAN TRỌNG: Chỉ lấy articles đã được link vào home (is_home=True) và is_temp=False
         all_articles = Article.query.filter(
             Article.published_url.isnot(None),
             Article.published_url != '',
-            Article.is_home == True  # Chỉ lấy articles đã được link vào home
+            Article.is_home == True,  # Chỉ lấy articles đã được link vào home
+            Article.is_temp == False  # ⚠️ Chỉ lấy articles đã hoàn thành (đã crawl detail)
         ).all()
         
         articles_map = {}
@@ -711,7 +713,8 @@ def index():
         try:
             article_objects = get_home_articles_by_language(
                 language=current_language,
-                limit=None
+                limit=None,
+                exclude_temp=True  # ⚠️ Chỉ lấy articles đã hoàn thành (is_temp=False)
             )
             print(f"   📚 Query returned {len(article_objects)} articles (before filter)")
             

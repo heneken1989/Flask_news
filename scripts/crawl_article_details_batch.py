@@ -1108,11 +1108,50 @@ def crawl_all(language=None, section=None, limit=None, headless=True, delay=2, a
         if i < len(articles):
             time.sleep(delay)
     
-    print(f"\n{'='*60}")
-    print(f"✅ Crawl hoàn thành!")
-    print(f"   Success: {success_count}/{len(articles)}")
-    print(f"   Failed: {fail_count}/{len(articles)}")
-    print(f"{'='*60}\n")
+        print(f"\n{'='*60}")
+        print(f"✅ Crawl hoàn thành!")
+        print(f"   Success: {success_count}/{len(articles)}")
+        print(f"   Failed: {fail_count}/{len(articles)}")
+        print(f"{'='*60}\n")
+        
+        # Sau khi crawl xong, chuyển tất cả articles có is_temp=True → is_temp=False
+        print(f"\n{'='*60}")
+        print(f"🔄 Updating is_temp=False for articles with details crawled")
+        print(f"{'='*60}")
+        
+        try:
+            # Tìm tất cả articles có is_temp=True và đã có ArticleDetail
+            temp_articles = Article.query.filter_by(is_temp=True).all()
+            updated_count = 0
+            
+            for article in temp_articles:
+                # Check xem đã có ArticleDetail chưa
+                if article.published_url:
+                    existing_detail = ArticleDetail.query.filter_by(
+                        published_url=article.published_url
+                    ).first()
+                    
+                    if existing_detail:
+                        # Đã có detail → set is_temp=False
+                        article.is_temp = False
+                        updated_count += 1
+            
+            if updated_count > 0:
+                db.session.commit()
+                print(f"   ✅ Updated {updated_count} articles: is_temp=True → is_temp=False")
+            else:
+                print(f"   ℹ️  No articles to update (all temp articles still missing details)")
+            
+            # Đếm số articles vẫn còn is_temp=True
+            remaining_temp = Article.query.filter_by(is_temp=True).count()
+            if remaining_temp > 0:
+                print(f"   ⚠️  {remaining_temp} articles still have is_temp=True (details not crawled yet)")
+            
+        except Exception as e:
+            print(f"   ❌ Error updating is_temp: {e}")
+            import traceback
+            traceback.print_exc()
+            db.session.rollback()
     
     # Tự động translate article_detail DA sang EN sau khi crawl xong
     if auto_translate and crawled_da_details:
@@ -1166,6 +1205,45 @@ def crawl_all(language=None, section=None, limit=None, headless=True, delay=2, a
         print(f"{'='*60}\n")
     elif auto_translate and not crawled_da_details:
         print("\nℹ️  Không có article_detail DA nào để translate (tất cả đều là KL hoặc không crawl được)\n")
+    
+    # Sau khi crawl xong, chuyển tất cả articles có is_temp=True → is_temp=False (nếu đã có ArticleDetail)
+    print(f"\n{'='*60}")
+    print(f"🔄 Updating is_temp=False for articles with details crawled")
+    print(f"{'='*60}")
+    
+    try:
+        # Tìm tất cả articles có is_temp=True và đã có ArticleDetail
+        temp_articles = Article.query.filter_by(is_temp=True).all()
+        updated_count = 0
+        
+        for article in temp_articles:
+            # Check xem đã có ArticleDetail chưa
+            if article.published_url:
+                existing_detail = ArticleDetail.query.filter_by(
+                    published_url=article.published_url
+                ).first()
+                
+                if existing_detail:
+                    # Đã có detail → set is_temp=False
+                    article.is_temp = False
+                    updated_count += 1
+        
+        if updated_count > 0:
+            db.session.commit()
+            print(f"   ✅ Updated {updated_count} articles: is_temp=True → is_temp=False")
+        else:
+            print(f"   ℹ️  No articles to update (all temp articles still missing details)")
+        
+        # Đếm số articles vẫn còn is_temp=True
+        remaining_temp = Article.query.filter_by(is_temp=True).count()
+        if remaining_temp > 0:
+            print(f"   ⚠️  {remaining_temp} articles still have is_temp=True (details not crawled yet)")
+        
+    except Exception as e:
+        print(f"   ❌ Error updating is_temp: {e}")
+        import traceback
+        traceback.print_exc()
+        db.session.rollback()
 
 
 def main():

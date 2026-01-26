@@ -521,6 +521,7 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                             matched_article.grid_size = layout_item.get('grid_size', 6)
                             matched_article.is_home = True
                             # ⚠️ KHÔNG update section='home' - giữ nguyên section gốc
+                            # ⚠️ KHÔNG set is_temp=True khi link (chỉ set khi crawl mới)
                             
                             if matched_article.id not in updated_article_ids:
                                 updated_article_ids.add(matched_article.id)
@@ -1312,6 +1313,58 @@ Examples:
                 print(f"   ⚠️  Error generating sitemap for {lang.upper()}: {e}")
         
         print(f"   ✅ Sitemaps generated successfully!")
+    
+    # Step cuối cùng: Check và crawl article details nếu có articles với is_temp=True
+    if not args.dry_run:
+        with app.app_context():
+            # Đếm số articles có is_temp=True
+            temp_articles_count = Article.query.filter_by(is_temp=True).count()
+            
+            if temp_articles_count > 0:
+                print(f"\n{'='*60}")
+                print(f"📄 Step Final: Crawling article details for {temp_articles_count} temp articles")
+                print(f"{'='*60}")
+                
+                try:
+                    # Import và gọi crawl_article_details_batch
+                    import subprocess
+                    import sys
+                    
+                    script_path = Path(__file__).parent / 'crawl_article_details_batch.py'
+                    
+                    print(f"   🔄 Running: python {script_path}")
+                    
+                    # Chạy script crawl_article_details_batch.py
+                    result = subprocess.run(
+                        [sys.executable, str(script_path), '--crawl-all', '--no-auto-translate'],
+                        cwd=str(Path(__file__).parent.parent),
+                        capture_output=True,
+                        text=True
+                    )
+                    
+                    if result.returncode == 0:
+                        print(f"   ✅ Article details crawl completed")
+                        print(f"   📋 Output:")
+                        # In output (giới hạn 50 dòng cuối)
+                        output_lines = result.stdout.split('\n')
+                        for line in output_lines[-50:]:
+                            if line.strip():
+                                print(f"      {line}")
+                    else:
+                        print(f"   ⚠️  Article details crawl completed with warnings")
+                        print(f"   📋 Error output:")
+                        error_lines = result.stderr.split('\n')
+                        for line in error_lines[-20:]:
+                            if line.strip():
+                                print(f"      {line}")
+                except Exception as e:
+                    print(f"   ❌ Error running crawl_article_details_batch.py: {e}")
+                    import traceback
+                    traceback.print_exc()
+            else:
+                print(f"\n{'='*60}")
+                print(f"✅ No temp articles found, skipping article details crawl")
+                print(f"{'='*60}")
 
 
 if __name__ == '__main__':

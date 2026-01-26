@@ -158,7 +158,9 @@ SeleniumBase cần Chrome/Chromium để chạy crawler. Script setup sẽ tự 
 
 ```bash
 cd /path/to/GC_HRAI/flask/deploy
+chmod +x install_chrome.sh
 sudo bash install_chrome.sh
+# Hoặc: sudo ./install_chrome.sh
 ```
 
 ### Thủ công
