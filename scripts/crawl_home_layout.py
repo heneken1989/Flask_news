@@ -27,10 +27,41 @@ from services.image_downloader import download_and_update_image_data
 from urllib.parse import urljoin, urlparse
 from bs4 import BeautifulSoup
 import time
+import re
 
 # Import app và database khi cần (sẽ import trong function khi cần app context)
 
 # Import database sau khi có app context
+
+
+def extract_section_from_url(url):
+    """
+    Extract section từ URL
+    
+    Args:
+        url: Article URL (ví dụ: https://www.sermitsiaq.ag/kultur/debut-ep-fra-max-5-tassa/2331684)
+    
+    Returns:
+        str: Section name ('kultur', 'samfund', 'erhverv', 'sport', 'podcasti') hoặc 'home' nếu không match
+    """
+    if not url:
+        return 'home'
+    
+    # Parse URL để lấy path
+    parsed = urlparse(url)
+    path = parsed.path.strip('/')
+    
+    # Valid sections
+    valid_sections = ['kultur', 'samfund', 'erhverv', 'sport', 'podcasti']
+    
+    # Extract section từ path (phần đầu tiên sau domain)
+    # Ví dụ: /kultur/debut-ep-fra-max-5-tassa/2331684 → 'kultur'
+    path_parts = path.split('/')
+    if path_parts and path_parts[0] in valid_sections:
+        return path_parts[0]
+    
+    # Nếu không match → return 'home'
+    return 'home'
 
 
 def parse_job_article_manual(soup, article_url, article_title):
@@ -644,13 +675,24 @@ def crawl_home_layout(home_url='https://www.sermitsiaq.ag', language='da',
                             layout_type_final = layout_type or source
                             is_temp_value = layout_type_final in ['1_article', '2_articles', '3_articles']
                             
+                            # ⚠️ QUAN TRỌNG: Với các layout types có published_url (articles thông thường), 
+                            # detect section từ URL. Các loại khác (sliders, containers) giữ section='home'
+                            # Layout types cần detect section: 1_full, 1_article, 2_articles, 3_articles, 1_special_bg
+                            article_layout_types = ['1_full', '1_article', '2_articles', '3_articles', '1_special_bg']
+                            
+                            if layout_type_final in article_layout_types:
+                                article_section = extract_section_from_url(article_url)
+                            else:
+                                # Sliders, containers, 1_with_list_left, 1_with_list_right, 5_articles, etc. giữ section='home'
+                                article_section = 'home'
+                            
                             new_article = Article(
                                 element_guid=article_data.get('element_guid', '') or article_info.get('element_guid', ''),
                                 title=article_data.get('title', article_title),
                                 slug=article_data.get('slug', ''),
                                 published_url=article_url,
                                 k5a_url=article_data.get('k5a_url', '') or article_info.get('k5a_url', ''),
-                                section='home',  # ⚠️ Tất cả articles từ home page có section='home'
+                                section=article_section,  # ⚠️ Detect section từ URL cho 1_article, 2_articles, 3_articles
                                 site_alias=article_data.get('site_alias', 'sermitsiaq'),
                                 instance=article_data.get('instance', ''),
                                 published_date=article_data.get('published_date'),

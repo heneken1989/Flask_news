@@ -1,6 +1,6 @@
 {
   "language": "da",
-  "crawled_at": "2026-01-26T21:05:07.106042",
+  "crawled_at": "2026-01-26T22:07:45.354981",
   "total_items": 227,
   "layout_items": [
     {
@@ -359,6 +359,20 @@
         "slider_title": "NYHEDER",
         "slider_articles": [
           {
+            "url": "https://www.sermitsiaq.ag/samfund/nathanielsen-efter-ge-mode-oget-internationalt-fokus-skal-omsaettes-til-konkrete-muligheder/2334407",
+            "title": "Nathanielsen efter GE-møde: Øget internationalt fokus skal omsættes til konkrete muligheder",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2307073.jpg?imageId=2307073&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=318",
+              "alt": "",
+              "width": "265",
+              "height": "159"
+            },
+            "is_paywall": false,
+            "section": "samfund",
+            "position": 0
+          },
+          {
             "url": "https://www.sermitsiaq.ag/samfund/trafikstyrelsen-lemper-restriktion-i-nuuk-lufthavn/2334819",
             "title": "Trafikstyrelsen lemper restriktion i Nuuk Lufthavn",
             "kicker": "",
@@ -370,7 +384,7 @@
             },
             "is_paywall": true,
             "section": "samfund",
-            "position": 0
+            "position": 1
           },
           {
             "url": "https://www.sermitsiaq.ag/sport/fire-langrendslobere-skal-til-junior-vm/2335195",
@@ -384,7 +398,7 @@
             },
             "is_paywall": false,
             "section": "sport",
-            "position": 1
+            "position": 2
           },
           {
             "url": "https://www.sermitsiaq.ag/samfund/forer-anholdt-for-spirituskorsel-efter-faerdselsuheld/2335225",
@@ -398,7 +412,7 @@
             },
             "is_paywall": false,
             "section": "samfund",
-            "position": 2
+            "position": 3
           },
           {
             "url": "https://www.sermitsiaq.ag/kultur/gronlandsk-mad-som-medicin/2327563",
@@ -412,7 +426,7 @@
             },
             "is_paywall": true,
             "section": "kultur",
-            "position": 3
+            "position": 4
           },
           {
             "url": "https://www.sermitsiaq.ag/samfund/obama-drab-i-minneapolis-bor-vaere-wakeupcall-for-alle/2335211",
@@ -426,7 +440,7 @@
             },
             "is_paywall": false,
             "section": "samfund",
-            "position": 4
+            "position": 5
           },
           {
             "url": "https://www.sermitsiaq.ag/erhverv/nye-boreaktiviteter-ved-ivittuut-og-gronnedal/2333035",
@@ -440,7 +454,7 @@
             },
             "is_paywall": true,
             "section": "erhverv",
-            "position": 5
+            "position": 6
           },
           {
             "url": "https://www.sermitsiaq.ag/samfund/ny-nationaldragtsyerske/2328292",
@@ -454,7 +468,7 @@
             },
             "is_paywall": false,
             "section": "samfund",
-            "position": 6
+            "position": 7
           },
           {
             "url": "https://www.sermitsiaq.ag/kultur/debut-ep-fra-max-5-tassa/2331684",
@@ -468,7 +482,7 @@
             },
             "is_paywall": false,
             "section": "kultur",
-            "position": 7
+            "position": 8
           },
           {
             "url": "https://www.sermitsiaq.ag/samfund/usas-selvbillede-og-misforstaelsen-af-gronland/2332756",
@@ -481,20 +495,6 @@
               "height": "159"
             },
             "is_paywall": true,
-            "section": "samfund",
-            "position": 8
-          },
-          {
-            "url": "https://www.sermitsiaq.ag/samfund/kreml-gronland-er-strategisk-vigtig-for-sikkerheden/2326415",
-            "title": "Kreml: Grønland er strategisk vigtig for sikkerheden",
-            "kicker": "LIVEBLOG",
-            "image": {
-              "src": "https://image.sermitsiaq.ag/2335163.jpg?imageId=2335163&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=318",
-              "alt": "",
-              "width": "265",
-              "height": "159"
-            },
-            "is_paywall": false,
             "section": "samfund",
             "position": 9
           }
@@ -509,6 +509,11 @@
       "title": "NYHEDER",
       "slider_title": "NYHEDER",
       "slider_articles": [
+        {
+          "published_url": "https://www.sermitsiaq.ag/samfund/nathanielsen-efter-ge-mode-oget-internationalt-fokus-skal-omsaettes-til-konkrete-muligheder/2334407",
+          "title": "Nathanielsen efter GE-møde: Øget internationalt fokus skal omsættes til konkrete muligheder",
+          "image_data": {}
+        },
         {
           "published_url": "https://www.sermitsiaq.ag/samfund/trafikstyrelsen-lemper-restriktion-i-nuuk-lufthavn/2334819",
           "title": "Trafikstyrelsen lemper restriktion i Nuuk Lufthavn",
@@ -553,11 +558,6 @@
           "published_url": "https://www.sermitsiaq.ag/samfund/usas-selvbillede-og-misforstaelsen-af-gronland/2332756",
           "title": "USA’s selvbillede – og misforståelsen af Grønland",
           "image_data": {}
-        },
-        {
-          "published_url": "https://www.sermitsiaq.ag/samfund/kreml-gronland-er-strategisk-vigtig-for-sikkerheden/2326415",
-          "title": "Kreml: Grønland er strategisk vigtig for sikkerheden",
-          "image_data": {}
         }
       ]
     },
@@ -579,6 +579,10 @@
         "list_title": "SENESTE",
         "list_items": [
           {
+            "title": "Nathanielsen efter GE-møde: Øget internationalt fokus skal omsættes til konkrete muligheder",
+            "url": "/samfund/nathanielsen-efter-ge-mode-oget-internationalt-fokus-skal-omsaettes-til-konkrete-muligheder/2334407"
+          },
+          {
             "title": "Trafikstyrelsen lemper restriktion i Nuuk Lufthavn",
             "url": "/samfund/trafikstyrelsen-lemper-restriktion-i-nuuk-lufthavn/2334819"
           },
@@ -597,10 +601,6 @@
           {
             "title": "Obama: Drab i Minneapolis bør være wakeupcall for alle",
             "url": "/samfund/obama-drab-i-minneapolis-bor-vaere-wakeupcall-for-alle/2335211"
-          },
-          {
-            "title": "Nye boreaktiviteter ved Ivittuut og Grønnedal",
-            "url": "/erhverv/nye-boreaktiviteter-ved-ivittuut-og-gronnedal/2333035"
           }
         ]
       },
@@ -609,6 +609,10 @@
       "title": "To midlertidigt militærområder etableres",
       "list_title": "SENESTE",
       "list_items": [
+        {
+          "title": "Nathanielsen efter GE-møde: Øget internationalt fokus skal omsættes til konkrete muligheder",
+          "url": "/samfund/nathanielsen-efter-ge-mode-oget-internationalt-fokus-skal-omsaettes-til-konkrete-muligheder/2334407"
+        },
         {
           "title": "Trafikstyrelsen lemper restriktion i Nuuk Lufthavn",
           "url": "/samfund/trafikstyrelsen-lemper-restriktion-i-nuuk-lufthavn/2334819"
@@ -628,10 +632,6 @@
         {
           "title": "Obama: Drab i Minneapolis bør være wakeupcall for alle",
           "url": "/samfund/obama-drab-i-minneapolis-bor-vaere-wakeupcall-for-alle/2335211"
-        },
-        {
-          "title": "Nye boreaktiviteter ved Ivittuut og Grønnedal",
-          "url": "/erhverv/nye-boreaktiviteter-ved-ivittuut-og-gronnedal/2333035"
         }
       ]
     },
@@ -712,6 +712,20 @@
         "slider_title": "Se alle jobs",
         "slider_articles": [
           {
+            "url": "https://www.sjob.gl/job-dk/peqqinnissaq-pillugu-kattuffiit-ppk-og-peqqissaasut-kattuffiat-pk-soger-faglig-sekretaer-med-visioner-og-engagement/2335425",
+            "title": "Peqqinnissaq Pillugu Kattuffiit (PPK) og Peqqissaasut Kattuffiat (PK) søger faglig sekretær med visioner og engagement.",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sjob.gl/2185922.jpg?imageId=2185922&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "job dk",
+            "position": 0
+          },
+          {
             "url": "https://www.sjob.gl/job-dk/kategorichef/2335373",
             "title": "Kategorichef",
             "kicker": "",
@@ -723,7 +737,7 @@
             },
             "is_paywall": false,
             "section": "job dk",
-            "position": 0
+            "position": 1
           },
           {
             "url": "https://www.sjob.gl/job-dk/afdelingsledere-soges-til-pilutaq-i-sisimiut/2335321",
@@ -737,7 +751,7 @@
             },
             "is_paywall": false,
             "section": "job dk",
-            "position": 1
+            "position": 2
           },
           {
             "url": "https://www.sjob.gl/job-dk/sagsbehandler-til-areal-bygningsmyndigheden/2335275",
@@ -751,7 +765,7 @@
             },
             "is_paywall": false,
             "section": "job dk",
-            "position": 2
+            "position": 3
           },
           {
             "url": "https://www.sjob.gl/job-dk/faglaerer-okonomi/2334900",
@@ -765,7 +779,7 @@
             },
             "is_paywall": false,
             "section": "job dk",
-            "position": 3
+            "position": 4
           },
           {
             "url": "https://www.sjob.gl/job-dk/ressourceperson-til-atuarfik-inussuk/2334878",
@@ -779,7 +793,7 @@
             },
             "is_paywall": false,
             "section": "job dk",
-            "position": 4
+            "position": 5
           },
           {
             "url": "https://www.sjob.gl/job-dk/tikiusaaq-soger-en-paedagog/2334860",
@@ -793,7 +807,7 @@
             },
             "is_paywall": false,
             "section": "job dk",
-            "position": 5
+            "position": 6
           },
           {
             "url": "https://www.sjob.gl/job-dk/kti-jern-og-metalskolen-i-nuuk-soger-en-vaerksteds-assistent-/-skole-praktik-instruktor/2334844",
@@ -807,7 +821,7 @@
             },
             "is_paywall": false,
             "section": "job dk",
-            "position": 6
+            "position": 7
           },
           {
             "url": "https://www.sjob.gl/job-dk/daginstitution-tikiusaaq-soger-stottepersoner/2334824",
@@ -821,25 +835,11 @@
             },
             "is_paywall": false,
             "section": "job dk",
-            "position": 7
+            "position": 8
           },
           {
             "url": "https://www.sjob.gl/job-dk/atuarfik-inussuk-soger-stottepersoner/2334803",
             "title": "Atuarfik Inussuk søger støttepersoner",
-            "kicker": "",
-            "image": {
-              "src": "https://image.sjob.gl/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
-              "alt": "",
-              "width": "265",
-              "height": "172"
-            },
-            "is_paywall": false,
-            "section": "job dk",
-            "position": 8
-          },
-          {
-            "url": "https://www.sjob.gl/job-dk/socialradgiver-til-heldagsskolen/2334787",
-            "title": "Socialrådgiver til Heldagsskolen",
             "kicker": "",
             "image": {
               "src": "https://image.sjob.gl/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
@@ -884,6 +884,11 @@
       "slider_title": "Se alle jobs",
       "slider_articles": [
         {
+          "published_url": "https://www.sjob.gl/job-dk/peqqinnissaq-pillugu-kattuffiit-ppk-og-peqqissaasut-kattuffiat-pk-soger-faglig-sekretaer-med-visioner-og-engagement/2335425",
+          "title": "Peqqinnissaq Pillugu Kattuffiit (PPK) og Peqqissaasut Kattuffiat (PK) søger faglig sekretær med visioner og engagement.",
+          "image_data": {}
+        },
+        {
           "published_url": "https://www.sjob.gl/job-dk/kategorichef/2335373",
           "title": "Kategorichef",
           "image_data": {}
@@ -926,11 +931,6 @@
         {
           "published_url": "https://www.sjob.gl/job-dk/atuarfik-inussuk-soger-stottepersoner/2334803",
           "title": "Atuarfik Inussuk søger støttepersoner",
-          "image_data": {}
-        },
-        {
-          "published_url": "https://www.sjob.gl/job-dk/socialradgiver-til-heldagsskolen/2334787",
-          "title": "Socialrådgiver til Heldagsskolen",
           "image_data": {}
         }
       ]

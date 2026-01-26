@@ -385,8 +385,9 @@ class SermitsiaqCrawler:
             existing_urls = set()  # Track URLs đã xử lý trong batch này để tránh duplicate
             for idx, article_data in enumerate(articles):
                 try:
-                    # Set section='home' và is_home=True
-                    article_data['section'] = 'home'
+                    # ⚠️ KHÔNG set section='home' hardcoded ở đây
+                    # Section sẽ được detect từ URL cho các layout types: 1_full, 1_article, 2_articles, 3_articles, 1_special_bg
+                    # (xem logic ở dòng 690-711)
                     
                     # Sử dụng display_order từ parser nếu có, nếu không thì dùng idx
                     display_order = article_data.get('display_order', idx)
@@ -688,6 +689,28 @@ class SermitsiaqCrawler:
                     if article_url not in existing_urls:
                         existing_urls.add(article_url)
                     
+                    # ⚠️ QUAN TRỌNG: Với các layout types có published_url (articles thông thường), 
+                    # detect section từ URL. Các loại khác (sliders, containers) giữ section='home'
+                    # Layout types cần detect section: 1_full, 1_article, 2_articles, 3_articles, 1_special_bg
+                    layout_type = article_data.get('layout_type')
+                    article_url = article_data.get('url', '')
+                    article_layout_types = ['1_full', '1_article', '2_articles', '3_articles', '1_special_bg']
+                    
+                    if layout_type in article_layout_types:
+                        # Extract section từ URL
+                        from urllib.parse import urlparse
+                        parsed = urlparse(article_url)
+                        path = parsed.path.strip('/')
+                        valid_sections = ['kultur', 'samfund', 'erhverv', 'sport', 'podcasti']
+                        path_parts = path.split('/')
+                        if path_parts and path_parts[0] in valid_sections:
+                            article_section = path_parts[0]
+                        else:
+                            article_section = 'home'
+                    else:
+                        # Sliders, containers, 1_with_list_left, 1_with_list_right, 5_articles, etc. giữ section='home'
+                        article_section = 'home'
+                    
                     # Tạo article mới cho home page
                     new_article = Article(
                         element_guid=article_data.get('element_guid'),
@@ -697,7 +720,7 @@ class SermitsiaqCrawler:
                         k5a_url=article_data.get('k5a_url', ''),
                         language=article_language,  # Set language
                         original_language=article_language,  # Set original_language
-                        section='home',  # Section = 'home'
+                        section=article_section,  # ⚠️ Detect section từ URL cho 1_article, 2_articles, 3_articles
                         site_alias=article_data.get('site_alias', 'sermitsiaq'),
                         instance=article_data.get('instance', ''),
                         published_date=article_data.get('published_date'),
@@ -706,7 +729,7 @@ class SermitsiaqCrawler:
                         image_data=image_data,  # Đã được download và cập nhật
                         display_order=display_order,  # Sử dụng display_order từ parser
                         is_home=True,  # QUAN TRỌNG: Đánh dấu thuộc home
-                        layout_type=article_data.get('layout_type'),  # Layout type từ parser
+                        layout_type=layout_type,  # Layout type từ parser
                         layout_data=layout_data,  # Layout data với thông tin row
                         grid_size=article_data.get('grid_size', 6),  # Grid size từ HTML (5, 6, 7, 8, etc.)
                     )
