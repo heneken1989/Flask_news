@@ -85,25 +85,32 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
         'articles_updated': 0,
         'articles_not_found': 0,
         'sliders_processed': 0,
+        'articles_disabled': 0,  # Articles set is_home=False (not in layout)
+        'articles_enabled': 0,   # Articles set is_home=True (in layout)
         'errors': []
     }
     
     with app.app_context():
-        # Bước 1: Reset tất cả is_home=False cho language này (nếu reset_first=True)
-        if reset_first and not dry_run:
-            print(f"\n🔄 Resetting is_home=False for all articles (language: {language})...")
-            reset_count = Article.query.filter_by(
-                language=language,
-                is_home=True
-            ).update({'is_home': False}, synchronize_session=False)
-            db.session.commit()
-            print(f"   ✅ Reset {reset_count} articles (is_home=False)")
-        elif reset_first and dry_run:
-            reset_count = Article.query.filter_by(
-                language=language,
-                is_home=True
-            ).count()
-            print(f"\n🔄 Would reset {reset_count} articles (is_home=False) - dry run")
+        # ⚠️ TỐI ƯU: Tạo set các URLs và slider keys từ layout trước
+        # Để biết articles nào nên có is_home=True
+        print(f"\n📋 Building layout reference sets...")
+        layout_urls = set()  # URLs của articles trong layout
+        layout_slider_keys = set()  # (layout_type, display_order) của sliders trong layout
+        
+        for layout_item in layout_items:
+            published_url = layout_item.get('published_url', '')
+            layout_type = layout_item.get('layout_type', '')
+            display_order = layout_item.get('display_order', 0)
+            
+            if layout_type in ['slider', 'job_slider']:
+                # Slider container: dùng (layout_type, display_order) làm key
+                layout_slider_keys.add((layout_type, display_order))
+            elif published_url:
+                # Article thông thường: dùng published_url
+                layout_urls.add(published_url)
+        
+        print(f"   Found {len(layout_urls)} article URLs in layout")
+        print(f"   Found {len(layout_slider_keys)} slider containers in layout")
         
         # Pre-fetch tất cả articles của language này để lookup nhanh
         print(f"\n📚 Pre-fetching articles for language '{language}'...")
@@ -123,6 +130,57 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                 articles_map[article.published_url].append(article)
         
         print(f"   Found {len(articles_map)} unique URLs in database")
+        
+        # ⚠️ TỐI ƯU: Thay vì reset tất cả, chỉ update articles cần thay đổi
+        if reset_first:
+            print(f"\n🔄 Optimizing is_home flags (only update changed articles)...")
+            
+            # Tìm articles có is_home=True nhưng KHÔNG trong layout → set is_home=False
+            articles_to_disable = []
+            
+            # 1. Articles với published_url không trong layout
+            articles_with_url = Article.query.filter(
+                Article.language == language,
+                Article.is_home == True,
+                Article.published_url.isnot(None),
+                Article.published_url != '',
+                Article.published_url.notin_(layout_urls)
+            ).all()
+            
+            for article in articles_with_url:
+                # Với 1_with_list_left/right, chỉ disable nếu section='home' (vì chúng chỉ có ở home)
+                if article.layout_type in ['1_with_list_left', '1_with_list_right']:
+                    if article.section == 'home':
+                        articles_to_disable.append(article)
+                else:
+                    # Với articles khác, disable nếu không trong layout
+                    articles_to_disable.append(article)
+            
+            # 2. Slider containers không trong layout
+            slider_containers = Article.query.filter(
+                Article.language == language,
+                Article.is_home == True,
+                Article.layout_type.in_(['slider', 'job_slider']),
+                Article.section == 'home'
+            ).all()
+            
+            for slider in slider_containers:
+                slider_key = (slider.layout_type, slider.display_order)
+                if slider_key not in layout_slider_keys:
+                    articles_to_disable.append(slider)
+            
+            if not dry_run:
+                for article in articles_to_disable:
+                    article.is_home = False
+                if articles_to_disable:
+                    db.session.commit()
+                    stats['articles_disabled'] = len(articles_to_disable)
+                    print(f"   ✅ Set is_home=False for {len(articles_to_disable)} articles not in layout")
+                else:
+                    print(f"   ✅ No articles to disable")
+            else:
+                stats['articles_disabled'] = len(articles_to_disable)
+                print(f"   ⚠️  Would set is_home=False for {len(articles_to_disable)} articles (dry run)")
         
         # Process từng layout item
         print(f"\n🔄 Processing layout items...")
@@ -158,31 +216,58 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                     
                     # Với slider, tìm hoặc tạo slider container article
                     # Slider container không có published_url, dùng (layout_type, display_order) làm key
+                    # ⚠️ KHÔNG filter is_home=True vì có thể slider đang is_home=False cần được enable
                     existing_slider = Article.query.filter_by(
                         section='home',
-                        is_home=True,
                         language=language,
                         layout_type=layout_type,
                         display_order=display_order
                     ).first()
                     
                     if existing_slider:
-                        # Update existing slider container
-                        if not dry_run:
+                        # ⚠️ TỐI ƯU: Check xem có cần update không
+                        needs_update = False
+                        was_home = existing_slider.is_home
+                        new_layout_data = layout_item.get('layout_data', {})
+                        new_grid_size = layout_item.get('grid_size', 6)
+                        new_title = layout_item.get('slider_title', '')
+                        
+                        # Check các fields cần update
+                        if existing_slider.display_order != display_order:
+                            needs_update = True
+                        if existing_slider.layout_type != layout_type:
+                            needs_update = True
+                        if existing_slider.grid_size != new_grid_size:
+                            needs_update = True
+                        if existing_slider.title != new_title:
+                            needs_update = True
+                        if existing_slider.layout_data != new_layout_data:
+                            needs_update = True
+                        if not was_home:
+                            needs_update = True  # Cần enable is_home
+                        
+                        # Update existing slider container chỉ khi cần
+                        if not dry_run and needs_update:
                             existing_slider.display_order = display_order
                             existing_slider.layout_type = layout_type
-                            existing_slider.layout_data = layout_item.get('layout_data', {})
-                            existing_slider.grid_size = layout_item.get('grid_size', 6)
+                            existing_slider.layout_data = new_layout_data
+                            existing_slider.grid_size = new_grid_size
+                            existing_slider.title = new_title
                             existing_slider.is_home = True
-                            # Slider containers có thể có section='home' vì chúng không thuộc tag nào
                             existing_slider.section = 'home'
                             
                             if existing_slider.id not in updated_article_ids:
                                 updated_article_ids.add(existing_slider.id)
                                 stats['articles_updated'] += 1
+                                if not was_home:
+                                    stats['articles_enabled'] += 1
                                 db.session.commit()
-                        
-                        print(f"      ✅ Updated slider container (ID: {existing_slider.id})")
+                            
+                            print(f"      ✅ Updated slider container (ID: {existing_slider.id})")
+                        elif not dry_run:
+                            print(f"      ⏭️  Slider container already up-to-date (ID: {existing_slider.id})")
+                        else:
+                            print(f"      ⚠️  Would update slider container (ID: {existing_slider.id}) - dry run")
                     else:
                         # Slider container chưa tồn tại → tạo mới (chỉ container, không có content)
                         if not dry_run:
@@ -375,73 +460,86 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                     if matched_article:
                         stats['articles_found'] += 1
                         
-                        # Update metadata
-                        # ⚠️ QUAN TRỌNG: Chỉ update is_home=True, KHÔNG update section
-                        # Để articles vẫn hiển thị được ở các tag/section khác
-                        if not dry_run:
+                        # ⚠️ TỐI ƯU: Check xem có cần update không
+                        needs_update = False
+                        was_home = matched_article.is_home
+                        
+                        # Check các fields cần update
+                        if matched_article.display_order != display_order:
+                            needs_update = True
+                        if matched_article.layout_type != layout_type:
+                            needs_update = True
+                        if matched_article.grid_size != layout_item.get('grid_size', 6):
+                            needs_update = True
+                        if not was_home:
+                            needs_update = True  # Cần enable is_home
+                        
+                        # Check layout_data có thay đổi không
+                        existing_layout_data = matched_article.layout_data or {}
+                        new_layout_data = {
+                            'row_index': layout_item.get('row_index', -1),
+                            'article_index_in_row': layout_item.get('article_index_in_row', -1),
+                            'total_rows': layout_item.get('total_rows', 0)
+                        }
+                        
+                        # Merge với data từ layout_item nếu có
+                        if layout_item.get('layout_data'):
+                            layout_item_data = layout_item['layout_data'].copy()
+                            layout_item_data.pop('list_items', None)
+                            layout_item_data.pop('list_title', None)
+                            new_layout_data.update(layout_item_data)
+                        
+                        # Thêm list_items và list_title cho 1_with_list_left/right
+                        if layout_type in ['1_with_list_left', '1_with_list_right']:
+                            if list_title:
+                                new_layout_data['list_title'] = list_title
+                            if list_items:
+                                new_layout_data['list_items'] = list_items
+                        
+                        # Merge với existing data
+                        merged_layout_data = existing_layout_data.copy()
+                        for key, value in new_layout_data.items():
+                            if key in ['list_items', 'list_title']:
+                                if value:
+                                    merged_layout_data[key] = value
+                            else:
+                                merged_layout_data[key] = value
+                        
+                        # Check nếu layout_data có thay đổi
+                        if existing_layout_data != merged_layout_data:
+                            needs_update = True
+                        
+                        # Update metadata chỉ khi cần
+                        if not dry_run and needs_update:
                             matched_article.display_order = display_order
                             matched_article.layout_type = layout_type
-                            
-                            # Merge layout_data (giữ lại data cũ nếu có)
-                            existing_layout_data = matched_article.layout_data or {}
-                            new_layout_data = {
-                                'row_index': layout_item.get('row_index', -1),
-                                'article_index_in_row': layout_item.get('article_index_in_row', -1),
-                                'total_rows': layout_item.get('total_rows', 0)
-                            }
-                            
-                            # Merge với data từ layout_item nếu có (NHƯNG không ghi đè list_items và list_title)
-                            if layout_item.get('layout_data'):
-                                layout_item_data = layout_item['layout_data'].copy()
-                                # Bỏ qua list_items và list_title từ layout_item['layout_data']
-                                # vì chúng ta sẽ set riêng từ layout_item.get('list_items')
-                                layout_item_data.pop('list_items', None)
-                                layout_item_data.pop('list_title', None)
-                                new_layout_data.update(layout_item_data)
-                            
-                            # Thêm list_items và list_title cho 1_with_list_left/right (SAU KHI merge)
-                            # Đảm bảo list_items và list_title không bị ghi đè
-                            if layout_type in ['1_with_list_left', '1_with_list_right']:
-                                if list_title:
-                                    new_layout_data['list_title'] = list_title
-                                if list_items:
-                                    new_layout_data['list_items'] = list_items
-                            
-                            # Merge với existing data
-                            # Với list_items và list_title: ưu tiên giá trị mới nếu có, nếu không giữ lại existing
-                            # Với các field khác: update bình thường
-                            for key, value in new_layout_data.items():
-                                if key in ['list_items', 'list_title']:
-                                    # Chỉ update nếu có giá trị mới (không rỗng)
-                                    if value:
-                                        existing_layout_data[key] = value
-                                    # Nếu không có giá trị mới, giữ lại existing (nếu có)
-                                else:
-                                    # Với các field khác, update bình thường
-                                    existing_layout_data[key] = value
-                            
-                            matched_article.layout_data = existing_layout_data
-                            
+                            matched_article.layout_data = merged_layout_data
                             matched_article.grid_size = layout_item.get('grid_size', 6)
                             matched_article.is_home = True
-                            # ⚠️ KHÔNG update section='home' - giữ nguyên section gốc (samfund, sport, etc.)
-                            # Để articles vẫn hiển thị được ở các tag/section khác
+                            # ⚠️ KHÔNG update section='home' - giữ nguyên section gốc
                             
                             if matched_article.id not in updated_article_ids:
                                 updated_article_ids.add(matched_article.id)
                                 stats['articles_updated'] += 1
+                                if not was_home:
+                                    stats['articles_enabled'] += 1
                                 db.session.commit()
                             
                             # Mark URL as processed
                             processed_urls.add(published_url)
-                        
-                        print(f"      ✅ Updated article (ID: {matched_article.id})")
-                        if require_home_section:
-                            print(f"         ✅ Section='home' (required for {layout_type})")
-                        
-                        # Log list items nếu có
-                        if list_items:
-                            print(f"         📋 List items saved: {len(list_items)} items")
+                            
+                            print(f"      ✅ Updated article (ID: {matched_article.id})")
+                            if require_home_section:
+                                print(f"         ✅ Section='home' (required for {layout_type})")
+                            if list_items:
+                                print(f"         📋 List items saved: {len(list_items)} items")
+                        elif not dry_run:
+                            # Không cần update, nhưng vẫn mark URL as processed
+                            processed_urls.add(published_url)
+                            print(f"      ⏭️  Article already up-to-date (ID: {matched_article.id})")
+                        else:
+                            # Dry run
+                            print(f"      ⚠️  Would update article (ID: {matched_article.id}) - dry run")
                     else:
                         if require_home_section:
                             print(f"      ⚠️  Article not found in DB with section='home' and language='{language}' (required for {layout_type}): {published_url[:60]}...")
@@ -481,6 +579,10 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
         print(f"   Articles updated: {stats['articles_updated']}")
         print(f"   Articles not found: {stats['articles_not_found']}")
         print(f"   Sliders processed: {stats['sliders_processed']}")
+        if reset_first:
+            print(f"   📊 Optimization stats:")
+            print(f"      Articles disabled (not in layout): {stats['articles_disabled']}")
+            print(f"      Articles enabled (in layout): {stats['articles_enabled']}")
         if stats['errors']:
             print(f"   Errors: {len(stats['errors'])}")
             print(f"\n   First 5 errors:")
@@ -817,27 +919,24 @@ def create_missing_en_articles(layout_items, language='da', dry_run=False, delay
                             en_article.display_order = da_article.display_order
                             en_article.layout_type = da_article.layout_type
                             
-                            # ⚠️ QUAN TRỌNG: Copy layout_data nhưng giữ lại list_items đã được translate
-                            # translate_article() đã translate list_items trong en_article.layout_data
-                            # Nếu copy da_article.layout_data sẽ ghi đè list_items đã translate
+                            # ⚠️ QUAN TRỌNG: Giữ lại TẤT CẢ các field đã được translate từ translate_article()
+                            # translate_article() đã translate: kicker_below, kicker_floating, title_parts, list_items, list_title, etc.
+                            # KHÔNG copy da_article.layout_data vì sẽ ghi đè các field đã translate
+                            # Chỉ merge các field metadata (row_index, article_index_in_row, total_rows) từ DA nếu chưa có
                             if en_article.layout_data and da_article.layout_data:
-                                # Giữ lại list_items và list_title đã được translate từ translate_article()
-                                translated_list_items = en_article.layout_data.get('list_items')
-                                translated_list_title = en_article.layout_data.get('list_title')
+                                # Giữ lại en_article.layout_data đã được translate
+                                # Chỉ merge các field metadata từ DA nếu chưa có trong EN
+                                da_layout_data = da_article.layout_data.copy() if isinstance(da_article.layout_data, dict) else {}
                                 
-                                # Copy layout_data từ DA article
+                                # Merge metadata fields (không ghi đè các field đã translate)
+                                for key in ['row_index', 'article_index_in_row', 'total_rows', 'kicker_below_classes']:
+                                    if key in da_layout_data and key not in en_article.layout_data:
+                                        en_article.layout_data[key] = da_layout_data[key]
+                                
+                                print(f"         ✅ Preserved all translated fields (kicker_below, kicker_floating, title_parts, list_items, etc.)")
+                            elif da_article.layout_data:
+                                # Nếu không có layout_data đã translate, copy trực tiếp (fallback)
                                 en_article.layout_data = da_article.layout_data.copy() if isinstance(da_article.layout_data, dict) else da_article.layout_data
-                                
-                                # Restore list_items và list_title đã được translate
-                                if translated_list_items:
-                                    en_article.layout_data['list_items'] = translated_list_items
-                                    print(f"         ✅ Preserved translated list_items: {len(translated_list_items)} items")
-                                if translated_list_title:
-                                    en_article.layout_data['list_title'] = translated_list_title
-                                    print(f"         ✅ Preserved translated list_title: '{translated_list_title}'")
-                            else:
-                                # Nếu không có layout_data đã translate, copy trực tiếp
-                                en_article.layout_data = da_article.layout_data
                             
                             en_article.grid_size = da_article.grid_size
                             en_article.is_home = da_article.is_home
@@ -1099,19 +1198,8 @@ Examples:
             delay=0.5
         )
         
-        # Translate slider containers
-        step_num_slider = str(int(step_num) + 1) if step_num.isdigit() else "3a"
-        print(f"\n{'='*60}")
-        print(f"🎠 Step {step_num_slider}: Translating slider containers")
-        print(f"{'='*60}")
-        translate_slider_containers(
-            language=args.language,
-            dry_run=args.dry_run,
-            delay=0.5
-        )
-        
         # Link EN articles với layout (sau khi đã tạo xong)
-        step_num = "5" if should_process_all else "4"
+        step_num = "4" if should_process_all else "3"
         print(f"\n{'='*60}")
         print(f"🔗 Step {step_num}: Linking EN articles with layout")
         print(f"{'='*60}")
@@ -1120,6 +1208,18 @@ Examples:
             language='en',  # Link EN articles
             dry_run=args.dry_run,
             reset_first=not args.no_reset  # Reset EN articles trước khi link
+        )
+        
+        # ⚠️ QUAN TRỌNG: Translate slider containers SAU KHI EN sliders đã được tạo
+        # (EN sliders được tạo trong link_articles_with_layout cho EN)
+        step_num_slider = str(int(step_num) + 1) if step_num.isdigit() else "4a"
+        print(f"\n{'='*60}")
+        print(f"🎠 Step {step_num_slider}: Translating slider containers")
+        print(f"{'='*60}")
+        translate_slider_containers(
+            language=args.language,
+            dry_run=args.dry_run,
+            delay=0.5
         )
     elif should_create_en and args.dry_run:
         step_num = "3" if should_process_all else "2"
@@ -1133,19 +1233,8 @@ Examples:
             delay=0.5
         )
         
-        # Translate slider containers (dry run)
-        step_num_slider = str(int(step_num) + 1) if step_num.isdigit() else "3a"
-        print(f"\n{'='*60}")
-        print(f"🎠 Step {step_num_slider}: Would translate slider containers (dry run)")
-        print(f"{'='*60}")
-        translate_slider_containers(
-            language=args.language,
-            dry_run=True,
-            delay=0.5
-        )
-        
         # Link EN articles với layout (dry run)
-        step_num = "5" if should_process_all else "4"
+        step_num = "4" if should_process_all else "3"
         print(f"\n{'='*60}")
         print(f"🔗 Step {step_num}: Would link EN articles with layout (dry run)")
         print(f"{'='*60}")
@@ -1154,6 +1243,17 @@ Examples:
             language='en',
             dry_run=True,
             reset_first=not args.no_reset
+        )
+        
+        # Translate slider containers (dry run) - SAU KHI EN sliders đã được tạo
+        step_num_slider = str(int(step_num) + 1) if step_num.isdigit() else "4a"
+        print(f"\n{'='*60}")
+        print(f"🎠 Step {step_num_slider}: Would translate slider containers (dry run)")
+        print(f"{'='*60}")
+        translate_slider_containers(
+            language=args.language,
+            dry_run=True,
+            delay=0.5
         )
     
     # Step cuối cùng: Generate sitemaps (nếu đã xử lý xong và không phải dry_run)
@@ -1166,7 +1266,7 @@ Examples:
     )
     
     if should_generate_sitemaps:
-        step_num = "6" if should_process_all else "5" if should_create_en else "2"
+        step_num = "6" if should_process_all else "6" if should_create_en else "2"  # Step 6 vì translate_slider_containers là step 5
         print(f"\n{'='*60}")
         print(f"🗺️  Step {step_num}: Generating sitemaps")
         print(f"{'='*60}")

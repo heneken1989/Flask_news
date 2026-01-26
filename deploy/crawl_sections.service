@@ -1,0 +1,28 @@
+[Unit]
+Description=Sermitsiaq Multi-Language Crawler Service
+After=network.target postgresql.service
+Wants=postgresql.service
+
+[Service]
+Type=oneshot
+User=www-data
+Group=www-data
+WorkingDirectory=/path/to/GC_HRAI/flask
+Environment="PATH=/path/to/venv/bin:/usr/local/bin:/usr/bin:/bin"
+Environment="PYTHONPATH=/path/to/GC_HRAI/flask"
+ExecStart=/path/to/venv/bin/python /path/to/GC_HRAI/flask/scripts/crawl_sections_multi_language.py --section all
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=crawl_sections
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+
+# Restart policy (only on failure)
+Restart=on-failure
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target
+
