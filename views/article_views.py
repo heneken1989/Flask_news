@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, make_response, session
+from datetime import datetime
 from utils import apply_grid_size_pattern, prepare_home_layouts, get_home_articles_by_language
 from database import Article, Category
 
@@ -877,22 +878,55 @@ def tag_section(section):
             query = query.filter_by(is_temp=False)
         
         articles = query.order_by(Article.published_date.desc().nullslast())\
-                       .limit(50).all()
+                       .limit(100).all()  # Lấy nhiều hơn để filter duplicate
         
-        # Loại bỏ duplicate articles (cùng published_url + language)
-        # Chỉ giữ lại article đầu tiên (theo published_date desc)
-        seen_urls = set()
-        unique_articles = []
+        # ⚠️ QUAN TRỌNG: Loại bỏ duplicate articles theo k5a_url
+        # Nếu có nhiều articles cùng k5a_url, chỉ giữ lại article mới nhất (created_at mới nhất)
+        k5a_url_to_article = {}  # Dict: {k5a_url: Article} - giữ article mới nhất
+        seen_urls = set()  # Track published_url để tránh duplicate theo URL (cho articles không có k5a_url)
+        
         for article in articles:
-            if article.published_url:
+            if not article.published_url:
+                # Articles không có URL (sliders) vẫn giữ lại, xử lý sau
+                continue
+            
+            # Xử lý articles có published_url
+            if article.k5a_url:
+                # Có k5a_url → check duplicate theo k5a_url
+                if article.k5a_url not in k5a_url_to_article:
+                    # Chưa có article với k5a_url này → thêm vào
+                    k5a_url_to_article[article.k5a_url] = article
+                else:
+                    # Đã có article với k5a_url này → so sánh created_at
+                    existing_article = k5a_url_to_article[article.k5a_url]
+                    if article.created_at and existing_article.created_at:
+                        # Giữ article mới hơn (created_at lớn hơn)
+                        if article.created_at > existing_article.created_at:
+                            k5a_url_to_article[article.k5a_url] = article
+                    elif article.created_at:
+                        # Article hiện tại có created_at, article cũ không có → giữ article mới
+                        k5a_url_to_article[article.k5a_url] = article
+                    # Nếu cả hai đều không có created_at, giữ article đầu tiên (đã có)
+            else:
+                # Không có k5a_url → filter theo published_url như cũ
                 if article.published_url not in seen_urls:
                     seen_urls.add(article.published_url)
-                    unique_articles.append(article)
-            else:
-                # Articles không có URL (sliders) vẫn giữ lại
+                    # Thêm vào k5a_url_to_article với key là published_url (để xử lý thống nhất)
+                    k5a_url_to_article[article.published_url] = article
+        
+        # Tạo list unique articles từ k5a_url_to_article
+        unique_articles = list(k5a_url_to_article.values())
+        
+        # Thêm lại articles không có URL (sliders)
+        for article in articles:
+            if not article.published_url:
                 unique_articles.append(article)
         
-        articles = unique_articles
+        # Sắp xếp lại theo published_date desc
+        unique_articles.sort(key=lambda x: (x.published_date or datetime.min, x.created_at or datetime.min), reverse=True)
+        
+        # Giới hạn lại 50 articles
+        articles = unique_articles[:50]
         
         # Set display_order cho pattern 2-3-2-3-2-3... (0, 1, 2, ...)
         for idx, article in enumerate(articles):
@@ -1057,22 +1091,53 @@ def article_detail(article_id=None, section=None, slug=None, url_path=None):
         is_temp=False
     ).filter(
         Article.id != article.id
-    ).order_by(Article.published_date.desc().nullslast()).limit(10).all()  # Lấy nhiều hơn để filter duplicate
+    ).order_by(Article.published_date.desc().nullslast()).limit(20).all()  # Lấy nhiều hơn để filter duplicate
     
-    # Loại bỏ duplicate articles (cùng published_url)
-    seen_urls = set()
-    unique_related_articles = []
+    # ⚠️ Loại bỏ duplicate articles theo k5a_url
+    # Nếu có nhiều articles cùng k5a_url, chỉ giữ lại article mới nhất (created_at mới nhất)
+    k5a_url_to_article = {}  # Dict: {k5a_url: Article} - giữ article mới nhất
+    seen_urls = set()  # Track published_url để tránh duplicate theo URL (cho articles không có k5a_url)
+    
     for art in related_articles:
-        if art.published_url and art.published_url not in seen_urls:
-            seen_urls.add(art.published_url)
-            unique_related_articles.append(art)
-        elif not art.published_url:
-            # Articles không có URL vẫn giữ lại
-            unique_related_articles.append(art)
-        if len(unique_related_articles) >= 5:
-            break
+        if not art.published_url:
+            # Articles không có URL (sliders) vẫn giữ lại, xử lý sau
+            continue
+        
+        # Xử lý articles có published_url
+        if art.k5a_url:
+            # Có k5a_url → check duplicate theo k5a_url
+            if art.k5a_url not in k5a_url_to_article:
+                # Chưa có article với k5a_url này → thêm vào
+                k5a_url_to_article[art.k5a_url] = art
+            else:
+                # Đã có article với k5a_url này → so sánh created_at
+                existing_article = k5a_url_to_article[art.k5a_url]
+                if art.created_at and existing_article.created_at:
+                    # Giữ article mới hơn (created_at lớn hơn)
+                    if art.created_at > existing_article.created_at:
+                        k5a_url_to_article[art.k5a_url] = art
+                elif art.created_at:
+                    # Article hiện tại có created_at, article cũ không có → giữ article mới
+                    k5a_url_to_article[art.k5a_url] = art
+                # Nếu cả hai đều không có created_at, giữ article đầu tiên (đã có)
+        else:
+            # Không có k5a_url → filter theo published_url như cũ
+            if art.published_url not in seen_urls:
+                seen_urls.add(art.published_url)
+                # Thêm vào k5a_url_to_article với key là published_url (để xử lý thống nhất)
+                k5a_url_to_article[art.published_url] = art
     
-    related_articles = unique_related_articles
+    # Tạo list unique articles từ k5a_url_to_article
+    unique_related_articles = list(k5a_url_to_article.values())
+    
+    # Thêm lại articles không có URL (sliders)
+    for art in related_articles:
+        if not art.published_url:
+            unique_related_articles.append(art)
+    
+    # Sắp xếp lại theo published_date desc và giới hạn 5 articles
+    unique_related_articles.sort(key=lambda x: (x.published_date or datetime.min, x.created_at or datetime.min), reverse=True)
+    related_articles = unique_related_articles[:5]
     
     # Get job slider data từ home page (section='home', is_home=True)
     job_slider_data = None
