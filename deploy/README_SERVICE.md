@@ -7,6 +7,7 @@ Hướng dẫn setup systemd service để chạy `crawl_sections_multi_language
 - Linux VPS (Ubuntu/Debian/CentOS)
 - Python virtual environment đã được setup
 - PostgreSQL đã được cấu hình
+- **Chrome/Chromium** (cần cho SeleniumBase) - sẽ được cài tự động
 - Quyền root hoặc sudo
 
 ## 🚀 Cách 1: Sử dụng Setup Script (Khuyến nghị)
@@ -149,7 +150,63 @@ sudo systemctl daemon-reload
 sudo systemctl restart crawl_sections.timer
 ```
 
+## 🌐 Cài đặt Chrome/Chromium
+
+SeleniumBase cần Chrome/Chromium để chạy crawler. Script setup sẽ tự động cài đặt, nhưng bạn cũng có thể cài thủ công:
+
+### Tự động (khuyến nghị)
+
+```bash
+cd /path/to/GC_HRAI/flask/deploy
+sudo bash install_chrome.sh
+```
+
+### Thủ công
+
+**Ubuntu/Debian:**
+```bash
+sudo apt-get update
+sudo apt-get install -y chromium-browser chromium-chromedriver
+```
+
+**CentOS/RHEL:**
+```bash
+sudo yum install -y epel-release
+sudo yum install -y chromium chromium-headless
+```
+
+**Fedora:**
+```bash
+sudo dnf install -y chromium chromium-headless
+```
+
+### Kiểm tra cài đặt
+
+```bash
+# Kiểm tra Chromium
+which chromium-browser || which chromium || which google-chrome
+
+# Test SeleniumBase
+cd /path/to/GC_HRAI/flask
+source venv/bin/activate
+python -c "from seleniumbase import SB; print('✅ SeleniumBase ready')"
+```
+
 ## 🔍 Troubleshooting
+
+### Lỗi "Chrome not found"
+
+Nếu gặp lỗi `Chrome not found! Install it first!`:
+
+1. Cài đặt Chrome/Chromium (xem phần trên)
+2. Kiểm tra Chrome có trong PATH:
+   ```bash
+   which chromium-browser || which chromium || which google-chrome
+   ```
+3. Nếu Chrome ở vị trí khác, set environment variable:
+   ```bash
+   export CHROME_BIN=/usr/bin/chromium-browser
+   ```
 
 ### Service không chạy
 

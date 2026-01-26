@@ -17,6 +17,22 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 FLASK_DIR="$PROJECT_ROOT/flask"
 
+# Check if Chrome/Chromium is installed
+echo -e "${YELLOW}Checking for Chrome/Chromium...${NC}"
+if ! command -v chromium-browser &> /dev/null && ! command -v chromium &> /dev/null && ! command -v google-chrome &> /dev/null; then
+    echo -e "${YELLOW}Chrome/Chromium not found. Installing...${NC}"
+    if [ -f "$SCRIPT_DIR/install_chrome.sh" ]; then
+        bash "$SCRIPT_DIR/install_chrome.sh"
+    else
+        echo -e "${RED}install_chrome.sh not found. Please install Chrome/Chromium manually:${NC}"
+        echo -e "  Ubuntu/Debian: sudo apt-get install chromium-browser"
+        echo -e "  CentOS/RHEL: sudo yum install chromium"
+        read -p "Press Enter to continue anyway, or Ctrl+C to cancel..."
+    fi
+else
+    echo -e "${GREEN}✅ Chrome/Chromium found${NC}"
+fi
+
 # Check if running as root
 if [ "$EUID" -ne 0 ]; then 
     echo -e "${RED}Please run as root or with sudo${NC}"
