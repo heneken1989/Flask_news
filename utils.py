@@ -131,6 +131,18 @@ def prepare_home_layouts(articles):
     if articles:
         print(f"📐 prepare_home_layouts: Processing {len(articles)} articles")
         print(f"   First 5 articles display_order: {[a.get('display_order', 0) for a in articles[:5]]}")
+        
+        # Debug: Kiểm tra articles xung quanh job slider và row 20
+        row_20_articles_in_list = [a for a in articles if a.get('display_order', 0) >= 20000 and a.get('display_order', 0) < 20100]
+        print(f"   📊 Articles với display_order 20000-20099 trong list: {len(row_20_articles_in_list)}")
+        for a in row_20_articles_in_list:
+            print(f"      - display_order: {a.get('display_order')}, layout_type: {a.get('layout_type')}, id: {a.get('id', 'N/A')}")
+        
+        # Kiểm tra job slider
+        job_sliders_in_list = [a for a in articles if a.get('layout_type') == 'job_slider' and a.get('display_order') == 19000]
+        print(f"   📊 Job sliders với display_order=19000 trong list: {len(job_sliders_in_list)}")
+        for a in job_sliders_in_list:
+            print(f"      - display_order: {a.get('display_order')}, id: {a.get('id', 'N/A')}")
     
     while i < len(articles):
         article = articles[i]
@@ -141,8 +153,10 @@ def prepare_home_layouts(articles):
         row_index = display_order // 1000
         row_guid = f"home-row-{row_index}"
         
-        # Debug log cho 10 layouts đầu
-        if i < 10:
+        # Debug log cho articles xung quanh job slider và row 20
+        if display_order >= 19000 and display_order <= 20100:
+            print(f"📐 Layout {i}: layout_type={layout_type}, display_order={display_order}, row_index={row_index}, id={article.get('id', 'N/A')}, title={article.get('title', 'N/A')[:40]}")
+        elif i < 10:
             print(f"📐 Layout {i}: layout_type={layout_type}, display_order={display_order}, row_index={row_index}, title={article.get('title', 'N/A')[:40]}")
         
         layout_item = {
@@ -190,23 +204,31 @@ def prepare_home_layouts(articles):
             # 3 articles 1 row - lấy tất cả articles trong cùng row
             row_articles = []
             
-            # Tìm tất cả articles trong cùng row (không chỉ 3 articles đầu tiên)
-            for j in range(i, len(articles)):
+            # ⚠️ QUAN TRỌNG: Bắt đầu từ article hiện tại (index i) - đây là article đầu tiên của row
+            # Article tại index i chắc chắn có layout_type='3_articles' và cùng row_index
+            row_articles.append(article)
+            
+            # Tìm các articles tiếp theo trong cùng row (bắt đầu từ i+1)
+            for j in range(i + 1, len(articles)):
                 next_article = articles[j]
                 next_display_order = next_article.get('display_order', 0)
                 next_row_index = next_display_order // 1000
+                next_layout_type = next_article.get('layout_type') or '1_full'
                 
-                # Chỉ lấy nếu cùng row
-                if next_row_index == row_index:
+                # Chỉ lấy nếu cùng row và cùng layout_type là 3_articles
+                # ⚠️ QUAN TRỌNG: Chỉ lấy articles có layout_type='3_articles' trong cùng row
+                if next_row_index == row_index and next_layout_type == '3_articles':
                     row_articles.append(next_article)
-                else:
+                elif next_row_index > row_index:
                     # Đã qua row khác, dừng lại
                     break
             
-            print(f"   🔍 Row {row_index}: Found {len(row_articles)} articles in same row")
+            print(f"   🔍 Row {row_index}: Found {len(row_articles)} articles in same row with layout_type=3_articles")
             if row_articles:
-                article_info = [f"{a.get('id', 'N/A')} ({a.get('layout_type', 'N/A')})" for a in row_articles]
+                article_info = [f"ID:{a.get('id', 'N/A')} DO:{a.get('display_order', 'N/A')} ({a.get('layout_type', 'N/A')})" for a in row_articles]
                 print(f"      Articles: {article_info}")
+            else:
+                print(f"      ⚠️  No articles found! Current article: ID={article.get('id', 'N/A')}, display_order={display_order}, layout_type={layout_type}")
             
             # Nếu có đúng 3 articles trong cùng row, group lại
             if len(row_articles) == 3:
@@ -429,21 +451,29 @@ def prepare_home_layouts(articles):
             i += 1
             
         elif layout_type == 'job_slider':
-            # JOB slider với header link và background đặc biệt
+            # Job slider - giống slider nhưng có thêm header_link, extra_classes, header_classes
             layout_data = article.get('layout_data', {})
             slider_articles = layout_data.get('slider_articles', [])
             slider_title = layout_data.get('slider_title', '')
             has_nav = layout_data.get('has_nav', True)
             items_per_view = layout_data.get('items_per_view', 4)
-            source_class = layout_data.get('source_class', 'source_job-dk')
+            source_class = layout_data.get('source_class', 'source_job')
+            
+            # Job slider specific fields
             header_link = layout_data.get('header_link')
             extra_classes = layout_data.get('extra_classes', [])
             header_classes = layout_data.get('header_classes', [])
             
-            print(f"💼 Preparing JOB slider '{slider_title}': {len(slider_articles)} articles")
-            
-            # Convert slider_articles URLs từ published_url sang Flask app URL
-            if isinstance(slider_articles, list):
+            # Debug: Log số articles trong job slider
+            if not isinstance(slider_articles, list):
+                print(f"⚠️  WARNING: job_slider articles is not a list, type: {type(slider_articles)}")
+                slider_articles = []
+            else:
+                print(f"🎠 Preparing job_slider '{slider_title}': {len(slider_articles)} articles")
+                if len(slider_articles) < 4:
+                    print(f"   ⚠️  WARNING: Job slider has only {len(slider_articles)} articles")
+                
+                # Convert slider_articles URLs từ published_url sang Flask app URL
                 from flask import url_for
                 from database import Article
                 updated_slider_articles = []
@@ -457,9 +487,11 @@ def prepare_home_layouts(articles):
                                 article_dict = article_obj.to_dict()
                                 updated_item['url'] = article_dict.get('url', item.get('url', '#'))
                         except:
+                            # Fallback: dùng published_url nếu không tìm thấy Article
                             updated_item['url'] = item.get('url', '#')
                     else:
-                        # Tìm Article bằng published_url
+                        # Nếu không có id, giữ nguyên url (có thể là published_url)
+                        # Hoặc có thể tìm Article bằng published_url
                         published_url = item.get('url') or item.get('published_url')
                         if published_url:
                             try:
@@ -468,6 +500,7 @@ def prepare_home_layouts(articles):
                                     article_dict = article_obj.to_dict()
                                     updated_item['url'] = article_dict.get('url', published_url)
                                 else:
+                                    # Không tìm thấy, giữ nguyên published_url
                                     updated_item['url'] = published_url
                             except:
                                 updated_item['url'] = published_url
@@ -477,32 +510,13 @@ def prepare_home_layouts(articles):
             layout_item['data'] = {
                 'slider_title': slider_title,
                 'slider_articles': slider_articles,
-                'slider_id': layout_data.get('slider_id', f'job-slider-{row_index}'),
+                'slider_id': layout_data.get('slider_id', f'slider-{row_index}'),
                 'has_nav': has_nav,
                 'items_per_view': items_per_view,
                 'source_class': source_class,
                 'header_link': header_link,
                 'extra_classes': extra_classes,
                 'header_classes': header_classes
-            }
-            i += 1
-            
-            # Debug: Log số articles trong slider
-            if not isinstance(slider_articles, list):
-                print(f"⚠️  WARNING: slider_articles is not a list, type: {type(slider_articles)}")
-                slider_articles = []
-            else:
-                print(f"🎠 Preparing slider '{slider_title}': {len(slider_articles)} articles")
-                if len(slider_articles) < 4:
-                    print(f"   ⚠️  WARNING: Slider has only {len(slider_articles)} articles")
-            
-            layout_item['data'] = {
-                'slider_title': slider_title,
-                'slider_articles': slider_articles,
-                'slider_id': layout_data.get('slider_id', f'slider-{row_index}'),
-                'has_nav': has_nav,
-                'items_per_view': items_per_view,
-                'source_class': source_class
             }
             i += 1
             
@@ -515,7 +529,9 @@ def prepare_home_layouts(articles):
             i += 1
         
         layouts.append(layout_item)
-        row_index += 1
+        # ⚠️ REMOVED: row_index += 1
+        # row_index được tính lại từ display_order ở đầu mỗi iteration (dòng 141)
+        # Không cần tăng row_index ở đây vì nó sẽ được tính lại từ display_order của article tiếp theo
     
     return layouts
 

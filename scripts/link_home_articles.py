@@ -128,7 +128,24 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
         print(f"\n🔄 Processing layout items...")
         updated_article_ids = set()
         
-        for idx, layout_item in enumerate(layout_items, 1):
+        # ⚠️ QUAN TRỌNG: Sắp xếp layout items để ưu tiên items có row_index >= 0
+        # Nếu một article xuất hiện nhiều lần trong layout, ưu tiên layout item có row_index >= 0
+        # (bỏ qua các items từ NUUK slider hoặc items không có row_index)
+        print(f"   📋 Sorting layout items to prioritize row_index >= 0...")
+        layout_items_sorted = sorted(layout_items, key=lambda x: (
+            x.get('row_index', -1) < 0,  # row_index < 0 sẽ ở sau
+            x.get('display_order', 999999)  # Sau đó sắp xếp theo display_order
+        ))
+        
+        # Đếm số items bị thay đổi thứ tự
+        items_reordered = sum(1 for i, (orig, sorted_item) in enumerate(zip(layout_items, layout_items_sorted)) if orig != sorted_item)
+        if items_reordered > 0:
+            print(f"   ✅ Reordered {items_reordered} layout items to prioritize row_index >= 0")
+        
+        # Track các URL đã được xử lý để tránh update nhiều lần
+        processed_urls = set()  # Track các URL đã được xử lý
+        
+        for idx, layout_item in enumerate(layout_items_sorted, 1):
             try:
                 published_url = layout_item.get('published_url', '')
                 layout_type = layout_item.get('layout_type', '')
@@ -193,32 +210,15 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                         else:
                             print(f"      ⚠️  Would create slider container (dry run)")
                     
-                    # Link các articles trong slider
+                    # ⚠️ QUAN TRỌNG: KHÔNG tạo hoặc update articles trong slider
+                    # Chỉ lưu thông tin articles trong layout_data của slider container
+                    # Để tránh duplicate URLs và tránh update articles không cần thiết
                     slider_articles = layout_item.get('slider_articles', [])
-                    for slider_article in slider_articles:
-                        slider_url = slider_article.get('published_url', '')
-                        if slider_url and slider_url in articles_map:
-                            # Tìm article phù hợp (cùng language)
-                            for article in articles_map[slider_url]:
-                                if article.language == language:
-                                    # Update article để link với home
-                                    # ⚠️ QUAN TRỌNG: Chỉ update is_home=True, KHÔNG update section
-                                    if not dry_run:
-                                        article.is_home = True
-                                        # KHÔNG update section - giữ nguyên section gốc
-                                        # Note: display_order của articles trong slider
-                                        # được lưu trong layout_data của slider container
-                                        if article.id not in updated_article_ids:
-                                            updated_article_ids.add(article.id)
-                                            stats['articles_updated'] += 1
-                                            db.session.commit()
-                                    stats['articles_found'] += 1
-                                    print(f"         ✅ Linked article in slider: {slider_url[:60]}... (ID: {article.id})")
-                                    break
-                            else:
-                                print(f"         ⚠️  Article in slider not found for language '{language}': {slider_url[:60]}...")
-                        elif slider_url:
-                            print(f"         ⚠️  Article in slider not found in DB: {slider_url[:60]}...")
+                    if slider_articles:
+                        print(f"         📋 Slider contains {len(slider_articles)} articles (stored in layout_data only)")
+                        # Articles trong slider đã được lưu trong layout_data của slider container
+                        # Không cần update is_home=True cho các articles này
+                        # Vì chúng chỉ là thông tin reference, không phải articles thực sự trên home
                     
                     continue
                 
@@ -431,6 +431,9 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                                 updated_article_ids.add(matched_article.id)
                                 stats['articles_updated'] += 1
                                 db.session.commit()
+                            
+                            # Mark URL as processed
+                            processed_urls.add(published_url)
                         
                         print(f"      ✅ Updated article (ID: {matched_article.id})")
                         if require_home_section:

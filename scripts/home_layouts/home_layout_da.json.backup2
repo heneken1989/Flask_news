@@ -1,0 +1,5359 @@
+{
+  "language": "da",
+  "crawled_at": "2026-01-26T12:38:58.463332",
+  "total_items": 222,
+  "layout_items": [
+    {
+      "published_url": "https://www.sermitsiaq.ag/erhverv/nye-boreaktiviteter-ved-ivittuut-og-gronnedal/2333035",
+      "layout_type": "1_full",
+      "display_order": 0,
+      "row_index": 0,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Nye boreaktiviteter ved Ivittuut og Grønnedal\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "ee01f2ee-e7bd-46d2-ab6f-5979a83598cc",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2333035",
+      "title": "Nye boreaktiviteter ved Ivittuut og Grønnedal"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/kultur/debut-ep-fra-max-5-tassa/2331684",
+      "layout_type": "1_full",
+      "display_order": 2000,
+      "row_index": 2,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "kicker_floating": "UNNIA",
+        "title_parts": [
+          {
+            "text": "Debut-EP fra Max 5 Tassa\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "7c540ad9-c442-44d9-8cd9-6056bf349761",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2331684",
+      "title": "Debut-EP fra Max 5 Tassa"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/ny-nationaldragtsyerske/2328292",
+      "layout_type": "2_articles",
+      "display_order": 4000,
+      "row_index": 4,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Ny nationaldragtsyerske\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "cd92f7ad-3dc3-4019-a795-e71fd91050d2",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2328292",
+      "title": "Ny nationaldragtsyerske"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/klumme-usas-selvbillede-og-misforstaelsen-af-gronland/2332756",
+      "layout_type": "2_articles",
+      "display_order": 4001,
+      "row_index": 4,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "KLUMME:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " USA’s selvbillede – og misforståelsen af Grønland\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "2de3903e-9324-4fa4-917f-1c7d2a15573d",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2332756",
+      "title": "KLUMME: USA’s selvbillede – og misforståelsen af Grønland"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/stromafbrydelse-faerdselsuheld-og-spritkorsel/2335134",
+      "layout_type": "1_full",
+      "display_order": 6000,
+      "row_index": 6,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "kicker_below": "DØGNRAPPORT",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "Strømafbrydelse, færdselsuheld og spritkørsel\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "37424efa-b105-48ed-baaf-69f0c9c633fa",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2335134",
+      "title": "Strømafbrydelse, færdselsuheld og spritkørsel"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/naalakkersuisut-nato-har-ikke-handlet-bag-gronlands-ryg/2334129",
+      "layout_type": "1_with_list_right",
+      "display_order": 7000,
+      "row_index": 7,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Naalakkersuisut: NATO har ikke handlet bag Grønlands ryg\n",
+            "color_class": null
+          }
+        ],
+        "list_title": "MEST LÆSTE",
+        "list_items": [
+          {
+            "title": "Kraftig vinde skyld i strømsvigt i Nuuk - strømforsyning er blevet genetableret",
+            "url": "/samfund/kraftig-vinde-skyld-i-stromsvigt-i-nuuk-stromforsyning-er-blevet-genetableret/2335099"
+          },
+          {
+            "title": "Strømafbrydelse, færdselsuheld og spritkørsel",
+            "url": "/samfund/stromafbrydelse-faerdselsuheld-og-spritkorsel/2335134"
+          },
+          {
+            "title": "Nye boreaktiviteter ved Ivittuut og Grønnedal",
+            "url": "/erhverv/nye-boreaktiviteter-ved-ivittuut-og-gronnedal/2333035"
+          },
+          {
+            "title": "KLUMME: USA’s selvbillede – og misforståelsen af Grønland",
+            "url": "/samfund/klumme-usas-selvbillede-og-misforstaelsen-af-gronland/2332756"
+          },
+          {
+            "title": "Kreml: Grønland er strategisk vigtig for sikkerheden",
+            "url": "/samfund/kreml-gronland-er-strategisk-vigtig-for-sikkerheden/2326415"
+          }
+        ]
+      },
+      "element_guid": "92308e23-9510-4ab4-8a15-f21bd23ecbcf",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2334129",
+      "title": "Naalakkersuisut: NATO har ikke handlet bag Grønlands ryg",
+      "list_title": "MEST LÆSTE",
+      "list_items": [
+        {
+          "title": "Kraftig vinde skyld i strømsvigt i Nuuk - strømforsyning er blevet genetableret",
+          "url": "/samfund/kraftig-vinde-skyld-i-stromsvigt-i-nuuk-stromforsyning-er-blevet-genetableret/2335099"
+        },
+        {
+          "title": "Strømafbrydelse, færdselsuheld og spritkørsel",
+          "url": "/samfund/stromafbrydelse-faerdselsuheld-og-spritkorsel/2335134"
+        },
+        {
+          "title": "Nye boreaktiviteter ved Ivittuut og Grønnedal",
+          "url": "/erhverv/nye-boreaktiviteter-ved-ivittuut-og-gronnedal/2333035"
+        },
+        {
+          "title": "KLUMME: USA’s selvbillede – og misforståelsen af Grønland",
+          "url": "/samfund/klumme-usas-selvbillede-og-misforstaelsen-af-gronland/2332756"
+        },
+        {
+          "title": "Kreml: Grønland er strategisk vigtig for sikkerheden",
+          "url": "/samfund/kreml-gronland-er-strategisk-vigtig-for-sikkerheden/2326415"
+        }
+      ]
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/kreml-gronland-er-strategisk-vigtig-for-sikkerheden/2326415",
+      "layout_type": "3_articles",
+      "display_order": 8000,
+      "row_index": 8,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "kicker_floating": "LIVEBLOG",
+        "title_parts": [
+          {
+            "text": "Kreml: Grønland er strategisk vigtig for sikkerheden\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "388d3f51-2d4c-4758-8e15-a85a7e8900ef",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2326415",
+      "title": "Kreml: Grønland er strategisk vigtig for sikkerheden"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/ullorissat-er-kommet-pa-finansloven/2333080",
+      "layout_type": "3_articles",
+      "display_order": 8001,
+      "row_index": 8,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Ullorissat er kommet på finansloven\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "cc45225a-3784-4177-92de-1235e2d20e34",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2333080",
+      "title": "Ullorissat er kommet på finansloven"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/hvorfor-horer-vi-aldrig-om-vikinger-fra-finland/2333707",
+      "layout_type": "3_articles",
+      "display_order": 8002,
+      "row_index": 8,
+      "article_index_in_row": 2,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Hvorfor hører vi aldrig om vikinger fra Finland?\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "6794fedc-ff96-4da4-aa77-bbfda94bce91",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2333707",
+      "title": "Hvorfor hører vi aldrig om vikinger fra Finland?"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/kraftig-vinde-skyld-i-stromsvigt-i-nuuk-stromforsyning-er-blevet-genetableret/2335099",
+      "layout_type": "2_articles",
+      "display_order": 10000,
+      "row_index": 10,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Kraftig vinde skyld i strømsvigt i Nuuk",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " - strømforsyning er blevet genetableret\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "6eb58cba-8090-4854-a1a4-efc33e935c11",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2335099",
+      "title": "Kraftig vinde skyld i strømsvigt i Nuuk - strømforsyning er blevet genetableret"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/klumme-penge-er-politik/2333050",
+      "layout_type": "2_articles",
+      "display_order": 10001,
+      "row_index": 10,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_floating": "KLUMME",
+        "title_parts": [
+          {
+            "text": "Penge er politik\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "9b863008-91eb-4638-8e94-97e8db5b3ffa",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2333050",
+      "title": "Penge er politik"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/frivillige-ildsjaele-er-vigtige/2327847",
+      "layout_type": "1_full",
+      "display_order": 12000,
+      "row_index": 12,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Frivillige ildsjæle er vigtige\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "5e223bc2-ece7-4252-8b29-cecb71950dd7",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2327847",
+      "title": "Frivillige ildsjæle er vigtige"
+    },
+    {
+      "published_url": "",
+      "layout_type": "slider",
+      "display_order": 14000,
+      "row_index": 14,
+      "article_index_in_row": -1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "slider_title": "NYHEDER",
+        "slider_articles": [
+          {
+            "url": "https://www.sermitsiaq.ag/erhverv/nye-boreaktiviteter-ved-ivittuut-og-gronnedal/2333035",
+            "title": "Nye boreaktiviteter ved Ivittuut og Grønnedal",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2333038.jpg?imageId=2333038&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=318",
+              "alt": "",
+              "width": "265",
+              "height": "159"
+            },
+            "is_paywall": true,
+            "section": "erhverv",
+            "position": 0
+          },
+          {
+            "url": "https://www.sermitsiaq.ag/samfund/ny-nationaldragtsyerske/2328292",
+            "title": "Ny nationaldragtsyerske",
+            "kicker": "UNNIA",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2328298.jpg?imageId=2328298&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=318",
+              "alt": "",
+              "width": "265",
+              "height": "159"
+            },
+            "is_paywall": false,
+            "section": "samfund",
+            "position": 1
+          },
+          {
+            "url": "https://www.sermitsiaq.ag/kultur/debut-ep-fra-max-5-tassa/2331684",
+            "title": "Debut-EP fra Max 5 Tassa",
+            "kicker": "UNNIA",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2331687.jpg?imageId=2331687&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=318",
+              "alt": "",
+              "width": "265",
+              "height": "159"
+            },
+            "is_paywall": false,
+            "section": "kultur",
+            "position": 2
+          },
+          {
+            "url": "https://www.sermitsiaq.ag/samfund/klumme-usas-selvbillede-og-misforstaelsen-af-gronland/2332756",
+            "title": "KLUMME: USA’s selvbillede – og misforståelsen af Grønland",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2332767.jpg?imageId=2332767&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=318",
+              "alt": "",
+              "width": "265",
+              "height": "159"
+            },
+            "is_paywall": true,
+            "section": "samfund",
+            "position": 3
+          },
+          {
+            "url": "https://www.sermitsiaq.ag/samfund/kreml-gronland-er-strategisk-vigtig-for-sikkerheden/2326415",
+            "title": "Kreml: Grønland er strategisk vigtig for sikkerheden",
+            "kicker": "LIVEBLOG",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2335163.jpg?imageId=2335163&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=318",
+              "alt": "",
+              "width": "265",
+              "height": "159"
+            },
+            "is_paywall": false,
+            "section": "samfund",
+            "position": 4
+          },
+          {
+            "url": "https://www.sermitsiaq.ag/samfund/hvorfor-horer-vi-aldrig-om-vikinger-fra-finland/2333707",
+            "title": "Hvorfor hører vi aldrig om vikinger fra Finland?",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2333714.jpg?imageId=2333714&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=51.07&heighty=0.00&heightw=34.76&heighth=100.00&width=1058&height=688&format=webp&width=530&height=318",
+              "alt": "",
+              "width": "265",
+              "height": "159"
+            },
+            "is_paywall": true,
+            "section": "samfund",
+            "position": 5
+          },
+          {
+            "url": "https://www.sermitsiaq.ag/samfund/stromafbrydelse-faerdselsuheld-og-spritkorsel/2335134",
+            "title": "Strømafbrydelse, færdselsuheld og spritkørsel",
+            "kicker": "DØGNRAPPORT",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2325276.jpg?imageId=2325276&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=318",
+              "alt": "",
+              "width": "265",
+              "height": "159"
+            },
+            "is_paywall": false,
+            "section": "samfund",
+            "position": 6
+          },
+          {
+            "url": "https://www.sermitsiaq.ag/samfund/ullorissat-er-kommet-pa-finansloven/2333080",
+            "title": "Ullorissat er kommet på finansloven",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2333084.jpg?imageId=2333084&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=318",
+              "alt": "",
+              "width": "265",
+              "height": "159"
+            },
+            "is_paywall": true,
+            "section": "samfund",
+            "position": 7
+          },
+          {
+            "url": "https://www.sermitsiaq.ag/samfund/kraftig-vinde-skyld-i-stromsvigt-i-nuuk-stromforsyning-er-blevet-genetableret/2335099",
+            "title": "Kraftig vinde skyld i strømsvigt i Nuuk - strømforsyning er blevet genetableret",
+            "kicker": "STRØMSVIGT",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2094011.jpg?imageId=2094011&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=318",
+              "alt": "",
+              "width": "265",
+              "height": "159"
+            },
+            "is_paywall": false,
+            "section": "samfund",
+            "position": 8
+          },
+          {
+            "url": "https://www.sermitsiaq.ag/samfund/klumme-penge-er-politik/2333050",
+            "title": "KLUMME: Penge er politik",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2333057.jpg?imageId=2333057&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=318",
+              "alt": "",
+              "width": "265",
+              "height": "159"
+            },
+            "is_paywall": true,
+            "section": "samfund",
+            "position": 9
+          }
+        ],
+        "slider_id": "article_list_1479365",
+        "has_nav": true,
+        "items_per_view": 4,
+        "source_class": "source_nyheder",
+        "header_link": null,
+        "extra_classes": [],
+        "header_classes": [
+          "articlescroller-header",
+          "t31",
+          "primary",
+          "color_mobile_primary",
+          "align-left",
+          "mobile_text_align_align-left",
+          "font-IBMPlexSans"
+        ]
+      },
+      "element_guid": "1daa12fd-a94e-4ea7-8080-1d1b73f326ff",
+      "k5a_url": "",
+      "title": "NYHEDER",
+      "slider_title": "NYHEDER",
+      "slider_articles": [
+        {
+          "published_url": "https://www.sermitsiaq.ag/erhverv/nye-boreaktiviteter-ved-ivittuut-og-gronnedal/2333035",
+          "title": "Nye boreaktiviteter ved Ivittuut og Grønnedal",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sermitsiaq.ag/samfund/ny-nationaldragtsyerske/2328292",
+          "title": "Ny nationaldragtsyerske",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sermitsiaq.ag/kultur/debut-ep-fra-max-5-tassa/2331684",
+          "title": "Debut-EP fra Max 5 Tassa",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sermitsiaq.ag/samfund/klumme-usas-selvbillede-og-misforstaelsen-af-gronland/2332756",
+          "title": "KLUMME: USA’s selvbillede – og misforståelsen af Grønland",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sermitsiaq.ag/samfund/kreml-gronland-er-strategisk-vigtig-for-sikkerheden/2326415",
+          "title": "Kreml: Grønland er strategisk vigtig for sikkerheden",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sermitsiaq.ag/samfund/hvorfor-horer-vi-aldrig-om-vikinger-fra-finland/2333707",
+          "title": "Hvorfor hører vi aldrig om vikinger fra Finland?",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sermitsiaq.ag/samfund/stromafbrydelse-faerdselsuheld-og-spritkorsel/2335134",
+          "title": "Strømafbrydelse, færdselsuheld og spritkørsel",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sermitsiaq.ag/samfund/ullorissat-er-kommet-pa-finansloven/2333080",
+          "title": "Ullorissat er kommet på finansloven",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sermitsiaq.ag/samfund/kraftig-vinde-skyld-i-stromsvigt-i-nuuk-stromforsyning-er-blevet-genetableret/2335099",
+          "title": "Kraftig vinde skyld i strømsvigt i Nuuk - strømforsyning er blevet genetableret",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sermitsiaq.ag/samfund/klumme-penge-er-politik/2333050",
+          "title": "KLUMME: Penge er politik",
+          "image_data": {}
+        }
+      ]
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/mette-f-der-er-ikke-blevet-forhandlet-om-suveraenitet/2333851",
+      "layout_type": "1_with_list_left",
+      "display_order": 16000,
+      "row_index": 16,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Mette F: ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "Der er ikke blevet forhandlet om suverænitet\n",
+            "color_class": null
+          }
+        ],
+        "list_title": "SENESTE",
+        "list_items": [
+          {
+            "title": "Nye boreaktiviteter ved Ivittuut og Grønnedal",
+            "url": "/erhverv/nye-boreaktiviteter-ved-ivittuut-og-gronnedal/2333035"
+          },
+          {
+            "title": "Ny nationaldragtsyerske",
+            "url": "/samfund/ny-nationaldragtsyerske/2328292"
+          },
+          {
+            "title": "Debut-EP fra Max 5 Tassa",
+            "url": "/kultur/debut-ep-fra-max-5-tassa/2331684"
+          },
+          {
+            "title": "KLUMME: USA’s selvbillede – og misforståelsen af Grønland",
+            "url": "/samfund/klumme-usas-selvbillede-og-misforstaelsen-af-gronland/2332756"
+          },
+          {
+            "title": "Kreml: Grønland er strategisk vigtig for sikkerheden",
+            "url": "/samfund/kreml-gronland-er-strategisk-vigtig-for-sikkerheden/2326415"
+          },
+          {
+            "title": "Hvorfor hører vi aldrig om vikinger fra Finland?",
+            "url": "/samfund/hvorfor-horer-vi-aldrig-om-vikinger-fra-finland/2333707"
+          }
+        ]
+      },
+      "element_guid": "c90a797e-4a8f-4ded-a15d-0bd4cbc9da93",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2333851",
+      "title": "Mette F: Der er ikke blevet forhandlet om suverænitet",
+      "list_title": "SENESTE",
+      "list_items": [
+        {
+          "title": "Nye boreaktiviteter ved Ivittuut og Grønnedal",
+          "url": "/erhverv/nye-boreaktiviteter-ved-ivittuut-og-gronnedal/2333035"
+        },
+        {
+          "title": "Ny nationaldragtsyerske",
+          "url": "/samfund/ny-nationaldragtsyerske/2328292"
+        },
+        {
+          "title": "Debut-EP fra Max 5 Tassa",
+          "url": "/kultur/debut-ep-fra-max-5-tassa/2331684"
+        },
+        {
+          "title": "KLUMME: USA’s selvbillede – og misforståelsen af Grønland",
+          "url": "/samfund/klumme-usas-selvbillede-og-misforstaelsen-af-gronland/2332756"
+        },
+        {
+          "title": "Kreml: Grønland er strategisk vigtig for sikkerheden",
+          "url": "/samfund/kreml-gronland-er-strategisk-vigtig-for-sikkerheden/2326415"
+        },
+        {
+          "title": "Hvorfor hører vi aldrig om vikinger fra Finland?",
+          "url": "/samfund/hvorfor-horer-vi-aldrig-om-vikinger-fra-finland/2333707"
+        }
+      ]
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/to-midlertidigt-militaeromrader-etableres/2335027",
+      "layout_type": "3_articles",
+      "display_order": 17000,
+      "row_index": 17,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "To midlertidigt militærområder etableres\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "0658fe23-1ab5-40f8-9a07-ad53bbf8340a",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2335027",
+      "title": "To midlertidigt militærområder etableres"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/skoleoplevelser-til-eksamen/2331609",
+      "layout_type": "3_articles",
+      "display_order": 17001,
+      "row_index": 17,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Skoleoplevelser til eksamen\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "d9d1d6fc-4e7a-4576-bdc4-595cfa1646e2",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2331609",
+      "title": "Skoleoplevelser til eksamen"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/kultur/isen-smelter-i-statsministerens-nytarstale/2328749",
+      "layout_type": "3_articles",
+      "display_order": 17002,
+      "row_index": 17,
+      "article_index_in_row": 2,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Isen smelter i statsministerens nytårstale\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "53cc9349-c911-4187-a711-b841228fef7f",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2328749",
+      "title": "Isen smelter i statsministerens nytårstale"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/dognrapport-to-faerdselsuheld-to-spritbilister-og-flere-selvmordstrusler/2335054",
+      "layout_type": "2_articles",
+      "display_order": 18000,
+      "row_index": 18,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "DØGNRAPPORT",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "To færdselsuheld, to spritbilister og flere selvmordstrusler\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "208e3803-1836-4df6-9849-d379a2fcb8d3",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2335054",
+      "title": "To færdselsuheld, to spritbilister og flere selvmordstrusler"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/kultur/at-blive-psykolog-kastede-nyt-lys-over-80ernes-fest-og-alkoholkultur/2333636",
+      "layout_type": "2_articles",
+      "display_order": 18001,
+      "row_index": 18,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "INUIT",
+        "kicker_below_classes": "kicker below font-weight-bold m-font-weight-bold secondary color_mobile_secondary align-center mobile_text_align_align-center",
+        "title_parts": [
+          {
+            "text": "At blive psykolog kastede nyt lys over 80’ernes fest- og alkoholkultur\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "e83a77dc-0998-4196-b05a-d905620b6066",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2333636",
+      "title": "At blive psykolog kastede nyt lys over 80’ernes fest- og alkoholkultur"
+    },
+    {
+      "published_url": "",
+      "layout_type": "job_slider",
+      "display_order": 19000,
+      "row_index": 19,
+      "article_index_in_row": -1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "slider_title": "Se alle jobs",
+        "slider_articles": [
+          {
+            "url": "https://www.sjob.gl/job-dk/faglaerer-okonomi/2334900",
+            "title": "Faglærer Økonomi",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sjob.gl/2105287.jpg?imageId=2105287&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "job dk",
+            "position": 0
+          },
+          {
+            "url": "https://www.sjob.gl/job-dk/ressourceperson-til-atuarfik-inussuk/2334878",
+            "title": "Ressourceperson til Atuarfik Inussuk",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sjob.gl/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "job dk",
+            "position": 1
+          },
+          {
+            "url": "https://www.sjob.gl/job-dk/tikiusaaq-soger-en-paedagog/2334860",
+            "title": "Tikiusaaq søger en pædagog",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sjob.gl/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "job dk",
+            "position": 2
+          },
+          {
+            "url": "https://www.sjob.gl/job-dk/kti-jern-og-metalskolen-i-nuuk-soger-en-vaerksteds-assistent-/-skole-praktik-instruktor/2334844",
+            "title": "KTI Jern og Metalskolen i Nuuk søger en Værksteds assistent / Skole praktik instruktør",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sjob.gl/2077401.jpg?imageId=2077401&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "job dk",
+            "position": 3
+          },
+          {
+            "url": "https://www.sjob.gl/job-dk/daginstitution-tikiusaaq-soger-stottepersoner/2334824",
+            "title": "Daginstitution Tikiusaaq søger støttepersoner",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sjob.gl/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "job dk",
+            "position": 4
+          },
+          {
+            "url": "https://www.sjob.gl/job-dk/atuarfik-inussuk-soger-stottepersoner/2334803",
+            "title": "Atuarfik Inussuk søger støttepersoner",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sjob.gl/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "job dk",
+            "position": 5
+          },
+          {
+            "url": "https://www.sjob.gl/job-dk/socialradgiver-til-heldagsskolen/2334787",
+            "title": "Socialrådgiver til Heldagsskolen",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sjob.gl/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "job dk",
+            "position": 6
+          },
+          {
+            "url": "https://www.sjob.gl/job-dk/heldagsskolen-soger-stottepersoner/2334771",
+            "title": "Heldagsskolen søger støttepersoner",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sjob.gl/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "job dk",
+            "position": 7
+          },
+          {
+            "url": "https://www.sjob.gl/job-dk/heldagsskolen-soger-kaffedame/2334746",
+            "title": "Heldagsskolen søger kaffedame",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sjob.gl/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "job dk",
+            "position": 8
+          },
+          {
+            "url": "https://www.sjob.gl/job-dk/atuarfik-inussuk-soger-stottepersoner/2334730",
+            "title": "Atuarfik Inussuk søger støttepersoner",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sjob.gl/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "job dk",
+            "position": 9
+          }
+        ],
+        "slider_id": "article_list_2065382",
+        "has_nav": true,
+        "items_per_view": 4,
+        "source_class": "source_job-dk",
+        "header_link": {
+          "url": "https://www.sjob.gl/",
+          "text": "Se alle jobs"
+        },
+        "extra_classes": [
+          "bg-custom-2",
+          "color_mobile_bg-custom-2",
+          "hasContentPadding",
+          "mobile-hasContentPadding",
+          "layout-align-centered"
+        ],
+        "header_classes": [
+          "articlescroller-header",
+          "t22",
+          "octonary",
+          "color_mobile_octonary",
+          "align-left",
+          "mobile_text_align_align-left",
+          "font-IBMPlexSansCondensed",
+          "underline"
+        ]
+      },
+      "element_guid": "394ab23e-126a-4db3-893c-834732299380",
+      "k5a_url": "",
+      "title": "Se alle jobs",
+      "slider_title": "Se alle jobs",
+      "slider_articles": [
+        {
+          "published_url": "https://www.sjob.gl/job-dk/faglaerer-okonomi/2334900",
+          "title": "Faglærer Økonomi",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sjob.gl/job-dk/ressourceperson-til-atuarfik-inussuk/2334878",
+          "title": "Ressourceperson til Atuarfik Inussuk",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sjob.gl/job-dk/tikiusaaq-soger-en-paedagog/2334860",
+          "title": "Tikiusaaq søger en pædagog",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sjob.gl/job-dk/kti-jern-og-metalskolen-i-nuuk-soger-en-vaerksteds-assistent-/-skole-praktik-instruktor/2334844",
+          "title": "KTI Jern og Metalskolen i Nuuk søger en Værksteds assistent / Skole praktik instruktør",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sjob.gl/job-dk/daginstitution-tikiusaaq-soger-stottepersoner/2334824",
+          "title": "Daginstitution Tikiusaaq søger støttepersoner",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sjob.gl/job-dk/atuarfik-inussuk-soger-stottepersoner/2334803",
+          "title": "Atuarfik Inussuk søger støttepersoner",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sjob.gl/job-dk/socialradgiver-til-heldagsskolen/2334787",
+          "title": "Socialrådgiver til Heldagsskolen",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sjob.gl/job-dk/heldagsskolen-soger-stottepersoner/2334771",
+          "title": "Heldagsskolen søger støttepersoner",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sjob.gl/job-dk/heldagsskolen-soger-kaffedame/2334746",
+          "title": "Heldagsskolen søger kaffedame",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sjob.gl/job-dk/atuarfik-inussuk-soger-stottepersoner/2334730",
+          "title": "Atuarfik Inussuk søger støttepersoner",
+          "image_data": {}
+        }
+      ]
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/gronland-fremgar-flere-gange-i-trumps-nye-forsvarsstrategi/2335005",
+      "layout_type": "3_articles",
+      "display_order": 20000,
+      "row_index": 20,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Grønland fremgår flere gange i Trumps nye forsvarsstrategi\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "83b96abb-5954-4937-8dd2-80a3a0ab5627",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2335005",
+      "title": "Grønland fremgår flere gange i Trumps nye forsvarsstrategi"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/mette-frederiksen-det-er-en-alvorlig-situation/2334931",
+      "layout_type": "3_articles",
+      "display_order": 20001,
+      "row_index": 20,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Mette Frederiksen: Det er en alvorlig situation\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "9dab4a8d-1eef-4c8d-8baf-ce00c383de03",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2334931",
+      "title": "Mette Frederiksen: Det er en alvorlig situation"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/kultur/bamser-pa-briksen/2334437",
+      "layout_type": "3_articles",
+      "display_order": 20002,
+      "row_index": 20,
+      "article_index_in_row": 2,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Bamser på briksen\n",
+            "color_class": null
+          }
+        ],
+        "has_bg_color": true,
+        "content_classes": "content bg-secondary color_mobile_bg-secondary border-bg-secondary mobile_border-bg-secondary border_width_14 border_width_mobile_14 hasContentPadding mobile-hasContentPadding hasBorder mobile-hasBorder"
+      },
+      "element_guid": "5a34c10b-5d6e-466e-b7dc-997298c48cf2",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2334437",
+      "title": "Bamser på briksen"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/erhverv/for-tidligt-at-sige-om-trumps-toldregime-vil-stoppe-royal-greenlands-usa-eksport/2333365",
+      "layout_type": "1_with_list_right",
+      "display_order": 21000,
+      "row_index": 21,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "TOPCHEF TOKE BINZER",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "-\tFor tidligt at sige om Trumps toldregime vil stoppe Royal Greenlands USA-eksport\n",
+            "color_class": null
+          }
+        ],
+        "list_title": "NUUK",
+        "list_items": [
+          {
+            "title": "Strømafbrydelse, færdselsuheld og spritkørsel",
+            "url": "/samfund/stromafbrydelse-faerdselsuheld-og-spritkorsel/2335134"
+          },
+          {
+            "title": "Kraftig vinde skyld i strømsvigt i Nuuk - strømforsyning er blevet genetableret",
+            "url": "/samfund/kraftig-vinde-skyld-i-stromsvigt-i-nuuk-stromforsyning-er-blevet-genetableret/2335099"
+          },
+          {
+            "title": "To midlertidigt militærområder etableres",
+            "url": "/samfund/to-midlertidigt-militaeromrader-etableres/2335027"
+          },
+          {
+            "title": "Mette Frederiksen: Det er en alvorlig situation",
+            "url": "/samfund/mette-frederiksen-det-er-en-alvorlig-situation/2334931"
+          },
+          {
+            "title": "Soldater i gaderne i Nuuk",
+            "url": "/samfund/soldater-i-gaderne-i-nuuk/2333100"
+          },
+          {
+            "title": "Mette Frederiksen i Nuuk: Vil vise opbakning til den grønlandske befolkning",
+            "url": "/samfund/mette-frederiksen-i-nuuk-vil-vise-opbakning-til-den-gronlandske-befolkning/2334524"
+          }
+        ]
+      },
+      "element_guid": "9aa3045c-92fb-40cc-bff6-b16a497ae9a0",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2333365",
+      "title": "-\tFor tidligt at sige om Trumps toldregime vil stoppe Royal Greenlands USA-eksport",
+      "list_title": "NUUK",
+      "list_items": [
+        {
+          "title": "Strømafbrydelse, færdselsuheld og spritkørsel",
+          "url": "/samfund/stromafbrydelse-faerdselsuheld-og-spritkorsel/2335134"
+        },
+        {
+          "title": "Kraftig vinde skyld i strømsvigt i Nuuk - strømforsyning er blevet genetableret",
+          "url": "/samfund/kraftig-vinde-skyld-i-stromsvigt-i-nuuk-stromforsyning-er-blevet-genetableret/2335099"
+        },
+        {
+          "title": "To midlertidigt militærområder etableres",
+          "url": "/samfund/to-midlertidigt-militaeromrader-etableres/2335027"
+        },
+        {
+          "title": "Mette Frederiksen: Det er en alvorlig situation",
+          "url": "/samfund/mette-frederiksen-det-er-en-alvorlig-situation/2334931"
+        },
+        {
+          "title": "Soldater i gaderne i Nuuk",
+          "url": "/samfund/soldater-i-gaderne-i-nuuk/2333100"
+        },
+        {
+          "title": "Mette Frederiksen i Nuuk: Vil vise opbakning til den grønlandske befolkning",
+          "url": "/samfund/mette-frederiksen-i-nuuk-vil-vise-opbakning-til-den-gronlandske-befolkning/2334524"
+        }
+      ]
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/kultur/fra-lille-ide-til-landsdaekkende-vintertradition/2334390",
+      "layout_type": "2_articles",
+      "display_order": 22000,
+      "row_index": 22,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "KULTURNATTEN I GRØNLAND",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "Fra lille idé til landsdækkende vintertradition\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "dc6b6548-b6af-4e36-990e-87509d0635af",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2334390",
+      "title": "Fra lille idé til landsdækkende vintertradition"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/hun-vil-have-bornenes-stemmer-frem-i-debatten/2322918",
+      "layout_type": "2_articles",
+      "display_order": 22001,
+      "row_index": 22,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Hun vil have børnenes stemmer frem i debatten\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "38490f3b-d8a6-4451-8057-02d9dcca18ed",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2322918",
+      "title": "Hun vil have børnenes stemmer frem i debatten"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/stromafbrydelse-faerdselsuheld-og-spritkorsel/2335134",
+      "layout_type": "5_articles",
+      "display_order": 23000,
+      "row_index": -1,
+      "article_index_in_row": -1,
+      "total_rows": 0,
+      "grid_size": 6,
+      "layout_data": {},
+      "element_guid": "",
+      "k5a_url": "",
+      "title": "Strømafbrydelse, færdselsuheld og spritkørsel"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/kraftig-vinde-skyld-i-stromsvigt-i-nuuk-stromforsyning-er-blevet-genetableret/2335099",
+      "layout_type": "5_articles",
+      "display_order": 23001,
+      "row_index": -1,
+      "article_index_in_row": -1,
+      "total_rows": 0,
+      "grid_size": 6,
+      "layout_data": {},
+      "element_guid": "",
+      "k5a_url": "",
+      "title": "Kraftig vinde skyld i strømsvigt i Nuuk - strømforsyning er blevet genetableret"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/to-midlertidigt-militaeromrader-etableres/2335027",
+      "layout_type": "5_articles",
+      "display_order": 23002,
+      "row_index": -1,
+      "article_index_in_row": -1,
+      "total_rows": 0,
+      "grid_size": 6,
+      "layout_data": {},
+      "element_guid": "",
+      "k5a_url": "",
+      "title": "To midlertidigt militærområder etableres"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/mette-frederiksen-det-er-en-alvorlig-situation/2334931",
+      "layout_type": "5_articles",
+      "display_order": 23003,
+      "row_index": -1,
+      "article_index_in_row": -1,
+      "total_rows": 0,
+      "grid_size": 6,
+      "layout_data": {},
+      "element_guid": "",
+      "k5a_url": "",
+      "title": "Mette Frederiksen: Det er en alvorlig situation"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/soldater-i-gaderne-i-nuuk/2333100",
+      "layout_type": "5_articles",
+      "display_order": 23004,
+      "row_index": -1,
+      "article_index_in_row": -1,
+      "total_rows": 0,
+      "grid_size": 6,
+      "layout_data": {},
+      "element_guid": "",
+      "k5a_url": "",
+      "title": "Soldater i gaderne i Nuuk"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/mette-frederiksen-vinkede-til-angunnguaq/2326415",
+      "layout_type": "1_full",
+      "display_order": 24000,
+      "row_index": 24,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "kicker_floating": "LIVEBLOG",
+        "title_parts": [
+          {
+            "text": "Regeringsledere på besøg i børnehave\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "f116dfcf-6cff-4f3e-9bb0-2fe404b462f0",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2326415",
+      "title": "Regeringsledere på besøg i børnehave"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/udvalgsmedlem-haber-pa-bedre-og-mere-respektfuld-dialog-med-usa/2334718",
+      "layout_type": "3_articles",
+      "display_order": 25000,
+      "row_index": 25,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Udvalgsmedlem håber på bedre og mere respektfuld dialog med USA\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "135a7729-0ca3-4800-8b1c-483e84f3b714",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2334718",
+      "title": "Udvalgsmedlem håber på bedre og mere respektfuld dialog med USA"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/mette-frederiksen-lander-i-nuuk-i-dag/2334524",
+      "layout_type": "3_articles",
+      "display_order": 25001,
+      "row_index": 25,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Mette Frederiksen i Nuuk",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": ": Vil vise opbakning til den grønlandske befolkning\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "7c5d11f3-8dd3-4484-ac8c-02c264f9db0f",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2334524",
+      "title": "Mette Frederiksen i Nuuk: Vil vise opbakning til den grønlandske befolkning"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/sport/klar-til-vm-i-ironman-igen/2329640",
+      "layout_type": "3_articles",
+      "display_order": 25002,
+      "row_index": 25,
+      "article_index_in_row": 2,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Klar til VM i Ironman igen\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "20cfc998-7db2-4851-a3fc-dc8062020030",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329640",
+      "title": "Klar til VM i Ironman igen"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/soldater-i-gaderne-i-nuuk/2333100",
+      "layout_type": "2_articles",
+      "display_order": 26000,
+      "row_index": 26,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Soldater i gaderne i Nuuk\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "684bf636-080a-4751-8887-8fb76d0bef75",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2333100",
+      "title": "Soldater i gaderne i Nuuk"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/boassen-til-maga-fest-gronlandskage-med-usa-flag/2334019",
+      "layout_type": "2_articles",
+      "display_order": 26001,
+      "row_index": 26,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Boassen til MAGA-fest:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Grønlandskage med USA-flag\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "e55b8529-309a-45b0-9d2d-f1cf7b04ac1e",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2334019",
+      "title": "Boassen til MAGA-fest: Grønlandskage med USA-flag"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/erhverv/fra-udenrigsminister-til-lobbyist-for-kontroversielt-rastofselskab/2333498",
+      "layout_type": "1_full",
+      "display_order": 27000,
+      "row_index": 27,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Fra udenrigsminister til lobbyist for kontroversielt råstofselskab\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "d4e0eb66-f8f0-47d5-85c8-32646a206817",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2333498",
+      "title": "Fra udenrigsminister til lobbyist for kontroversielt råstofselskab"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/trump-om-gronland-aftale-skal-kunne-gore-hvad-vi-vil/2333985",
+      "layout_type": "2_articles",
+      "display_order": 28000,
+      "row_index": 28,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trump om Grønland-aftale:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Skal kunne gøre hvad vi vil\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "c0700023-b4c5-46b2-969e-44897b3ca706",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2333985",
+      "title": "Trump om Grønland-aftale: Skal kunne gøre hvad vi vil"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/erhverv/lokalviden-ved-kvotetildelinger-under-fokus/2329470",
+      "layout_type": "2_articles",
+      "display_order": 28001,
+      "row_index": 28,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Lokalviden ved kvotetildelinger under fokus\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "3b34d7e3-8fff-429e-a302-685935153e5c",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329470",
+      "title": "Lokalviden ved kvotetildelinger under fokus"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/atassut-rigsfaellesskabet-er-det-staerkeste-vaern-lige-nu/2333335",
+      "layout_type": "3_articles",
+      "display_order": 29000,
+      "row_index": 29,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Atassut",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": ": Rigsfællesskabet er det stærkeste værn lige nu\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "97931308-2c90-4dc9-9147-68c23c8eec19",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2333335",
+      "title": "Atassut: Rigsfællesskabet er det stærkeste værn lige nu"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/oprustning-i-arktis-tjener-ikke-gronlands-sikkerhed/2333982",
+      "layout_type": "3_articles",
+      "display_order": 29001,
+      "row_index": 29,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "kicker_below": "STEEN FOLKE DELTOG I DEMONSTRATIONEN I KØBENHAVN",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "– Oprustning i Arktis tjener ikke Grønlands sikkerhed\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "21bf3942-5881-4034-b07c-4e92061a55d9",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2333982",
+      "title": "– Oprustning i Arktis tjener ikke Grønlands sikkerhed"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/inatsisartut-holder-ekstraordinaer-modedag-rigets-tilstand-pa-dagsordenen/2334193",
+      "layout_type": "3_articles",
+      "display_order": 29002,
+      "row_index": 29,
+      "article_index_in_row": 2,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Inatsisartut holder ekstraordinær mødedag: “Rigets tilstand” på dagsordenen\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "fbf83f49-f426-4229-a574-13615c218911",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2334193",
+      "title": "Inatsisartut holder ekstraordinær mødedag: “Rigets tilstand” på dagsordenen"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/jens-frederik-pa-nyt-pressemode-vi-vaelger-kongeriget-eu-og-nato/2334142",
+      "layout_type": "2_articles",
+      "display_order": 30000,
+      "row_index": 30,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_floating": "OPDATERET",
+        "title_parts": [
+          {
+            "text": "Jens-Frederik på nyt pressemøde:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Svært når man hører trusler hver nat\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "46e8223a-f222-4f44-8fd1-9d237d4611a1",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2334142",
+      "title": "Jens-Frederik på nyt pressemøde: Svært når man hører trusler hver nat"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/lektor-undrer-sig-over-trump-udtalelser-golden-dome-planer-er-i-hoj-grad-science-fiction/2333878",
+      "layout_type": "2_articles",
+      "display_order": 30001,
+      "row_index": 30,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Lektor undrer sig over Trump-udtalelser:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Golden Dome-planer er i høj grad science fiction\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "992deaa8-8b69-4403-a178-bb401b482e2b",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2333878",
+      "title": "Lektor undrer sig over Trump-udtalelser: Golden Dome-planer er i høj grad science fiction"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/demokraatit-fremrykket-inatsisartut-mode-skal-samle-politisk-kurs-i-alvorlig-tid/2333761",
+      "layout_type": "2_articles",
+      "display_order": 31000,
+      "row_index": 31,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Demokraatit:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Fremrykket Inatsisartut-møde skal samle politisk kurs i alvorlig tid\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "16bad820-c533-4dc7-b9c5-71ca1a8e9907",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2333761",
+      "title": "Demokraatit: Fremrykket Inatsisartut-møde skal samle politisk kurs i alvorlig tid"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/fik-inspirationen-til-onlinekiosk-fra-tid-i-taxabranchen/2328735",
+      "layout_type": "2_articles",
+      "display_order": 31001,
+      "row_index": 31,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_floating": "UNNIA",
+        "title_parts": [
+          {
+            "text": "Fik inspirationen til onlinekiosk fra tid i taxabranchen\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "c2123d02-a791-4add-9b8a-056b1bf46968",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2328735",
+      "title": "Fik inspirationen til onlinekiosk fra tid i taxabranchen"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/jens-frederik-nielsen-holder-pressemode-klokken-14/2334038",
+      "layout_type": "1_full",
+      "display_order": 32000,
+      "row_index": 32,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Jens-Frederik Nielsen holder pressemøde klokken 14\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "b9da4a2d-4a7b-48e7-b8a4-a98de39b940e",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2334038",
+      "title": "Jens-Frederik Nielsen holder pressemøde klokken 14"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/aaja-chemnitz-vi-er-et-godt-sted-men-i-en-meget-intens-periode-som-fortsaetter-lidt-endnu/2333957",
+      "layout_type": "3_articles",
+      "display_order": 33000,
+      "row_index": 33,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Aaja Chemnitz:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Vi er et godt sted, men i en meget intens periode som fortsætter lidt endnu\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "d3d355aa-9e44-4d9f-abed-f659734bce3f",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2333957",
+      "title": "Aaja Chemnitz: Vi er et godt sted, men i en meget intens periode som fortsætter lidt endnu"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/kultur/to-timers-ro-sangerinde-reparerede-flossede-nerver/2333348",
+      "layout_type": "3_articles",
+      "display_order": 33001,
+      "row_index": 33,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "kicker_floating": "UNNIA",
+        "title_parts": [
+          {
+            "text": "To timers ro - sangerinde reparerede flossede nerver\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "26d5461c-454d-4be9-8034-88ed0b77e94f",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2333348",
+      "title": "To timers ro - sangerinde reparerede flossede nerver"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/erhverv/ingen-forsyningsskibe-til-isfrie-omrader/2329535",
+      "layout_type": "3_articles",
+      "display_order": 33002,
+      "row_index": 33,
+      "article_index_in_row": 2,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "kicker_below": "VAREFORSYNING",
+        "kicker_below_classes": "kicker below quaternary color_mobile_quaternary",
+        "title_parts": [
+          {
+            "text": "Ingen forsyningsskibe til isfrie områder\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "98ec26b4-f253-41f0-a04c-d9037f688395",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329535",
+      "title": "Ingen forsyningsskibe til isfrie områder"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/soldater-vil-traene-i-at-beskytte-gronland-hele-aret/2332205",
+      "layout_type": "2_articles",
+      "display_order": 34000,
+      "row_index": 34,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Soldater vil træne i at beskytte Grønland hele året\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "ebe77c7f-b1c4-4e46-aeaf-5894a4104ca9",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2332205",
+      "title": "Soldater vil træne i at beskytte Grønland hele året"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/trump-provokerer-alfred/2331557",
+      "layout_type": "2_articles",
+      "display_order": 34001,
+      "row_index": 34,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trump provokerer Alfred\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "0dd5e904-f832-4a27-b7c8-c6458325e428",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2331557",
+      "title": "Trump provokerer Alfred"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/trump-ramme-for-aftale-om-gronland-er-pa-plads/2333798",
+      "layout_type": "2_articles",
+      "display_order": 35000,
+      "row_index": 35,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trump: Ramme for aftale om Grønland er på plads\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "4e509cf8-6351-4f9c-8465-9cd79c029f02",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2333798",
+      "title": "Trump: Ramme for aftale om Grønland er på plads"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/trafikstyrelsen-vi-abner-kun-lufthavn-med-vand-nok/2330152",
+      "layout_type": "2_articles",
+      "display_order": 35001,
+      "row_index": 35,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trafikstyrelsen: Vi åbner kun lufthavn med vand nok\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "66f41e17-931f-4210-831b-b6f75747b93d",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2330152",
+      "title": "Trafikstyrelsen: Vi åbner kun lufthavn med vand nok"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/prepping-tager-fart-i-nuuk-generatorer-og-vanddunke-udsolgt/2333540",
+      "layout_type": "1_full",
+      "display_order": 36000,
+      "row_index": 36,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Prepping tager fart i Nuuk: Generatorer og vanddunke udsolgt\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "a067c4be-44db-484e-9338-dfafca175df7",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2333540",
+      "title": "Prepping tager fart i Nuuk: Generatorer og vanddunke udsolgt"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/naalakkersuisut-lancerer-krise-vejledning-borgerne-skal-kunne-klare-sig-i-fem-dogn/2329530",
+      "layout_type": "2_articles",
+      "display_order": 37000,
+      "row_index": 37,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Naalakkersuisut lancerer krise-vejledning:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Borgerne skal kunne klare sig i fem døgn\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "5adcf7fd-6858-40ad-ab64-a48863e8e6ec",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329530",
+      "title": "Naalakkersuisut lancerer krise-vejledning: Borgerne skal kunne klare sig i fem døgn"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/politiet-anmoder-borgerne-om-hjaelp-i-efterforskning-af-dodsfald/2332576",
+      "layout_type": "2_articles",
+      "display_order": 37001,
+      "row_index": 37,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "QAQORTOQ",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "Politiet anmoder borgerne om hjælp i efterforskning af dødsfald\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "5f577c15-2b58-4421-bb6c-02cbf9fce1ab",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2332576",
+      "title": "Politiet anmoder borgerne om hjælp i efterforskning af dødsfald"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/mash-helikoptere-gjorde-gronland-til-helikopterland/2329436",
+      "layout_type": "3_articles",
+      "display_order": 38000,
+      "row_index": 38,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "MASH-helikoptere gjorde Grønland til helikopterland\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "a97235bd-e78c-44f1-b845-dbeea8f77fff",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329436",
+      "title": "MASH-helikoptere gjorde Grønland til helikopterland"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/pressemode-om-beredskab-folg-med-her/2333648",
+      "layout_type": "3_articles",
+      "display_order": 38001,
+      "row_index": 38,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Pressemøde om beredskab: Gør dig klar på fem døgn\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "7256631d-79e1-4369-966b-4c2900ccbf9b",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2333648",
+      "title": "Pressemøde om beredskab: Gør dig klar på fem døgn"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/trump-taler-snart-i-davos/2333599",
+      "layout_type": "3_articles",
+      "display_order": 38002,
+      "row_index": 38,
+      "article_index_in_row": 2,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trump taler i Davos:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Vil have forhandlinger om Grønland - Hvem vil forsvare en leasingaftale\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "929ac657-2a86-4ae4-95c6-c18f9df57610",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2333599",
+      "title": "Trump taler i Davos: Vil have forhandlinger om Grønland - Hvem vil forsvare en leasingaftale"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/usas-finansminister-drager-parallel-med-de-vestindiske-oer-vores-allierede-ma-forsta-at-gronland-skal-vaere-en-del-af-usa/2333560",
+      "layout_type": "2_articles",
+      "display_order": 39000,
+      "row_index": 39,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "USA's finansminister drager parallel med De Vestindiske Øer:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " – Vores allierede må forstå, at Grønland skal være en del af USA\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "99d5e185-e3ef-4478-ae70-e767c0f09a0f",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2333560",
+      "title": "USA's finansminister drager parallel med De Vestindiske Øer: – Vores allierede må forstå, at Grønland skal være en del af USA"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/inuiaqatigiit/arbejdstilsynet-gav-pabud-til-greenland-airports-efter-besog-i-nuuk/2328481",
+      "layout_type": "2_articles",
+      "display_order": 39001,
+      "row_index": 39,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Arbejdstilsynet gav påbud til Greenland Airports efter besøg i Nuuk\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "42e356d0-cd91-4afb-bf50-a89930fe1cb4",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2328481",
+      "title": "Arbejdstilsynet gav påbud til Greenland Airports efter besøg i Nuuk"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/sport/futsal-landshold-deltager-i-international-turnering-i-kroatien/2329948",
+      "layout_type": "2_articles",
+      "display_order": 40000,
+      "row_index": 40,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_floating": "UNNIA",
+        "title_parts": [
+          {
+            "text": "Futsal-landshold deltager i international turnering i Kroatien\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "9179f08a-de21-49a6-a214-b911e61ec04b",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329948",
+      "title": "Futsal-landshold deltager i international turnering i Kroatien"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/franske-alpe-jaegere-i-nuuk/2332962",
+      "layout_type": "2_articles",
+      "display_order": 40001,
+      "row_index": 40,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_floating": "UNNIA",
+        "title_parts": [
+          {
+            "text": "Franske alpe-jægere i Nuuk\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "bb594ae4-538c-4f9c-9c57-c12fe01c54c0",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2332962",
+      "title": "Franske alpe-jægere i Nuuk"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/medie-boassen-til-fejring-af-trump/2326415",
+      "layout_type": "2_articles",
+      "display_order": 41000,
+      "row_index": 41,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_floating": "LIVEBLOG",
+        "title_parts": [
+          {
+            "text": "Medie: Boassen til fejring af Trump\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "ea0b34ee-b76a-4430-95c9-d9d2699d803c",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2326415",
+      "title": "Medie: Boassen til fejring af Trump"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/trump-afviser-igen-at-svare-pa-hvor-langt-han-vil-ga-i-gronland/2333384",
+      "layout_type": "2_articles",
+      "display_order": 41001,
+      "row_index": 41,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trump afviser igen at svare på hvor langt han vil gå i Grønland\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "19be5d78-215a-4d9d-ab17-fcfcb5256efe",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2333384",
+      "title": "Trump afviser igen at svare på hvor langt han vil gå i Grønland"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/kristian-jeremiassen-om-tilbagetraekningen-af-tilbuddet-til-jeff-landry-jeg-er-skuffet/2333071",
+      "layout_type": "2_articles",
+      "display_order": 42000,
+      "row_index": 42,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Kristian Jeremiassen om tilbagetrækningen af tilbuddet til Jeff Landry: ",
+            "color_class": null
+          },
+          {
+            "text": "– Jeg er skuffet\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "420e109d-aab2-4b37-ab09-c899e5fd18e0",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2333071",
+      "title": "Kristian Jeremiassen om tilbagetrækningen af tilbuddet til Jeff Landry: – Jeg er skuffet"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/sport/slettemark-soskende-udtaget-til-ol/2332639",
+      "layout_type": "2_articles",
+      "display_order": 42001,
+      "row_index": 42,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "VIL SENDE KLART SIGNAL TIL USA",
+        "kicker_below_classes": "kicker below quinary color_mobile_quinary",
+        "title_parts": [
+          {
+            "text": "Slettemark søskende udtaget til OL\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "e49e4e39-29bd-44a2-b2a0-f35cf5a63cb0",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2332639",
+      "title": "Slettemark søskende udtaget til OL"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/se-billeder-fra-den-rorende-modtagelse/2333263",
+      "layout_type": "2_articles",
+      "display_order": 43000,
+      "row_index": 43,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 7,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Se billeder fra den rørende modtagelse\n",
+            "color_class": null
+          }
+        ],
+        "has_bg_color": true,
+        "has_bg_black": true,
+        "content_classes": "content bg-black color_mobile_bg-black border-bg-black mobile_border-bg-black border_width_14 border_width_mobile_14 hasContentPadding mobile-hasContentPadding hasBorder mobile-hasBorder"
+      },
+      "element_guid": "7b70d8be-2efd-44ec-ba88-ade0a5bf5ad0",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2333263",
+      "title": "Se billeder fra den rørende modtagelse"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/vivian-far-varm-modtagelse-efter-usa-rejse/2333166",
+      "layout_type": "2_articles",
+      "display_order": 43001,
+      "row_index": 43,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 5,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Vivian får varm modtagelse efter ",
+            "color_class": null
+          },
+          {
+            "text": "USA-rejse\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "75fe945f-6acd-46ed-82ec-a71ccbd2574a",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2333166",
+      "title": "Vivian får varm modtagelse efter USA-rejse"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/heilmann-familien-demonstrerede-for-gronlands-fremtid-nu-kan-vi-se-hvor-staerke-vi-er/2332046",
+      "layout_type": "3_articles",
+      "display_order": 44000,
+      "row_index": 44,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Heilmann-familien demonstrerede for Grønlands fremtid: ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "– Nu kan vi se, hvor stærke vi er\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "6e4a0f4a-7758-4f77-b6f6-e22a8c8e21b8",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2332046",
+      "title": "Heilmann-familien demonstrerede for Grønlands fremtid: – Nu kan vi se, hvor stærke vi er"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/statsminister-jeg-kommer-ikke-til-at-lade-gronland-i-stikken/2333160",
+      "layout_type": "3_articles",
+      "display_order": 44001,
+      "row_index": 44,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Statsminister: ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "Jeg kommer ikke til at lade Grønland i stikken\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "09a3b6eb-8c2b-468d-8bfc-f6d019fe2bfe",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2333160",
+      "title": "Statsminister: Jeg kommer ikke til at lade Grønland i stikken"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/pressemode-ikke-sandsynligt-med-brug-af-militaer-magt-men-vi-skal-vaere-forberedte/2332996",
+      "layout_type": "3_articles",
+      "display_order": 44002,
+      "row_index": 44,
+      "article_index_in_row": 2,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Pressemøde:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Ikke sandsynligt med brug af militær magt, men vi skal være forberedte\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "2db26ead-960c-4de5-b26b-d16192a9052a",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2332996",
+      "title": "Pressemøde: Ikke sandsynligt med brug af militær magt, men vi skal være forberedte"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/partiformaend-vil-fremrykke-inatsisartut-skal-drofte-gronlands-situation-og-finde-faelles-kurs/2332814",
+      "layout_type": "2_articles",
+      "display_order": 45000,
+      "row_index": 45,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Partiformænd vil fremrykke Inatsisartut:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Skal drøfte Grønlands situation og finde fælles kurs\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "a610c7f1-8e9b-41f0-bd90-4d400109b50b",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2332814",
+      "title": "Partiformænd vil fremrykke Inatsisartut: Skal drøfte Grønlands situation og finde fælles kurs"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/von-der-leyen-gronland-er-ikke-til-forhandling/2332915",
+      "layout_type": "2_articles",
+      "display_order": 45001,
+      "row_index": 45,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Von der Leyen i forsvar for Grønland på topmøde:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Territoriet er ikke til forhandling\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "c3df1756-3769-48c7-9893-86051160897a",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2332915",
+      "title": "Von der Leyen i forsvar for Grønland på topmøde: Territoriet er ikke til forhandling"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/erhverv/gronland-slipper-for-trumps-straftold-i-hvert-fald-i-forste-omgang/2332738",
+      "layout_type": "2_articles",
+      "display_order": 46000,
+      "row_index": 46,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Grønland slipper for Trumps straftold",
+            "color_class": "quaternary color_mobile_quaternary"
+          },
+          {
+            "text": " – i hvert fald i første omgang\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "9680e3e8-9e79-4c9f-8e56-22ec26fbab44",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2332738",
+      "title": "Grønland slipper for Trumps straftold – i hvert fald i første omgang"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/trump-vil-tale-om-kob-af-gronland-pa-topmode-og-deler-ai-billede-af-usas-flag-plantet-i-gronland/2332853",
+      "layout_type": "2_articles",
+      "display_order": 46001,
+      "row_index": 46,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trump vil tale om køb af Grønland på topm",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "øde",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " - deler AI-billede af USA's flag plantet i Grønland\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "0496426e-098c-4436-ab37-ebc31a1d3e59",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2332853",
+      "title": "Trump vil tale om køb af Grønland på topmøde - deler AI-billede af USA's flag plantet i Grønland"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/jens-frederik-efter-nye-trusler-vi-lader-os-ikke-presse/2332442",
+      "layout_type": "2_articles",
+      "display_order": 47000,
+      "row_index": 47,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Jens-Frederik efter nye trusler:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Vi lader os ikke presse\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "0de3bfc6-aaec-4041-8d5a-c6b2e7e43064",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2332442",
+      "title": "Jens-Frederik efter nye trusler: Vi lader os ikke presse"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/vivian-efter-nato-mode-vi-har-diskuteret-sikkerhed-i-arktis/2332777",
+      "layout_type": "2_articles",
+      "display_order": 47001,
+      "row_index": 47,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Vivian efter NATO-møde: Vi har diskuteret sikkerhed i Arktis\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "05079a31-b835-4906-b058-70ccb63ccf22",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2332777",
+      "title": "Vivian efter NATO-møde: Vi har diskuteret sikkerhed i Arktis"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/hvem-beskytter-de-anbragte-born/2325868",
+      "layout_type": "1_full",
+      "display_order": 48000,
+      "row_index": 48,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Hvem beskytter de anbragte børn?\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "3a5773d2-aa50-4c0d-8563-d97716133714",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2325868",
+      "title": "Hvem beskytter de anbragte børn?"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/senator-murkowski-med-klar-appel-dette-er-vigtigere-end-partifarve-der-er-for-meget-pa-spil/2331862",
+      "layout_type": "3_articles",
+      "display_order": 49000,
+      "row_index": 49,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Senator med opråb: ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "Dette er vigtigere end partifarve - der er for meget på spil\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "58f86c32-9445-44fa-a024-3d7fce5a310c",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2331862",
+      "title": "Senator med opråb: Dette er vigtigere end partifarve - der er for meget på spil"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/troels-og-vivian-modes-med-nato-top-nato-skal-gore-mere-i-arktis/2326415",
+      "layout_type": "3_articles",
+      "display_order": 49001,
+      "row_index": 49,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "kicker_floating": "LIVEBLOG",
+        "title_parts": [
+          {
+            "text": "Varslingssystem udrulles i Grønland\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "5e74e31c-8171-4aba-a4ee-02cefd266f1d",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2326415",
+      "title": "Varslingssystem udrulles i Grønland"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/erhverv/kuannersuit-selskab-hyrer-magtfuld-lobbyvirksomhed-med-taette-band-til-trump-administrationen/2332376",
+      "layout_type": "3_articles",
+      "display_order": 49002,
+      "row_index": 49,
+      "article_index_in_row": 2,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Kuannersuit-selskab hyrer magtfuld lobbyvirksomhed med tætte bånd til Trump-administrationen\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "d3b5cf55-a704-474e-b758-fc6278ecb2f2",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2332376",
+      "title": "Kuannersuit-selskab hyrer magtfuld lobbyvirksomhed med tætte bånd til Trump-administrationen"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/trump-fylder-ikke-kun-i-nuuk-vi-sad-klistrede-til-skaermen/2330866",
+      "layout_type": "1_full",
+      "display_order": 50000,
+      "row_index": 50,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trump fylder ikke kun i Nuuk: – Vi sad klistrede til skærmen\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "e6f39f2f-6291-4fdc-a906-2c390b4dca46",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2330866",
+      "title": "Trump fylder ikke kun i Nuuk: – Vi sad klistrede til skærmen"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/amerikanere-skeptiske-overfor-trumps-gronlands-planer-for-mig-er-det-her-pinligt/2331249",
+      "layout_type": "2_articles",
+      "display_order": 51000,
+      "row_index": 51,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Amerikanere skeptiske overfor Trumps Grønlands-planer: ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "- For mig er det her pinligt\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "85b62702-43c8-47d8-82a2-66b8d2205343",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2331249",
+      "title": "Amerikanere skeptiske overfor Trumps Grønlands-planer: - For mig er det her pinligt"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/kort-nyt-ingen-overvejelser-om-boykot-af-usa-fra-gif/2329001",
+      "layout_type": "2_articles",
+      "display_order": 51001,
+      "row_index": 51,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Kort Nyt: ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "Ingen overvejelser om boykot af USA fra GIF\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "1fd819b3-315a-4b8f-9544-0296ec4fe5da",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329001",
+      "title": "Kort Nyt: Ingen overvejelser om boykot af USA fra GIF"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/slettemark-soskende-indstilles-til-ol-deltagelse/2332525",
+      "layout_type": "2_articles",
+      "display_order": 52000,
+      "row_index": 52,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Slettemark-søskende indstilles til OL-deltagelse\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "f2601739-2a08-4d6b-a84d-59c8de68fe20",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2332525",
+      "title": "Slettemark-søskende indstilles til OL-deltagelse"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/nuummiut-gar-pa-gaden-for-at-kaempe-for-gronland/2331847",
+      "layout_type": "2_articles",
+      "display_order": 52001,
+      "row_index": 52,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Nuummiut går på gaden for at kæmpe for Grønland\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "80c58ee6-6d24-4ff2-a679-0f5a189b5d7a",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2331847",
+      "title": "Nuummiut går på gaden for at kæmpe for Grønland"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/soldater-og-haerchef-flyver-til-gronland-efter-trump-trusler/2332472",
+      "layout_type": "2_articles",
+      "display_order": 53000,
+      "row_index": 53,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Soldater og hærchef flyver til Grønland efter Trump-trusler\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "e660a67d-b5dc-413f-970d-826f5783dd57",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2332472",
+      "title": "Soldater og hærchef flyver til Grønland efter Trump-trusler"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/erhverv/gronlandsudvalget-inviteret-til-avannaata-qimussersua/2329146",
+      "layout_type": "2_articles",
+      "display_order": 53001,
+      "row_index": 53,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Grønlandsudvalget inviteret til Avannaata Qimussersua\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "4efee04f-375f-4b7d-b3d9-cff94f85ffcb",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329146",
+      "title": "Grønlandsudvalget inviteret til Avannaata Qimussersua"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/knqk-invitation-til-jeff-landry-er-trukket-tilbage/2332231",
+      "layout_type": "1_full",
+      "display_order": 54000,
+      "row_index": 54,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "KNQK: Invitation til Jeff Landry er trukket tilbage\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "2ea280c4-bea9-48c2-91f9-ba33c0caa8d2",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2332231",
+      "title": "KNQK: Invitation til Jeff Landry er trukket tilbage"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/trump-om-overtagelse-af-gronland-nu-bor-nato-gore-noget-for-usa/2332265",
+      "layout_type": "2_articles",
+      "display_order": 55000,
+      "row_index": 55,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trump om overtagelse af Grønland:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Nu bør Nato gøre noget for USA\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "d8e3ff06-e6d1-43c3-8340-d7448a782a8b",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2332265",
+      "title": "Trump om overtagelse af Grønland: Nu bør Nato gøre noget for USA"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/morten-er-begyndt-at-preppe-for-hvad-nu-hvis-ilaa/2330166",
+      "layout_type": "2_articles",
+      "display_order": 55001,
+      "row_index": 55,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Morten er begyndt at ’preppe’: - For hvad nu hvis, ilaa?\n",
+            "color_class": null
+          }
+        ],
+        "has_bg_color": true,
+        "has_bg_black": true,
+        "content_classes": "content bg-black color_mobile_bg-black border-bg-black mobile_border-bg-black border_width_14 border_width_mobile_14 hasContentPadding mobile-hasContentPadding hasBorder mobile-hasBorder"
+      },
+      "element_guid": "a990656e-31b1-4ff0-ba29-50c2ced4c833",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2330166",
+      "title": "Morten er begyndt at ’preppe’: - For hvad nu hvis, ilaa?"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/erhverv/royal-greenland-vil-investere-en-halv-milliard/2329587",
+      "layout_type": "1_full",
+      "display_order": 56000,
+      "row_index": 56,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Royal Greenland ",
+            "color_class": null
+          },
+          {
+            "text": "vil investere en halv milliard",
+            "color_class": "quaternary color_mobile_quaternary"
+          }
+        ]
+      },
+      "element_guid": "79f9e88c-af47-41a7-ad54-bab621fb6ec8",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329587",
+      "title": "Royal Greenland vil investere en halv milliard"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/se-billeder-demonstration-i-nuuk/2331982",
+      "layout_type": "1_full",
+      "display_order": 57000,
+      "row_index": 57,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Se billeder: Demonstration i Nuuk\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "de8870d2-07ec-49ff-812a-67acf3b98301",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2331982",
+      "title": "Se billeder: Demonstration i Nuuk"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/midlertidigt-militaert-omrade-oprettet-i-qinngorput/2332032",
+      "layout_type": "2_articles",
+      "display_order": 58000,
+      "row_index": 58,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Midlertidigt militært område oprettet i Qinngorput\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "042688f1-51e0-4cca-a2c9-e2abe61ed559",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2332032",
+      "title": "Midlertidigt militært område oprettet i Qinngorput"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/erik-jensen-jeg-er-mere-beroliget-efter-modet-med-kongres-medlemmerne/2331513",
+      "layout_type": "2_articles",
+      "display_order": 58001,
+      "row_index": 58,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Erik Jensen:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Jeg er mere beroliget efter mødet med kongres-medlemmerne\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "8706e039-e00e-49ea-ab63-8b3e47101c54",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2331513",
+      "title": "Erik Jensen: Jeg er mere beroliget efter mødet med kongres-medlemmerne"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/har-vi-glemt-det-storste-problem/2328246",
+      "layout_type": "3_articles",
+      "display_order": 59000,
+      "row_index": 59,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "kicker_below": "ULTRAFORARBEJDET MAD",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "Har vi glemt det største problem?\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "07d8e239-687f-44ea-b414-1defb492c45c",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2328246",
+      "title": "Har vi glemt det største problem?"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/mand-sigtes-for-forsog-pa-manddrab-i-aasiaat/2332041",
+      "layout_type": "3_articles",
+      "display_order": 59001,
+      "row_index": 59,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Mand sigtes for forsøg på manddrab i Aasiaat\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "ed18c955-12d3-4e89-955f-510d58fa8f74",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2332041",
+      "title": "Mand sigtes for forsøg på manddrab i Aasiaat"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/klumme-den-skrupellose-bandeleder/2328883",
+      "layout_type": "3_articles",
+      "display_order": 59002,
+      "row_index": 59,
+      "article_index_in_row": 2,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "kicker_floating": "KLUMME",
+        "title_parts": [
+          {
+            "text": "Den skrupelløse bandeleder\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "d33e7590-ad3c-4a70-b6fc-03ca0ef926c2",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2328883",
+      "title": "Den skrupelløse bandeleder"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/trump-vil-laegge-told-pa-danmark-pa-grund-af-gronland/2331902",
+      "layout_type": "2_articles",
+      "display_order": 60000,
+      "row_index": 60,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trump vil lægge told på Danmark på grund af Grønland\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "62e55fcc-e763-4562-b2f3-4f371323305f",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2331902",
+      "title": "Trump vil lægge told på Danmark på grund af Grønland"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/eu-ambassadorer-er-indkaldt-til-hastemode-om-gronland/2331962",
+      "layout_type": "2_articles",
+      "display_order": 60001,
+      "row_index": 60,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "EU-ambassadører er indkaldt til hastemøde om Grønland\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "b899ca5b-3533-4771-89ac-a7b03e34c989",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2331962",
+      "title": "EU-ambassadører er indkaldt til hastemøde om Grønland"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/trumps-saerlige-udsending-vil-besoge-gronland-i-marts/2331321",
+      "layout_type": "2_articles",
+      "display_order": 61000,
+      "row_index": 61,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "OPDATERET",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "Trumps særlige udsending vil til hundeslædevæddeløb\n",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "– mener der bør indgås en aftale\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "c6e0c689-1c51-4b97-80db-7b39988eca17",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2331321",
+      "title": "Trumps særlige udsending vil til hundeslædevæddeløb\n– mener der bør indgås en aftale"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/ud-i-morket-med-gule-jakker-bolsjer-og-kondomer/2322958",
+      "layout_type": "2_articles",
+      "display_order": 61001,
+      "row_index": 61,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Ud i mørket med gule jakker, bolsjer og kondomer\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "b543defa-0ab5-4c87-8419-6862297a1370",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2322958",
+      "title": "Ud i mørket med gule jakker, bolsjer og kondomer"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/undga-at-blive-en-del-af-usa/2329630",
+      "layout_type": "2_articles",
+      "display_order": 62000,
+      "row_index": 62,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 5,
+      "layout_data": {
+        "kicker_below": "ALASKA-INUK TIL GRØNLÆNDERNE",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "Undgå at blive en del af USA\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "1fa4f448-8134-4cd7-90af-400bf1b5cd59",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329630",
+      "title": "Undgå at blive en del af USA"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/sport/en-anforer-med-hjerte-og-rodder/2330663",
+      "layout_type": "2_articles",
+      "display_order": 62001,
+      "row_index": 62,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 7,
+      "layout_data": {
+        "kicker_below": "INUIT",
+        "kicker_below_classes": "kicker below white color_mobile_white align-center mobile_text_align_align-center",
+        "title_parts": [
+          {
+            "text": "En anfører med hjerte og rødder\n",
+            "color_class": null
+          }
+        ],
+        "has_bg_color": true,
+        "content_classes": "content bg-secondary color_mobile_bg-secondary border-bg-secondary mobile_border-bg-secondary border_width_14 border_width_mobile_14 hasContentPadding mobile-hasContentPadding hasBorder mobile-hasBorder"
+      },
+      "element_guid": "d2cf4197-56dd-4d83-b307-e2811a1716b2",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2330663",
+      "title": "En anfører med hjerte og rødder"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/amerikansk-delegation-har-laert-om-gronland-under-besog-i-danmark/2331794",
+      "layout_type": "2_articles",
+      "display_order": 63000,
+      "row_index": 63,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Amerikansk delegation har lært om Grønland under besøg i Danmark\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "50999cfa-05ff-45a1-8496-a8eba533ad65",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2331794",
+      "title": "Amerikansk delegation har lært om Grønland under besøg i Danmark"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/ekspert-om-amerikansk-delegation-de-kan-ikke-pavirke-trump/2331374",
+      "layout_type": "2_articles",
+      "display_order": 63001,
+      "row_index": 63,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Ekspert om amerikansk delegation: ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "De kan ikke påvirke Trump\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "f77342ff-53d2-41d2-947a-7498372893d9",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2331374",
+      "title": "Ekspert om amerikansk delegation: De kan ikke påvirke Trump"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/stadig-fejl-pa-tuukkaq-erstatningsfly-sat-ind-fredag/2331009",
+      "layout_type": "3_articles",
+      "display_order": 64000,
+      "row_index": 64,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Stadig fejl på Tuukkaq – erstatningsfly sat ind fredag\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "8628bd0f-d44a-4bb1-8475-609aab04057c",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2331009",
+      "title": "Stadig fejl på Tuukkaq – erstatningsfly sat ind fredag"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/kristian-jeremiassen-vil-ikke-bekraefte-om-jeff-landry-har-taget-imod-tilbud/2331497",
+      "layout_type": "3_articles",
+      "display_order": 64001,
+      "row_index": 64,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Kristian Jeremiassen vil ikke bekræfte om Jeff Landry har taget imod tilbud\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "69afd2ca-6664-418a-a995-2ea94c8ed330",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2331497",
+      "title": "Kristian Jeremiassen vil ikke bekræfte om Jeff Landry har taget imod tilbud"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/danske-kampfly-traener-i-gronland-under-oget-aktivitet/2331768",
+      "layout_type": "3_articles",
+      "display_order": 64002,
+      "row_index": 64,
+      "article_index_in_row": 2,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Danske kampfly træner i Grønland under øget aktivitet\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "1151c3c5-ef79-4757-947d-a535c396dca8",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2331768",
+      "title": "Danske kampfly træner i Grønland under øget aktivitet"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/troels-lund-usa-angreb-mod-gronland-er-fuldstaendig-hypotetisk/2330262",
+      "layout_type": "1_full",
+      "display_order": 65000,
+      "row_index": 65,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Troels Lund: USA-angreb mod Grønland er fuldstændig hypotetisk\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "31538d40-9045-4f8d-ad39-f5a7b86cda86",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2330262",
+      "title": "Troels Lund: USA-angreb mod Grønland er fuldstændig hypotetisk"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/danmark-inviterer-usa-til-at-deltage-i-militaerovelser-i-gronland/2331728",
+      "layout_type": "3_articles",
+      "display_order": 66000,
+      "row_index": 66,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Danmark inviterer USA til at deltage i militærøvelser i Grønland\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "ba51f5b6-1e1d-455c-82e6-ec5b8a4222f4",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2331728",
+      "title": "Danmark inviterer USA til at deltage i militærøvelser i Grønland"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/trump-truer-med-told-i-forbindelse-med-gronland/2331560",
+      "layout_type": "3_articles",
+      "display_order": 66001,
+      "row_index": 66,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trump truer med told i forbindelse med Grønland\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "71e80928-c596-4b92-8234-407bffbc59e3",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2331560",
+      "title": "Trump truer med told i forbindelse med Grønland"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/kultur/siiva-fleischer-udgiver-en-sang-vi-er-meget-bekymrede-over-usas-pres-pa-vores-land/2331296",
+      "layout_type": "3_articles",
+      "display_order": 66002,
+      "row_index": 66,
+      "article_index_in_row": 2,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Siiva Fleischer udgiver en sang:",
+            "color_class": "secondary color_mobile_secondary"
+          },
+          {
+            "text": "– Vi er meget bekymrede over USA’s pres på vores land\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "f61b6189-c9d3-472c-bb4c-db82376cff28",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2331296",
+      "title": "Siiva Fleischer udgiver en sang: – Vi er meget bekymrede over USA’s pres på vores land"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/pressemode-om-amerikansk-delegations-besog-i-danmark/2331441",
+      "layout_type": "2_articles",
+      "display_order": 67000,
+      "row_index": 67,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Pressemøde om amerikansk delegations besøg i Danmark\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "c1173b9c-90ce-45d1-83ea-8ca8c6bb1e79",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2331441",
+      "title": "Pressemøde om amerikansk delegations besøg i Danmark"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/demonstrationer-spreder-sig/2331394",
+      "layout_type": "2_articles",
+      "display_order": 67001,
+      "row_index": 67,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Demonstrationer spreder sig\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "fcf12503-9fef-4d7b-9048-3436fa8b8c54",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2331394",
+      "title": "Demonstrationer spreder sig"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/trump-nato-bor-bane-vej-for-usas-overtagelse-gronland/2329876",
+      "layout_type": "2_articles",
+      "display_order": 68000,
+      "row_index": 68,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trump: Nato bør bane vej for USA's overtagelse af Grønland\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "5d916d0a-65ae-4579-b1f5-6c12e5d368f1",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329876",
+      "title": "Trump: Nato bør bane vej for USA's overtagelse af Grønland"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/erhverv/trump-saetter-igen-gang-i-forretningen/2328783",
+      "layout_type": "2_articles",
+      "display_order": 68001,
+      "row_index": 68,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trump sætter igen gang i forretningen\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "c7ee8684-56fe-41de-91b7-b6ad1a91a888",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2328783",
+      "title": "Trump sætter igen gang i forretningen"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/tekniske-problemer-skaber-forsinkelser-i-ostgronland/2331313",
+      "layout_type": "3_articles",
+      "display_order": 69000,
+      "row_index": 69,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Tekniske problemer skaber forsinkelser i Østgrønland\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "04cb44f6-ad3d-4c58-9d5c-f3ff0bc7ee35",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2331313",
+      "title": "Tekniske problemer skaber forsinkelser i Østgrønland"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/trump-kom-139-ar-for-sent-til-gronland/2328593",
+      "layout_type": "3_articles",
+      "display_order": 69001,
+      "row_index": 69,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trump kom 139 år for sent til Grønland\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "28606eff-7a88-44ab-9ae3-000815db547b",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2328593",
+      "title": "Trump kom 139 år for sent til Grønland"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/ung-anholdt-for-roveri-i-maniitsoq/2331266",
+      "layout_type": "3_articles",
+      "display_order": 69002,
+      "row_index": 69,
+      "article_index_in_row": 2,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "kicker_below": "DØGNRAPPORT",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "Ung anholdt for røveri i Maniitsoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "ae53cb4e-864d-4412-a990-c916af850105",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2331266",
+      "title": "Ung anholdt for røveri i Maniitsoq"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/vivian-motzfeldt-har-fortalt-senatorer-om-gronlaendernes-skraekscenarie/2331130",
+      "layout_type": "1_full",
+      "display_order": 70000,
+      "row_index": 70,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Vivian Motzfeldt har fortalt senatorer om grønlændernes skrækscenarie\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "bcba2948-0514-455c-bf46-44b83f87eabc",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2331130",
+      "title": "Vivian Motzfeldt har fortalt senatorer om grønlændernes skrækscenarie"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/medie-jd-vance-deltager-pa-mode-med-danmark-og-gronland/2329163",
+      "layout_type": "2_articles",
+      "display_order": 71000,
+      "row_index": 71,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "J.D. Vance deltager på møde med Danmark og Grønland\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "b4f30c3d-5c30-412a-a11a-ad48cddde2ac",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329163",
+      "title": "J.D. Vance deltager på møde med Danmark og Grønland"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/erhverv/udenlandske-journalister-skaber-nyt-marked/2329217",
+      "layout_type": "2_articles",
+      "display_order": 71001,
+      "row_index": 71,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Udenlandske journalister skaber nyt marked\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "8c9bd763-df7c-4cf9-979d-f92071fe07ae",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329217",
+      "title": "Udenlandske journalister skaber nyt marked"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/inuiaqatigiit/selvstyret-overtager-ansvar-for-flagregler/2329900",
+      "layout_type": "1_full",
+      "display_order": 72000,
+      "row_index": 72,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Selvstyret overtager ansvar for flagregler\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "8bc082f8-a6e6-4951-ab11-c9bba394f22f",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329900",
+      "title": "Selvstyret overtager ansvar for flagregler"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/jeg-frygter-at-historien-gentager-sig-bare-pa-et-nyt-sprog/2328634",
+      "layout_type": "2_articles",
+      "display_order": 73000,
+      "row_index": 73,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_floating": "KÆRE TRUMP...",
+        "title_parts": [
+          {
+            "text": "– Jeg frygter, at historien gentager sig, bare på et nyt sprog\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "ec4a6314-6cac-431a-ad8a-c5da7c1999e9",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2328634",
+      "title": "– Jeg frygter, at historien gentager sig, bare på et nyt sprog"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/demonstrationer-mod-usa/2329207",
+      "layout_type": "2_articles",
+      "display_order": 73001,
+      "row_index": 73,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Demonstrationer mod USA\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "c0e2d052-4926-4207-9679-b0ab393a3a67",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329207",
+      "title": "Demonstrationer mod USA"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/statsminister-fortsat-fundamental-uenighed-om-gronland-efter-mode/2326415",
+      "layout_type": "1_full",
+      "display_order": 74000,
+      "row_index": 74,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "kicker_floating": "LIVEBLOG",
+        "title_parts": [
+          {
+            "text": "Jens-Frederik Nielsen mødes også med amerikanske politikere\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "e39369bb-206c-4eaa-a746-1f6fb4086411",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2326415",
+      "title": "Jens-Frederik Nielsen mødes også med amerikanske politikere"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/jens-frederik-nielsen-taler-til-nytarskur-i-danmark/2330883",
+      "layout_type": "2_articles",
+      "display_order": 75000,
+      "row_index": 75,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Jens-Frederik Nielsen taler til nytårskur i Danmark\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "10869f82-ae5f-4d7b-acac-6f6e68ff541c",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2330883",
+      "title": "Jens-Frederik Nielsen taler til nytårskur i Danmark"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/hercules-fly-landede-i-nuuk-onsdag/2330773",
+      "layout_type": "2_articles",
+      "display_order": 75001,
+      "row_index": 75,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Hercules fly landede i Nuuk onsdag\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "64f8a008-3d8d-487e-8c32-847111b16a21",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2330773",
+      "title": "Hercules fly landede i Nuuk onsdag"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/traehus-i-brand-efter-vaeltet-stearinlys/2330645",
+      "layout_type": "1_full",
+      "display_order": 76000,
+      "row_index": 76,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "kicker_below": "DØGNRAPPORT",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "Træhus i brand efter væltet stearinlys\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "1d5ca986-1a9e-4818-8230-8b469e7fabe9",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2330645",
+      "title": "Træhus i brand efter væltet stearinlys"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/jens-frederik-nielsen-takker-vivian-motzfeldt-arbejdsgruppe-er-vigtigt-skridt/2330682",
+      "layout_type": "3_articles",
+      "display_order": 77000,
+      "row_index": 77,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Jens-Frederik Nielsen takker Vivian Motzfeldt:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Arbejdsgruppe er vigtigt skridt\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "ca885070-bdb6-4b12-b099-5d184f80f088",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2330682",
+      "title": "Jens-Frederik Nielsen takker Vivian Motzfeldt: Arbejdsgruppe er vigtigt skridt"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/fortrostningsfuldt-og-habefuldt-at-der-kommer-dialog-vi-ma-se-om-der-kan-findes-losning-pa-bekymring/2330624",
+      "layout_type": "3_articles",
+      "display_order": 77001,
+      "row_index": 77,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "kicker_below": "PIPALUK LYNGE OM USA-MØDE",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "Fortrøstningsfuldt og håbefuldt at der kommer dialog – vi må se om der kan findes løsning på bekymring\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "c27b3bc1-3828-4217-9baa-ec47c74a213d",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2330624",
+      "title": "Fortrøstningsfuldt og håbefuldt at der kommer dialog – vi må se om der kan findes løsning på bekymring"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/se-billederne-kom-med-bag-kulisserne-ved-historisk-mode/2330481",
+      "layout_type": "3_articles",
+      "display_order": 77002,
+      "row_index": 77,
+      "article_index_in_row": 2,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "kicker_below": "MØDE I WASHINGTON",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "Se billederne: Kom med bag kulisserne ved historisk møde\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "161a5a16-186b-4865-8305-777582b03eb0",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2330481",
+      "title": "Se billederne: Kom med bag kulisserne ved historisk møde"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/demonstration-i-nuuk-mod-usas-planer/2330522",
+      "layout_type": "2_articles",
+      "display_order": 78000,
+      "row_index": 78,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Demonstration i Nuuk",
+            "color_class": "tertiary color_mobile_tertiary"
+          },
+          {
+            "text": " mod USA's planer om annektering\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "385880b0-2c74-44e2-8c96-95bd160ac837",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2330522",
+      "title": "Demonstration i Nuuk mod USA's planer om annektering"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/kalaallit-lad-os-hejse-vores-flag-pa-vores-fjelde/2330349",
+      "layout_type": "2_articles",
+      "display_order": 78001,
+      "row_index": 78,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "JUKKU KIELSEN",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "– Kalaallit, lad os hejse vores flag på vores fjelde!\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "058f951f-3015-4b1f-9c09-1b7ebc34062a",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2330349",
+      "title": "– Kalaallit, lad os hejse vores flag på vores fjelde!"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/to-maend-tiltalt-for-forsog-pa-manddrab/2329490",
+      "layout_type": "1_full",
+      "display_order": 79000,
+      "row_index": 79,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "To mænd tiltalt for forsøg på manddrab\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "46904fe0-10f0-4cfc-b9dd-8769ea581eb1",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329490",
+      "title": "To mænd tiltalt for forsøg på manddrab"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/torsdagens-atlantflyvning-er-aflyst/2330541",
+      "layout_type": "2_articles",
+      "display_order": 80000,
+      "row_index": 80,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Torsdagens atlantflyvning er aflyst\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "53f7b493-4c3c-4809-a6e6-1deb6ae09a74",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2330541",
+      "title": "Torsdagens atlantflyvning er aflyst"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/vivian-motzfeldt-efter-modet-vi-har-fastslaet-at-usa-skal-respektere-landegraenser/2330372",
+      "layout_type": "2_articles",
+      "display_order": 80001,
+      "row_index": 80,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Vivian Motzfeldt efter mødet: Vi har fastslået at ",
+            "color_class": null
+          },
+          {
+            "text": "USA skal respektere landegrænser",
+            "color_class": "primary color_mobile_primary"
+          }
+        ]
+      },
+      "element_guid": "1b3adbde-bf89-4c74-9875-a85b286c44bd",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2330372",
+      "title": "Vivian Motzfeldt efter mødet: Vi har fastslået at USA skal respektere landegrænser"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/trump-fastholder-onske-om-gronland/2330441",
+      "layout_type": "2_articles",
+      "display_order": 81000,
+      "row_index": 81,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trump fastholder ønske om Grønland\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "3d021d3b-0f5b-4254-aa63-c679d76517ba",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2330441",
+      "title": "Trump fastholder ønske om Grønland"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/flere-lande-sender-forsvarspersonale-til-gronland/2330461",
+      "layout_type": "2_articles",
+      "display_order": 81001,
+      "row_index": 81,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Flere lande sender forsvarspersonale til Grønland\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "2939ea96-eebb-438f-9f3d-71437afdff40",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2330461",
+      "title": "Flere lande sender forsvarspersonale til Grønland"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/pressemode-om-modet-i-usa/2330300",
+      "layout_type": "2_articles",
+      "display_order": 82000,
+      "row_index": 82,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Motzfeldt og Løkke: ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "Vi er fortsat uenige med USA\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "8638a48f-0075-4bb8-bbe4-bfad31fe5022",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2330300",
+      "title": "Motzfeldt og Løkke: Vi er fortsat uenige med USA"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/mute-b-egede-holder-pressemode-i-nuuk/2330382",
+      "layout_type": "2_articles",
+      "display_order": 82001,
+      "row_index": 82,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Múte B. Egede: Vi har igangsat dialogen\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "12a7a35c-5f69-42d8-be3f-a59bf09bfa9e",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2330382",
+      "title": "Múte B. Egede: Vi har igangsat dialogen"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/se-billeder-flager-for-solidaritet-og-sammenhold/2329979",
+      "layout_type": "1_full",
+      "display_order": 83000,
+      "row_index": 83,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Se billeder: ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "Flager for solidaritet og sammenhold\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "148f7445-49ba-4de3-8a7e-089dc5358a6d",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329979",
+      "title": "Se billeder: Flager for solidaritet og sammenhold"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/forsker-det-her-skal-man-holde-oje-med-under-pressemode-efter-modet/2330060",
+      "layout_type": "3_articles",
+      "display_order": 84000,
+      "row_index": 84,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Forsker: ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "Det her skal man holde øje med under pressemøde efter mødet\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "4ed214bf-111e-4c5d-bdd5-83768a74ef66",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2330060",
+      "title": "Forsker: Det her skal man holde øje med under pressemøde efter mødet"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/frankrig-saetter-dato-pa-abning-af-konsulat-i-nuuk/2329666",
+      "layout_type": "3_articles",
+      "display_order": 84001,
+      "row_index": 84,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Frankrig sætter dato på åbning af konsulat i Nuuk\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "5d298d9a-035c-429f-9c35-f7c100c650c2",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329666",
+      "title": "Frankrig sætter dato på åbning af konsulat i Nuuk"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/en-sejr-i-selv-vil-vaere-at-der-kommer-nyt-mode/2329940",
+      "layout_type": "3_articles",
+      "display_order": 84002,
+      "row_index": 84,
+      "article_index_in_row": 2,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "kicker_below": "CHEFREDAKTØR OM USA-MØDE",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "– En sejr vil være, at der kommer et nyt møde\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "a1d8d10d-a2e3-4a87-9e36-64d7d46a29cf",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329940",
+      "title": "– En sejr vil være, at der kommer et nyt møde"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/jukku-hejser-erfalasorput-pa-ukkusissat-i-frustration-over-den-politiske-situation/2330051",
+      "layout_type": "1_full",
+      "display_order": 85000,
+      "row_index": 85,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Jukku hejser Erfalasorput på Ukkusissat i frustration over den politiske situation\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "df55f642-5407-4493-a7fa-7d43f7d423f4",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2330051",
+      "title": "Jukku hejser Erfalasorput på Ukkusissat i frustration over den politiske situation"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/jens-frederik-nielsen-og-mette-f-holder-pressemode/2329251",
+      "layout_type": "2_articles",
+      "display_order": 86000,
+      "row_index": 86,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Pressemøde: ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "– Vi vælger det Grønland, vi kender i dag, siger Jens-Frederik Nielsen\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "dbe6c3f4-34a7-419e-9bcd-6b1c0d1cb1c2",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329251",
+      "title": "Pressemøde: – Vi vælger det Grønland, vi kender i dag, siger Jens-Frederik Nielsen"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/det-danske-forsvar-sender-forkommando-til-nuuk/2329812",
+      "layout_type": "2_articles",
+      "display_order": 86001,
+      "row_index": 86,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_floating": "OPDATERET",
+        "title_parts": [
+          {
+            "text": "Naalakkersuisut bekræfter: Forsvaret vil sende forstærkninger til Grønland\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "334a3767-3c6e-4aae-9214-10d3bf916f2f",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329812",
+      "title": "Naalakkersuisut bekræfter: Forsvaret vil sende forstærkninger til Grønland"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/vi-gambler-ikke-med-vores-ret-til-selvbestemmelse/2329657",
+      "layout_type": "1_full",
+      "display_order": 87000,
+      "row_index": 87,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "kicker_below": "JENS-FREDERIK NIELSEN",
+        "kicker_below_classes": "kicker below",
+        "title_parts": [
+          {
+            "text": "Vi gambler ikke med vores ret til selvbestemmelse\n",
+            "color_class": null
+          }
+        ],
+        "has_bg_color": true,
+        "has_bg_black": true,
+        "content_classes": "content bg-black color_mobile_bg-black border-bg-black mobile_border-bg-black border_width_14 border_width_mobile_14 hasContentPadding mobile-hasContentPadding hasBorder mobile-hasBorder"
+      },
+      "element_guid": "21d24799-38ce-4bb3-bbb8-057d521d0d49",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329657",
+      "title": "Vi gambler ikke med vores ret til selvbestemmelse"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/trump-efter-jens-frederik-udmelding-det-bliver-et-stort-problem-for-ham/2329610",
+      "layout_type": "2_articles",
+      "display_order": 88000,
+      "row_index": 88,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trump efter Jens-Frederik-udmelding: ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "Det bliver et stort problem for ham\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "e5cbe90f-d4f0-4cac-83c4-c015aa12c216",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329610",
+      "title": "Trump efter Jens-Frederik-udmelding: Det bliver et stort problem for ham"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/prins-joachim-byder-vivian-motzfeldt-velkommen-i-washington-dc/2329647",
+      "layout_type": "2_articles",
+      "display_order": 88001,
+      "row_index": 88,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Prins Joachim byder Vivian Motzfeldt velkommen i Washington D.C.\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "6f2a702a-2ce2-4f9d-8cd1-46c034121e50",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329647",
+      "title": "Prins Joachim byder Vivian Motzfeldt velkommen i Washington D.C."
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/trumps-arktis-kommissaer-handling-i-gronland-kan-ske-inden-for-kort-tid/2329579",
+      "layout_type": "1_full",
+      "display_order": 89000,
+      "row_index": 89,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trumps Arktis-kommissær:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Handling i Grønland kan ske inden for kort tid\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "7b9cfdf3-2a7f-43aa-945f-5ac4e7f0ab25",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329579",
+      "title": "Trumps Arktis-kommissær: Handling i Grønland kan ske inden for kort tid"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/erhverv/direktor-i-ge-geopolitisk-usikkerhed-pavirker-virksomhederne-og-investeringsmiljoet/2328803",
+      "layout_type": "1_full",
+      "display_order": 90000,
+      "row_index": 90,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Direktør i GE: ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "Geopolitisk usikkerhed påvirker virksomhederne og investeringsmiljøet\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "875e93a6-c78a-468e-9de7-f7f421ee2b61",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2328803",
+      "title": "Direktør i GE: Geopolitisk usikkerhed påvirker virksomhederne og investeringsmiljøet"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/sport/jakob-larsen-ansat-som-landstraener-for-kvindelandsholdet/2325648",
+      "layout_type": "2_articles",
+      "display_order": 91000,
+      "row_index": 91,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_floating": "UNNIA",
+        "title_parts": [
+          {
+            "text": "Jakob Larsen ansat som landstræner for kvindelandsholdet\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "012ac494-98c3-4a90-b480-79f6b2aa38ce",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2325648",
+      "title": "Jakob Larsen ansat som landstræner for kvindelandsholdet"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/det-er-indre-utilfredshed-der-gor-at-man-vil-have-mere/2328667",
+      "layout_type": "2_articles",
+      "display_order": 91001,
+      "row_index": 91,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_floating": "KÆRE TRUMP...",
+        "title_parts": [
+          {
+            "text": "– Det er indre utilfredshed, der gør, at man vil have mere\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "1343bb69-905f-4205-b9e3-2ce1231e3123",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2328667",
+      "title": "– Det er indre utilfredshed, der gør, at man vil have mere"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/forsker-gronland-sender-tydeligt-signal-til-usa-ved-at-vaelge-danmark/2329553",
+      "layout_type": "1_full",
+      "display_order": 92000,
+      "row_index": 92,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Forsker: ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "Grønland sender tydeligt signal til USA ved at vælge Danmark\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "8c2263e8-9407-4889-9bc8-cceb17b0d6db",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329553",
+      "title": "Forsker: Grønland sender tydeligt signal til USA ved at vælge Danmark"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/folketinget-kan-holde-sikre-videomoder-med-gronland-og-faeroerne/2329337",
+      "layout_type": "2_articles",
+      "display_order": 93000,
+      "row_index": 93,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Folketinget kan holde sikre videomøder med Grønland og Færøerne\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "6cb324ff-5b4b-4454-9637-80d43cd6e6cd",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329337",
+      "title": "Folketinget kan holde sikre videomøder med Grønland og Færøerne"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/aaja-chemnitz-efter-upn-mode-der-er-behov-for-beredskab/2329248",
+      "layout_type": "2_articles",
+      "display_order": 93001,
+      "row_index": 93,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Aaja Chemnitz efter UPN-møde: Der er behov for beredskab\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "0d57c32d-74e2-4f4e-ab10-cc5428ecc66e",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329248",
+      "title": "Aaja Chemnitz efter UPN-møde: Der er behov for beredskab"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/arktis-rundt/2326357",
+      "layout_type": "3_articles",
+      "display_order": 94000,
+      "row_index": 94,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Arktis Rundt\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "1984b13b-47ce-493d-8bc0-fb3c2c7e30af",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2326357",
+      "title": "Arktis Rundt"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/nivi-olsen-overtager-mads-pedersens-tidligere-ressort-omrader/2329069",
+      "layout_type": "3_articles",
+      "display_order": 94001,
+      "row_index": 94,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Nivi Olsen overtager Mads Pedersens tidligere ressort-områder\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "88999571-286c-4909-9142-9b157a1a3a0c",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329069",
+      "title": "Nivi Olsen overtager Mads Pedersens tidligere ressort-områder"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/olsvig-de-store-magter-har-faet-ojnene-op-for-arktis-vi-ma-insistere-pa-diplomatiets-vej/2327796",
+      "layout_type": "3_articles",
+      "display_order": 94002,
+      "row_index": 94,
+      "article_index_in_row": 2,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Olsvig:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " De store magter har fået øjnene op for Arktis – vi må insistere på diplomatiets vej\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "27da0dc2-954b-40f8-a1e8-317cc1581b2d",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2327796",
+      "title": "Olsvig: De store magter har fået øjnene op for Arktis – vi må insistere på diplomatiets vej"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/udvalgsformand-er-fortrostningsfuld-haber-at-usa-mode-er-starten-pa-taettere-dialog/2329198",
+      "layout_type": "1_full",
+      "display_order": 95000,
+      "row_index": 95,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Udvalgsformand er fortrøstningsfuld:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Håber at USA-møde er starten på tættere dialog\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "96a771bd-13c1-457a-bcdf-478f74610e43",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329198",
+      "title": "Udvalgsformand er fortrøstningsfuld: Håber at USA-møde er starten på tættere dialog"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/amerikanske-politikere-gar-i-offensiven-for-gronland/2329076",
+      "layout_type": "2_articles",
+      "display_order": 96000,
+      "row_index": 96,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Amerikanske politikere går i offensiven for Grønland\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "cfd3f5b7-9d8f-4c85-a4f0-d23950e64237",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329076",
+      "title": "Amerikanske politikere går i offensiven for Grønland"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/usas-udsending-til-gronland-er-blevet-inviteret-til-hundeslaedevaeddelob-helt-upassende-siger-knqk/2329032",
+      "layout_type": "2_articles",
+      "display_order": 96001,
+      "row_index": 96,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "BESTYRELSE IGANGSÆTTER UNDERSØGELSE",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "USA's udsending til Grønland er blevet inviteret til hundeslædevæddeløb - helt upassende, siger KNQK\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "14828f94-f824-423d-9b8b-6fe698f822fb",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329032",
+      "title": "USA's udsending til Grønland er blevet inviteret til hundeslædevæddeløb - helt upassende, siger KNQK"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/det-hvide-hus-deler-billeder-med-kort-over-gronland/2329042",
+      "layout_type": "1_full",
+      "display_order": 97000,
+      "row_index": 97,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Det Hvide Hus deler billeder med kort over Grønland\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "d7a726cb-2fb1-435c-b6ba-f545d4c86e44",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2329042",
+      "title": "Det Hvide Hus deler billeder med kort over Grønland"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/erhverv/naturinstitut-hvaler-er-ikke-skraemt-vaek-af-stoj/2328033",
+      "layout_type": "2_articles",
+      "display_order": 98000,
+      "row_index": 98,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 5,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Naturinstitut:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Hvaler er ikke skræmt væk af støj\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "82ec8cef-8ef3-4b48-8706-05f36c5d495c",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2328033",
+      "title": "Naturinstitut: Hvaler er ikke skræmt væk af støj"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/naalakkersuisut-fastslar-gronland-er-en-del-af-kongeriget-danmark-onsker-forsvar-via-nato/2328844",
+      "layout_type": "2_articles",
+      "display_order": 98001,
+      "row_index": 98,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 7,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Naalakkersuisut fastslår: Grønland er en del af Kongeriget Danmark – ønsker forsvar via Nato\n",
+            "color_class": null
+          }
+        ],
+        "has_bg_color": true,
+        "has_bg_black": true,
+        "content_classes": "content bg-black color_mobile_bg-black border-bg-black mobile_border-bg-black border_width_14 border_width_mobile_14 hasContentPadding mobile-hasContentPadding hasBorder mobile-hasBorder"
+      },
+      "element_guid": "91c7fe2e-e82c-43ab-a733-4d263c4f02dc",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2328844",
+      "title": "Naalakkersuisut fastslår: Grønland er en del af Kongeriget Danmark – ønsker forsvar via Nato"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/iran-er-klar-pa-bade-krig-og-forhandlinger-efter-advarsel-fra-trump/2328985",
+      "layout_type": "2_articles",
+      "display_order": 99000,
+      "row_index": 99,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Iran er klar på både krig og forhandlinger efter advarsel fra Trump\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "19684077-aa56-41c8-aac6-6cbb9e9168fa",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2328985",
+      "title": "Iran er klar på både krig og forhandlinger efter advarsel fra Trump"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/medalje-for-heltedad/2327705",
+      "layout_type": "2_articles",
+      "display_order": 99001,
+      "row_index": 99,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_floating": "UNNIA",
+        "title_parts": [
+          {
+            "text": "Medalje for heltedåd\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "b1456ff3-ad0a-414a-8fa0-4196754c4453",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2327705",
+      "title": "Medalje for heltedåd"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/efter-ulmende-uenighed-folketingspolitiker-kommer-med-bon-til-gronland/2328725",
+      "layout_type": "2_articles",
+      "display_order": 100000,
+      "row_index": 100,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Efter ulmende uenighed:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Folketingspolitiker kommer med bøn til Grønland\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "4b53e507-a13c-46f7-803e-20344817add6",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2328725",
+      "title": "Efter ulmende uenighed: Folketingspolitiker kommer med bøn til Grønland"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/uenighed-med-danmark-og-tvetydige-udmeldinger-bekraefter-amerikanernes-vaerste-anelser/2328527",
+      "layout_type": "2_articles",
+      "display_order": 100001,
+      "row_index": 100,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "AQQALUK LYNGE ER DYBT BEKYMRET",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "Uenighed med Danmark og tvetydige udmeldinger bekræfter amerikanernes værste anelser\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "8f956735-afce-4503-bd4e-c20c02e5a64c",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2328527",
+      "title": "Uenighed med Danmark og tvetydige udmeldinger bekræfter amerikanernes værste anelser"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/du-kunne-laere-meget-af-den-inuitiske-spiritualitet/2327470",
+      "layout_type": "2_articles",
+      "display_order": 101000,
+      "row_index": 101,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_floating": "KÆRE TRUMP...",
+        "title_parts": [
+          {
+            "text": "– Du kunne lære meget af den inuitiske spiritualitet\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "136407d1-5a0d-40d7-9697-f71994992177",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2327470",
+      "title": "– Du kunne lære meget af den inuitiske spiritualitet"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/erhverv/royal-greenland-ansaetter-ny-produktionsdirektor/2328647",
+      "layout_type": "2_articles",
+      "display_order": 101001,
+      "row_index": 101,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Royal Greenland",
+            "color_class": "quaternary color_mobile_quaternary"
+          },
+          {
+            "text": " ansætter ny produktionsdirektør\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "1339aecc-da5e-4638-a4f3-9c9b29f37aad",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2328647",
+      "title": "Royal Greenland ansætter ny produktionsdirektør"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/trump-gronland-bor-indga-en-aftale/2328511",
+      "layout_type": "2_articles",
+      "display_order": 102000,
+      "row_index": 102,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trump: ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "Grønland bør indgå en aftale\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "ea92e253-8b11-4d90-b7da-7f760cb7c50e",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2328511",
+      "title": "Trump: Grønland bør indgå en aftale"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/avannaata-kommunia-og-greenland-airports-er-uenige-om-vandregning/2328445",
+      "layout_type": "2_articles",
+      "display_order": 102001,
+      "row_index": 102,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "BRAND REJSER SPØRGSMÅL OM VANDFORSYNING",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "Avannaata Kommunia og Greenland Airports er uenige om vandregning\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "304891ba-96ee-4b16-8f41-444f9fe7149b",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2328445",
+      "title": "Avannaata Kommunia og Greenland Airports er uenige om vandregning"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/senatorer-fra-usa-kommer-til-danmark-midt-i-gronland-krise/2328484",
+      "layout_type": "1_full",
+      "display_order": 103000,
+      "row_index": 103,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Senatorer fra USA ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "kommer til Danmark midt i Grønland-krise\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "cb936118-1a1a-4b18-b949-eec05f95ecc4",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2328484",
+      "title": "Senatorer fra USA kommer til Danmark midt i Grønland-krise"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/okonomisk-ulighed-kan-ikke-vurderes-ud-fra-regnskaber-alene/2326226",
+      "layout_type": "2_articles",
+      "display_order": 104000,
+      "row_index": 104,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Økonomisk ulighed kan ikke vurderes ud fra regnskaber alene\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "d78870ac-bc50-455a-b280-a1c52b8bcd31",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2326226",
+      "title": "Økonomisk ulighed kan ikke vurderes ud fra regnskaber alene"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/kultur/lokale-ildsjaele-haedres-aerespriser-i-sisimiut-maniitsoq-og-napasoq/2326723",
+      "layout_type": "2_articles",
+      "display_order": 104001,
+      "row_index": 104,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_floating": "UNNIA",
+        "title_parts": [
+          {
+            "text": "Lokale ildsjæle hædres: Ærespriser i Sisimiut, Maniitsoq og Napasoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "65d56250-e411-4ac6-a024-dda1a680211c",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2326723",
+      "title": "Lokale ildsjæle hædres: Ærespriser i Sisimiut, Maniitsoq og Napasoq"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/aaja-chemnitz-der-er-stadig-opgaver-der-skal-loses-pa-forsvarsomradet/2324317",
+      "layout_type": "2_articles",
+      "display_order": 105000,
+      "row_index": 105,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Aaja Chemnitz:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Der er stadig opgaver, der skal løses på forsvarsområdet\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "922c73a7-51cb-4fc8-9f43-7bf8e797ce3d",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2324317",
+      "title": "Aaja Chemnitz: Der er stadig opgaver, der skal løses på forsvarsområdet"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/aleqa-hammond-om-21-kommissionen-siumut-satser-pa-forfatningsudkastet/2327237",
+      "layout_type": "2_articles",
+      "display_order": 105001,
+      "row_index": 105,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Aleqa Hammond om § 21-kommissionen: Siumut satser på forfatningsudkastet\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "d54605d7-3cae-434b-84da-ac1de1f784a9",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2327237",
+      "title": "Aleqa Hammond om § 21-kommissionen: Siumut satser på forfatningsudkastet"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/erhverv/sikuaq-trawl-direktor-carl-christensen-de-ma-grine-af-os-gronlaendere-i-island-og-pa-faeroerne/2326673",
+      "layout_type": "2_articles",
+      "display_order": 106000,
+      "row_index": 106,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Sikuaq Trawl-direktør Carl Christensen:",
+            "color_class": "quaternary color_mobile_quaternary"
+          },
+          {
+            "text": " De må grine af os grønlændere i Island og på Færøerne\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "c1c6a507-4be8-48dc-852c-1712596fbcf2",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2326673",
+      "title": "Sikuaq Trawl-direktør Carl Christensen: De må grine af os grønlændere i Island og på Færøerne"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/for-i-tiden-var-natten-delt-i-to-men-samfundet-aendrede-vores-tidsfornemmelse/2327048",
+      "layout_type": "2_articles",
+      "display_order": 106001,
+      "row_index": 106,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Før i tiden var natten delt i to, men samfundet ændrede vores tidsfornemmelse\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "a5bdbb55-e828-4e43-b1d9-aaf9fdc3bc81",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2327048",
+      "title": "Før i tiden var natten delt i to, men samfundet ændrede vores tidsfornemmelse"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/sport/herrelandsholdet-og-fokusholdet-abner-2026-med-kamp-om-pladserne-i-paris/2326217",
+      "layout_type": "2_articles",
+      "display_order": 107000,
+      "row_index": 107,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_floating": "UNNIA",
+        "title_parts": [
+          {
+            "text": "Herrelandsholdet og fokusholdet åbner 2026 med kamp om pladserne i Paris\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "36e69504-f3b8-4d5f-a90e-0cd524958654",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2326217",
+      "title": "Herrelandsholdet og fokusholdet åbner 2026 med kamp om pladserne i Paris"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/fire-artiers-engagement-debora-fejret-ved-nanortallip-atuarfia/2326736",
+      "layout_type": "2_articles",
+      "display_order": 107001,
+      "row_index": 107,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_floating": "UNNIA",
+        "title_parts": [
+          {
+            "text": "Fire årtiers engagement:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Debora fejret ved Nanortallip Atuarfia\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "b7015137-7f08-4d85-8c78-fd4910b5fe81",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2326736",
+      "title": "Fire årtiers engagement: Debora fejret ved Nanortallip Atuarfia"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/kultur/et-levende-jagtlandskab-mellem-is-hav-og-unesco/2324631",
+      "layout_type": "1_full",
+      "display_order": 108000,
+      "row_index": 108,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Et levende jagtlandskab ",
+            "color_class": null
+          },
+          {
+            "text": "– mellem is, hav og UNESCO\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "0aec71bb-fb8d-4162-8f2e-e6170c819709",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2324631",
+      "title": "Et levende jagtlandskab – mellem is, hav og UNESCO"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/kobstilbud-kan-vaere-pa-vej-til-trods-for-massiv-afvisning/2327475",
+      "layout_type": "2_articles",
+      "display_order": 109000,
+      "row_index": 109,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Købstilbud kan være på vej til trods for massiv afvisning\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "fa4e4005-3ae1-451e-9c99-450cb7b47e44",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2327475",
+      "title": "Købstilbud kan være på vej til trods for massiv afvisning"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/fire-ud-af-ti-danskere-tror-at-trump-vil-invadere/2328369",
+      "layout_type": "2_articles",
+      "display_order": 109001,
+      "row_index": 109,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Fire ud af ti danskere tror, at Trump vil invadere\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "f6a2e0b6-0823-41e3-ae9b-92df32efd652",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2328369",
+      "title": "Fire ud af ti danskere tror, at Trump vil invadere"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/trump-vil-eje-gronland-for-at-afskraekke-kina-og-rusland-vil-have-en-aftale-pa-den-nemme-eller-harde-made/2328337",
+      "layout_type": "2_articles",
+      "display_order": 110000,
+      "row_index": 110,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 5,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trump: USA skal eje Grønland for afskrækkelse",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " – vil have en aftale på den nemme eller hårde måde\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "11db527f-9762-454e-82a0-9241c27c6a53",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2328337",
+      "title": "Trump: USA skal eje Grønland for afskrækkelse – vil have en aftale på den nemme eller hårde måde"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/sport/fra-langrend-til-ledelse-en-passion-for-idraet/2325620",
+      "layout_type": "2_articles",
+      "display_order": 110001,
+      "row_index": 110,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 7,
+      "layout_data": {
+        "kicker_below": "iNUIT",
+        "kicker_below_classes": "kicker below white color_mobile_white align-center mobile_text_align_align-center",
+        "title_parts": [
+          {
+            "text": "Fra langrend til ledelse ",
+            "color_class": null
+          },
+          {
+            "text": "– en passion for idræt\n",
+            "color_class": null
+          }
+        ],
+        "has_bg_color": true,
+        "content_classes": "content bg-secondary color_mobile_bg-secondary border-bg-secondary mobile_border-bg-secondary border_width_14 border_width_mobile_14 hasContentPadding mobile-hasContentPadding hasBorder mobile-hasBorder"
+      },
+      "element_guid": "21d68f21-6f14-425e-bf5a-28ab0c2fd8b9",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2325620",
+      "title": "Fra langrend til ledelse – en passion for idræt"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/samtlige-partier-i-faelles-udtalelse-ingen-andre-lande-skal-blande-sig/2328312",
+      "layout_type": "2_articles",
+      "display_order": 111000,
+      "row_index": 111,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Samtlige partier i fælles udtalelse:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Ingen andre lande skal blande sig\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "f634d6a3-6834-4de5-92dc-5ac436e53663",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2328312",
+      "title": "Samtlige partier i fælles udtalelse: Ingen andre lande skal blande sig"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/amerikansk-forslag-til-resolution-om-forbud-mod-brug-af-militaer-aktion-mod-gronland/2328212",
+      "layout_type": "2_articles",
+      "display_order": 111001,
+      "row_index": 111,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Senator introducerer forslag til resolution om forbud mod brug af militær mod Grønland\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "d6e0291b-c6f2-4972-b478-a7e14807c9f4",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2328212",
+      "title": "Senator introducerer forslag til resolution om forbud mod brug af militær mod Grønland"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/kort-nyt/2326154",
+      "layout_type": "2_articles",
+      "display_order": 112000,
+      "row_index": 112,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Kort Nyt\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "f6d12af5-1bf5-49b1-b1ac-0df222a6ecd2",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2326154",
+      "title": "Kort Nyt"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/vi-skal-sikre-at-vi-kan-blive-boende-i-gronland/2326922",
+      "layout_type": "2_articles",
+      "display_order": 112001,
+      "row_index": 112,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "LARS ERIK GABRIELSEN",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "– Vi skal sikre, at vi kan blive boende i Grønland\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "2e758ec8-f922-483a-b031-fced4a76ea4a",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2326922",
+      "title": "– Vi skal sikre, at vi kan blive boende i Grønland"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/erhverv/olympisk-fiskeri-efter-torsk-og-hellefisk-kan-fortsaette-med-2025-licenser/2327976",
+      "layout_type": "2_articles",
+      "display_order": 113000,
+      "row_index": 113,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Olympisk fiskeri efter torsk og hellefisk kan fortsætte med 2025-licenser\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "273136db-d26a-480a-8e01-07496b783d5b",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2327976",
+      "title": "Olympisk fiskeri efter torsk og hellefisk kan fortsætte med 2025-licenser"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/man-taenker-hvad-er-det-naeste/2327447",
+      "layout_type": "2_articles",
+      "display_order": 113001,
+      "row_index": 113,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "HVERDAGEN I TRUMPS SKYGGE",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "– Man tænker, hvad er det næste?\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "9e5f456d-28d6-416d-aa4c-a2dbf6b4cff2",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2327447",
+      "title": "– Man tænker, hvad er det næste?"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/17-arig-pige-overfaldet-flere-unge-anholdt/2328036",
+      "layout_type": "2_articles",
+      "display_order": 114000,
+      "row_index": 114,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "DØGNRAPPORT",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "17-årig pige overfaldet – flere unge anholdt\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "faaf035a-a7b9-4cb3-ab60-30b464a0f802",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2328036",
+      "title": "17-årig pige overfaldet – flere unge anholdt"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/atypisk-vejrhold-for-arstiden/2326452",
+      "layout_type": "2_articles",
+      "display_order": 114001,
+      "row_index": 114,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Atypiske vejrforhold for årstiden\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "cd7f5727-eb57-45c2-9ea4-90eb25a57e9f",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2326452",
+      "title": "Atypiske vejrforhold for årstiden"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/stille-protest-foran-ambassaden-i-kobenhavn/2327911",
+      "layout_type": "1_full",
+      "display_order": 115000,
+      "row_index": 115,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "kicker_below": "RYSTET OVER KRIGERISK RETORIK",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "Ludvig Hammeken udførte stille protest foran USA's ambassade\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "66bdaa0a-984f-4e0f-94cf-b6dd849afef2",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2327911",
+      "title": "Ludvig Hammeken udførte stille protest foran USA's ambassade"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/det-her-land-er-ikke-et-tag-selv-bord/2327169",
+      "layout_type": "2_articles",
+      "display_order": 116000,
+      "row_index": 116,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_floating": "KÆRE TRUMP...",
+        "title_parts": [
+          {
+            "text": "– Det her land er ikke et tag-selv-bord\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "2107f1b2-4ad6-4611-83e1-1e4c19bd5d26",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2327169",
+      "title": "– Det her land er ikke et tag-selv-bord"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/minedrift-skal-bidrage-til-lokalsamfundet/2327427",
+      "layout_type": "2_articles",
+      "display_order": 116001,
+      "row_index": 116,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "NY AFTALE",
+        "kicker_below_classes": "kicker below quaternary color_mobile_quaternary",
+        "title_parts": [
+          {
+            "text": "Minedrift skal bidrage til lokalsamfundet\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "4a906401-bddd-4e9b-97e8-647aa6b112b9",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2327427",
+      "title": "Minedrift skal bidrage til lokalsamfundet"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/erhverv/usa-godkender-salg-af-overvagningsfly-til-danmark/2327219",
+      "layout_type": "2_articles",
+      "display_order": 117000,
+      "row_index": 117,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "USA godkender salg af overvågningsfly til Danmark\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "daba0568-89a3-4460-9fd9-d34b86410a28",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2327219",
+      "title": "USA godkender salg af overvågningsfly til Danmark"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/trump-ejerskab-over-gronland-er-et-psykologisk-behov/2327753",
+      "layout_type": "2_articles",
+      "display_order": 117001,
+      "row_index": 117,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trump:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Ejerskab over Grønland giver noget en traktat ikke kan\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "fd136522-6bd4-4d07-b75c-994f7737537b",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2327753",
+      "title": "Trump: Ejerskab over Grønland giver noget en traktat ikke kan"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/sport/en-fejring-af-faellesskab-og-fremragende-praestationer/2326935",
+      "layout_type": "1_full",
+      "display_order": 118000,
+      "row_index": 118,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "kicker_floating": "ÅRETS IDRÆTSDAG 2026",
+        "title_parts": [
+          {
+            "text": "En fejring af fællesskab og fremragende præstationer\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "59fb06eb-17cb-45ef-8ae2-c4288ec3b255",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2326935",
+      "title": "En fejring af fællesskab og fremragende præstationer"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/erhverv/politisk-fokus-lofter-gronlandsbankens-aktiekurs/2327655",
+      "layout_type": "2_articles",
+      "display_order": 119000,
+      "row_index": 119,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Politisk fokus løfter Grønlandsbankens aktiekurs\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "710b9b2d-e9d4-4df1-8a1f-35ec79dd2749",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2327655",
+      "title": "Politisk fokus løfter Grønlandsbankens aktiekurs"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/kaja-kallas-kalder-usas-udmeldinger-om-gronland-for-meget-bekymrende/2327647",
+      "layout_type": "2_articles",
+      "display_order": 119001,
+      "row_index": 119,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Kaja Kallas kalder USA's udmeldinger om Grønland for meget bekymrende\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "3bcd6001-0410-47e0-9293-ce3b86d38728",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2327647",
+      "title": "Kaja Kallas kalder USA's udmeldinger om Grønland for meget bekymrende"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/et-ar-med-trump-fa-et-overblik-her/2327013",
+      "layout_type": "2_articles",
+      "display_order": 120000,
+      "row_index": 120,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "ET ÅR MED TRUMP",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "Få et overblik her\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "90c50bec-8538-4a57-a8a9-ab802f6e4293",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2327013",
+      "title": "Få et overblik her"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/to-personer-stukket-med-kniv-i-nuuk/2326198",
+      "layout_type": "2_articles",
+      "display_order": 120001,
+      "row_index": 120,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "DØGNRAPPORT",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "To personer stukket med kniv i Nuuk\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "fabbfc1a-12e2-49f0-bb23-0ce76f048941",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2326198",
+      "title": "To personer stukket med kniv i Nuuk"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/erhverv/kommunalbestyrelse-giver-afslag-dynamisk-duo-far-nej-til-at-bygge-et-10-etagers-hotel/2325768",
+      "layout_type": "2_articles",
+      "display_order": 121000,
+      "row_index": 121,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 5,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Kommunalbestyrelse giver afslag:\n",
+            "color_class": "quaternary color_mobile_quaternary"
+          },
+          {
+            "text": "Dynamisk duo får nej til at bygge et 10-etagers hotel\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "19bd769f-7266-4605-9325-473ac73e8868",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2325768",
+      "title": "Kommunalbestyrelse giver afslag:\nDynamisk duo får nej til at bygge et 10-etagers hotel"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/kaere-trump/2327059",
+      "layout_type": "2_articles",
+      "display_order": 121001,
+      "row_index": 121,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 7,
+      "layout_data": {
+        "kicker_floating": "KÆRE TRUMP...",
+        "title_parts": [
+          {
+            "text": "– Venskab bygger på respekt, ikke på opkøb\n",
+            "color_class": null
+          }
+        ],
+        "has_bg_color": true,
+        "has_bg_black": true,
+        "content_classes": "content bg-black color_mobile_bg-black border-bg-black mobile_border-bg-black border_width_14 border_width_mobile_14 hasContentPadding mobile-hasContentPadding hasBorder mobile-hasBorder"
+      },
+      "element_guid": "cd5243b0-75ae-428f-b8b4-071631193e47",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2327059",
+      "title": "– Venskab bygger på respekt, ikke på opkøb"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/forsker-frygter-konsekvenserne-hvis-ikke-gronland-og-danmark-enes-inden-mode-med-usa/2327532",
+      "layout_type": "2_articles",
+      "display_order": 122000,
+      "row_index": 122,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Forsker:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Det kan få alvorlige konsekvenser hvis ikke Grønland og Danmark enes inden møde med USA\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "1fdd6932-8236-4748-8aae-761bade04b50",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2327532",
+      "title": "Forsker: Det kan få alvorlige konsekvenser hvis ikke Grønland og Danmark enes inden møde med USA"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/medie-heftig-diskussion-pa-teams-mode-mellem-nuuk-og-kobenhavn-formand-vil-forbedre-kommunikation/2327337",
+      "layout_type": "2_articles",
+      "display_order": 122001,
+      "row_index": 122,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Medie: ",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": "Heftig diskussion på Teams-møde mellem Nuuk og København - formand vil forbedre kommunikation\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "64fe4538-c3b8-4497-ad12-9dede5946631",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2327337",
+      "title": "Medie: Heftig diskussion på Teams-møde mellem Nuuk og København - formand vil forbedre kommunikation"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/trump-radgiver-ingen-vil-kaempe-militaert-mod-usa-om-gronlands-fremtid/2325969",
+      "layout_type": "1_full",
+      "display_order": 123000,
+      "row_index": 123,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trump-rådgiver:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Ingen vil kæmpe militært mod USA om Grønlands fremtid\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "5fc10350-00eb-44f5-bb71-4185a37b75af",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2325969",
+      "title": "Trump-rådgiver: Ingen vil kæmpe militært mod USA om Grønlands fremtid"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/lettet-vivian-mit-storste-hab-er-en-normalisering/2327118",
+      "layout_type": "3_articles",
+      "display_order": 124000,
+      "row_index": 124,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "kicker_below": "GRØNLANDSK/DANSK MØDE MED USA",
+        "kicker_below_classes": "kicker below",
+        "title_parts": [
+          {
+            "text": "Lettet Vivian: Mit største håb er en normalisering\n",
+            "color_class": null
+          }
+        ],
+        "has_bg_color": true,
+        "has_bg_black": true,
+        "content_classes": "content bg-black color_mobile_bg-black border-bg-black mobile_border-bg-black border_width_14 border_width_mobile_14 hasContentPadding mobile-hasContentPadding hasBorder mobile-hasBorder"
+      },
+      "element_guid": "465bb43a-ce6e-4f09-a8ff-a9e3ccdd6d39",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2327118",
+      "title": "Lettet Vivian: Mit største håb er en normalisering"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/senatorer-i-usa-venter-at-stemme-mod-et-angreb-pa-gronland/2327209",
+      "layout_type": "3_articles",
+      "display_order": 124001,
+      "row_index": 124,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Senatorer i USA venter at stemme mod et angreb på Grønland\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "07b12a63-dae5-419a-9b6a-7024832bca9b",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2327209",
+      "title": "Senatorer i USA venter at stemme mod et angreb på Grønland"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/pipaluk-lynge-kritiserer-folketinget-og-den-danske-regering-for-manglende-inddragelse/2326985",
+      "layout_type": "3_articles",
+      "display_order": 124002,
+      "row_index": 124,
+      "article_index_in_row": 2,
+      "total_rows": 127,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Pipaluk Lynge kritiserer Folketinget og den danske regering for manglende inddragelse\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "815bcb8b-5041-4552-bf1a-886fb4b938ce",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2326985",
+      "title": "Pipaluk Lynge kritiserer Folketinget og den danske regering for manglende inddragelse"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/professor-trump-drommer-om-at-udvide-territoriet-og-gronland-er-eneste-oplagte-mulighed/2326629",
+      "layout_type": "2_articles",
+      "display_order": 125000,
+      "row_index": 125,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Professor:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Trump drømmer om at udvide territoriet og Grønland er eneste oplagte mulighed\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "2ea9322a-bfa7-4f7c-b3cc-457870501c9c",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2326629",
+      "title": "Professor: Trump drømmer om at udvide territoriet og Grønland er eneste oplagte mulighed"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/arbejdstilsynet-far-ny-kredschef-i-gronland/2326662",
+      "layout_type": "2_articles",
+      "display_order": 125001,
+      "row_index": 125,
+      "article_index_in_row": 1,
+      "total_rows": 127,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Arbejdstilsynet får ny kredschef i Grønland\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "336bb04c-8c07-4004-b9ea-36e68478e1bb",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2326662",
+      "title": "Arbejdstilsynet får ny kredschef i Grønland"
+    },
+    {
+      "published_url": "https://www.sermitsiaq.ag/samfund/ordre-palaegger-danske-soldater-at-svare-igen-ved-angreb-pa-gronland/2326468",
+      "layout_type": "1_full",
+      "display_order": 126000,
+      "row_index": 126,
+      "article_index_in_row": 0,
+      "total_rows": 127,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Ordre pålægger danske soldater at svare igen ved angreb på Grønland\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "338af404-8a96-4356-83e6-e25240cc591e",
+      "k5a_url": "https://www.sermitsiaq.ag/a/2326468",
+      "title": "Ordre pålægger danske soldater at svare igen ved angreb på Grønland"
+    }
+  ]
+}

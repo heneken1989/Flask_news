@@ -673,30 +673,36 @@ def parse_slider(slider_elem, base_url='https://www.sermitsiaq.ag'):
             items_per_view = 4
             source_class = 'source_nyheder'
         
-        # Xác định layout_type
+        # Set layout_type dựa vào loại slider
         if is_job_slider:
             layout_type = 'job_slider'
         else:
             layout_type = 'slider'
         
+        # Build layout_data - giống hệt cho cả slider và job_slider
+        layout_data = {
+            'slider_title': slider_title,
+            'slider_articles': slider_articles,
+            'slider_id': slider_id,
+            'has_nav': has_nav,
+            'items_per_view': items_per_view,
+            'source_class': source_class
+        }
+        
+        # Chỉ thêm các fields đặc biệt nếu là job_slider (để template biết cách render)
+        if is_job_slider:
+            layout_data['header_link'] = header_link
+            layout_data['extra_classes'] = extra_classes
+            layout_data['header_classes'] = header_classes
+        
         return {
             'element_guid': element_guid,
             'slider_id': slider_id,
-            'layout_type': layout_type,
+            'layout_type': layout_type,  # 'slider' hoặc 'job_slider'
             'title': slider_title or 'Slider',  # Fallback title
             'url': '',  # Slider không có URL riêng
             'section': 'home',
-            'layout_data': {
-                'slider_title': slider_title,
-                'slider_articles': slider_articles,
-                'slider_id': slider_id,
-                'has_nav': has_nav,
-                'items_per_view': items_per_view,
-                'source_class': source_class,
-                'header_link': header_link,  # Link trong header (cho JOB)
-                'extra_classes': extra_classes,  # Các class đặc biệt (bg-custom-2, etc.)
-                'header_classes': header_classes  # Các class cho header (underline, t22, etc.)
-            },
+            'layout_data': layout_data,
             'is_home': True
         }
     except Exception as e:

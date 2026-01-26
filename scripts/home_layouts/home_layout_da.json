@@ -1,6 +1,6 @@
 {
   "language": "da",
-  "crawled_at": "2026-01-26T07:59:12.583407",
+  "crawled_at": "2026-01-26T14:03:54.362013",
   "total_items": 222,
   "layout_items": [
     {
@@ -136,12 +136,12 @@
             "url": "/samfund/stromafbrydelse-faerdselsuheld-og-spritkorsel/2335134"
           },
           {
-            "title": "KLUMME: USA’s selvbillede – og misforståelsen af Grønland",
-            "url": "/samfund/klumme-usas-selvbillede-og-misforstaelsen-af-gronland/2332756"
-          },
-          {
             "title": "Nye boreaktiviteter ved Ivittuut og Grønnedal",
             "url": "/erhverv/nye-boreaktiviteter-ved-ivittuut-og-gronnedal/2333035"
+          },
+          {
+            "title": "KLUMME: USA’s selvbillede – og misforståelsen af Grønland",
+            "url": "/samfund/klumme-usas-selvbillede-og-misforstaelsen-af-gronland/2332756"
           },
           {
             "title": "Kreml: Grønland er strategisk vigtig for sikkerheden",
@@ -163,12 +163,12 @@
           "url": "/samfund/stromafbrydelse-faerdselsuheld-og-spritkorsel/2335134"
         },
         {
-          "title": "KLUMME: USA’s selvbillede – og misforståelsen af Grønland",
-          "url": "/samfund/klumme-usas-selvbillede-og-misforstaelsen-af-gronland/2332756"
-        },
-        {
           "title": "Nye boreaktiviteter ved Ivittuut og Grønnedal",
           "url": "/erhverv/nye-boreaktiviteter-ved-ivittuut-og-gronnedal/2333035"
+        },
+        {
+          "title": "KLUMME: USA’s selvbillede – og misforståelsen af Grønland",
+          "url": "/samfund/klumme-usas-selvbillede-og-misforstaelsen-af-gronland/2332756"
         },
         {
           "title": "Kreml: Grønland er strategisk vigtig for sikkerheden",
@@ -457,18 +457,7 @@
         "slider_id": "article_list_1479365",
         "has_nav": true,
         "items_per_view": 4,
-        "source_class": "source_nyheder",
-        "header_link": null,
-        "extra_classes": [],
-        "header_classes": [
-          "articlescroller-header",
-          "t31",
-          "primary",
-          "color_mobile_primary",
-          "align-left",
-          "mobile_text_align_align-left",
-          "font-IBMPlexSans"
-        ]
+        "source_class": "source_nyheder"
       },
       "element_guid": "1daa12fd-a94e-4ea7-8080-1d1b73f326ff",
       "k5a_url": "",
