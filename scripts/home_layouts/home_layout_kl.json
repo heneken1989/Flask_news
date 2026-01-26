@@ -1,16 +1,77 @@
 {
   "language": "kl",
-  "crawled_at": "2026-01-25T22:09:44.354181",
-  "total_items": 193,
+  "crawled_at": "2026-01-26T07:57:25.453914",
+  "total_items": 196,
   "layout_items": [
     {
-      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/isumaga-usa-p-imminut-isiginera-kalaallit-nunaannik-paatsuuineq/2332801",
+      "published_url": "https://kl.sermitsiaq.ag/erhverv/ivittuut-kangilinnguillu-eqqaani-qillerisoqartoq/2333114",
       "layout_type": "1_full",
       "display_order": 0,
       "row_index": 0,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Ivittuut Kangilinnguillu eqqaani qillerisoqartoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "ac55ce51-a5f5-4efb-b279-416da45f4cb6",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2333114",
+      "title": "Ivittuut Kangilinnguillu eqqaani qillerisoqartoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/kultur/max-5-tassa-siullermeerlutik-ep-liortut/2331702",
+      "layout_type": "1_full",
+      "display_order": 2000,
+      "row_index": 2,
+      "article_index_in_row": 0,
+      "total_rows": 121,
+      "grid_size": 12,
+      "layout_data": {
+        "kicker_floating": "UNNIA",
+        "title_parts": [
+          {
+            "text": "Max 5 Tassa siullermeerlutik EP-liortut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "a9f7f363-07be-4d29-afa5-246638085c70",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2331702",
+      "title": "Max 5 Tassa siullermeerlutik EP-liortut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/kulturi/kalaallisuuliortartoq-nutaaq/2328617",
+      "layout_type": "2_articles",
+      "display_order": 4000,
+      "row_index": 4,
+      "article_index_in_row": 0,
+      "total_rows": 121,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Kalaallisuuliortartoq nutaaq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "8920639b-e440-40fa-af73-3c7a557ffd2c",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2328617",
+      "title": "Kalaallisuuliortartoq nutaaq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/isumaga-usa-p-imminut-isiginera-kalaallit-nunaannik-paatsuuineq/2332801",
+      "layout_type": "2_articles",
+      "display_order": 4001,
+      "row_index": 4,
+      "article_index_in_row": 1,
+      "total_rows": 121,
+      "grid_size": 6,
       "layout_data": {
         "title_parts": [
           {
@@ -30,10 +91,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/kallerup-innerata-qaminnera-biilerluni-ajutoorneq-imigassarsorsimallunilu-biilerneq/2335147",
       "layout_type": "2_articles",
-      "display_order": 2000,
-      "row_index": 2,
+      "display_order": 6000,
+      "row_index": 6,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -50,12 +111,13 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/kreml-kalaallit-nunaat-isumannaallisaanermut-pingaaruteqarpoq/2326501",
       "layout_type": "2_articles",
-      "display_order": 2001,
-      "row_index": 2,
+      "display_order": 6001,
+      "row_index": 6,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
+        "kicker_floating": "LIVEBLOG",
         "title_parts": [
           {
             "text": "Kreml: Kalaallit Nunaat isumannaallisaanermut pingaaruteqarpoq\n",
@@ -68,12 +130,78 @@
       "title": "Kreml: Kalaallit Nunaat isumannaallisaanermut pingaaruteqarpoq"
     },
     {
+      "published_url": "https://kl.sermitsiaq.ag/samfund/nuummiut-peqqumaasersorlutik-aallartipput-sarfaliuutit-dunkillu-nungorartut/2333740",
+      "layout_type": "1_with_list_right",
+      "display_order": 7000,
+      "row_index": 7,
+      "article_index_in_row": 0,
+      "total_rows": 121,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Nuummiut peqqumaasersorlutik aallartipput: Sarfaliuutit dunkillu nungorartut\n",
+            "color_class": null
+          }
+        ],
+        "list_title": "ATUARNEQARNERPAAT",
+        "list_items": [
+          {
+            "title": "Kallerup innerata qaminnera, biilerluni ajutoorneq imigassarsorsimallunilu biilerneq",
+            "url": "/inuiaqatigiit/kallerup-innerata-qaminnera-biilerluni-ajutoorneq-imigassarsorsimallunilu-biilerneq/2335147"
+          },
+          {
+            "title": "Ulloq unnuarlu nalunaarusiaq: Biilinik ajutoornerit marluk, imigassartorsimallutik biilertut marluk imminullu toqunnissamik siorasaarisut arlaqartut",
+            "url": "/inuiaqatigiit/ulloq-unnuarlu-nalunaarusiaq-biilinik-ajutoornerit-marluk-imigassartorsimallutik-biilertut-marluk-imminullu-toqunnissamik-siorasaarisut-arlaqartut/2335063"
+          },
+          {
+            "title": "Nuummi anorlerneranit sarfaaruttoortoqartoq - Atortut sarfatortut pisariaqanngitsut attaveeqquneqarput",
+            "url": "/inuiaqatigiit/nuummi-anorlerneranit-sarfaaruttoortoqartoq-atortut-sarfatortut-pisariaqanngitsut-attaveeqquneqarput/2335109"
+          },
+          {
+            "title": "Kreml: Kalaallit Nunaat isumannaallisaanermut pingaaruteqarpoq",
+            "url": "/inuiaqatigiit/kreml-kalaallit-nunaat-isumannaallisaanermut-pingaaruteqarpoq/2326501"
+          },
+          {
+            "title": "Ivittuut Kangilinnguillu eqqaani qillerisoqartoq",
+            "url": "/erhverv/ivittuut-kangilinnguillu-eqqaani-qillerisoqartoq/2333114"
+          }
+        ]
+      },
+      "element_guid": "679581e6-6a0e-46fc-806e-a0961e547556",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2333740",
+      "title": "Nuummiut peqqumaasersorlutik aallartipput: Sarfaliuutit dunkillu nungorartut",
+      "list_title": "ATUARNEQARNERPAAT",
+      "list_items": [
+        {
+          "title": "Kallerup innerata qaminnera, biilerluni ajutoorneq imigassarsorsimallunilu biilerneq",
+          "url": "/inuiaqatigiit/kallerup-innerata-qaminnera-biilerluni-ajutoorneq-imigassarsorsimallunilu-biilerneq/2335147"
+        },
+        {
+          "title": "Ulloq unnuarlu nalunaarusiaq: Biilinik ajutoornerit marluk, imigassartorsimallutik biilertut marluk imminullu toqunnissamik siorasaarisut arlaqartut",
+          "url": "/inuiaqatigiit/ulloq-unnuarlu-nalunaarusiaq-biilinik-ajutoornerit-marluk-imigassartorsimallutik-biilertut-marluk-imminullu-toqunnissamik-siorasaarisut-arlaqartut/2335063"
+        },
+        {
+          "title": "Nuummi anorlerneranit sarfaaruttoortoqartoq - Atortut sarfatortut pisariaqanngitsut attaveeqquneqarput",
+          "url": "/inuiaqatigiit/nuummi-anorlerneranit-sarfaaruttoortoqartoq-atortut-sarfatortut-pisariaqanngitsut-attaveeqquneqarput/2335109"
+        },
+        {
+          "title": "Kreml: Kalaallit Nunaat isumannaallisaanermut pingaaruteqarpoq",
+          "url": "/inuiaqatigiit/kreml-kalaallit-nunaat-isumannaallisaanermut-pingaaruteqarpoq/2326501"
+        },
+        {
+          "title": "Ivittuut Kangilinnguillu eqqaani qillerisoqartoq",
+          "url": "/erhverv/ivittuut-kangilinnguillu-eqqaani-qillerisoqartoq/2333114"
+        }
+      ]
+    },
+    {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/ullorissat-aningaasanut-inatsimmut-ilanngunneqartut/2333150",
       "layout_type": "2_articles",
-      "display_order": 4000,
-      "row_index": 4,
+      "display_order": 8000,
+      "row_index": 8,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -90,10 +218,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sooruna-vikingit-finlandimeersut-tusanngisaannarivut/2334627",
       "layout_type": "2_articles",
-      "display_order": 4001,
-      "row_index": 4,
+      "display_order": 8001,
+      "row_index": 8,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -110,10 +238,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/nuuk-sarfaaruttoorpoq-nukissiorfiit-iluarsiiniarlutik-suliaqarput/2335109",
       "layout_type": "2_articles",
-      "display_order": 6000,
-      "row_index": 6,
+      "display_order": 10000,
+      "row_index": 10,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "kicker_below": "NUTARTERNEQARPOQ - VIDEO TAKUUK",
@@ -132,10 +260,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/isumaga-aningaasat-politikiuvoq/2333062",
       "layout_type": "2_articles",
-      "display_order": 6001,
-      "row_index": 6,
+      "display_order": 10001,
+      "row_index": 10,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "kicker_floating": "ISUMAGA",
@@ -151,78 +279,12 @@
       "title": "Aningaasat politikiuvoq"
     },
     {
-      "published_url": "https://kl.sermitsiaq.ag/samfund/nuummiut-peqqumaasersorlutik-aallartipput-sarfaliuutit-dunkillu-nungorartut/2333740",
-      "layout_type": "1_with_list_right",
-      "display_order": 7000,
-      "row_index": 7,
-      "article_index_in_row": 0,
-      "total_rows": 119,
-      "grid_size": 6,
-      "layout_data": {
-        "title_parts": [
-          {
-            "text": "Nuummiut peqqumaasersorlutik aallartipput: Sarfaliuutit dunkillu nungorartut\n",
-            "color_class": null
-          }
-        ],
-        "list_title": "ATUARNEQARNERPAAT",
-        "list_items": [
-          {
-            "title": "Ulloq unnuarlu nalunaarusiaq: Biilinik ajutoornerit marluk, imigassartorsimallutik biilertut marluk imminullu toqunnissamik siorasaarisut arlaqartut",
-            "url": "/inuiaqatigiit/ulloq-unnuarlu-nalunaarusiaq-biilinik-ajutoornerit-marluk-imigassartorsimallutik-biilertut-marluk-imminullu-toqunnissamik-siorasaarisut-arlaqartut/2335063"
-          },
-          {
-            "title": "Psykologinngornermi 80-ikkunni ernguttarneq imigassamillu kultureqarneq nutaamik paasisaqarfiusoq",
-            "url": "/inuiaqatigiit/psykologinngornermi-80-ikkunni-ernguttarneq-imigassamillu-kultureqarneq-nutaamik-paasisaqarfiusoq/2334978"
-          },
-          {
-            "title": "Kreml: Kalaallit Nunaat isumannaallisaanermut pingaaruteqarpoq",
-            "url": "/inuiaqatigiit/kreml-kalaallit-nunaat-isumannaallisaanermut-pingaaruteqarpoq/2326501"
-          },
-          {
-            "title": "Nuummi anorlerneranit sarfaaruttoortoqartoq - Atortut sarfatortut pisariaqanngitsut attaveeqquneqarput",
-            "url": "/inuiaqatigiit/nuummi-anorlerneranit-sarfaaruttoortoqartoq-atortut-sarfatortut-pisariaqanngitsut-attaveeqquneqarput/2335109"
-          },
-          {
-            "title": "Kallerup innerata qaminnera, biilerluni ajutoorneq imigassarsorsimallunilu biilerneq",
-            "url": "/inuiaqatigiit/kallerup-innerata-qaminnera-biilerluni-ajutoorneq-imigassarsorsimallunilu-biilerneq/2335147"
-          }
-        ]
-      },
-      "element_guid": "679581e6-6a0e-46fc-806e-a0961e547556",
-      "k5a_url": "https://kl.sermitsiaq.ag/a/2333740",
-      "title": "Nuummiut peqqumaasersorlutik aallartipput: Sarfaliuutit dunkillu nungorartut",
-      "list_title": "ATUARNEQARNERPAAT",
-      "list_items": [
-        {
-          "title": "Ulloq unnuarlu nalunaarusiaq: Biilinik ajutoornerit marluk, imigassartorsimallutik biilertut marluk imminullu toqunnissamik siorasaarisut arlaqartut",
-          "url": "/inuiaqatigiit/ulloq-unnuarlu-nalunaarusiaq-biilinik-ajutoornerit-marluk-imigassartorsimallutik-biilertut-marluk-imminullu-toqunnissamik-siorasaarisut-arlaqartut/2335063"
-        },
-        {
-          "title": "Psykologinngornermi 80-ikkunni ernguttarneq imigassamillu kultureqarneq nutaamik paasisaqarfiusoq",
-          "url": "/inuiaqatigiit/psykologinngornermi-80-ikkunni-ernguttarneq-imigassamillu-kultureqarneq-nutaamik-paasisaqarfiusoq/2334978"
-        },
-        {
-          "title": "Kreml: Kalaallit Nunaat isumannaallisaanermut pingaaruteqarpoq",
-          "url": "/inuiaqatigiit/kreml-kalaallit-nunaat-isumannaallisaanermut-pingaaruteqarpoq/2326501"
-        },
-        {
-          "title": "Nuummi anorlerneranit sarfaaruttoortoqartoq - Atortut sarfatortut pisariaqanngitsut attaveeqquneqarput",
-          "url": "/inuiaqatigiit/nuummi-anorlerneranit-sarfaaruttoortoqartoq-atortut-sarfatortut-pisariaqanngitsut-attaveeqquneqarput/2335109"
-        },
-        {
-          "title": "Kallerup innerata qaminnera, biilerluni ajutoorneq imigassarsorsimallunilu biilerneq",
-          "url": "/inuiaqatigiit/kallerup-innerata-qaminnera-biilerluni-ajutoorneq-imigassarsorsimallunilu-biilerneq/2335147"
-        }
-      ]
-    },
-    {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/kajumissutsiminnik-aallussisartut-pingaartuupput/2327858",
       "layout_type": "1_full",
-      "display_order": 8000,
-      "row_index": 8,
+      "display_order": 12000,
+      "row_index": 12,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -237,120 +299,30 @@
       "title": "Kajumissutsiminnik aallussisartut pingaartuupput"
     },
     {
-      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sakkutooqarfiugallartussat-marluk-pilersinneqartut/2335043",
-      "layout_type": "3_articles",
-      "display_order": 10000,
-      "row_index": 10,
-      "article_index_in_row": 0,
-      "total_rows": 119,
-      "grid_size": 4,
-      "layout_data": {
-        "title_parts": [
-          {
-            "text": "Sakkutooqarfiugallartussat marluk pilersinneqartut\n",
-            "color_class": null
-          }
-        ]
-      },
-      "element_guid": "6b906683-deea-4aaa-ae90-a53c82584f89",
-      "k5a_url": "https://kl.sermitsiaq.ag/a/2335043",
-      "title": "Sakkutooqarfiugallartussat marluk pilersinneqartut"
-    },
-    {
-      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/atuarfimmi-misilitsinnermi-misigisat/2331660",
-      "layout_type": "3_articles",
-      "display_order": 10001,
-      "row_index": 10,
-      "article_index_in_row": 1,
-      "total_rows": 119,
-      "grid_size": 4,
-      "layout_data": {
-        "title_parts": [
-          {
-            "text": "Atuarfimmi misilitsinnermi misigisat\n",
-            "color_class": null
-          }
-        ]
-      },
-      "element_guid": "3504d763-1ab9-400e-b3c5-54edb8b4e46f",
-      "k5a_url": "https://kl.sermitsiaq.ag/a/2331660",
-      "title": "Atuarfimmi misilitsinnermi misigisat"
-    },
-    {
-      "published_url": "https://kl.sermitsiaq.ag/kulturi/ministeriunerup-ukiortaami-oqalugiaataani-sermeq-aattoq/2329391",
-      "layout_type": "3_articles",
-      "display_order": 10002,
-      "row_index": 10,
-      "article_index_in_row": 2,
-      "total_rows": 119,
-      "grid_size": 4,
-      "layout_data": {
-        "title_parts": [
-          {
-            "text": "Ministeriunerup ukiortaami oqalugiaataani sermeq aattoq\n",
-            "color_class": null
-          }
-        ]
-      },
-      "element_guid": "4e6c3ee8-9323-4db0-96bd-639ab820318f",
-      "k5a_url": "https://kl.sermitsiaq.ag/a/2329391",
-      "title": "Ministeriunerup ukiortaami oqalugiaataani sermeq aattoq"
-    },
-    {
-      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/ulloq-unnuarlu-nalunaarusiaq-biilinik-ajutoornerit-marluk-imigassartorsimallutik-biilertut-marluk-imminullu-toqunnissamik-siorasaarisut-arlaqartut/2335063",
-      "layout_type": "2_articles",
-      "display_order": 12000,
-      "row_index": 12,
-      "article_index_in_row": 0,
-      "total_rows": 119,
-      "grid_size": 6,
-      "layout_data": {
-        "kicker_below": "ULLOQ UNNUARLU NALUNAARUSIAQ",
-        "kicker_below_classes": "kicker below primary color_mobile_primary",
-        "title_parts": [
-          {
-            "text": "Biilinik ajutoornerit marluk, imigassartorsimallutik biilertut marluk imminullu toqunnissamik siorasaarisut arlaqartut\n",
-            "color_class": null
-          }
-        ]
-      },
-      "element_guid": "543b9455-45be-4792-9963-21167ea337d1",
-      "k5a_url": "https://kl.sermitsiaq.ag/a/2335063",
-      "title": "Biilinik ajutoornerit marluk, imigassartorsimallutik biilertut marluk imminullu toqunnissamik siorasaarisut arlaqartut"
-    },
-    {
-      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/psykologinngornermi-80-ikkunni-ernguttarneq-imigassamillu-kultureqarneq-nutaamik-paasisaqarfiusoq/2334978",
-      "layout_type": "2_articles",
-      "display_order": 12001,
-      "row_index": 12,
-      "article_index_in_row": 1,
-      "total_rows": 119,
-      "grid_size": 6,
-      "layout_data": {
-        "kicker_below": "INUIT",
-        "kicker_below_classes": "kicker below secondary color_mobile_secondary align-center mobile_text_align_align-center",
-        "title_parts": [
-          {
-            "text": "Psykologinngornermi 80-ikkunni ernguttarneq imigassamillu kultureqarneq nutaamik paasisaqarfiusoq",
-            "color_class": "font-weight-normal m-font-weight-normal"
-          }
-        ]
-      },
-      "element_guid": "ebd78f25-92e7-4392-a94b-340c57b142ee",
-      "k5a_url": "https://kl.sermitsiaq.ag/a/2334978",
-      "title": "Psykologinngornermi 80-ikkunni ernguttarneq imigassamillu kultureqarneq nutaamik paasisaqarfiusoq"
-    },
-    {
       "published_url": "",
       "layout_type": "slider",
       "display_order": 14000,
       "row_index": 14,
       "article_index_in_row": -1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "slider_title": "NUTAARSIASSAT",
         "slider_articles": [
+          {
+            "url": "https://kl.sermitsiaq.ag/kulturi/kalaallisuuliortartoq-nutaaq/2328617",
+            "title": "Kalaallisuuliortartoq nutaaq",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2328298.jpg?imageId=2328298&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "kulturi",
+            "position": 0
+          },
           {
             "url": "https://kl.sermitsiaq.ag/inuiaqatigiit/isumaga-usa-p-imminut-isiginera-kalaallit-nunaannik-paatsuuineq/2332801",
             "title": "ISUMAGA: USA-p imminut isiginera - Kalaallit Nunaannik  paatsuuineq",
@@ -363,7 +335,7 @@
             },
             "is_paywall": true,
             "section": "inuiaqatigiit",
-            "position": 0
+            "position": 1
           },
           {
             "url": "https://kl.sermitsiaq.ag/inuiaqatigiit/kreml-kalaallit-nunaat-isumannaallisaanermut-pingaaruteqarpoq/2326501",
@@ -377,7 +349,7 @@
             },
             "is_paywall": false,
             "section": "inuiaqatigiit",
-            "position": 1
+            "position": 2
           },
           {
             "url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sooruna-vikingit-finlandimeersut-tusanngisaannarivut/2334627",
@@ -391,7 +363,7 @@
             },
             "is_paywall": true,
             "section": "inuiaqatigiit",
-            "position": 2
+            "position": 3
           },
           {
             "url": "https://kl.sermitsiaq.ag/inuiaqatigiit/kallerup-innerata-qaminnera-biilerluni-ajutoorneq-imigassarsorsimallunilu-biilerneq/2335147",
@@ -405,7 +377,7 @@
             },
             "is_paywall": false,
             "section": "inuiaqatigiit",
-            "position": 3
+            "position": 4
           },
           {
             "url": "https://kl.sermitsiaq.ag/inuiaqatigiit/ullorissat-aningaasanut-inatsimmut-ilanngunneqartut/2333150",
@@ -419,7 +391,7 @@
             },
             "is_paywall": true,
             "section": "inuiaqatigiit",
-            "position": 4
+            "position": 5
           },
           {
             "url": "https://kl.sermitsiaq.ag/inuiaqatigiit/nuummi-anorlerneranit-sarfaaruttoortoqartoq-atortut-sarfatortut-pisariaqanngitsut-attaveeqquneqarput/2335109",
@@ -433,7 +405,7 @@
             },
             "is_paywall": false,
             "section": "inuiaqatigiit",
-            "position": 5
+            "position": 6
           },
           {
             "url": "https://kl.sermitsiaq.ag/inuiaqatigiit/isumaga-aningaasat-politikiuvoq/2333062",
@@ -447,7 +419,7 @@
             },
             "is_paywall": true,
             "section": "inuiaqatigiit",
-            "position": 6
+            "position": 7
           },
           {
             "url": "https://kl.sermitsiaq.ag/inuiaqatigiit/atuarfimmi-misilitsinnermi-misigisat/2331660",
@@ -461,7 +433,7 @@
             },
             "is_paywall": false,
             "section": "inuiaqatigiit",
-            "position": 7
+            "position": 8
           },
           {
             "url": "https://kl.sermitsiaq.ag/kulturi/ministeriunerup-ukiortaami-oqalugiaataani-sermeq-aattoq/2329391",
@@ -475,20 +447,6 @@
             },
             "is_paywall": true,
             "section": "kulturi",
-            "position": 8
-          },
-          {
-            "url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sakkutooqarfiugallartussat-marluk-pilersinneqartut/2335043",
-            "title": "Sakkutooqarfiugallartussat marluk pilersinneqartut",
-            "kicker": "",
-            "image": {
-              "src": "https://image.sermitsiaq.ag/2332485.jpg?imageId=2332485&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
-              "alt": "",
-              "width": "265",
-              "height": "172"
-            },
-            "is_paywall": false,
-            "section": "inuiaqatigiit",
             "position": 9
           }
         ],
@@ -512,6 +470,11 @@
       "title": "NUTAARSIASSAT",
       "slider_title": "NUTAARSIASSAT",
       "slider_articles": [
+        {
+          "published_url": "https://kl.sermitsiaq.ag/kulturi/kalaallisuuliortartoq-nutaaq/2328617",
+          "title": "Kalaallisuuliortartoq nutaaq",
+          "image_data": {}
+        },
         {
           "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/isumaga-usa-p-imminut-isiginera-kalaallit-nunaannik-paatsuuineq/2332801",
           "title": "ISUMAGA: USA-p imminut isiginera - Kalaallit Nunaannik  paatsuuineq",
@@ -556,21 +519,120 @@
           "published_url": "https://kl.sermitsiaq.ag/kulturi/ministeriunerup-ukiortaami-oqalugiaataani-sermeq-aattoq/2329391",
           "title": "Ministeriunerup ukiortaami oqalugiaataani sermeq aattoq",
           "image_data": {}
-        },
-        {
-          "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sakkutooqarfiugallartussat-marluk-pilersinneqartut/2335043",
-          "title": "Sakkutooqarfiugallartussat marluk pilersinneqartut",
-          "image_data": {}
         }
       ]
     },
     {
-      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trumpip-illersornissamut-periusissiaani-nutaami-nunarput-arlaleriarluni-taaneqarpoq/2335013",
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sakkutooqarfiugallartussat-marluk-pilersinneqartut/2335043",
       "layout_type": "3_articles",
       "display_order": 16000,
       "row_index": 16,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Sakkutooqarfiugallartussat marluk pilersinneqartut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "6b906683-deea-4aaa-ae90-a53c82584f89",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2335043",
+      "title": "Sakkutooqarfiugallartussat marluk pilersinneqartut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/atuarfimmi-misilitsinnermi-misigisat/2331660",
+      "layout_type": "3_articles",
+      "display_order": 16001,
+      "row_index": 16,
+      "article_index_in_row": 1,
+      "total_rows": 121,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Atuarfimmi misilitsinnermi misigisat\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "3504d763-1ab9-400e-b3c5-54edb8b4e46f",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2331660",
+      "title": "Atuarfimmi misilitsinnermi misigisat"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/kulturi/ministeriunerup-ukiortaami-oqalugiaataani-sermeq-aattoq/2329391",
+      "layout_type": "3_articles",
+      "display_order": 16002,
+      "row_index": 16,
+      "article_index_in_row": 2,
+      "total_rows": 121,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Ministeriunerup ukiortaami oqalugiaataani sermeq aattoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "4e6c3ee8-9323-4db0-96bd-639ab820318f",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329391",
+      "title": "Ministeriunerup ukiortaami oqalugiaataani sermeq aattoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/ulloq-unnuarlu-nalunaarusiaq-biilinik-ajutoornerit-marluk-imigassartorsimallutik-biilertut-marluk-imminullu-toqunnissamik-siorasaarisut-arlaqartut/2335063",
+      "layout_type": "2_articles",
+      "display_order": 17000,
+      "row_index": 17,
+      "article_index_in_row": 0,
+      "total_rows": 121,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "ULLOQ UNNUARLU NALUNAARUSIAQ",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
+        "title_parts": [
+          {
+            "text": "Biilinik ajutoornerit marluk, imigassartorsimallutik biilertut marluk imminullu toqunnissamik siorasaarisut arlaqartut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "543b9455-45be-4792-9963-21167ea337d1",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2335063",
+      "title": "Biilinik ajutoornerit marluk, imigassartorsimallutik biilertut marluk imminullu toqunnissamik siorasaarisut arlaqartut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/psykologinngornermi-80-ikkunni-ernguttarneq-imigassamillu-kultureqarneq-nutaamik-paasisaqarfiusoq/2334978",
+      "layout_type": "2_articles",
+      "display_order": 17001,
+      "row_index": 17,
+      "article_index_in_row": 1,
+      "total_rows": 121,
+      "grid_size": 6,
+      "layout_data": {
+        "kicker_below": "INUIT",
+        "kicker_below_classes": "kicker below secondary color_mobile_secondary align-center mobile_text_align_align-center",
+        "title_parts": [
+          {
+            "text": "Psykologinngornermi 80-ikkunni ernguttarneq imigassamillu kultureqarneq nutaamik paasisaqarfiusoq",
+            "color_class": "font-weight-normal m-font-weight-normal"
+          }
+        ]
+      },
+      "element_guid": "ebd78f25-92e7-4392-a94b-340c57b142ee",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2334978",
+      "title": "Psykologinngornermi 80-ikkunni ernguttarneq imigassamillu kultureqarneq nutaamik paasisaqarfiusoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trumpip-illersornissamut-periusissiaani-nutaami-nunarput-arlaleriarluni-taaneqarpoq/2335013",
+      "layout_type": "3_articles",
+      "display_order": 18000,
+      "row_index": 18,
+      "article_index_in_row": 0,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -587,10 +649,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/mette-frederiksen-pissutsit-najummassimanarput/2334955",
       "layout_type": "3_articles",
-      "display_order": 16001,
-      "row_index": 16,
+      "display_order": 18001,
+      "row_index": 18,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -607,10 +669,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/kultur/nalaasaarfimmi-bamsit/2334465",
       "layout_type": "3_articles",
-      "display_order": 16002,
-      "row_index": 16,
+      "display_order": 18002,
+      "row_index": 18,
       "article_index_in_row": 2,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -627,107 +689,16 @@
       "title": "Nalaasaarfimmi bamsit"
     },
     {
-      "published_url": "https://kl.sermitsiaq.ag/kulturi/isumassarsiamiit-nuna-tamakkerlugu-ukiuunerani-ileqqumut/2334425",
-      "layout_type": "2_articles",
-      "display_order": 17000,
-      "row_index": 17,
-      "article_index_in_row": 0,
-      "total_rows": 119,
-      "grid_size": 6,
-      "layout_data": {
-        "kicker_below": "KALAALLIT NUNAANNI UNNUK KULTURISIORFIK",
-        "kicker_below_classes": "kicker below primary color_mobile_primary",
-        "title_parts": [
-          {
-            "text": "Isumassarsiamiit nuna tamakkerlugu ukiuunerani ileqqumut\n",
-            "color_class": null
-          }
-        ]
-      },
-      "element_guid": "6c603640-a1d2-4d3c-9168-3032b56db6df",
-      "k5a_url": "https://kl.sermitsiaq.ag/a/2334425",
-      "title": "Isumassarsiamiit nuna tamakkerlugu ukiuunerani ileqqumut"
-    },
-    {
-      "published_url": "https://kl.sermitsiaq.ag/samfund/oqallinnermi-meeqqat-tusaaneqarnerulernissaat-anguniaraa/2323842",
-      "layout_type": "2_articles",
-      "display_order": 17001,
-      "row_index": 17,
-      "article_index_in_row": 1,
-      "total_rows": 119,
-      "grid_size": 6,
-      "layout_data": {
-        "title_parts": [
-          {
-            "text": "Oqallinnermi meeqqat tusaaneqarnerulernissaat anguniaraa\n",
-            "color_class": null
-          }
-        ]
-      },
-      "element_guid": "0f7afa0b-062a-4200-a742-44d3205dde27",
-      "k5a_url": "https://kl.sermitsiaq.ag/a/2323842",
-      "title": "Oqallinnermi meeqqat tusaaneqarnerulernissaat anguniaraa"
-    },
-    {
-      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/mette-frederiksen-angunnguamut-aalaterivoq/2326501",
-      "layout_type": "1_full",
-      "display_order": 18000,
-      "row_index": 18,
-      "article_index_in_row": 0,
-      "total_rows": 119,
-      "grid_size": 12,
-      "layout_data": {
-        "kicker_floating": "LIVEBLOG",
-        "title_parts": [
-          {
-            "text": "Naalakkersuisut siuttui meeqqerivimmut pulaartut\n",
-            "color_class": null
-          }
-        ]
-      },
-      "element_guid": "36d097fc-39ec-402d-bd4d-1c9057c44279",
-      "k5a_url": "https://kl.sermitsiaq.ag/a/2326501",
-      "title": "Naalakkersuisut siuttui meeqqerivimmut pulaartut"
-    },
-    {
       "published_url": "",
       "layout_type": "job_slider",
       "display_order": 19000,
       "row_index": 19,
       "article_index_in_row": -1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "slider_title": "– Atorfiit tamaasa takukkit",
         "slider_articles": [
-          {
-            "url": "https://www.sjob.gl/job-kl/applikationssupporterinngorit/2327516",
-            "title": "Applikationssupporterinngorit",
-            "kicker": "",
-            "image": {
-              "src": "https://image.sermitsiaq.ag/2313963.jpg?imageId=2313963&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
-              "alt": "",
-              "width": "265",
-              "height": "172"
-            },
-            "is_paywall": false,
-            "section": "job kl",
-            "position": 0
-          },
-          {
-            "url": "https://www.sjob.gl/job-kl/allagarsiuteqqitaq-kangerlussuarmi-sulisunut-aqutsisumik-pissarsiorpugut/2330636",
-            "title": "Allagarsiuteqqitaq - Kangerlussuarmi Sulisunut aqutsisumik pissarsiorpugut",
-            "kicker": "",
-            "image": {
-              "src": "https://image.sermitsiaq.ag/2114878.jpg?imageId=2114878&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
-              "alt": "",
-              "width": "265",
-              "height": "172"
-            },
-            "is_paywall": false,
-            "section": "job kl",
-            "position": 1
-          },
           {
             "url": "https://www.sjob.gl/job-kl/tasiilami-qanganitsad-iddivanni-peqqinnissamut-ikiorti/assigisaalu/2326132",
             "title": "Tasiilami Qanganitsad iddivanni peqqinnissamut ikiorti/assigisaalu",
@@ -740,14 +711,42 @@
             },
             "is_paywall": false,
             "section": "job kl",
+            "position": 0
+          },
+          {
+            "url": "https://www.sjob.gl/job-kl/majoriaq-siunnersortissarsiorpoq/2332893",
+            "title": "Majoriaq Siunnersortissarsiorpoq",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2109977.jpg?imageId=2109977&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "job kl",
+            "position": 1
+          },
+          {
+            "url": "https://www.sjob.gl/job-kl/heldagsskolemi-inunnik-isumaginninnermut-siunnersorti/2334794",
+            "title": "Heldagsskolemi inunnik isumaginninnermut siunnersorti",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "job kl",
             "position": 2
           },
           {
-            "url": "https://www.sjob.gl/job-kl/faglaerer-okonomi/2334912",
-            "title": "Faglærer Økonomi",
+            "url": "https://www.sjob.gl/job-kl/paamiuni-meeraaqqerivik-meeraq-nut-aqutsisussarsiorneq/2333420",
+            "title": "Paamiuni meeraaqqerivik Meeraq 'nut aqutsisussarsiorneq",
             "kicker": "",
             "image": {
-              "src": "https://image.sermitsiaq.ag/2105287.jpg?imageId=2105287&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "src": "https://image.sermitsiaq.ag/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
               "alt": "",
               "width": "265",
               "height": "172"
@@ -757,8 +756,8 @@
             "position": 3
           },
           {
-            "url": "https://www.sjob.gl/job-kl/heldagsskolen-kaffiliortumik-sulisussarsiorpoq/2334762",
-            "title": "Heldagsskolen kaffiliortumik sulisussarsiorpoq",
+            "url": "https://www.sjob.gl/job-kl/tikiusaaq-perorsaasumik-sulisussarsiorpoq/2334867",
+            "title": "Tikiusaaq Perorsaasumik sulisussarsiorpoq",
             "kicker": "",
             "image": {
               "src": "https://image.sermitsiaq.ag/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
@@ -771,11 +770,11 @@
             "position": 4
           },
           {
-            "url": "https://www.sjob.gl/job-kl/atuakkialerinermik-paasissutissiisartoq/2328082",
-            "title": "Atuakkialerinermik paasissutissiisartoq",
+            "url": "https://www.sjob.gl/job-kl/heldagsskolen-ataatsimik-ilinniartitsisussarsiorpoq/2326422",
+            "title": "Heldagsskolen ataatsimik ilinniartitsisussarsiorpoq",
             "kicker": "",
             "image": {
-              "src": "https://image.sermitsiaq.ag/2120994.jpg?imageId=2120994&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "src": "https://image.sermitsiaq.ag/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
               "alt": "",
               "width": "265",
               "height": "172"
@@ -785,11 +784,11 @@
             "position": 5
           },
           {
-            "url": "https://www.sjob.gl/job-kl/hrd-imi-manager/2331639",
-            "title": "HRD-imi Manager",
+            "url": "https://www.sjob.gl/job-kl/perorsaanermut-tunngasunik-ilinniagalik-meeqqerivik-sikkersumi-pissarsiariumaneqarpoq/2333910",
+            "title": "Perorsaanermut tunngasunik ilinniagalik Meeqqerivik Sikkersumi pissarsiariumaneqarpoq",
             "kicker": "",
             "image": {
-              "src": "https://image.sermitsiaq.ag/2216146.jpg?imageId=2216146&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "src": "https://image.sermitsiaq.ag/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
               "alt": "",
               "width": "265",
               "height": "172"
@@ -799,11 +798,11 @@
             "position": 6
           },
           {
-            "url": "https://www.sjob.gl/job-kl/saqqummiuteqqitaq-paamiuni-palasitut-atorfik-inuttaligassaq-kalaallit-nunaat/2328123",
-            "title": "Saqqummiuteqqitaq Paamiuni palasitut atorfik inuttaligassaq, Kalaallit Nunaat",
+            "url": "https://www.sjob.gl/job-kl/siunnersuinermut-ilaqutariinnullu-katsorsaanermut-sullissivimmut-psykologi-imaluunniit-terapeut/2332289",
+            "title": "Siunnersuinermut Ilaqutariinnullu Katsorsaanermut Sullissivimmut psykologi imaluunniit terapeut",
             "kicker": "",
             "image": {
-              "src": "https://image.sermitsiaq.ag/2119650.jpg?imageId=2119650&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "src": "https://image.sermitsiaq.ag/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
               "alt": "",
               "width": "265",
               "height": "172"
@@ -813,8 +812,8 @@
             "position": 7
           },
           {
-            "url": "https://www.sjob.gl/job-kl/najugaqatigiiffik-pakkutaq-peqqissaanermi-assistentimik-sygeplejerskemilluunniit-sulisussarsiorpoq/2328176",
-            "title": "Najugaqatigiiffik Pakkutaq peqqissaanermi assistentimik sygeplejerskemilluunniit sulisussarsiorpoq",
+            "url": "https://www.sjob.gl/job-kl/ulloq-naallugu-atuarfik-ikorfartortissarsiorpoq/2334778",
+            "title": "Ulloq naallugu atuarfik ikorfartortissarsiorpoq",
             "kicker": "",
             "image": {
               "src": "https://image.sermitsiaq.ag/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
@@ -827,8 +826,8 @@
             "position": 8
           },
           {
-            "url": "https://www.sjob.gl/job-kl/perorsaasoq-meeqqerivik-puiamut/2332387",
-            "title": "Perorsaasoq Meeqqerivik Puiamut",
+            "url": "https://www.sjob.gl/job-kl/perorsaasoq-paarsisor-mut-ittoqqortoormiit/2332655",
+            "title": "Perorsaasoq Paarsisor-mut Ittoqqortoormiit",
             "kicker": "",
             "image": {
               "src": "https://image.sermitsiaq.ag/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
@@ -873,160 +872,119 @@
       "slider_title": "– Atorfiit tamaasa takukkit",
       "slider_articles": [
         {
-          "published_url": "https://www.sjob.gl/job-kl/applikationssupporterinngorit/2327516",
-          "title": "Applikationssupporterinngorit",
-          "image_data": {}
-        },
-        {
-          "published_url": "https://www.sjob.gl/job-kl/allagarsiuteqqitaq-kangerlussuarmi-sulisunut-aqutsisumik-pissarsiorpugut/2330636",
-          "title": "Allagarsiuteqqitaq - Kangerlussuarmi Sulisunut aqutsisumik pissarsiorpugut",
-          "image_data": {}
-        },
-        {
           "published_url": "https://www.sjob.gl/job-kl/tasiilami-qanganitsad-iddivanni-peqqinnissamut-ikiorti/assigisaalu/2326132",
           "title": "Tasiilami Qanganitsad iddivanni peqqinnissamut ikiorti/assigisaalu",
           "image_data": {}
         },
         {
-          "published_url": "https://www.sjob.gl/job-kl/faglaerer-okonomi/2334912",
-          "title": "Faglærer Økonomi",
+          "published_url": "https://www.sjob.gl/job-kl/majoriaq-siunnersortissarsiorpoq/2332893",
+          "title": "Majoriaq Siunnersortissarsiorpoq",
           "image_data": {}
         },
         {
-          "published_url": "https://www.sjob.gl/job-kl/heldagsskolen-kaffiliortumik-sulisussarsiorpoq/2334762",
-          "title": "Heldagsskolen kaffiliortumik sulisussarsiorpoq",
+          "published_url": "https://www.sjob.gl/job-kl/heldagsskolemi-inunnik-isumaginninnermut-siunnersorti/2334794",
+          "title": "Heldagsskolemi inunnik isumaginninnermut siunnersorti",
           "image_data": {}
         },
         {
-          "published_url": "https://www.sjob.gl/job-kl/atuakkialerinermik-paasissutissiisartoq/2328082",
-          "title": "Atuakkialerinermik paasissutissiisartoq",
+          "published_url": "https://www.sjob.gl/job-kl/paamiuni-meeraaqqerivik-meeraq-nut-aqutsisussarsiorneq/2333420",
+          "title": "Paamiuni meeraaqqerivik Meeraq 'nut aqutsisussarsiorneq",
           "image_data": {}
         },
         {
-          "published_url": "https://www.sjob.gl/job-kl/hrd-imi-manager/2331639",
-          "title": "HRD-imi Manager",
+          "published_url": "https://www.sjob.gl/job-kl/tikiusaaq-perorsaasumik-sulisussarsiorpoq/2334867",
+          "title": "Tikiusaaq Perorsaasumik sulisussarsiorpoq",
           "image_data": {}
         },
         {
-          "published_url": "https://www.sjob.gl/job-kl/saqqummiuteqqitaq-paamiuni-palasitut-atorfik-inuttaligassaq-kalaallit-nunaat/2328123",
-          "title": "Saqqummiuteqqitaq Paamiuni palasitut atorfik inuttaligassaq, Kalaallit Nunaat",
+          "published_url": "https://www.sjob.gl/job-kl/heldagsskolen-ataatsimik-ilinniartitsisussarsiorpoq/2326422",
+          "title": "Heldagsskolen ataatsimik ilinniartitsisussarsiorpoq",
           "image_data": {}
         },
         {
-          "published_url": "https://www.sjob.gl/job-kl/najugaqatigiiffik-pakkutaq-peqqissaanermi-assistentimik-sygeplejerskemilluunniit-sulisussarsiorpoq/2328176",
-          "title": "Najugaqatigiiffik Pakkutaq peqqissaanermi assistentimik sygeplejerskemilluunniit sulisussarsiorpoq",
+          "published_url": "https://www.sjob.gl/job-kl/perorsaanermut-tunngasunik-ilinniagalik-meeqqerivik-sikkersumi-pissarsiariumaneqarpoq/2333910",
+          "title": "Perorsaanermut tunngasunik ilinniagalik Meeqqerivik Sikkersumi pissarsiariumaneqarpoq",
           "image_data": {}
         },
         {
-          "published_url": "https://www.sjob.gl/job-kl/perorsaasoq-meeqqerivik-puiamut/2332387",
-          "title": "Perorsaasoq Meeqqerivik Puiamut",
+          "published_url": "https://www.sjob.gl/job-kl/siunnersuinermut-ilaqutariinnullu-katsorsaanermut-sullissivimmut-psykologi-imaluunniit-terapeut/2332289",
+          "title": "Siunnersuinermut Ilaqutariinnullu Katsorsaanermut Sullissivimmut psykologi imaluunniit terapeut",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sjob.gl/job-kl/ulloq-naallugu-atuarfik-ikorfartortissarsiorpoq/2334778",
+          "title": "Ulloq naallugu atuarfik ikorfartortissarsiorpoq",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sjob.gl/job-kl/perorsaasoq-paarsisor-mut-ittoqqortoormiit/2332655",
+          "title": "Perorsaasoq Paarsisor-mut Ittoqqortoormiit",
           "image_data": {}
         }
       ]
     },
     {
-      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/usa-mik-oqaloqateqarnerup-pitsaanerulernissaa-ataatsimiititaliami-ilaasortap-neriuutigaa/2334750",
-      "layout_type": "3_articles",
+      "published_url": "https://kl.sermitsiaq.ag/kulturi/isumassarsiamiit-nuna-tamakkerlugu-ukiuunerani-ileqqumut/2334425",
+      "layout_type": "2_articles",
       "display_order": 20000,
       "row_index": 20,
       "article_index_in_row": 0,
-      "total_rows": 119,
-      "grid_size": 4,
+      "total_rows": 121,
+      "grid_size": 6,
       "layout_data": {
+        "kicker_below": "KALAALLIT NUNAANNI UNNUK KULTURISIORFIK",
+        "kicker_below_classes": "kicker below primary color_mobile_primary",
         "title_parts": [
           {
-            "text": "USA-mik oqaloqateqarnerup pitsaanerulernissaa ataatsimiititaliami ilaasortap neriuutigaa\n",
+            "text": "Isumassarsiamiit nuna tamakkerlugu ukiuunerani ileqqumut\n",
             "color_class": null
           }
         ]
       },
-      "element_guid": "248e37af-a13d-4e9b-b210-a82b773e14e4",
-      "k5a_url": "https://kl.sermitsiaq.ag/a/2334750",
-      "title": "USA-mik oqaloqateqarnerup pitsaanerulernissaa ataatsimiititaliami ilaasortap neriuutigaa"
+      "element_guid": "6c603640-a1d2-4d3c-9168-3032b56db6df",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2334425",
+      "title": "Isumassarsiamiit nuna tamakkerlugu ukiuunerani ileqqumut"
     },
     {
-      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/mette-frederiksen-nuummut-mippoq/2334546",
-      "layout_type": "3_articles",
+      "published_url": "https://kl.sermitsiaq.ag/samfund/oqallinnermi-meeqqat-tusaaneqarnerulernissaat-anguniaraa/2323842",
+      "layout_type": "2_articles",
       "display_order": 20001,
       "row_index": 20,
       "article_index_in_row": 1,
-      "total_rows": 119,
-      "grid_size": 4,
+      "total_rows": 121,
+      "grid_size": 6,
       "layout_data": {
         "title_parts": [
           {
-            "text": "Mette Frederiksen Nuummut mippoq\n",
+            "text": "Oqallinnermi meeqqat tusaaneqarnerulernissaat anguniaraa\n",
             "color_class": null
           }
         ]
       },
-      "element_guid": "ab037c94-59e9-42b7-98ee-1b2fb82f62f2",
-      "k5a_url": "https://kl.sermitsiaq.ag/a/2334546",
-      "title": "Mette Frederiksen Nuummut mippoq"
+      "element_guid": "0f7afa0b-062a-4200-a742-44d3205dde27",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2323842",
+      "title": "Oqallinnermi meeqqat tusaaneqarnerulernissaat anguniaraa"
     },
     {
-      "published_url": "https://kl.sermitsiaq.ag/timersorneq/ironmanimi-vm-ertoqarnissaanut-piareeqqittoq/2329919",
-      "layout_type": "3_articles",
-      "display_order": 20002,
-      "row_index": 20,
-      "article_index_in_row": 2,
-      "total_rows": 119,
-      "grid_size": 4,
-      "layout_data": {
-        "title_parts": [
-          {
-            "text": "Ironmanimi VM-ertoqarnissaanut piareeqqittoq\n",
-            "color_class": null
-          }
-        ]
-      },
-      "element_guid": "e8eedf0e-9e08-44fa-8bca-c860d6c03e49",
-      "k5a_url": "https://kl.sermitsiaq.ag/a/2329919",
-      "title": "Ironmanimi VM-ertoqarnissaanut piareeqqittoq"
-    },
-    {
-      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sakkutuut-nuummi-aqqusinerni/2333139",
-      "layout_type": "2_articles",
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/mette-frederiksen-angunnguamut-aalaterivoq/2326501",
+      "layout_type": "1_full",
       "display_order": 21000,
       "row_index": 21,
       "article_index_in_row": 0,
-      "total_rows": 119,
-      "grid_size": 6,
+      "total_rows": 121,
+      "grid_size": 12,
       "layout_data": {
+        "kicker_floating": "LIVEBLOG",
         "title_parts": [
           {
-            "text": "Sakkutuut nuummi aqqusinerni\n",
+            "text": "Naalakkersuisut siuttui meeqqerivimmut pulaartut\n",
             "color_class": null
           }
         ]
       },
-      "element_guid": "23bfc947-390f-41e4-90b7-81b4e874a656",
-      "k5a_url": "https://kl.sermitsiaq.ag/a/2333139",
-      "title": "Sakkutuut nuummi aqqusinerni"
-    },
-    {
-      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/boassen-maga-mi-festeqataasoq-nunatta-assinganik-kaagiliaq-usa-p-erfalasuanik-qalligaq/2334574",
-      "layout_type": "2_articles",
-      "display_order": 21001,
-      "row_index": 21,
-      "article_index_in_row": 1,
-      "total_rows": 119,
-      "grid_size": 6,
-      "layout_data": {
-        "title_parts": [
-          {
-            "text": "Boassen MAGA-mi festeqataasoq: Nunatta",
-            "color_class": "primary color_mobile_primary"
-          },
-          {
-            "text": " assinganik kaagiliaq USA-p erfalasuanik qalligaq\n",
-            "color_class": null
-          }
-        ]
-      },
-      "element_guid": "64519348-0647-414c-bbdb-c43e787d4875",
-      "k5a_url": "https://kl.sermitsiaq.ag/a/2334574",
-      "title": "Boassen MAGA-mi festeqataasoq: Nunatta assinganik kaagiliaq USA-p erfalasuanik qalligaq"
+      "element_guid": "36d097fc-39ec-402d-bd4d-1c9057c44279",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2326501",
+      "title": "Naalakkersuisut siuttui meeqqerivimmut pulaartut"
     },
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/qinngutsinni-nunaminertaq-sakkutuunut-immikkoortinneqartoq-pilersinneqarallartoq/2332100",
@@ -1034,7 +992,7 @@
       "display_order": 22000,
       "row_index": 22,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -1045,6 +1003,10 @@
         ],
         "list_title": "NUTAARSIASSAT KINGULLIIT",
         "list_items": [
+          {
+            "title": "Kalaallisuuliortartoq nutaaq",
+            "url": "/kulturi/kalaallisuuliortartoq-nutaaq/2328617"
+          },
           {
             "title": "ISUMAGA: USA-p imminut isiginera - Kalaallit Nunaannik  paatsuuineq",
             "url": "/inuiaqatigiit/isumaga-usa-p-imminut-isiginera-kalaallit-nunaannik-paatsuuineq/2332801"
@@ -1064,10 +1026,6 @@
           {
             "title": "Ullorissat aningaasanut inatsimmut ilanngunneqartut",
             "url": "/inuiaqatigiit/ullorissat-aningaasanut-inatsimmut-ilanngunneqartut/2333150"
-          },
-          {
-            "title": "Nuummi anorlerneranit sarfaaruttoortoqartoq - Atortut sarfatortut pisariaqanngitsut attaveeqquneqarput",
-            "url": "/inuiaqatigiit/nuummi-anorlerneranit-sarfaaruttoortoqartoq-atortut-sarfatortut-pisariaqanngitsut-attaveeqquneqarput/2335109"
           }
         ]
       },
@@ -1076,6 +1034,10 @@
       "title": "Qinngutsinni nunaminertaq sakkutuunut immikkoortinneqartoq pilersinneqarallartoq",
       "list_title": "NUTAARSIASSAT KINGULLIIT",
       "list_items": [
+        {
+          "title": "Kalaallisuuliortartoq nutaaq",
+          "url": "/kulturi/kalaallisuuliortartoq-nutaaq/2328617"
+        },
         {
           "title": "ISUMAGA: USA-p imminut isiginera - Kalaallit Nunaannik  paatsuuineq",
           "url": "/inuiaqatigiit/isumaga-usa-p-imminut-isiginera-kalaallit-nunaannik-paatsuuineq/2332801"
@@ -1095,10 +1057,6 @@
         {
           "title": "Ullorissat aningaasanut inatsimmut ilanngunneqartut",
           "url": "/inuiaqatigiit/ullorissat-aningaasanut-inatsimmut-ilanngunneqartut/2333150"
-        },
-        {
-          "title": "Nuummi anorlerneranit sarfaaruttoortoqartoq - Atortut sarfatortut pisariaqanngitsut attaveeqquneqarput",
-          "url": "/inuiaqatigiit/nuummi-anorlerneranit-sarfaaruttoortoqartoq-atortut-sarfatortut-pisariaqanngitsut-attaveeqquneqarput/2335109"
         }
       ]
     },
@@ -1108,7 +1066,7 @@
       "display_order": 23000,
       "row_index": 23,
       "article_index_in_row": -1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "slider_title": "NUUK",
@@ -1235,68 +1193,108 @@
       ]
     },
     {
-      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/nunanut-allanut-ministerimiit-aatsitassarsiorfimmut-akerleriissutaalersumut-sunniiniartartunngorneq/2333587",
-      "layout_type": "1_full",
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/usa-mik-oqaloqateqarnerup-pitsaanerulernissaa-ataatsimiititaliami-ilaasortap-neriuutigaa/2334750",
+      "layout_type": "3_articles",
       "display_order": 24000,
       "row_index": 24,
       "article_index_in_row": 0,
-      "total_rows": 119,
-      "grid_size": 12,
+      "total_rows": 121,
+      "grid_size": 4,
       "layout_data": {
         "title_parts": [
           {
-            "text": "Nunanut allanut ministerimiit aatsitassarsiorfimmut akerleriissutaalersumut sunniiniartartunngorneq\n",
+            "text": "USA-mik oqaloqateqarnerup pitsaanerulernissaa ataatsimiititaliami ilaasortap neriuutigaa\n",
             "color_class": null
           }
         ]
       },
-      "element_guid": "0ad56f8f-c3f0-45c8-85fc-27dffb207564",
-      "k5a_url": "https://kl.sermitsiaq.ag/a/2333587",
-      "title": "Nunanut allanut ministerimiit aatsitassarsiorfimmut akerleriissutaalersumut sunniiniartartunngorneq"
+      "element_guid": "248e37af-a13d-4e9b-b210-a82b773e14e4",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2334750",
+      "title": "USA-mik oqaloqateqarnerup pitsaanerulernissaa ataatsimiititaliami ilaasortap neriuutigaa"
     },
     {
-      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trumpip-nunarput-pillugu-isumaqatigiissummut-qanorluunniit-iliorsinnaavugut/2334492",
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/mette-frederiksen-nuummut-mippoq/2334546",
+      "layout_type": "3_articles",
+      "display_order": 24001,
+      "row_index": 24,
+      "article_index_in_row": 1,
+      "total_rows": 121,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Mette Frederiksen Nuummut mippoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "ab037c94-59e9-42b7-98ee-1b2fb82f62f2",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2334546",
+      "title": "Mette Frederiksen Nuummut mippoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/timersorneq/ironmanimi-vm-ertoqarnissaanut-piareeqqittoq/2329919",
+      "layout_type": "3_articles",
+      "display_order": 24002,
+      "row_index": 24,
+      "article_index_in_row": 2,
+      "total_rows": 121,
+      "grid_size": 4,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Ironmanimi VM-ertoqarnissaanut piareeqqittoq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "e8eedf0e-9e08-44fa-8bca-c860d6c03e49",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329919",
+      "title": "Ironmanimi VM-ertoqarnissaanut piareeqqittoq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sakkutuut-nuummi-aqqusinerni/2333139",
       "layout_type": "2_articles",
       "display_order": 25000,
       "row_index": 25,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
           {
-            "text": "Trumpip nunarput pillugu isumaqatigiissummut:",
-            "color_class": "primary color_mobile_primary"
-          },
-          {
-            "text": " Qanorluunniit iliorsinnaavugut\n",
+            "text": "Sakkutuut nuummi aqqusinerni\n",
             "color_class": null
           }
         ]
       },
-      "element_guid": "18635785-b209-4e0b-bebc-919b21d06044",
-      "k5a_url": "https://kl.sermitsiaq.ag/a/2334492",
-      "title": "Trumpip nunarput pillugu isumaqatigiissummut: Qanorluunniit iliorsinnaavugut"
+      "element_guid": "23bfc947-390f-41e4-90b7-81b4e874a656",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2333139",
+      "title": "Sakkutuut nuummi aqqusinerni"
     },
     {
-      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/pisassiissutinik-agguaassinermi-najukkami-ilisimasat-sammineqartut/2329499",
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/boassen-maga-mi-festeqataasoq-nunatta-assinganik-kaagiliaq-usa-p-erfalasuanik-qalligaq/2334574",
       "layout_type": "2_articles",
       "display_order": 25001,
       "row_index": 25,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
           {
-            "text": "Pisassiissutinik agguaassinermi najukkami ilisimasat sammineqartut\n",
+            "text": "Boassen MAGA-mi festeqataasoq: Nunatta",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " assinganik kaagiliaq USA-p erfalasuanik qalligaq\n",
             "color_class": null
           }
         ]
       },
-      "element_guid": "e64783d5-4f86-48aa-8401-b84ce955a55a",
-      "k5a_url": "https://kl.sermitsiaq.ag/a/2329499",
-      "title": "Pisassiissutinik agguaassinermi najukkami ilisimasat sammineqartut"
+      "element_guid": "64519348-0647-414c-bbdb-c43e787d4875",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2334574",
+      "title": "Boassen MAGA-mi festeqataasoq: Nunatta assinganik kaagiliaq USA-p erfalasuanik qalligaq"
     },
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/kalaallit-nunaat-pissutigalugu-trumpip-danmarki-akitsuusiiviginiarpaa/2331935",
@@ -1304,7 +1302,7 @@
       "display_order": 26000,
       "row_index": 26,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -1361,12 +1359,76 @@
       ]
     },
     {
-      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/issittumi-sakkulerngusaanneq-kalaallit-nunaata-isumannaatsuuneranut-iluaqutaanngilaq/2334156",
-      "layout_type": "2_articles",
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/nunanut-allanut-ministerimiit-aatsitassarsiorfimmut-akerleriissutaalersumut-sunniiniartartunngorneq/2333587",
+      "layout_type": "1_full",
       "display_order": 27000,
       "row_index": 27,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
+      "grid_size": 12,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Nunanut allanut ministerimiit aatsitassarsiorfimmut akerleriissutaalersumut sunniiniartartunngorneq\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "0ad56f8f-c3f0-45c8-85fc-27dffb207564",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2333587",
+      "title": "Nunanut allanut ministerimiit aatsitassarsiorfimmut akerleriissutaalersumut sunniiniartartunngorneq"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trumpip-nunarput-pillugu-isumaqatigiissummut-qanorluunniit-iliorsinnaavugut/2334492",
+      "layout_type": "2_articles",
+      "display_order": 28000,
+      "row_index": 28,
+      "article_index_in_row": 0,
+      "total_rows": 121,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Trumpip nunarput pillugu isumaqatigiissummut:",
+            "color_class": "primary color_mobile_primary"
+          },
+          {
+            "text": " Qanorluunniit iliorsinnaavugut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "18635785-b209-4e0b-bebc-919b21d06044",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2334492",
+      "title": "Trumpip nunarput pillugu isumaqatigiissummut: Qanorluunniit iliorsinnaavugut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/pisassiissutinik-agguaassinermi-najukkami-ilisimasat-sammineqartut/2329499",
+      "layout_type": "2_articles",
+      "display_order": 28001,
+      "row_index": 28,
+      "article_index_in_row": 1,
+      "total_rows": 121,
+      "grid_size": 6,
+      "layout_data": {
+        "title_parts": [
+          {
+            "text": "Pisassiissutinik agguaassinermi najukkami ilisimasat sammineqartut\n",
+            "color_class": null
+          }
+        ]
+      },
+      "element_guid": "e64783d5-4f86-48aa-8401-b84ce955a55a",
+      "k5a_url": "https://kl.sermitsiaq.ag/a/2329499",
+      "title": "Pisassiissutinik agguaassinermi najukkami ilisimasat sammineqartut"
+    },
+    {
+      "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/issittumi-sakkulerngusaanneq-kalaallit-nunaata-isumannaatsuuneranut-iluaqutaanngilaq/2334156",
+      "layout_type": "2_articles",
+      "display_order": 29000,
+      "row_index": 29,
+      "article_index_in_row": 0,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "kicker_below": "STEEN FOLKE KØBENHAVNIMI AKERLIUSSUTSIMIK TAKUTITSINERMI PEQATAASOQ",
@@ -1385,10 +1447,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/atassut-naalagaaffeqatigiinneq-maanna-illersuutissaavoq-pitsaanerpaaq/2333627",
       "layout_type": "2_articles",
-      "display_order": 27001,
-      "row_index": 27,
+      "display_order": 29001,
+      "row_index": 29,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -1409,10 +1471,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/jens-frederik-tusagassiortunik-katersortitsinermi-kunngeqarfik-eu-nato-lu-qinerpavut/2334170",
       "layout_type": "2_articles",
-      "display_order": 28000,
-      "row_index": 28,
+      "display_order": 30000,
+      "row_index": 30,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -1433,10 +1495,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/lektorip-trumpip-oqaasii-tupigusuutigai-golden-dome-pillugu-pilersaarut-siunissaq-pillugu-filmiliatullusooq-ippoq/2334107",
       "layout_type": "2_articles",
-      "display_order": 28001,
-      "row_index": 28,
+      "display_order": 30001,
+      "row_index": 30,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -1457,10 +1519,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/naalakkersuisut-nato-kalaallit-nunaat-avaqqullugu-iliuuseqanngilaq/2334199",
       "layout_type": "1_full",
-      "display_order": 29000,
-      "row_index": 29,
+      "display_order": 31000,
+      "row_index": 31,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -1477,10 +1539,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/demokraatit-inatsisartuni-ataatsimiinneq-siuartinneqarpat-piffissami-ilungersunartumi-politikkikkut-ataatsimoorussamik-siunnerfiliissaaq/2334003",
       "layout_type": "2_articles",
-      "display_order": 30000,
-      "row_index": 30,
+      "display_order": 32000,
+      "row_index": 32,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -1501,10 +1563,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/jens-frederik-nielsen-nalunaaqutaq-1400-tusagassiortunik-katersortitsissaaq/2334062",
       "layout_type": "2_articles",
-      "display_order": 30001,
-      "row_index": 30,
+      "display_order": 32001,
+      "row_index": 32,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -1521,10 +1583,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/aaja-chemnitz-inissisimaffipput-pitsaavoq-piffissarli-suli-ilungersunarallassalluni/2333969",
       "layout_type": "1_full",
-      "display_order": 31000,
-      "row_index": 31,
+      "display_order": 33000,
+      "row_index": 33,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -1545,10 +1607,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/kulturi/nalunaaquttap-akunnerini-marlunnik-eqqissisimaneq/2333513",
       "layout_type": "3_articles",
-      "display_order": 32000,
-      "row_index": 32,
+      "display_order": 34000,
+      "row_index": 34,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -1565,10 +1627,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuussutissarsiutit/sikoqanngikkaluartoq-umiarsuarnik-pajuttaateqanngilaq/2329882",
       "layout_type": "3_articles",
-      "display_order": 32001,
-      "row_index": 32,
+      "display_order": 34001,
+      "row_index": 34,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "kicker_below": "PILERSUINEQ",
@@ -1587,10 +1649,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/mette-f-oqartussaaneq-isumaqatiginninniutigineqanngilaq/2333948",
       "layout_type": "3_articles",
-      "display_order": 32002,
-      "row_index": 32,
+      "display_order": 34002,
+      "row_index": 34,
       "article_index_in_row": 2,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -1607,10 +1669,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trumpip-alfred-kamatsippaa/2331693",
       "layout_type": "1_full",
-      "display_order": 33000,
-      "row_index": 33,
+      "display_order": 35000,
+      "row_index": 35,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -1627,10 +1689,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trump-kalaallit-nunaat-pillugu-isumaqatigiissummut-sinaakkutissat-piareerput/2333810",
       "layout_type": "2_articles",
-      "display_order": 34000,
-      "row_index": 34,
+      "display_order": 36000,
+      "row_index": 36,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -1647,10 +1709,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/samfund/angallannermut-aqutsisoqarfik-mittarfik-aatsaat-imeqarluarpat-ammassavarput/2332543",
       "layout_type": "2_articles",
-      "display_order": 34001,
-      "row_index": 34,
+      "display_order": 36001,
+      "row_index": 36,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -1667,10 +1729,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuussutissarsiutit/trumpip-akitsuusersuinera-royal-greenlandip-usa-mut-tunisisinnaajunnaarneranik-kinguneqassanersoq-oqaatigissallugu-siusippallaarpoq/2333551",
       "layout_type": "2_articles",
-      "display_order": 35000,
-      "row_index": 35,
+      "display_order": 37000,
+      "row_index": 37,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "kicker_below": "PISORTAANEQ TOKE BINZER",
@@ -1689,10 +1751,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/naalakkersuisut-ajornartoornermi-ilitsersuut-saqqummiuppaat-innuttaasut-ulluni-tallimani-imminut-napatissinnaasariaqarput/2329903",
       "layout_type": "2_articles",
-      "display_order": 35001,
-      "row_index": 35,
+      "display_order": 37001,
+      "row_index": 37,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -1713,10 +1775,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/mash-ip-timmisartuisa-qulimiguullit-kalaallit-nunaat-qulimiguuleqarfinngortikkaat/2329460",
       "layout_type": "3_articles",
-      "display_order": 36000,
-      "row_index": 36,
+      "display_order": 38000,
+      "row_index": 38,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -1733,10 +1795,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/upalungaarsimaneq-pillugu-tusagassiortunik-katersortitsineq-ullunut-tallimanut-piareersarit/2333769",
       "layout_type": "3_articles",
-      "display_order": 36001,
-      "row_index": 36,
+      "display_order": 38001,
+      "row_index": 38,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -1753,10 +1815,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trump-oqalugiassaaq-davosimi-qanittukkut/2333612",
       "layout_type": "3_articles",
-      "display_order": 36002,
-      "row_index": 36,
+      "display_order": 38002,
+      "row_index": 38,
       "article_index_in_row": 2,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -1777,10 +1839,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/usa-p-aningaasaqarnermut-ministeriata-indiap-kitaani-qeqertat-assersuutigai-kalaallit-nunaat-usa-mut-ilaassasoq-iligisatta-paasisariaqarpaat/2333578",
       "layout_type": "2_articles",
-      "display_order": 37000,
-      "row_index": 37,
+      "display_order": 39000,
+      "row_index": 39,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -1801,10 +1863,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sullivinnik-nakkutilliisoqarfik-nuummi-takuniaareerluni-greenland-airportsimut-peqqusisoq/2328703",
       "layout_type": "2_articles",
-      "display_order": 37001,
-      "row_index": 37,
+      "display_order": 39001,
+      "row_index": 39,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -1821,10 +1883,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/timersorneq/futsalimi-nunanut-allanut-unammisartut-kroatiami-nunat-tamalaat-unammiuaarneranni-peqataasut/2330105",
       "layout_type": "2_articles",
-      "display_order": 38000,
-      "row_index": 38,
+      "display_order": 40000,
+      "row_index": 40,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "kicker_floating": "UNNIA",
@@ -1842,10 +1904,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/samfund/franskit-alpe-jaegerii-nuummi/2333004",
       "layout_type": "2_articles",
-      "display_order": 38001,
-      "row_index": 38,
+      "display_order": 40001,
+      "row_index": 40,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "kicker_floating": "UNNIA",
@@ -1863,10 +1925,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/politiit-toqusoqarsimaneranik-paasiniaanermi-innuttaasunit-ikioqqusut/2332599",
       "layout_type": "2_articles",
-      "display_order": 39000,
-      "row_index": 39,
+      "display_order": 41000,
+      "row_index": 41,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "kicker_below": "QAQORTOQ",
@@ -1885,10 +1947,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trumpip-nunarput-tigorusullugu-qanoq-iliuuseqarusutsinini-oqaatigiumanngikkaa/2333401",
       "layout_type": "2_articles",
-      "display_order": 39001,
-      "row_index": 39,
+      "display_order": 41001,
+      "row_index": 41,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -1905,10 +1967,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/kristian-jeremiassen-jeff-landrymut-neqeroorummik-tunuartitsineq-pillugu-pakatsivunga/2332972",
       "layout_type": "2_articles",
-      "display_order": 40000,
-      "row_index": 40,
+      "display_order": 42000,
+      "row_index": 42,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -1929,10 +1991,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/timersorneq/qatanngutigiit-slettemarkikkut-ol-imut-anngupput/2332745",
       "layout_type": "2_articles",
-      "display_order": 40001,
-      "row_index": 40,
+      "display_order": 42001,
+      "row_index": 42,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "kicker_below": "USA-MUT ERSARISSUMIK OQARIARTUUTEQARUMASUT",
@@ -1951,10 +2013,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/tikilluaqqusinermit-killitsinnartumit-assit-takukkit/2333287",
       "layout_type": "2_articles",
-      "display_order": 41000,
-      "row_index": 41,
+      "display_order": 43000,
+      "row_index": 43,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 7,
       "layout_data": {
         "title_parts": [
@@ -1974,10 +2036,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/vivian-usa-miit-tikilluartinneqartoq/2333212",
       "layout_type": "2_articles",
-      "display_order": 41001,
-      "row_index": 41,
+      "display_order": 43001,
+      "row_index": 43,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 5,
       "layout_data": {
         "title_parts": [
@@ -1994,10 +2056,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/nittartakkatigut-pisiniarfeeraq-taxartartut-aallaavigalugit-isumassarsiarineqartoq/2328912",
       "layout_type": "3_articles",
-      "display_order": 42000,
-      "row_index": 42,
+      "display_order": 44000,
+      "row_index": 44,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "kicker_floating": "UNNIA",
@@ -2015,10 +2077,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/ministeriuneq-kalaallit-nunaat-imminiiginnarnavianngilara/2333225",
       "layout_type": "3_articles",
-      "display_order": 42001,
-      "row_index": 42,
+      "display_order": 44001,
+      "row_index": 44,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -2035,10 +2097,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/jens-frederik-nielsen-mute-b-egedelu-pissutsit-pillugit-tusagassiortunik-katersortitsiniartut/2333014",
       "layout_type": "3_articles",
-      "display_order": 42002,
-      "row_index": 42,
+      "display_order": 44002,
+      "row_index": 44,
       "article_index_in_row": 2,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -2059,10 +2121,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/partiit-siulittaasuisa-inatsisartuni-ataatsimiinneq-siuartikkusuppaat-kalaallit-nunaanni-pissutsit-oqallisigineqarlutillu-ataatsimoorussamik-siunniussisoqassaaq/2332941",
       "layout_type": "1_full",
-      "display_order": 43000,
-      "row_index": 43,
+      "display_order": 45000,
+      "row_index": 45,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -2083,10 +2145,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/von-der-leyen-kalaallit-nunaat-isumaqatiginninniutigineqarsinnaanngilaq/2332951",
       "layout_type": "1_full",
-      "display_order": 44000,
-      "row_index": 44,
+      "display_order": 46000,
+      "row_index": 46,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -2107,10 +2169,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuussutissarsiutit/kalaallit-nunaat-trumpip-pillaatitut-akitsuutaanik-eqqugaassanngilaq-aallaqqaammut/2332759",
       "layout_type": "1_full",
-      "display_order": 45000,
-      "row_index": 45,
+      "display_order": 47000,
+      "row_index": 47,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -2131,10 +2193,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trumpip-ataatsimeersuarnermi-kalaallit-nunaata-pisiarinissaa-eqqartorniarpaa/2332921",
       "layout_type": "1_full",
-      "display_order": 46000,
-      "row_index": 46,
+      "display_order": 48000,
+      "row_index": 48,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -2151,10 +2213,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sakkutuut-kalaallit-nunaata-illersornissaanut-ukioq-tamaat-sungiusassapput/2332609",
       "layout_type": "2_articles",
-      "display_order": 47000,
-      "row_index": 47,
+      "display_order": 49000,
+      "row_index": 49,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -2171,10 +2233,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/vivian-nato-mi-ataatsimiinnerup-kingorna-issittumi-isumannaallisaaneq-oqaluuseraarput/2332790",
       "layout_type": "2_articles",
-      "display_order": 47001,
-      "row_index": 47,
+      "display_order": 49001,
+      "row_index": 49,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -2191,10 +2253,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/meeqqat-angerlarsimaffiup-avataanut-inissinneqarsimasut-kikkunnit-illersorneqarpat/2327143",
       "layout_type": "1_full",
-      "display_order": 48000,
-      "row_index": 48,
+      "display_order": 50000,
+      "row_index": 50,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -2211,10 +2273,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/samfund/ilaqutariit-heilmannikkut-kalaallit-nunaata-siunissaa-pillugu-akerliussutsimik-takutitsipput-maanna-qanoq-nukittutiginersugut-takusinnaavarput/2332450",
       "layout_type": "2_articles",
-      "display_order": 49000,
-      "row_index": 49,
+      "display_order": 51000,
+      "row_index": 51,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -2235,10 +2297,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/kuannersuarnut-suliniuteqartoq-trumpip-aqutsineranut-qanimut-attuumassuteqartumik-sunniuteqarluartumik-suleqateqalersoq/2332528",
       "layout_type": "2_articles",
-      "display_order": 49001,
-      "row_index": 49,
+      "display_order": 51001,
+      "row_index": 51,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -2255,10 +2317,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/senator-murkowski-erseqqissumik-kajumissaarivoq-manna-partiilersornermit-pingaarneruvoq-pineqartoq-annertuallaarpoq/2332174",
       "layout_type": "1_full",
-      "display_order": 50000,
-      "row_index": 50,
+      "display_order": 52000,
+      "row_index": 52,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -2279,10 +2341,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/amerikamiut-trumpip-kalaallit-nunaat-pillugu-pilersaarutaanut-qularuteqartut-tamanna-uannut-peqqusiileqinarpoq/2332428",
       "layout_type": "2_articles",
-      "display_order": 51000,
-      "row_index": 51,
+      "display_order": 53000,
+      "row_index": 53,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -2303,10 +2365,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/nutaarsiassat-naatsut-timersoqatigiit-kattuffiata-usa-mik-mattussisinnaaneq-isumaliutigigaa/2329507",
       "layout_type": "2_articles",
-      "display_order": 51001,
-      "row_index": 51,
+      "display_order": 53001,
+      "row_index": 53,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -2327,10 +2389,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/timersorneq/qatanngutigiit-slettemarkikkut-ol-imut-peqataanissaminnut-innersuunneqartut/2332588",
       "layout_type": "2_articles",
-      "display_order": 52000,
-      "row_index": 52,
+      "display_order": 54000,
+      "row_index": 54,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -2347,10 +2409,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/jens-frederik-sioorasaarisoqaqqereersoq-naqisimaneqarnianngilagut/2332475",
       "layout_type": "2_articles",
-      "display_order": 52001,
-      "row_index": 52,
+      "display_order": 54001,
+      "row_index": 54,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -2371,10 +2433,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sakkutuut-naalagaat-sakkutuullu-trumpip-sioorasaarinerata-kingorna-kalaallit-nunaannukartut/2332497",
       "layout_type": "2_articles",
-      "display_order": 53000,
-      "row_index": 53,
+      "display_order": 55000,
+      "row_index": 55,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -2391,10 +2453,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuussutissarsiutit/kalaallit-nunaat-pillugu-ataatsimiititaliaq-qasigiannguanut-qaaqquneqartoq/2329238",
       "layout_type": "2_articles",
-      "display_order": 53001,
-      "row_index": 53,
+      "display_order": 55001,
+      "row_index": 55,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -2411,10 +2473,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/knqk-jeff-landrymut-qaaqqusissut-taamaatinneqarpoq/2332399",
       "layout_type": "1_full",
-      "display_order": 54000,
-      "row_index": 54,
+      "display_order": 56000,
+      "row_index": 56,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -2431,10 +2493,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trumpip-kalaallit-nunaata-tinguarnissaanut-nato-usa-mut-iliuuseqartariaqarpoq/2332368",
       "layout_type": "2_articles",
-      "display_order": 55000,
-      "row_index": 55,
+      "display_order": 57000,
+      "row_index": 57,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -2455,10 +2517,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trump-nuummi-kisimi-sammineqanngilaq-tv-kkut-malinnaaqqissaarpugut/2330943",
       "layout_type": "2_articles",
-      "display_order": 55001,
-      "row_index": 55,
+      "display_order": 57001,
+      "row_index": 57,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -2475,10 +2537,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuussutissarsiutit/royal-greenland-milliardip-affaanik-aningaasaliiniartoq/2329844",
       "layout_type": "1_full",
-      "display_order": 56000,
-      "row_index": 56,
+      "display_order": 58000,
+      "row_index": 58,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -2499,10 +2561,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/assit-takukkit-nuummi-akerliussutsimik-takutitsineq/2332142",
       "layout_type": "1_full",
-      "display_order": 57000,
-      "row_index": 57,
+      "display_order": 59000,
+      "row_index": 59,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -2519,10 +2581,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/nunat-arlallit-sakkutuunik-kalaallit-nunaannut-aallartitsipput/2330469",
       "layout_type": "2_articles",
-      "display_order": 58000,
-      "row_index": 58,
+      "display_order": 60000,
+      "row_index": 60,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -2539,10 +2601,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/danmarkip-usa-kalaallit-nunaanni-sakkutooqarnermi-sungiusarnernut-qaaqqugaa/2331758",
       "layout_type": "2_articles",
-      "display_order": 58001,
-      "row_index": 58,
+      "display_order": 60001,
+      "row_index": 60,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -2559,10 +2621,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/ajornartorsiutit-annersaat-puigorsimanerparput/2329520",
       "layout_type": "3_articles",
-      "display_order": 59000,
-      "row_index": 59,
+      "display_order": 61000,
+      "row_index": 61,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "kicker_below": "NERISASSAT SULIAREQQISSAAKKAT",
@@ -2581,10 +2643,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/aasianni-angut-toqutseriarsimasutut-unnerluunneqartoq/2332119",
       "layout_type": "3_articles",
-      "display_order": 59001,
-      "row_index": 59,
+      "display_order": 61001,
+      "row_index": 61,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -2601,10 +2663,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/samfund/isumaga-ilerasuuteqarani-inupiluusertoq/2328900",
       "layout_type": "3_articles",
-      "display_order": 59002,
-      "row_index": 59,
+      "display_order": 61002,
+      "row_index": 61,
       "article_index_in_row": 2,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "kicker_floating": "ISUMAGA",
@@ -2622,10 +2684,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/assit-takukkit-ataatsimoorneq-ersersinniarlugu-erfalasulertut/2330084",
       "layout_type": "2_articles",
-      "display_order": 60000,
-      "row_index": 60,
+      "display_order": 62000,
+      "row_index": 62,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -2646,10 +2708,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/eu-mi-aallartitat-kalaallit-nunaat-pillugu-piaartumik-ataatsimiigiaqquneqarput/2331969",
       "layout_type": "2_articles",
-      "display_order": 60001,
-      "row_index": 60,
+      "display_order": 62001,
+      "row_index": 62,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -2666,10 +2728,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/nuummiut-kalaallit-nunaat-sorsuutiginiarlugu-akerliussutsimik-takutitsipput/2331873",
       "layout_type": "2_articles",
-      "display_order": 61000,
-      "row_index": 61,
+      "display_order": 63000,
+      "row_index": 63,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -2686,10 +2748,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sungaartunik-kavaajaqarluni-sukkuaqqanik-usuullu-puuinik-nassarluni-taartumiinneq/2324544",
       "layout_type": "2_articles",
-      "display_order": 61001,
-      "row_index": 61,
+      "display_order": 63001,
+      "row_index": 63,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -2706,10 +2768,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/usa-mut-ilaanngunnaveersaaritsi/2329970",
       "layout_type": "1_full",
-      "display_order": 62000,
-      "row_index": 62,
+      "display_order": 64000,
+      "row_index": 64,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "kicker_below": "ALASKAMI INUK KALAALLINUT",
@@ -2728,10 +2790,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/timersorneq/siulersorti-uummatigissartoq-sorlaqarfilik/2330925",
       "layout_type": "1_full",
-      "display_order": 63000,
-      "row_index": 63,
+      "display_order": 65000,
+      "row_index": 65,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "kicker_below": "INUIT",
@@ -2752,10 +2814,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/amerikamiut-angalaqatigiit-danmarkimut-tikeraarnerminni-kalaallit-nunaat-pillugu-paasisaqartut/2331807",
       "layout_type": "2_articles",
-      "display_order": 64000,
-      "row_index": 64,
+      "display_order": 66000,
+      "row_index": 66,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -2772,10 +2834,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/usa-mi-aallartitat-pillugit-immikkut-ilisimasalik-trump-sunnersinnaanngilaat/2331431",
       "layout_type": "2_articles",
-      "display_order": 64001,
-      "row_index": 64,
+      "display_order": 66001,
+      "row_index": 66,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -2792,10 +2854,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/jeff-landryp-neqeroorut-akuerisimaneraa-kristian-jeremiassenip-uppernarsarusunngilaa/2331470",
       "layout_type": "2_articles",
-      "display_order": 65000,
-      "row_index": 65,
+      "display_order": 67000,
+      "row_index": 67,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -2812,10 +2874,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/kulturi/siiva-fleischer-erinnamik-saqqummersitsivoq-usa-p-nunatsinnik-persarinninnera-ernummatigisaqaarput/2330588",
       "layout_type": "2_articles",
-      "display_order": 65001,
-      "row_index": 65,
+      "display_order": 67001,
+      "row_index": 67,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -2836,10 +2898,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trumpip-kalaallit-nunaannut-tunngatillugu-akitsuusiinissamik-sioorasaaruteqartoq/2331648",
       "layout_type": "1_full",
-      "display_order": 66000,
-      "row_index": 66,
+      "display_order": 68000,
+      "row_index": 68,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -2856,10 +2918,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/qallunaat-timmisartui-sorsuutit-kalaallit-nunaanni-sungiusartut/2331776",
       "layout_type": "2_articles",
-      "display_order": 67000,
-      "row_index": 67,
+      "display_order": 69000,
+      "row_index": 69,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -2876,10 +2938,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/samfund/erik-jensen-kongressimi-ilaasortanik-ataatsimeeqateqareerlunga-eqqissiallappunga/2331591",
       "layout_type": "2_articles",
-      "display_order": 67001,
-      "row_index": 67,
+      "display_order": 69001,
+      "row_index": 69,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -2900,10 +2962,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/amerikamiut-tikeraarnerat-pillugu-tusagassiortunik-katersortitsineq/2331451",
       "layout_type": "2_articles",
-      "display_order": 68000,
-      "row_index": 68,
+      "display_order": 70000,
+      "row_index": 70,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "kicker_below": "NUTARTERNEQARPOQ",
@@ -2922,10 +2984,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/akerliussutsimik-takutitsiniartut-amerliartortut/2331406",
       "layout_type": "2_articles",
-      "display_order": 68001,
-      "row_index": 68,
+      "display_order": 70001,
+      "row_index": 70,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -2942,10 +3004,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trumpip-immikkut-aallartitaa-kalaallit-nunaannut-marsimi-tikeraassaaq-isumaqatigiissuteqartoqartariaqartoq-isumaqarpoq/2331366",
       "layout_type": "2_articles",
-      "display_order": 69000,
-      "row_index": 69,
+      "display_order": 71000,
+      "row_index": 71,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -2966,10 +3028,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuussutissarsiutit/trumpip-niuerneq-aallarteqqikkaa/2328922",
       "layout_type": "2_articles",
-      "display_order": 69001,
-      "row_index": 69,
+      "display_order": 71001,
+      "row_index": 71,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -2986,10 +3048,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/teknikkikkut-ajornartorsiut-tunumi-kinguaattoortitsisoq/2331335",
       "layout_type": "3_articles",
-      "display_order": 70000,
-      "row_index": 70,
+      "display_order": 72000,
+      "row_index": 72,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -3006,10 +3068,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/morten-piareersalerpoq-pisoqariataarsinnaavormi-ilaa/2330244",
       "layout_type": "3_articles",
-      "display_order": 70001,
-      "row_index": 70,
+      "display_order": 72001,
+      "row_index": 72,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -3029,10 +3091,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trump-ukiunik-139-nik-kingusinaarluni-nunatsinnut-pivoq/2328935",
       "layout_type": "3_articles",
-      "display_order": 70002,
-      "row_index": 70,
+      "display_order": 72002,
+      "row_index": 72,
       "article_index_in_row": 2,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -3049,10 +3111,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/maniitsumi-inuusuttoq-tillinniaq-tigusarineqartoq/2331285",
       "layout_type": "2_articles",
-      "display_order": 71000,
-      "row_index": 71,
+      "display_order": 73000,
+      "row_index": 73,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "kicker_below": "ULLORMUT NALUNAARUSIAQ",
@@ -3071,10 +3133,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/vivian-motzfeldtip-kalaallit-toqqissisimannginnerat-pillugu-senatorit-oqaluttuuppai/2331154",
       "layout_type": "2_articles",
-      "display_order": 71001,
-      "row_index": 71,
+      "display_order": 73001,
+      "row_index": 73,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -3091,10 +3153,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/tuukkaq-suli-ajoquteqartoq-utaqqiisaarutaagallartumik-timmisartoq-atorneqartussaq-tallimanngornermi-tikisinneqarpoq/2331381",
       "layout_type": "3_articles",
-      "display_order": 72000,
-      "row_index": 72,
+      "display_order": 74000,
+      "row_index": 74,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -3111,10 +3173,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuussutissarsiutit/tusagassiortut-nunatta-avataaneersut-nutaanik-suliassaqartitsilersut/2329418",
       "layout_type": "3_articles",
-      "display_order": 72001,
-      "row_index": 72,
+      "display_order": 74001,
+      "row_index": 74,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -3131,10 +3193,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trumpip-oqaaseqartartua-suleqatigiissitap-kalaallit-nunaata-tigunissaa-oqaluuserissavaat/2331116",
       "layout_type": "3_articles",
-      "display_order": 72002,
-      "row_index": 72,
+      "display_order": 74002,
+      "row_index": 74,
       "article_index_in_row": 2,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -3151,10 +3213,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/namminersorlutik-oqartussat-erfalasulertarnermi-malittarisassat-oqartussaaffigileraat/2330837",
       "layout_type": "1_full",
-      "display_order": 73000,
-      "row_index": 73,
+      "display_order": 75000,
+      "row_index": 75,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -3171,10 +3233,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/oqaluttuarisaaneq-allamik-oqaasiliinnarlugu-uteqqinneqassasoq-ernumassutigaara/2328659",
       "layout_type": "2_articles",
-      "display_order": 74000,
-      "row_index": 74,
+      "display_order": 76000,
+      "row_index": 76,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "kicker_floating": "ASASARA TRUMP...",
@@ -3192,10 +3254,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/usa-mut-akerliussutsimik-takutitsisoqassasoq/2329865",
       "layout_type": "2_articles",
-      "display_order": 74001,
-      "row_index": 74,
+      "display_order": 76001,
+      "row_index": 76,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -3212,10 +3274,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/timmisartoq-hercules-pingasunngornermi-nuummut-mittoq/2330848",
       "layout_type": "1_full",
-      "display_order": 75000,
-      "row_index": 75,
+      "display_order": 77000,
+      "row_index": 77,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -3232,10 +3294,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/jens-frederik-nielsen-kobenhavnimi-ukiortaami-ilasseqatigiinnermi-oqalugiartoq/2330907",
       "layout_type": "2_articles",
-      "display_order": 76000,
-      "row_index": 76,
+      "display_order": 78000,
+      "row_index": 78,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -3252,10 +3314,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/vivian-motzfeldt-ataatsimiinnerip-kingorna-usa-p-nunap-killeqarfii-ataqqissavai/2330403",
       "layout_type": "2_articles",
-      "display_order": 76001,
-      "row_index": 76,
+      "display_order": 78001,
+      "row_index": 78,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -3280,10 +3342,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/illu-qisummik-sanaaq-naneruutip-uppinnerata-kingorna-ikuallattoq/2330685",
       "layout_type": "1_full",
-      "display_order": 77000,
-      "row_index": 77,
+      "display_order": 79000,
+      "row_index": 79,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -3300,10 +3362,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/jens-frederik-nielsenip-vivian-motzfeldt-qujaffigaa-suleqatigiissitaq-alloriarneruvoq-pingaarutilik/2330734",
       "layout_type": "3_articles",
-      "display_order": 78000,
-      "row_index": 78,
+      "display_order": 80000,
+      "row_index": 80,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -3324,10 +3386,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/oqaloqatigiinnerup-aallartinnera-neriulluarnartoq-isumakuluutit-aaqqiivigineqarsinnaanersut-takussavarput/2330704",
       "layout_type": "3_articles",
-      "display_order": 78001,
-      "row_index": 78,
+      "display_order": 80001,
+      "row_index": 80,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -3344,10 +3406,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/assit-takukkit-ataatsimiinnerup-oqaluttuarisaanermut-ilannguttup-tunuani-pisut-takukkit/2330598",
       "layout_type": "3_articles",
-      "display_order": 78002,
-      "row_index": 78,
+      "display_order": 80002,
+      "row_index": 80,
       "article_index_in_row": 2,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "kicker_below": "WASHINGTONIMI ATAATSIMIINNEQ",
@@ -3366,10 +3428,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/usa-p-tiguaaniarluni-pilersaarutaanut-akerliussutsimik-takutitsisoqalerpoq/2330532",
       "layout_type": "2_articles",
-      "display_order": 79000,
-      "row_index": 79,
+      "display_order": 81000,
+      "row_index": 81,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -3390,10 +3452,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/kalaaleqatikka-qaa-aamma-ilissi-qaqqassinni-erfalasuliiartoritsi/2330297",
       "layout_type": "2_articles",
-      "display_order": 79001,
-      "row_index": 79,
+      "display_order": 81001,
+      "row_index": 81,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "kicker_below": "JUKKU KIELSEN",
@@ -3412,10 +3474,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/angutit-marluk-toqutseriarsimasutut-unnerluutigineqartut/2329856",
       "layout_type": "1_full",
-      "display_order": 80000,
-      "row_index": 80,
+      "display_order": 82000,
+      "row_index": 82,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -3432,10 +3494,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/atlantikoq-qulaallugu-sisamanngornermi-timmisartuussinissaq-taamaatinneqartoq/2330579",
       "layout_type": "2_articles",
-      "display_order": 81000,
-      "row_index": 81,
+      "display_order": 83000,
+      "row_index": 83,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -3452,10 +3514,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/vivian-motzfeldt-prins-joachimip-washington-dc-mi-tikilluaqqugaa/2329823",
       "layout_type": "2_articles",
-      "display_order": 81001,
-      "row_index": 81,
+      "display_order": 83001,
+      "row_index": 83,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -3472,10 +3534,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trumpip-kalaallit-nunaat-suli-kissaatigaa/2330451",
       "layout_type": "2_articles",
-      "display_order": 82000,
-      "row_index": 82,
+      "display_order": 84000,
+      "row_index": 84,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -3492,10 +3554,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trump-jens-frederiup-oqariartuuteqareernerata-kingorna-annertuumik-ajornartorsiutigissavaa/2329620",
       "layout_type": "2_articles",
-      "display_order": 82001,
-      "row_index": 82,
+      "display_order": 84001,
+      "row_index": 84,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -3516,10 +3578,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/usa-mi-ataatsimiinnerup-kingorna-tusagassiortunik-katersortitsineq/2330309",
       "layout_type": "2_articles",
-      "display_order": 83000,
-      "row_index": 83,
+      "display_order": 85000,
+      "row_index": 85,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -3540,10 +3602,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/mute-b-egede-nuummi-tusagassiortunik-katersortitsivoq/2330392",
       "layout_type": "2_articles",
-      "display_order": 83001,
-      "row_index": 83,
+      "display_order": 85001,
+      "row_index": 85,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -3564,10 +3626,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/samfund/troels-lund-usa-p-kalaallit-nunaannut-saassussinissaa-takorlooruminaappoq/2330272",
       "layout_type": "1_full",
-      "display_order": 84000,
-      "row_index": 84,
+      "display_order": 86000,
+      "row_index": 86,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -3584,10 +3646,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/ilisimatusartoq-ataatsimeereernerup-kingorna-tusagassiortunik-katersortitsinermi-uku-eqqumaffigikkit/2330155",
       "layout_type": "3_articles",
-      "display_order": 85000,
-      "row_index": 85,
+      "display_order": 87000,
+      "row_index": 87,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -3608,10 +3670,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/ilisimatooq-kalaallit-nunaata-danmark-toqqarneratigut-usa-mut-nalunaarut-ersarilluinnarpoq/2329563",
       "layout_type": "3_articles",
-      "display_order": 85001,
-      "row_index": 85,
+      "display_order": 87001,
+      "row_index": 87,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -3628,10 +3690,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/ataatsimiittoqaqqissappat-iluatsissimassaaq/2330017",
       "layout_type": "3_articles",
-      "display_order": 85002,
-      "row_index": 85,
+      "display_order": 87002,
+      "row_index": 87,
       "article_index_in_row": 2,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "kicker_below": "AAQQISSUISUUNEQ USA-MIK ATAATSIMEEQATEQARNEQ PILLUGU",
@@ -3650,10 +3712,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/jukkup-politikkikkut-pisunik-sunnertisimanermini-erfalasorput-ukkusissanut-ullumi-amussamaarpaa/2330063",
       "layout_type": "1_full",
-      "display_order": 86000,
-      "row_index": 86,
+      "display_order": 88000,
+      "row_index": 88,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -3670,10 +3732,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trump-nato-usa-p-kalaallit-nunaannik-tiguaanissaanut-aqqutissiuussisariaqartoq/2329928",
       "layout_type": "2_articles",
-      "display_order": 87000,
-      "row_index": 87,
+      "display_order": 89000,
+      "row_index": 89,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -3690,10 +3752,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/tusagassiorfik-illersornissaqarfiup-sakkutuunik-amerlanerusunik-nunatsinnukartitsisoq/2329834",
       "layout_type": "2_articles",
-      "display_order": 87001,
-      "row_index": 87,
+      "display_order": 89001,
+      "row_index": 89,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -3714,10 +3776,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/nammineq-aalajangiisinnaatitaanerput-navianartorsiortissanngilarput/2329763",
       "layout_type": "1_full",
-      "display_order": 88000,
-      "row_index": 88,
+      "display_order": 90000,
+      "row_index": 90,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "kicker_below": "JENS-FREDERIK NIELSEN",
@@ -3743,10 +3805,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/frankrigip-nuummi-konsulateqarfimmik-ammaanissani-ullulerpaa/2329673",
       "layout_type": "3_articles",
-      "display_order": 89000,
-      "row_index": 89,
+      "display_order": 91000,
+      "row_index": 91,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -3763,10 +3825,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/amerikamiut-politikerii-kalaallit-nunaannut-tunngatillugu-iliuuseqartut/2329186",
       "layout_type": "3_articles",
-      "display_order": 89001,
-      "row_index": 89,
+      "display_order": 91001,
+      "row_index": 91,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -3783,10 +3845,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuussutissarsiutit/sulisitsisut-pisortaat-nunat-tamalaat-akornanni-politikkikkut-nalorninartut-suliffeqarfinnut-aningaasaliisarnerullu-silarsuaani-sunniuteqartarput/2328970",
       "layout_type": "3_articles",
-      "display_order": 89002,
-      "row_index": 89,
+      "display_order": 91002,
+      "row_index": 91,
       "article_index_in_row": 2,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -3807,10 +3869,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trumpip-issittumut-kommissaeria-kalaallit-nunaanni-iliuuseqartoqangajalerpoq/2329590",
       "layout_type": "2_articles",
-      "display_order": 90000,
-      "row_index": 90,
+      "display_order": 92000,
+      "row_index": 92,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -3831,10 +3893,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/tassanngaannartumik-eqqissiviilliorneq-pissutigalugu-amerlanerusut-pisariaqartinneqalerput/2328684",
       "layout_type": "2_articles",
-      "display_order": 90001,
-      "row_index": 90,
+      "display_order": 92001,
+      "row_index": 92,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "kicker_floating": "ASASARA TRUMP...",
@@ -3852,10 +3914,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/naalakkersuisut-naqissusiipput-kalaallit-nunaat-danmarkip-kunngeqarfiata-ilagaa-illersorneqarnissarlu-nato-aqqutigalugu-pissasoq-kissaatigaat/2328859",
       "layout_type": "2_articles",
-      "display_order": 91000,
-      "row_index": 91,
+      "display_order": 93000,
+      "row_index": 93,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -3875,10 +3937,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sikuaq-trawlimi-pisortaq-carl-christensen-islandimi-savalimmiunilu-pinngitsooratik-illaruaatigaatigut/2326694",
       "layout_type": "2_articles",
-      "display_order": 91001,
-      "row_index": 91,
+      "display_order": 93001,
+      "row_index": 93,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -3899,10 +3961,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/jens-frederik-nielsen-aamma-mette-f-tusagassiortunik-katersortitsinissamut-aggersaasut/2329276",
       "layout_type": "3_articles",
-      "display_order": 92000,
-      "row_index": 92,
+      "display_order": 94000,
+      "row_index": 94,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -3923,10 +3985,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/folketingimi-ilaasortat-kalaallit-nunaat-savalimmiullu-videokkut-isumannaatsumik-ataatsimeeqatigisinnaagaat/2329451",
       "layout_type": "3_articles",
-      "display_order": 92001,
-      "row_index": 92,
+      "display_order": 94001,
+      "row_index": 94,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -3943,10 +4005,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/aaja-chemnitz-upn-imi-ataatsimiinnernermi-upalungaarsimanermut-pilersaarut-pisariaqarpoq/2329353",
       "layout_type": "3_articles",
-      "display_order": 92002,
-      "row_index": 92,
+      "display_order": 94002,
+      "row_index": 94,
       "article_index_in_row": 2,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -3963,10 +4025,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/mads-pedersenip-akisussaaffii-nivi-olsenip-tiguai/2329291",
       "layout_type": "2_articles",
-      "display_order": 93000,
-      "row_index": 93,
+      "display_order": 95000,
+      "row_index": 95,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -3983,10 +4045,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/tusagassiorfik-jd-vance-danmarkip-kalaallit-nunaatalu-ataatsimeeqatigineranni-ilaassasoq/2329176",
       "layout_type": "2_articles",
-      "display_order": 93001,
-      "row_index": 93,
+      "display_order": 95001,
+      "row_index": 95,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -4007,10 +4069,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/ataatsimiititaliami-siulittaasoq-isumalluartoq-usa-mik-ataatsimeeqateqarneq-oqaloqatigiilluartoqarnerulernissaanik-aallartitsissaaq/2329229",
       "layout_type": "1_full",
-      "display_order": 94000,
-      "row_index": 94,
+      "display_order": 96000,
+      "row_index": 96,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -4031,10 +4093,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/nuummi-isumannaallisaanermi-amigaateqarneq-kinguaattoortitseqqittoq/2326455",
       "layout_type": "2_articles",
-      "display_order": 95000,
-      "row_index": 95,
+      "display_order": 97000,
+      "row_index": 97,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -4054,10 +4116,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/kulturi/usa-p-kalaallit-nunaannut-immikkut-aallartitaa-avannaata-qimussersuanut-qaaqquneqartoq-tamanna-naleqqutinngilluinnartoq-knqk-mit-isumaqarput/2329149",
       "layout_type": "2_articles",
-      "display_order": 95001,
-      "row_index": 95,
+      "display_order": 97001,
+      "row_index": 97,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "kicker_below": "SIULERSUISUT PAASINIAANIARTUT",
@@ -4076,10 +4138,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/praesidentip-illorsuaniit-kalaallit-nunaata-nunap-assinga-siammarterneqartoq/2329137",
       "layout_type": "1_full",
-      "display_order": 96000,
-      "row_index": 96,
+      "display_order": 98000,
+      "row_index": 98,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -4096,10 +4158,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/pinngortitaleriffik-arferit-nipiliorneq-qimarratigineq-ajorpaat/2328156",
       "layout_type": "1_full",
-      "display_order": 97000,
-      "row_index": 97,
+      "display_order": 99000,
+      "row_index": 99,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -4120,10 +4182,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/aki-matilda-nunarsuarmiut-tusarnaaraangata-kalaallit-nunaata-soqutigisai-siuarsarneqartariaqarput/2326255",
       "layout_type": "1_full",
-      "display_order": 98000,
-      "row_index": 98,
+      "display_order": 100000,
+      "row_index": 100,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "kicker_below": "AKI-MATILDA HØEGH-DAM",
@@ -4146,10 +4208,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trumpip-mianersoqqusinerata-kingorna-iran-sorsunnissamut-isumaqatigiinniarnernulluunniit-piareersimavoq/2328993",
       "layout_type": "2_articles",
-      "display_order": 99000,
-      "row_index": 99,
+      "display_order": 101000,
+      "row_index": 101,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -4166,10 +4228,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sapiitsuliortut-nersorneqartut/2327837",
       "layout_type": "2_articles",
-      "display_order": 99001,
-      "row_index": 99,
+      "display_order": 101001,
+      "row_index": 101,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "kicker_floating": "UNNIA",
@@ -4187,10 +4249,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/akerleriittoqareersoq-folketingimi-ilaasortaq-kalaallit-nunaannut-qinnuiginnippoq/2328951",
       "layout_type": "2_articles",
-      "display_order": 100000,
-      "row_index": 100,
+      "display_order": 102000,
+      "row_index": 102,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -4211,10 +4273,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/danmarkip-isumaqatigiinngissutaa-oqaaseqaatillu-paatsoorneqarsinnaasut-amerikamiut-ilimagisaannut-ajornerpaamut-uppernarsaataapput/2328759",
       "layout_type": "2_articles",
-      "display_order": 100001,
-      "row_index": 100,
+      "display_order": 102001,
+      "row_index": 102,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "kicker_below": "AQQALUK LYNGE ANNILAANGASOQ",
@@ -4233,10 +4295,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/samfund/inuit-anersaarsioriaasaat-ilinniarfigingaarsinnaavat/2327606",
       "layout_type": "2_articles",
-      "display_order": 101000,
-      "row_index": 101,
+      "display_order": 103000,
+      "row_index": 103,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "kicker_floating": "ASASARA TRUMP...",
@@ -4254,10 +4316,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/royal-greenland-tunisassiornermi-pisortartaartoq/2328671",
       "layout_type": "2_articles",
-      "display_order": 101001,
-      "row_index": 101,
+      "display_order": 103001,
+      "row_index": 103,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -4278,10 +4340,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/trump-kalaallit-nunaat-isumaqatigiissuteqartariaqartoq/2328626",
       "layout_type": "2_articles",
-      "display_order": 102000,
-      "row_index": 102,
+      "display_order": 104000,
+      "row_index": 104,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -4302,10 +4364,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/avannaata-kommuniata-greenland-airportsillu-imermut-akiligassaq-isumaqatigiinngissutigaat/2328468",
       "layout_type": "2_articles",
-      "display_order": 102001,
-      "row_index": 102,
+      "display_order": 104001,
+      "row_index": 104,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "kicker_below": "IKUALLATTOQARNERA IMERMIK PILERSUINERMIK APEQQUMMIK PILERSITSIVOQ",
@@ -4324,10 +4386,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/usa-mi-senatorit-kalaallit-nunaat-pillugu-ajornartorsiuteqaleruttornerani-danmarkilialerput/2328499",
       "layout_type": "1_full",
-      "display_order": 103000,
-      "row_index": 103,
+      "display_order": 105000,
+      "row_index": 105,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -4344,10 +4406,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/samfund/aningaasaqarnikkut-naligiinnginneq-naatsorsuutit-kisiisa-tunngavigalugit-nalilersorneqarsinnaanngilaq/2326481",
       "layout_type": "2_articles",
-      "display_order": 104000,
-      "row_index": 104,
+      "display_order": 106000,
+      "row_index": 106,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -4364,10 +4426,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/kultur/aallussilluartut-nersorneqartut-sisimiuni-maniitsumi-napasumilu/2326904",
       "layout_type": "2_articles",
-      "display_order": 104001,
-      "row_index": 104,
+      "display_order": 106001,
+      "row_index": 106,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "kicker_floating": "UNNIA",
@@ -4385,10 +4447,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/aleqa-hammond-21-mut-isumalioqatigiissitaq-pillugu-siumup-tunngaviusumik-inatsisissamut-siunnersuut-naatsorsuutigaa/2327264",
       "layout_type": "2_articles",
-      "display_order": 105000,
-      "row_index": 105,
+      "display_order": 107000,
+      "row_index": 107,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -4405,10 +4467,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/aaja-chemnitz-illersornissaq-pillugu-suli-suliassaqarpugut/2324449",
       "layout_type": "2_articles",
-      "display_order": 105001,
-      "row_index": 105,
+      "display_order": 107001,
+      "row_index": 107,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -4429,10 +4491,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/siu-tsiumi-suleqataaneq-qalipaasiutit-pilattuutit-kukkukuullu/2302949",
       "layout_type": "1_full",
-      "display_order": 106000,
-      "row_index": 106,
+      "display_order": 108000,
+      "row_index": 108,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "kicker_floating": "SAMMISAQ: TUNU PUIGUINNAGAQ",
@@ -4454,10 +4516,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/timersorneq/kalaallit-nunaanni-timersoqatigiit-kattuffianni-siulittaasup-tullia-nutaaq/2305875",
       "layout_type": "1_full",
-      "display_order": 107000,
-      "row_index": 107,
+      "display_order": 109000,
+      "row_index": 109,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "kicker_floating": "UNNIA",
@@ -4475,10 +4537,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/isumannaallisaaneq-pingaarnerujussuusariaqarpoq/2305940",
       "layout_type": "3_articles",
-      "display_order": 108000,
-      "row_index": 108,
+      "display_order": 110000,
+      "row_index": 110,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "kicker_floating": "ISUMAGA",
@@ -4496,10 +4558,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/ilisimatusarfimmut-rektorinngortussaq-siulersuisunit-toqqarneqartoq/2306822",
       "layout_type": "3_articles",
-      "display_order": 108001,
-      "row_index": 108,
+      "display_order": 110001,
+      "row_index": 110,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -4520,10 +4582,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/arnaq-62-inik-ukiulik-savimmik-toqutseriarsimasutut-pineqaatissinneqartoq/2306733",
       "layout_type": "3_articles",
-      "display_order": 108002,
-      "row_index": 108,
+      "display_order": 110002,
+      "row_index": 110,
       "article_index_in_row": 2,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 4,
       "layout_data": {
         "title_parts": [
@@ -4540,10 +4602,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/troels-lundip-usa-p-aallartitartaavanut-kunngeqarfimmut-ataqqinninnissaq-eqqartoraa/2306422",
       "layout_type": "2_articles",
-      "display_order": 109000,
-      "row_index": 109,
+      "display_order": 111000,
+      "row_index": 111,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -4560,10 +4622,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/kulturi/nunatta-eqqumiitsulianik-saqqummersitsiviani-suliniutinut-pisortaq-siulleq/2306683",
       "layout_type": "2_articles",
-      "display_order": 109001,
-      "row_index": 109,
+      "display_order": 111001,
+      "row_index": 111,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -4584,10 +4646,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/sulisoqarnermikkut-tatineqartorujussuusut/2306574",
       "layout_type": "2_articles",
-      "display_order": 110000,
-      "row_index": 110,
+      "display_order": 112000,
+      "row_index": 112,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -4604,10 +4666,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/tusagassiorfik-canada-nuummi-sapaatip-akunnerani-matumani-sinniisoqarfittaassasoq/2306662",
       "layout_type": "2_articles",
-      "display_order": 110001,
-      "row_index": 110,
+      "display_order": 112001,
+      "row_index": 112,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -4628,10 +4690,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuussutissarsiutit/minguinnerusumik-suliffissualiorneq-akinik-appasinnerusunik-pisariaqartitsivoq/2304106",
       "layout_type": "1_full",
-      "display_order": 111000,
-      "row_index": 111,
+      "display_order": 113000,
+      "row_index": 113,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -4648,10 +4710,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/kultur/juullip-ulloriaa-taarseruttornerani-qaammarsaasartoq/2304268",
       "layout_type": "2_articles",
-      "display_order": 112000,
-      "row_index": 112,
+      "display_order": 114000,
+      "row_index": 114,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -4668,10 +4730,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/erhverv/rubinit-safirillu-nunatsinneersut-suli-piumaneqarluartut/2304025",
       "layout_type": "2_articles",
-      "display_order": 112001,
-      "row_index": 112,
+      "display_order": 114001,
+      "row_index": 114,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -4688,10 +4750,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/kanunupe-p-siulittaasuata-tigussaasunik-iliuuseqartoqarnissaa-kissaatigaa/2306289",
       "layout_type": "2_articles",
-      "display_order": 113000,
-      "row_index": 113,
+      "display_order": 115000,
+      "row_index": 115,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -4712,10 +4774,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/pinngortitaleriffimmi-pisortat-nutaat/2304695",
       "layout_type": "2_articles",
-      "display_order": 113001,
-      "row_index": 113,
+      "display_order": 115001,
+      "row_index": 115,
       "article_index_in_row": 1,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 6,
       "layout_data": {
         "title_parts": [
@@ -4736,10 +4798,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/kultur/den-usynlige-kvinde-i-sneen/2309108",
       "layout_type": "1_full",
-      "display_order": 114000,
-      "row_index": 114,
+      "display_order": 116000,
+      "row_index": 116,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -4756,10 +4818,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/kultur/den-usynlige-kvinde-i-sneen/2309108",
       "layout_type": "1_full",
-      "display_order": 115000,
-      "row_index": 115,
+      "display_order": 117000,
+      "row_index": 117,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -4776,10 +4838,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/kultur/den-usynlige-kvinde-i-sneen/2309108",
       "layout_type": "1_full",
-      "display_order": 116000,
-      "row_index": 116,
+      "display_order": 118000,
+      "row_index": 118,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -4796,10 +4858,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/kultur/den-usynlige-kvinde-i-sneen/2309108",
       "layout_type": "1_full",
-      "display_order": 117000,
-      "row_index": 117,
+      "display_order": 119000,
+      "row_index": 119,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
@@ -4816,10 +4878,10 @@
     {
       "published_url": "https://kl.sermitsiaq.ag/inuiaqatigiit/timmisartortartup-ajunaartup-timaa-sermitsiamiit-aqqarneqartoq/2306368",
       "layout_type": "1_full",
-      "display_order": 118000,
-      "row_index": 118,
+      "display_order": 120000,
+      "row_index": 120,
       "article_index_in_row": 0,
-      "total_rows": 119,
+      "total_rows": 121,
       "grid_size": 12,
       "layout_data": {
         "title_parts": [
