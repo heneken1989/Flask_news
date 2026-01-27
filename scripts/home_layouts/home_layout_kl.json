@@ -1,6 +1,6 @@
 {
   "language": "kl",
-  "crawled_at": "2026-01-27T11:12:38.289349",
+  "crawled_at": "2026-01-27T15:35:33.133749",
   "total_items": 205,
   "layout_items": [
     {
@@ -698,11 +698,11 @@
         "slider_title": "– Atorfiit tamaasa takukkit",
         "slider_articles": [
           {
-            "url": "https://www.sjob.gl/job-kl/gux-nuuk-atuaannartitsinermik-iliuuseqarneranut-immikkoortortaqarfiani-aqutsisussarsiorpoq/2329362",
-            "title": "GUX Nuuk atuaannartitsinermik iliuuseqarneranut immikkoortortaqarfiani aqutsisussarsiorpoq",
+            "url": "https://www.sjob.gl/job-kl/ajutoornernik-sullissivitsinni-sulisussamik-ujaasivugut/2330143",
+            "title": "Ajutoornernik sullissivitsinni sulisussamik ujaasivugut",
             "kicker": "",
             "image": {
-              "src": "https://image.sermitsiaq.ag/2136657.jpg?imageId=2136657&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "src": "https://image.sermitsiaq.ag/2330139.jpg?imageId=2330139&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
               "alt": "",
               "width": "265",
               "height": "172"
@@ -712,11 +712,11 @@
             "position": 0
           },
           {
-            "url": "https://www.sjob.gl/job-kl/allorfik-qeqqa-erninermut-atatillugu-sulinngiffeqartumut-qaammatini-qulini-katsorsaasutut-taartaasussamik-pissarsiorpoq/2327369",
-            "title": "Allorfik Qeqqa erninermut atatillugu sulinngiffeqartumut qaammatini qulini katsorsaasutut taartaasussamik pissarsiorpoq",
+            "url": "https://www.sjob.gl/job-kl/periusissiornermut-attaveqaqatigiinnermullu-siunnersorti/2329719",
+            "title": "PERIUSISSIORNERMUT ATTAVEQAQATIGIINNERMULLU SIUNNERSORTI",
             "kicker": "",
             "image": {
-              "src": "https://image.sermitsiaq.ag/2070340.jpg?imageId=2070340&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "src": "https://image.sermitsiaq.ag/2329715.jpg?imageId=2329715&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
               "alt": "",
               "width": "265",
               "height": "172"
@@ -726,8 +726,36 @@
             "position": 1
           },
           {
-            "url": "https://www.sjob.gl/job-kl/hrd-imi-manager/2331639",
-            "title": "HRD-imi Manager",
+            "url": "https://www.sjob.gl/job-kl/perorsaanermut-tunngasunik-ilinniagalik-meeqqerivik-sikkersumi-pissarsiariumaneqarpoq/2333910",
+            "title": "Perorsaanermut tunngasunik ilinniagalik Meeqqerivik Sikkersumi pissarsiariumaneqarpoq",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "job kl",
+            "position": 2
+          },
+          {
+            "url": "https://www.sjob.gl/job-kl/sulisoqarnermut-siunnersorti/2327282",
+            "title": "Sulisoqarnermut siunnersorti",
+            "kicker": "",
+            "image": {
+              "src": "https://image.sermitsiaq.ag/2095286.jpg?imageId=2095286&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "alt": "",
+              "width": "265",
+              "height": "172"
+            },
+            "is_paywall": false,
+            "section": "job kl",
+            "position": 3
+          },
+          {
+            "url": "https://www.sjob.gl/job-kl/nioqqutissanut-pisortaq/2335380",
+            "title": "Nioqqutissanut pisortaq",
             "kicker": "",
             "image": {
               "src": "https://image.sermitsiaq.ag/2216146.jpg?imageId=2216146&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
@@ -737,7 +765,7 @@
             },
             "is_paywall": false,
             "section": "job kl",
-            "position": 2
+            "position": 4
           },
           {
             "url": "https://www.sjob.gl/job-kl/igaffimmi-ernaeringsassistenti-ippiarsummut/2332514",
@@ -751,39 +779,11 @@
             },
             "is_paywall": false,
             "section": "job kl",
-            "position": 3
-          },
-          {
-            "url": "https://www.sjob.gl/job-kl/gadeteam-tasiilaq-marlunnik-ilinniarsimanngitsuniksulisussarsiorpoq/2335547",
-            "title": "Gadeteam Tasiilaq marlunnik ilinniarsimanngitsuniksulisussarsiorpoq",
-            "kicker": "",
-            "image": {
-              "src": "https://image.sermitsiaq.ag/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
-              "alt": "",
-              "width": "265",
-              "height": "172"
-            },
-            "is_paywall": false,
-            "section": "job kl",
-            "position": 4
-          },
-          {
-            "url": "https://www.sjob.gl/job-kl/majoriaq-siunnersortissarsiorpoq/2332893",
-            "title": "Majoriaq Siunnersortissarsiorpoq",
-            "kicker": "",
-            "image": {
-              "src": "https://image.sermitsiaq.ag/2109977.jpg?imageId=2109977&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
-              "alt": "",
-              "width": "265",
-              "height": "172"
-            },
-            "is_paywall": false,
-            "section": "job kl",
             "position": 5
           },
           {
-            "url": "https://www.sjob.gl/job-kl/atuarfik-hans-lynge-pedelimik-pissarsiorpoq/2332268",
-            "title": "Atuarfik Hans Lynge pedelimik pissarsiorpoq",
+            "url": "https://www.sjob.gl/job-kl/bygdelederimik-sulisussarsiorpoq-inunnik-kiffartuussivimmut-tiilerilaami/2329779",
+            "title": "Bygdelederimik sulisussarsiorpoq inunnik kiffartuussivimmut Tiilerilaami",
             "kicker": "",
             "image": {
               "src": "https://image.sermitsiaq.ag/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
@@ -796,11 +796,11 @@
             "position": 6
           },
           {
-            "url": "https://www.sjob.gl/job-kl/suliffeqarnermut-isumaginninnermullu-ingerlatsivimmi-stabimut-immikkoortortami-ilinniartutut-ikiorti/2328814",
-            "title": "Suliffeqarnermut Isumaginninnermullu Ingerlatsivimmi stabimut immikkoortortami ilinniartutut ikiorti",
+            "url": "https://www.sjob.gl/job-kl/inulerivik-siunnersortimik-taartitut-sulisussarsiorpoq/2330209",
+            "title": "INULERIVIK siunnersortimik taartitut sulisussarsiorpoq",
             "kicker": "",
             "image": {
-              "src": "https://image.sermitsiaq.ag/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "src": "https://image.sermitsiaq.ag/2327399.jpg?imageId=2327399&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
               "alt": "",
               "width": "265",
               "height": "172"
@@ -810,8 +810,8 @@
             "position": 7
           },
           {
-            "url": "https://www.sjob.gl/job-kl/atuarfik-hans-lynge-akullernut-ilinniartitsisumik-pissarsiorpoq/2331203",
-            "title": "Atuarfik Hans Lynge akullernut ilinniartitsisumik pissarsiorpoq",
+            "url": "https://www.sjob.gl/job-kl/meeqqerivik-apisseq-perorsaasutut-ilinniarsimasumik-tullersortissarsiorpoq/2333843",
+            "title": "Meeqqerivik Apisseq perorsaasutut ilinniarsimasumik tullersortissarsiorpoq",
             "kicker": "",
             "image": {
               "src": "https://image.sermitsiaq.ag/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
@@ -824,11 +824,11 @@
             "position": 8
           },
           {
-            "url": "https://www.sjob.gl/job-kl/puiamut-flyver-ininut-pisariaqartitsineq-naapertorlugu-ikiuuttartoq/2335522",
-            "title": "Puiamut Flyver ininut pisariaqartitsineq naapertorlugu ikiuuttartoq",
+            "url": "https://www.sjob.gl/job-kl/innovation-manager-qeqqata-nunap-immikkoortuani-inuussutissarsiornermik-ineriartortitsineq/2327799",
+            "title": "Innovation manager - Qeqqata nunap immikkoortuani inuussutissarsiornermik ineriartortitsineq",
             "kicker": "",
             "image": {
-              "src": "https://image.sermitsiaq.ag/2065376.jpg?imageId=2065376&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
+              "src": "https://image.sermitsiaq.ag/2327792.jpg?imageId=2327792&panox=0.00&panoy=0.00&panow=100.00&panoh=100.00&heightx=0.00&heighty=0.00&heightw=100.00&heighth=100.00&width=1058&height=688&format=webp&width=530&height=344",
               "alt": "",
               "width": "265",
               "height": "172"
@@ -870,18 +870,28 @@
       "slider_title": "– Atorfiit tamaasa takukkit",
       "slider_articles": [
         {
-          "published_url": "https://www.sjob.gl/job-kl/gux-nuuk-atuaannartitsinermik-iliuuseqarneranut-immikkoortortaqarfiani-aqutsisussarsiorpoq/2329362",
-          "title": "GUX Nuuk atuaannartitsinermik iliuuseqarneranut immikkoortortaqarfiani aqutsisussarsiorpoq",
+          "published_url": "https://www.sjob.gl/job-kl/ajutoornernik-sullissivitsinni-sulisussamik-ujaasivugut/2330143",
+          "title": "Ajutoornernik sullissivitsinni sulisussamik ujaasivugut",
           "image_data": {}
         },
         {
-          "published_url": "https://www.sjob.gl/job-kl/allorfik-qeqqa-erninermut-atatillugu-sulinngiffeqartumut-qaammatini-qulini-katsorsaasutut-taartaasussamik-pissarsiorpoq/2327369",
-          "title": "Allorfik Qeqqa erninermut atatillugu sulinngiffeqartumut qaammatini qulini katsorsaasutut taartaasussamik pissarsiorpoq",
+          "published_url": "https://www.sjob.gl/job-kl/periusissiornermut-attaveqaqatigiinnermullu-siunnersorti/2329719",
+          "title": "PERIUSISSIORNERMUT ATTAVEQAQATIGIINNERMULLU SIUNNERSORTI",
           "image_data": {}
         },
         {
-          "published_url": "https://www.sjob.gl/job-kl/hrd-imi-manager/2331639",
-          "title": "HRD-imi Manager",
+          "published_url": "https://www.sjob.gl/job-kl/perorsaanermut-tunngasunik-ilinniagalik-meeqqerivik-sikkersumi-pissarsiariumaneqarpoq/2333910",
+          "title": "Perorsaanermut tunngasunik ilinniagalik Meeqqerivik Sikkersumi pissarsiariumaneqarpoq",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sjob.gl/job-kl/sulisoqarnermut-siunnersorti/2327282",
+          "title": "Sulisoqarnermut siunnersorti",
+          "image_data": {}
+        },
+        {
+          "published_url": "https://www.sjob.gl/job-kl/nioqqutissanut-pisortaq/2335380",
+          "title": "Nioqqutissanut pisortaq",
           "image_data": {}
         },
         {
@@ -890,33 +900,23 @@
           "image_data": {}
         },
         {
-          "published_url": "https://www.sjob.gl/job-kl/gadeteam-tasiilaq-marlunnik-ilinniarsimanngitsuniksulisussarsiorpoq/2335547",
-          "title": "Gadeteam Tasiilaq marlunnik ilinniarsimanngitsuniksulisussarsiorpoq",
+          "published_url": "https://www.sjob.gl/job-kl/bygdelederimik-sulisussarsiorpoq-inunnik-kiffartuussivimmut-tiilerilaami/2329779",
+          "title": "Bygdelederimik sulisussarsiorpoq inunnik kiffartuussivimmut Tiilerilaami",
           "image_data": {}
         },
         {
-          "published_url": "https://www.sjob.gl/job-kl/majoriaq-siunnersortissarsiorpoq/2332893",
-          "title": "Majoriaq Siunnersortissarsiorpoq",
+          "published_url": "https://www.sjob.gl/job-kl/inulerivik-siunnersortimik-taartitut-sulisussarsiorpoq/2330209",
+          "title": "INULERIVIK siunnersortimik taartitut sulisussarsiorpoq",
           "image_data": {}
         },
         {
-          "published_url": "https://www.sjob.gl/job-kl/atuarfik-hans-lynge-pedelimik-pissarsiorpoq/2332268",
-          "title": "Atuarfik Hans Lynge pedelimik pissarsiorpoq",
+          "published_url": "https://www.sjob.gl/job-kl/meeqqerivik-apisseq-perorsaasutut-ilinniarsimasumik-tullersortissarsiorpoq/2333843",
+          "title": "Meeqqerivik Apisseq perorsaasutut ilinniarsimasumik tullersortissarsiorpoq",
           "image_data": {}
         },
         {
-          "published_url": "https://www.sjob.gl/job-kl/suliffeqarnermut-isumaginninnermullu-ingerlatsivimmi-stabimut-immikkoortortami-ilinniartutut-ikiorti/2328814",
-          "title": "Suliffeqarnermut Isumaginninnermullu Ingerlatsivimmi stabimut immikkoortortami ilinniartutut ikiorti",
-          "image_data": {}
-        },
-        {
-          "published_url": "https://www.sjob.gl/job-kl/atuarfik-hans-lynge-akullernut-ilinniartitsisumik-pissarsiorpoq/2331203",
-          "title": "Atuarfik Hans Lynge akullernut ilinniartitsisumik pissarsiorpoq",
-          "image_data": {}
-        },
-        {
-          "published_url": "https://www.sjob.gl/job-kl/puiamut-flyver-ininut-pisariaqartitsineq-naapertorlugu-ikiuuttartoq/2335522",
-          "title": "Puiamut Flyver ininut pisariaqartitsineq naapertorlugu ikiuuttartoq",
+          "published_url": "https://www.sjob.gl/job-kl/innovation-manager-qeqqata-nunap-immikkoortuani-inuussutissarsiornermik-ineriartortitsineq/2327799",
+          "title": "Innovation manager - Qeqqata nunap immikkoortuani inuussutissarsiornermik ineriartortitsineq",
           "image_data": {}
         }
       ]

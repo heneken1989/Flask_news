@@ -122,6 +122,10 @@ class SermitsiaqCrawler:
             # Vì nếu chỉ check is_home=False, sẽ bỏ qua articles với is_home=True trong cùng section → tạo duplicate
             print(f"🔍 Checking for existing {article_language} articles in section '{section_name}'...")
             existing_urls = set()
+            
+            # ⚠️ CRITICAL: Refresh database session để tránh lấy cached data cũ
+            db.session.expire_all()
+            
             existing_articles = Article.query.filter_by(
                 section=section_name,
                 language=article_language
@@ -184,18 +188,33 @@ class SermitsiaqCrawler:
                         original_language=article_language,  # Set original_language
                     )
                     db.session.add(new_article)
-                    articles_created += 1
-                    existing_urls.add(article_url)  # Add to set to avoid duplicates in same batch
                     
-                    # Commit mỗi 10 articles để tránh timeout
-                    if articles_created % 10 == 0:
-                        db.session.commit()
-                        print(f"  💾 Saved {articles_created} new articles, skipped {articles_skipped} existing...")
+                    # ⚠️ CRITICAL: Wrap commit trong try-except để catch IntegrityError (race condition)
+                    try:
+                        # Commit mỗi 10 articles để tránh timeout
+                        if (articles_created + 1) % 10 == 0:
+                            db.session.commit()
+                            print(f"  💾 Saved {articles_created + 1} new articles, skipped {articles_skipped} existing...")
+                        
+                        articles_created += 1
+                        existing_urls.add(article_url)  # Add to set to avoid duplicates in same batch
+                    except Exception as commit_error:
+                        # IntegrityError hoặc unique constraint violation (race condition)
+                        db.session.rollback()
+                        error_msg_str = str(commit_error)
+                        if 'unique' in error_msg_str.lower() or 'duplicate' in error_msg_str.lower():
+                            print(f"  ⏭️  Article already exists (duplicate detected during commit), skipping...")
+                            articles_skipped += 1
+                            existing_urls.add(article_url)
+                        else:
+                            # Re-raise nếu không phải duplicate error
+                            raise
                 
                 except Exception as e:
                     error_msg = f"Error saving article {article_data.get('element_guid', 'unknown')}: {str(e)}"
                     errors.append(error_msg)
                     print(f"  ⚠️  {error_msg}")
+                    db.session.rollback()
                     continue
             
             # Final commit
@@ -357,6 +376,10 @@ class SermitsiaqCrawler:
             
             # Check existing articles trước khi crawl để biết articles nào đã tồn tại
             print(f"🔍 Checking for existing {article_language} home articles...")
+            
+            # ⚠️ CRITICAL: Refresh database session để tránh lấy cached data cũ
+            db.session.expire_all()
+            
             existing_articles_map = {}  # Dict: {published_url: Article} hoặc {(layout_type, display_order): Article} cho sliders
             existing_articles = Article.query.filter_by(
                 section='home', 
@@ -734,9 +757,6 @@ class SermitsiaqCrawler:
                         grid_size=article_data.get('grid_size', 6),  # Grid size từ HTML (5, 6, 7, 8, etc.)
                     )
                     db.session.add(new_article)
-                    articles_created += 1
-                    if article_url:
-                        existing_urls.add(article_url)  # Add to set to avoid duplicates in same batch
                     
                     # Debug: Log slider info
                     if article_data.get('layout_type') == 'slider':
@@ -747,15 +767,34 @@ class SermitsiaqCrawler:
                         if len(slider_articles) < 4:
                             print(f"     ⚠️  WARNING: Slider has only {len(slider_articles)} articles")
                     
-                    # Commit mỗi 10 articles để tránh timeout
-                    if (articles_created + articles_updated) % 10 == 0:
-                        db.session.commit()
-                        print(f"  💾 Saved {articles_created} new articles, updated {articles_updated} existing...")
+                    # ⚠️ CRITICAL: Wrap commit trong try-except để catch IntegrityError (race condition)
+                    try:
+                        # Commit mỗi 10 articles để tránh timeout
+                        if (articles_created + articles_updated + 1) % 10 == 0:
+                            db.session.commit()
+                            print(f"  💾 Saved {articles_created + 1} new articles, updated {articles_updated} existing...")
+                        
+                        articles_created += 1
+                        if article_url:
+                            existing_urls.add(article_url)  # Add to set to avoid duplicates in same batch
+                    except Exception as commit_error:
+                        # IntegrityError hoặc unique constraint violation (race condition)
+                        db.session.rollback()
+                        error_msg_str = str(commit_error)
+                        if 'unique' in error_msg_str.lower() or 'duplicate' in error_msg_str.lower():
+                            print(f"  ⏭️  Article already exists (duplicate detected during commit), skipping...")
+                            articles_skipped += 1
+                            if article_url:
+                                existing_urls.add(article_url)
+                        else:
+                            # Re-raise nếu không phải duplicate error
+                            raise
                 
                 except Exception as e:
                     error_msg = f"Error saving article {article_data.get('element_guid', 'unknown')}: {str(e)}"
                     errors.append(error_msg)
                     print(f"  ⚠️  {error_msg}")
+                    db.session.rollback()
                     continue
             
             # Final commit cho articles mới
