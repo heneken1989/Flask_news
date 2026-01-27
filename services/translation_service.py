@@ -205,7 +205,7 @@ def translate_article(dk_article, target_language='en', delay=0.5):
             k5a_url=dk_article.k5a_url,  # Giữ nguyên URL
             published_url=dk_article.published_url,  # Giữ nguyên URL
             category_id=dk_article.category_id,
-            section=dk_article.section,
+            section='home' if dk_article.is_home else dk_article.section,  # ⚠️ Home articles luôn có section='home'
             display_order=dk_article.display_order,
             is_featured=dk_article.is_featured,
             is_home=dk_article.is_home,
@@ -253,15 +253,25 @@ def translate_articles_batch(dk_articles, target_language='en', save_to_db=True,
             
             # Check if translation already exists bằng published_url + language='en'
             # Đảm bảo không tạo duplicate EN articles
+            # ⚠️ QUAN TRỌNG: Với home articles, chỉ check theo published_url + language
+            # vì section có thể khác nhau (detect từ URL: 'samfund', 'sport', etc.)
             existing = None
             
             if dk_article.published_url:
-                existing = Article.query.filter_by(
-                    published_url=dk_article.published_url,
-                    language='en',
-                    section=dk_article.section,
-                    is_home=dk_article.is_home
-                ).first()
+                if dk_article.is_home:
+                    # Home articles: chỉ check theo published_url + language
+                    # (không check section vì có thể khác nhau)
+                    existing = Article.query.filter_by(
+                        published_url=dk_article.published_url,
+                        language='en'
+                    ).first()
+                else:
+                    # Section articles: check theo published_url + language + section
+                    existing = Article.query.filter_by(
+                        published_url=dk_article.published_url,
+                        language='en',
+                        section=dk_article.section
+                    ).first()
             
             if existing:
                 # Nếu article đã tồn tại, chỉ set is_temp=False nếu cần và skip

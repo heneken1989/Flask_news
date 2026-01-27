@@ -718,27 +718,9 @@ class SermitsiaqCrawler:
                     if article_url and article_url not in existing_urls:
                         existing_urls[article_url] = None  # Mark as will be created
                     
-                    # ⚠️ QUAN TRỌNG: Với các layout types có published_url (articles thông thường), 
-                    # detect section từ URL. Các loại khác (sliders, containers) giữ section='home'
-                    # Layout types cần detect section: 1_full, 1_article, 2_articles, 3_articles, 1_special_bg
-                    layout_type = article_data.get('layout_type')
-                    article_url = article_data.get('url', '')
-                    article_layout_types = ['1_full', '1_article', '2_articles', '3_articles', '1_special_bg']
-                    
-                    if layout_type in article_layout_types:
-                        # Extract section từ URL
-                        from urllib.parse import urlparse
-                        parsed = urlparse(article_url)
-                        path = parsed.path.strip('/')
-                        valid_sections = ['kultur', 'samfund', 'erhverv', 'sport', 'podcasti']
-                        path_parts = path.split('/')
-                        if path_parts and path_parts[0] in valid_sections:
-                            article_section = path_parts[0]
-                        else:
-                            article_section = 'home'
-                    else:
-                        # Sliders, containers, 1_with_list_left, 1_with_list_right, 5_articles, etc. giữ section='home'
-                        article_section = 'home'
+                    # ⚠️ QUAN TRỌNG: Mọi article tạo ra từ crawl home phải có section='home'
+                    # Không detect section từ URL nữa, tất cả đều là section='home'
+                    article_section = 'home'
                     
                     # Tạo article mới cho home page
                     new_article = Article(
@@ -848,8 +830,7 @@ class SermitsiaqCrawler:
                         
                         existing_article.grid_size = article_data.get('grid_size', 6)
                         existing_article.is_home = True
-                        # ⚠️ KHÔNG update section - giữ nguyên section gốc từ URL
-                        # (ví dụ: erhverv article vẫn có section='erhverv', chỉ set is_home=True)
+                        # ⚠️ KHÔNG đổi section gốc của existing articles - giữ nguyên section ban đầu
                         
                         if existing_article.id not in updated_article_ids:
                             updated_article_ids.add(existing_article.id)

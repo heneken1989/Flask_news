@@ -608,47 +608,10 @@ def translate_dk_home_to_en():
     if url_error_count > 0:
         print(f"   - Errors: {url_error_count}")
     
-    # Check và remove duplicate EN articles trong home
-    print("\n" + "="*60)
-    print(f"🔍 Checking for duplicate EN articles in home")
-    print("="*60)
-    
-    # Lấy tất cả EN articles trong home
-    all_en_articles = Article.query.filter_by(
-        language='en',
-        is_home=True
-    ).all()
-    
-    # Group by published_url để tìm duplicate
-    url_to_articles = {}
-    for article in all_en_articles:
-        if article.published_url:
-            if article.published_url not in url_to_articles:
-                url_to_articles[article.published_url] = []
-            url_to_articles[article.published_url].append(article)
-    
-    # Tìm và xóa duplicate
-    duplicates_removed = 0
-    for published_url, articles in url_to_articles.items():
-        if len(articles) > 1:
-            # Có duplicate, giữ lại article đầu tiên (ID nhỏ nhất), xóa các article còn lại
-            articles_sorted = sorted(articles, key=lambda x: x.id)
-            article_to_keep = articles_sorted[0]
-            articles_to_delete = articles_sorted[1:]
-            
-            print(f"   ⚠️  Found {len(articles)} duplicate EN articles with published_url: {published_url[:60]}...")
-            print(f"      Keeping article ID: {article_to_keep.id}")
-            
-            for article_to_delete in articles_to_delete:
-                print(f"      Deleting duplicate article ID: {article_to_delete.id}")
-                db.session.delete(article_to_delete)
-                duplicates_removed += 1
-    
-    if duplicates_removed > 0:
-        db.session.commit()
-        print(f"✅ Removed {duplicates_removed} duplicate EN articles")
-    else:
-        print(f"✅ No duplicate EN articles found")
+    # ⚠️ REMOVED: Logic remove duplicate EN articles không còn cần thiết
+    # Vì logic check duplicate trong translate_articles_batch() đã được sửa
+    # để chỉ check theo published_url + language cho home articles (không check section)
+    # → Không còn tạo duplicate nữa
     
     # Check các DA articles chưa có EN version và tạo nếu chưa có
     print("\n" + "="*60)
