@@ -387,6 +387,9 @@ def crawl_home_layout(home_url='https://www.sermitsiaq.ag', language='da',
                     articles_skipped = 0
                     articles_updated = 0
                     
+                    # ⚠️ CRITICAL: Track URLs đã crawled trong session này để tránh duplicate
+                    crawled_urls_in_session = set()
+                    
                     for idx, article_info in enumerate(articles_to_crawl, 1):
                         article_url = article_info['url']
                         article_title = article_info['title']
@@ -397,7 +400,15 @@ def crawl_home_layout(home_url='https://www.sermitsiaq.ag', language='da',
                         print(f"      URL: {article_url[:80]}...")
                         print(f"      Source: {source}, Layout: {layout_type}")
                         
-                        # Check if article already exists
+                        # ⚠️ CRITICAL: Check xem URL đã crawled trong session này chưa
+                        if article_url in crawled_urls_in_session:
+                            print(f"      ⏭️  URL already crawled in this session, skipping...")
+                            articles_skipped += 1
+                            continue
+                        
+                        # Check if article already exists in database
+                        # Dùng db.session.expire_all() để refresh query và tránh cache cũ
+                        db.session.expire_all()
                         existing = Article.query.filter_by(
                             published_url=article_url,
                             language=language
@@ -427,6 +438,8 @@ def crawl_home_layout(home_url='https://www.sermitsiaq.ag', language='da',
                             else:
                                 print(f"      ⏭️  Article already exists and is home (ID: {existing.id}), skipping...")
                             articles_skipped += 1
+                            # Mark URL as crawled trong session
+                            crawled_urls_in_session.add(article_url)
                             continue
                         
                         try:
@@ -724,20 +737,40 @@ def crawl_home_layout(home_url='https://www.sermitsiaq.ag', language='da',
                             )
                             
                             db.session.add(new_article)
-                            db.session.commit()
-                            articles_created += 1
                             
-                            print(f"      ✅ Created article (ID: {new_article.id})")
-                            
-                            # Commit mỗi 5 articles
-                            if articles_created % 5 == 0:
-                                print(f"   💾 Created {articles_created} articles so far...")
+                            # ⚠️ CRITICAL: Wrap commit trong try-except để catch IntegrityError
+                            # (race condition nếu 2 processes tạo cùng article)
+                            try:
+                                db.session.commit()
+                                articles_created += 1
+                                
+                                # Mark URL as crawled trong session
+                                crawled_urls_in_session.add(article_url)
+                                
+                                print(f"      ✅ Created article (ID: {new_article.id})")
+                                
+                                # Commit mỗi 5 articles
+                                if articles_created % 5 == 0:
+                                    print(f"   💾 Created {articles_created} articles so far...")
+                            except Exception as commit_error:
+                                # IntegrityError hoặc unique constraint violation
+                                db.session.rollback()
+                                error_msg = str(commit_error)
+                                if 'unique' in error_msg.lower() or 'duplicate' in error_msg.lower():
+                                    print(f"      ⏭️  Article already exists (duplicate detected during commit), skipping...")
+                                    articles_skipped += 1
+                                    crawled_urls_in_session.add(article_url)
+                                else:
+                                    print(f"      ⚠️  Error committing article: {commit_error}")
+                                    raise  # Re-raise if not duplicate error
                         
                         except Exception as e:
                             print(f"      ⚠️  Error crawling article: {e}")
                             import traceback
                             traceback.print_exc()
                             db.session.rollback()
+                            # Mark URL as attempted (failed) để tránh retry trong cùng session
+                            crawled_urls_in_session.add(article_url)
                             continue
                     
                     print(f"\n✅ Home articles crawl completed:")

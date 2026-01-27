@@ -410,47 +410,66 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                                         from services.translation_service import translate_article
                                         from scripts.translate_article_urls import translate_url
                                         
-                                        # Translate article
-                                        en_article = translate_article(
-                                            da_article,
-                                            target_language='en',
-                                            delay=0.5
+                                        # ⚠️ CRITICAL: Check lần cuối xem EN article đã tồn tại chưa
+                                        # (có thể đã được tạo bởi iteration trước trong cùng 1 lần chạy)
+                                        final_check = Article.query.filter_by(
+                                            published_url=da_article.published_url,
+                                            language='en'
                                         )
+                                        if require_home_section:
+                                            final_check = final_check.filter_by(section='home')
+                                        existing_en_final = final_check.first()
                                         
-                                        if en_article:
-                                            # Translate URL cho EN article
-                                            if da_article.published_url:
-                                                en_url = translate_url(da_article.published_url, delay=0.3)
-                                                if en_url:
-                                                    en_article.published_url_en = en_url
-                                            
-                                            # Copy metadata từ DA article
-                                            en_article.display_order = da_article.display_order
-                                            en_article.layout_type = da_article.layout_type
-                                            
-                                            # ⚠️ QUAN TRỌNG: Với 1_with_list_left/right, EN article phải có section='home'
-                                            if da_article.layout_type in ['1_with_list_left', '1_with_list_right']:
-                                                en_article.section = 'home'
-                                                print(f"         ✅ Set section='home' for {da_article.layout_type}")
-                                            else:
-                                                en_article.section = da_article.section
-                                            
-                                            en_article.grid_size = da_article.grid_size
-                                            en_article.is_home = da_article.is_home
-                                            
-                                            # Save vào database
-                                            db.session.add(en_article)
-                                            db.session.commit()
-                                            
-                                            matched_article = en_article
-                                            print(f"      ✅ Created EN article (ID: {en_article.id})")
+                                        if existing_en_final:
+                                            print(f"      ⏭️  EN article found in final check (ID: {existing_en_final.id}), skipping creation...")
+                                            matched_article = existing_en_final
                                             
                                             # Add to articles_map để tránh query lại
                                             if published_url not in articles_map:
                                                 articles_map[published_url] = []
-                                            articles_map[published_url].append(en_article)
+                                            articles_map[published_url].append(existing_en_final)
                                         else:
-                                            print(f"      ❌ Failed to translate article")
+                                            # Translate article
+                                            en_article = translate_article(
+                                                da_article,
+                                                target_language='en',
+                                                delay=0.5
+                                            )
+                                            
+                                            if en_article:
+                                                # Translate URL cho EN article
+                                                if da_article.published_url:
+                                                    en_url = translate_url(da_article.published_url, delay=0.3)
+                                                    if en_url:
+                                                        en_article.published_url_en = en_url
+                                                
+                                                # Copy metadata từ DA article
+                                                en_article.display_order = da_article.display_order
+                                                en_article.layout_type = da_article.layout_type
+                                                
+                                                # ⚠️ QUAN TRỌNG: Với 1_with_list_left/right, EN article phải có section='home'
+                                                if da_article.layout_type in ['1_with_list_left', '1_with_list_right']:
+                                                    en_article.section = 'home'
+                                                    print(f"         ✅ Set section='home' for {da_article.layout_type}")
+                                                else:
+                                                    en_article.section = da_article.section
+                                                
+                                                en_article.grid_size = da_article.grid_size
+                                                en_article.is_home = da_article.is_home
+                                                
+                                                # Save vào database
+                                                db.session.add(en_article)
+                                                db.session.commit()
+                                                
+                                                matched_article = en_article
+                                                print(f"      ✅ Created EN article (ID: {en_article.id})")
+                                                
+                                                # Add to articles_map để tránh query lại
+                                                if published_url not in articles_map:
+                                                    articles_map[published_url] = []
+                                                articles_map[published_url].append(en_article)
+                                            else:
+                                                print(f"      ❌ Failed to translate article")
                                     except Exception as e:
                                         print(f"      ❌ Error creating EN article: {e}")
                                         db.session.rollback()
@@ -906,6 +925,21 @@ def create_missing_en_articles(layout_items, language='da', dry_run=False, delay
                 
                 if not dry_run:
                     try:
+                        # ⚠️ CRITICAL: Check lần cuối xem EN article đã tồn tại chưa
+                        # (có thể đã được tạo bởi iteration trước trong cùng 1 lần chạy)
+                        final_check = Article.query.filter_by(
+                            published_url=da_article.published_url,
+                            language='en'
+                        )
+                        if da_article.layout_type in ['1_with_list_left', '1_with_list_right']:
+                            final_check = final_check.filter_by(section='home')
+                        existing_en_final = final_check.first()
+                        
+                        if existing_en_final:
+                            print(f"      ⏭️  EN article found in final check (ID: {existing_en_final.id}), skipping creation...")
+                            stats['skipped'] += 1
+                            continue
+                        
                         # Translate article
                         en_article = translate_article(
                             da_article,
