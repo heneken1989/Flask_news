@@ -97,13 +97,14 @@ def home_test():
             # Xử lý containers (slider, job_slider, 5_articles)
             if layout_type in ['slider', 'job_slider', '5_articles']:
                 # ⚠️ ƯU TIÊN: Tìm container trong DB trước
+                # ⚠️ Nếu có nhiều containers cùng display_order, lấy cái mới nhất (created_at DESC)
                 db_container = Article.query.filter_by(
                     layout_type=layout_type,
                     section='home',
                     language=current_language,
                     display_order=display_order,
                     is_home=True
-                ).first()
+                ).order_by(Article.created_at.desc()).first()
                 
                 if db_container:
                     # ✅ Tìm thấy trong DB - Dùng toàn bộ dữ liệu từ DB
@@ -528,13 +529,14 @@ def index():
             # Xử lý containers (slider, job_slider, 5_articles)
             if layout_type in ['slider', 'job_slider', '5_articles']:
                 # ⚠️ ƯU TIÊN: Tìm container trong DB trước
+                # ⚠️ Nếu có nhiều containers cùng display_order, lấy cái mới nhất (created_at DESC)
                 db_container = Article.query.filter_by(
                     layout_type=layout_type,
                     section='home',
                     language=current_language,
                     display_order=display_order,
                     is_home=True
-                ).first()
+                ).order_by(Article.created_at.desc()).first()
                 
                 if db_container:
                     # ✅ Tìm thấy trong DB - Dùng toàn bộ dữ liệu từ DB

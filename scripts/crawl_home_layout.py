@@ -301,7 +301,7 @@ def crawl_home_layout(home_url='https://www.sermitsiaq.ag', language='da',
             # ⚠️ LƯU Ý: 
             # - Crawl tất cả articles (1_full, 2_articles, 3_articles, etc.) và set is_home=True, section='home'
             # - list_items trong 1_with_list_left/right chỉ là links, không cần crawl
-            # - job_slider_items cần crawl vì từ sjob.gl
+            # - job_slider: Chỉ tạo container, items từ sjob.gl không cần crawl (lưu trong layout_data)
             print(f"\n{'='*60}")
             print(f"🕷️  Crawling articles from home page")
             print(f"{'='*60}")
@@ -339,29 +339,14 @@ def crawl_home_layout(home_url='https://www.sermitsiaq.ag', language='da',
                             'k5a_url': item.get('k5a_url', '')
                         })
             
-            # 2. Collect job_slider_items (cần crawl vì từ sjob.gl)
+            # 2. Log job_slider (chỉ tạo container, không crawl individual items)
             for item in layout_items:
                 layout_type = item.get('layout_type', '')
                 
                 if layout_type == 'job_slider':
                     slider_articles = item.get('slider_articles', [])
                     slider_title = item.get('slider_title', '')
-                    print(f"   💼 Found job_slider with {len(slider_articles)} articles (title: {slider_title})")
-                    
-                    for slider_article in slider_articles:
-                        slider_url = slider_article.get('published_url', '')
-                        if slider_url:
-                            # Resolve relative URL
-                            if not slider_url.startswith('http'):
-                                slider_url = urljoin(home_url, slider_url)
-                            
-                            if slider_url not in [a['url'] for a in articles_to_crawl]:
-                                articles_to_crawl.append({
-                                    'url': slider_url,
-                                    'title': slider_article.get('title', ''),
-                                    'source': 'job_slider_item',
-                                    'layout_type': 'job_slider'
-                                })
+                    print(f"   💼 Found job_slider with {len(slider_articles)} articles (title: {slider_title}) - Container only, items from sjob.gl không cần crawl")
             
             # 3. Log list_items (không crawl, chỉ là links)
             for item in layout_items:
@@ -373,7 +358,7 @@ def crawl_home_layout(home_url='https://www.sermitsiaq.ag', language='da',
             
             print(f"\n   📊 Summary:")
             print(f"      - Regular articles to crawl: {len([a for a in articles_to_crawl if a['source'] == 'home_article'])} articles")
-            print(f"      - Job slider items to crawl: {len([a for a in articles_to_crawl if a['source'] == 'job_slider_item'])} articles")
+            print(f"      - Job slider: Container only (items từ sjob.gl không cần crawl)")
             print(f"      - List items (1_with_list_left/right): Chỉ là links, không cần crawl")
             
             # Crawl tất cả articles
