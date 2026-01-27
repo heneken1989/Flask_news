@@ -116,24 +116,23 @@ class SermitsiaqCrawler:
             article_language = language or self.language
             
             # Check existing articles to avoid duplicates
-            # ⚠️ QUAN TRỌNG: Chỉ check duplicate trong cùng section
-            # Vì một article có thể hợp lý xuất hiện ở nhiều section khác nhau (ví dụ: section='home' và section='sport')
-            # ⚠️ QUAN TRỌNG: Check TẤT CẢ articles trong section (bao gồm cả is_home=True và is_home=False)
-            # Vì nếu chỉ check is_home=False, sẽ bỏ qua articles với is_home=True trong cùng section → tạo duplicate
-            print(f"🔍 Checking for existing {article_language} articles in section '{section_name}'...")
-            existing_urls = set()
+            # ⚠️ QUAN TRỌNG: Check TẤT CẢ articles theo published_url + language
+            # KHÔNG filter theo section vì: 1 URL + 1 language = 1 article duy nhất trong DB
+            # (article chỉ được tạo 1 lần, section chỉ là metadata để phân loại)
+            print(f"🔍 Checking for existing {article_language} articles...")
+            existing_urls = {}  # Dict: {published_url: Article object}
             
             # ⚠️ CRITICAL: Refresh database session để tránh lấy cached data cũ
             db.session.expire_all()
             
+            # Check TẤT CẢ articles với cùng language (không filter theo section)
             existing_articles = Article.query.filter_by(
-                section=section_name,
                 language=article_language
-            ).all()  # ⚠️ Không filter is_home=False, check tất cả articles trong section
+            ).all()
             for art in existing_articles:
                 if art.published_url:
-                    existing_urls.add(art.published_url)
-            print(f"   Found {len(existing_urls)} existing articles in section '{section_name}' (including is_home=True and is_home=False)")
+                    existing_urls[art.published_url] = art
+            print(f"   Found {len(existing_urls)} existing {article_language} articles (all sections)")
             
             # Save new articles to database (only if not exists)
             print("💾 Saving new articles to database...")
@@ -375,15 +374,17 @@ class SermitsiaqCrawler:
             article_language = language or self.language
             
             # Check existing articles trước khi crawl để biết articles nào đã tồn tại
-            print(f"🔍 Checking for existing {article_language} home articles...")
+            print(f"🔍 Checking for existing {article_language} articles...")
             
             # ⚠️ CRITICAL: Refresh database session để tránh lấy cached data cũ
             db.session.expire_all()
             
             existing_articles_map = {}  # Dict: {published_url: Article} hoặc {(layout_type, display_order): Article} cho sliders
+            
+            # ⚠️ CRITICAL: Check TẤT CẢ articles theo published_url + language
+            # KHÔNG filter theo section vì articles từ các sections khác có thể xuất hiện trên home
+            # (ví dụ: erhverv articles trên home page)
             existing_articles = Article.query.filter_by(
-                section='home', 
-                is_home=True,
                 language=article_language
             ).all()
             
@@ -392,10 +393,12 @@ class SermitsiaqCrawler:
                     existing_articles_map[art.published_url] = art
                 elif art.layout_type in ['slider', 'job_slider']:
                     # Slider containers: key bằng (layout_type, display_order)
-                    key = (art.layout_type, art.display_order)
-                    existing_articles_map[key] = art
+                    # Chỉ lưu sliders có section='home'
+                    if art.section == 'home':
+                        key = (art.layout_type, art.display_order)
+                        existing_articles_map[key] = art
             
-            print(f"   Found {len(existing_articles_map)} existing home articles (section='home', is_home=True, language='{article_language}')")
+            print(f"   Found {len(existing_articles_map)} existing {article_language} articles (all sections)")
             
             # Save new articles to database (update sẽ làm sau)
             print("💾 Saving new home articles...")
@@ -842,7 +845,8 @@ class SermitsiaqCrawler:
                         
                         existing_article.grid_size = article_data.get('grid_size', 6)
                         existing_article.is_home = True
-                        existing_article.section = 'home'
+                        # ⚠️ KHÔNG update section - giữ nguyên section gốc từ URL
+                        # (ví dụ: erhverv article vẫn có section='erhverv', chỉ set is_home=True)
                         
                         if existing_article.id not in updated_article_ids:
                             updated_article_ids.add(existing_article.id)
