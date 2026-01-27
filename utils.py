@@ -266,34 +266,73 @@ def prepare_home_layouts(articles):
                 continue  # Skip thêm layout item này vào result
             
         elif layout_type == '5_articles':
-            # 5 articles 1 row (NUUK) - chỉ lấy articles trong cùng row
-            row_articles = []
-            for j in range(i, min(i+5, len(articles))):
-                next_article = articles[j]
-                next_display_order = next_article.get('display_order', 0)
-                next_row_index = next_display_order // 1000
-                if next_row_index == row_index:
-                    row_articles.append(next_article)
-                else:
-                    break
+            # 5 articles container (NUUK) - giống slider, lấy articles từ layout_data.slider_articles
+            layout_data = article.get('layout_data', {})
+            slider_articles = layout_data.get('slider_articles', [])
+            slider_title = layout_data.get('slider_title', 'NUUK')
+            has_nav = layout_data.get('has_nav', False)
+            items_per_view = layout_data.get('items_per_view', 5)
+            source_class = layout_data.get('source_class', 'source_nuuk')
             
-            if len(row_articles) >= 5:
-                layout_item['data'] = {
-                    'articles': row_articles[:5]
-                }
-                i += len(row_articles)
-            elif len(row_articles) > 0:
-                # Không đủ 5 articles, chỉ hiển thị những articles có sẵn
-                print(f"   ⚠️  Row {row_index} has only {len(row_articles)} articles for 5_articles layout, expected 5. Displaying available articles only.")
-                layout_item['data'] = {
-                    'articles': row_articles
-                }
-                i += len(row_articles)
+            # Debug: Log số articles trong slider
+            if not isinstance(slider_articles, list):
+                print(f"⚠️  WARNING: slider_articles is not a list, type: {type(slider_articles)}")
+                slider_articles = []
             else:
-                # Không có articles nào, skip layout item
-                print(f"   ⚠️  Row {row_index} has no articles for 5_articles layout. Skipping this layout item.")
-                i += 1
-                continue
+                print(f"🏙️  Preparing 5_articles container '{slider_title}': {len(slider_articles)} articles")
+                if len(slider_articles) < 5:
+                    print(f"   ⚠️  WARNING: 5_articles container has only {len(slider_articles)} articles")
+            
+            # Convert slider_articles URLs từ published_url sang Flask app URL
+            from flask import url_for
+            from database import Article
+            updated_slider_articles = []
+            for item in slider_articles:
+                updated_item = item.copy()
+                # Nếu item có id, tìm Article và dùng to_dict() để get Flask URL
+                if item.get('id'):
+                    try:
+                        article_obj = Article.query.get(item['id'])
+                        if article_obj:
+                            article_dict = article_obj.to_dict()
+                            updated_item['url'] = article_dict.get('url', item.get('url', '#'))
+                    except:
+                        # Fallback: dùng published_url nếu không tìm thấy Article
+                        updated_item['url'] = item.get('url', '#')
+                else:
+                    # Nếu không có id, tìm Article bằng published_url
+                    published_url = item.get('url') or item.get('published_url')
+                    if published_url:
+                        try:
+                            article_obj = Article.query.filter_by(published_url=published_url).first()
+                            if article_obj:
+                                article_dict = article_obj.to_dict()
+                                updated_item['url'] = article_dict.get('url', published_url)
+                            else:
+                                # Không tìm thấy, giữ nguyên published_url
+                                updated_item['url'] = published_url
+                        except:
+                            updated_item['url'] = published_url
+                updated_slider_articles.append(updated_item)
+            slider_articles = updated_slider_articles
+            
+            # Convert slider_articles thành format articles cho template
+            # Template expect articles list với url, title, image, etc.
+            articles_list = []
+            for item in slider_articles:
+                article_dict = {
+                    'url': item.get('url', '#'),
+                    'title': item.get('title', ''),
+                    'section': item.get('section', ''),
+                    'is_paywall': item.get('is_paywall', False),
+                    'image': item.get('image', {})
+                }
+                articles_list.append(article_dict)
+            
+            layout_item['data'] = {
+                'articles': articles_list[:5]  # Chỉ lấy 5 articles đầu tiên
+            }
+            i += 1
             
         elif layout_type == '1_special_bg':
             # 1 article với special background

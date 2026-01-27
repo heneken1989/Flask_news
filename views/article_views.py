@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, make_response, session
 from datetime import datetime
 from utils import apply_grid_size_pattern, prepare_home_layouts, get_home_articles_by_language
-from database import Article, Category
+from database import Article, Category, db
 
 article_view_bp = Blueprint('article_views', __name__)
 
@@ -94,10 +94,10 @@ def home_test():
             layout_type = layout_item.get('layout_type', '')
             display_order = layout_item.get('display_order', 0)
             
-            # Xử lý slider containers (slider và job_slider)
-            if layout_type in ['slider', 'job_slider']:
-                # ⚠️ ƯU TIÊN: Tìm slider container trong DB trước
-                db_slider_container = Article.query.filter_by(
+            # Xử lý containers (slider, job_slider, 5_articles)
+            if layout_type in ['slider', 'job_slider', '5_articles']:
+                # ⚠️ ƯU TIÊN: Tìm container trong DB trước
+                db_container = Article.query.filter_by(
                     layout_type=layout_type,
                     section='home',
                     language=current_language,
@@ -105,19 +105,19 @@ def home_test():
                     is_home=True
                 ).first()
                 
-                if db_slider_container:
+                if db_container:
                     # ✅ Tìm thấy trong DB - Dùng toàn bộ dữ liệu từ DB
-                    slider_data = {
-                        'id': db_slider_container.id,
-                        'title': db_slider_container.title or (db_slider_container.layout_data.get('slider_title', '') if db_slider_container.layout_data else ''),
+                    container_data = {
+                        'id': db_container.id,
+                        'title': db_container.title or (db_container.layout_data.get('slider_title', '') if db_container.layout_data else ''),
                         'layout_type': layout_type,
-                        'display_order': db_slider_container.display_order,
-                        'layout_data': db_slider_container.layout_data.copy() if db_slider_container.layout_data else {},
+                        'display_order': db_container.display_order,
+                        'layout_data': db_container.layout_data.copy() if db_container.layout_data else {},
                         'published_url': '',
                         'is_home': True,
                         'section': 'home'
                     }
-                    print(f"      ✅ Using {layout_type} from DB (ID: {db_slider_container.id}, display_order: {db_slider_container.display_order})")
+                    print(f"      ✅ Using {layout_type} from DB (ID: {db_container.id}, display_order: {db_container.display_order})")
                 else:
                     # ⚠️ Không tìm thấy trong DB - Fallback sang layout file
                     print(f"      ⚠️  {layout_type} not found in DB (display_order: {display_order}), using layout file")
@@ -125,7 +125,11 @@ def home_test():
                     # Get layout_data from layout_item
                     layout_item_data = layout_item.get('layout_data', {})
                     
-                    slider_data = {
+                    # Set default items_per_view dựa trên layout_type
+                    default_items_per_view = 5 if layout_type == '5_articles' else 4
+                    default_source_class = 'source_nuuk' if layout_type == '5_articles' else 'source_nyheder'
+                    
+                    container_data = {
                         'id': None,
                         'title': layout_item_data.get('slider_title', ''),
                         'layout_type': layout_type,
@@ -133,9 +137,9 @@ def home_test():
                         'layout_data': {
                             'slider_title': layout_item_data.get('slider_title', ''),
                             'slider_articles': [],
-                            'has_nav': layout_item_data.get('has_nav', True),
-                            'items_per_view': layout_item_data.get('items_per_view', 4),
-                            'source_class': layout_item_data.get('source_class', 'source_nyheder')
+                            'has_nav': layout_item_data.get('has_nav', False if layout_type == '5_articles' else True),
+                            'items_per_view': layout_item_data.get('items_per_view', default_items_per_view),
+                            'source_class': layout_item_data.get('source_class', default_source_class)
                         },
                         'published_url': '',
                         'is_home': True,
@@ -144,11 +148,11 @@ def home_test():
                     
                     # Job slider specific fields
                     if layout_type == 'job_slider':
-                        slider_data['layout_data']['header_link'] = layout_item_data.get('header_link')
-                        slider_data['layout_data']['extra_classes'] = layout_item_data.get('extra_classes', [])
-                        slider_data['layout_data']['header_classes'] = layout_item_data.get('header_classes', [])
+                        container_data['layout_data']['header_link'] = layout_item_data.get('header_link')
+                        container_data['layout_data']['extra_classes'] = layout_item_data.get('extra_classes', [])
+                        container_data['layout_data']['header_classes'] = layout_item_data.get('header_classes', [])
                     
-                    # Link các articles trong slider từ layout file
+                    # Link các articles trong container từ layout file
                     slider_articles = layout_item_data.get('slider_articles', [])
                     for slider_article in slider_articles:
                         slider_url = slider_article.get('published_url') or slider_article.get('url', '')
@@ -156,13 +160,13 @@ def home_test():
                             for article in articles_map[slider_url]:
                                 if article.language == current_language:
                                     article_dict = article.to_dict()
-                                    slider_data['layout_data']['slider_articles'].append(article_dict)
+                                    container_data['layout_data']['slider_articles'].append(article_dict)
                                     break
                         elif slider_url:
                             # Job slider articles từ sjob.gl - không có trong DB
-                            slider_data['layout_data']['slider_articles'].append(slider_article)
+                            container_data['layout_data']['slider_articles'].append(slider_article)
                 
-                articles.append(slider_data)
+                articles.append(container_data)
                 continue
             
             # Xử lý articles thông thường
@@ -463,19 +467,31 @@ def index():
         
         # Pre-fetch articles - chỉ lấy articles có is_home=True cho home page
         # ⚠️ QUAN TRỌNG: Chỉ lấy articles đã được link vào home (is_home=True) và is_temp=False
+        # ⚠️ QUAN TRỌNG: Bao gồm cả containers (slider, job_slider, 5_articles) không có published_url
         all_articles = Article.query.filter(
-            Article.published_url.isnot(None),
-            Article.published_url != '',
             Article.is_home == True,  # Chỉ lấy articles đã được link vào home
             Article.is_temp == False  # ⚠️ Chỉ lấy articles đã hoàn thành (đã crawl detail)
+        ).filter(
+            # Articles có published_url HOẶC containers (slider, job_slider, 5_articles)
+            db.or_(
+                db.and_(
+                    Article.published_url.isnot(None),
+                    Article.published_url != ''
+                ),
+                Article.layout_type.in_(['slider', 'job_slider', '5_articles'])
+            )
         ).all()
         
         articles_map = {}
+        containers_list = []  # List để lưu containers (slider, job_slider, 5_articles)
         for article in all_articles:
             if article.published_url:
                 if article.published_url not in articles_map:
                     articles_map[article.published_url] = []
                 articles_map[article.published_url].append(article)
+            elif article.layout_type in ['slider', 'job_slider', '5_articles']:
+                # Containers không có published_url, lưu riêng
+                containers_list.append(article)
         
         print(f"   📚 Found {len(articles_map)} unique URLs in database (is_home=True)")
         
@@ -509,10 +525,10 @@ def index():
             layout_type = layout_item.get('layout_type', '')
             display_order = layout_item.get('display_order', 0)
             
-            # Xử lý slider containers (slider và job_slider)
-            if layout_type in ['slider', 'job_slider']:
-                # ⚠️ ƯU TIÊN: Tìm slider container trong DB trước
-                db_slider_container = Article.query.filter_by(
+            # Xử lý containers (slider, job_slider, 5_articles)
+            if layout_type in ['slider', 'job_slider', '5_articles']:
+                # ⚠️ ƯU TIÊN: Tìm container trong DB trước
+                db_container = Article.query.filter_by(
                     layout_type=layout_type,
                     section='home',
                     language=current_language,
@@ -520,19 +536,19 @@ def index():
                     is_home=True
                 ).first()
                 
-                if db_slider_container:
+                if db_container:
                     # ✅ Tìm thấy trong DB - Dùng toàn bộ dữ liệu từ DB
-                    slider_data = {
-                        'id': db_slider_container.id,
-                        'title': db_slider_container.title or (db_slider_container.layout_data.get('slider_title', '') if db_slider_container.layout_data else ''),
+                    container_data = {
+                        'id': db_container.id,
+                        'title': db_container.title or (db_container.layout_data.get('slider_title', '') if db_container.layout_data else ''),
                         'layout_type': layout_type,
-                        'display_order': db_slider_container.display_order,
-                        'layout_data': db_slider_container.layout_data.copy() if db_slider_container.layout_data else {},
+                        'display_order': db_container.display_order,
+                        'layout_data': db_container.layout_data.copy() if db_container.layout_data else {},
                         'published_url': '',
                         'is_home': True,
                         'section': 'home'
                     }
-                    print(f"      ✅ Using {layout_type} from DB (ID: {db_slider_container.id}, display_order: {db_slider_container.display_order})")
+                    print(f"      ✅ Using {layout_type} from DB (ID: {db_container.id}, display_order: {db_container.display_order})")
                 else:
                     # ⚠️ Không tìm thấy trong DB - Fallback sang layout file
                     print(f"      ⚠️  {layout_type} not found in DB (display_order: {display_order}), using layout file")
@@ -540,7 +556,11 @@ def index():
                     # Get layout_data from layout_item
                     layout_item_data = layout_item.get('layout_data', {})
                     
-                    slider_data = {
+                    # Set default items_per_view dựa trên layout_type
+                    default_items_per_view = 5 if layout_type == '5_articles' else 4
+                    default_source_class = 'source_nuuk' if layout_type == '5_articles' else 'source_nyheder'
+                    
+                    container_data = {
                         'id': None,
                         'title': layout_item_data.get('slider_title', ''),
                         'layout_type': layout_type,
@@ -548,9 +568,9 @@ def index():
                         'layout_data': {
                             'slider_title': layout_item_data.get('slider_title', ''),
                             'slider_articles': [],
-                            'has_nav': layout_item_data.get('has_nav', True),
-                            'items_per_view': layout_item_data.get('items_per_view', 4),
-                            'source_class': layout_item_data.get('source_class', 'source_nyheder')
+                            'has_nav': layout_item_data.get('has_nav', False if layout_type == '5_articles' else True),
+                            'items_per_view': layout_item_data.get('items_per_view', default_items_per_view),
+                            'source_class': layout_item_data.get('source_class', default_source_class)
                         },
                         'published_url': '',
                         'is_home': True,
@@ -559,11 +579,11 @@ def index():
                     
                     # Job slider specific fields
                     if layout_type == 'job_slider':
-                        slider_data['layout_data']['header_link'] = layout_item_data.get('header_link')
-                        slider_data['layout_data']['extra_classes'] = layout_item_data.get('extra_classes', [])
-                        slider_data['layout_data']['header_classes'] = layout_item_data.get('header_classes', [])
+                        container_data['layout_data']['header_link'] = layout_item_data.get('header_link')
+                        container_data['layout_data']['extra_classes'] = layout_item_data.get('extra_classes', [])
+                        container_data['layout_data']['header_classes'] = layout_item_data.get('header_classes', [])
                     
-                    # Link các articles trong slider từ layout file
+                    # Link các articles trong container từ layout file
                     slider_articles = layout_item_data.get('slider_articles', [])
                     for slider_article in slider_articles:
                         slider_url = slider_article.get('published_url') or slider_article.get('url', '')
@@ -571,13 +591,13 @@ def index():
                             for article in articles_map[slider_url]:
                                 if article.language == current_language:
                                     article_dict = article.to_dict()
-                                    slider_data['layout_data']['slider_articles'].append(article_dict)
+                                    container_data['layout_data']['slider_articles'].append(article_dict)
                                     break
                         elif slider_url:
                             # Job slider articles từ sjob.gl - không có trong DB
-                            slider_data['layout_data']['slider_articles'].append(slider_article)
+                            container_data['layout_data']['slider_articles'].append(slider_article)
                 
-                articles.append(slider_data)
+                articles.append(container_data)
                 continue
             
             # Xử lý articles thông thường
