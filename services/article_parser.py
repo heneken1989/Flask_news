@@ -714,7 +714,8 @@ def parse_slider(slider_elem, base_url='https://www.sermitsiaq.ag'):
 
 def parse_nuuk_articles(nuuk_elem, base_url='https://www.sermitsiaq.ag', row_index=0):
     """
-    Parse NUUK articlescroller thành 5 articles riêng lẻ với layout_type='5_articles'
+    Parse NUUK articlescroller thành một container với layout_type='5_articles'
+    Giống như parse_slider(), nhưng với layout_type='5_articles' và items_per_view=5
     
     Args:
         nuuk_elem: BeautifulSoup element của div.articlescroller.source_nuuk
@@ -722,9 +723,22 @@ def parse_nuuk_articles(nuuk_elem, base_url='https://www.sermitsiaq.ag', row_ind
         row_index: Index của row để tính display_order
     
     Returns:
-        list: List of 5 article dictionaries với layout_type='5_articles'
+        dict: Container dictionary với layout_type='5_articles' và layout_data chứa slider info
     """
     try:
+        element_guid = nuuk_elem.get('data-element-guid', '')
+        slider_id = nuuk_elem.get('id', '')
+        
+        # Parse slider title
+        title_elem = nuuk_elem.find('h2', class_='articlescroller-header')
+        slider_title = ''
+        if title_elem:
+            span = title_elem.find('span')
+            if span:
+                slider_title = span.get_text(strip=True)
+            else:
+                slider_title = title_elem.get_text(strip=True)
+        
         # Tìm scroll-container và các items
         inner_content = nuuk_elem.find('div', class_='inner')
         if not inner_content:
@@ -733,35 +747,51 @@ def parse_nuuk_articles(nuuk_elem, base_url='https://www.sermitsiaq.ag', row_ind
         scroll_container = inner_content.find('ul', class_=lambda x: x and 'scroll-container' in x)
         if not scroll_container:
             print(f"  ⚠️  NUUK: No scroll-container found")
-            return []
+            return None
+        
+        # Check xem có nav buttons không
+        has_nav = inner_content.find('nav') is not None
         
         items = scroll_container.find_all('li', class_=lambda x: x and 'scroll-item' in x)
         print(f"  🏙️  NUUK: Found {len(items)} items")
         
-        nuuk_articles = []
+        # Parse các articles trong slider
+        slider_articles = []
         for idx, item in enumerate(items):
-            # Parse mỗi item như một article
             article_data = parse_slider_item(item, base_url)
             if article_data:
-                # Convert 'image' thành 'image_data' để lưu vào database
-                if 'image' in article_data and article_data['image']:
-                    article_data['image_data'] = article_data.pop('image')
-                
-                # Set layout_type và display_order
-                article_data['layout_type'] = '5_articles'
-                article_data['display_order'] = row_index * 1000 + idx
-                article_data['section'] = 'home'
-                article_data['is_home'] = True
-                nuuk_articles.append(article_data)
+                article_data['position'] = idx  # Thứ tự trong slider
+                slider_articles.append(article_data)
         
-        print(f"  ✅ NUUK: Successfully parsed {len(nuuk_articles)} articles")
-        return nuuk_articles
+        print(f"  ✅ NUUK: Successfully parsed {len(slider_articles)}/{len(items)} slider items")
+        
+        # Build layout_data - giống như parse_slider()
+        layout_data = {
+            'slider_title': slider_title,
+            'slider_articles': slider_articles,
+            'slider_id': slider_id,
+            'has_nav': has_nav,
+            'items_per_view': 5,  # NUUK luôn có 5 items
+            'source_class': 'source_nuuk'
+        }
+        
+        # Trả về container dict (giống parse_slider())
+        return {
+            'element_guid': element_guid,
+            'slider_id': slider_id,
+            'layout_type': '5_articles',  # Layout type đặc biệt cho NUUK
+            'title': slider_title or 'NUUK Articles',  # Fallback title
+            'url': '',  # Container không có URL riêng
+            'section': 'home',
+            'layout_data': layout_data,
+            'is_home': True
+        }
         
     except Exception as e:
         print(f"  ❌ Error parsing NUUK articles: {e}")
         import traceback
         traceback.print_exc()
-        return []
+        return None
 
 
 def parse_articles_from_html(html_content, base_url='https://www.sermitsiaq.ag', is_home=False):
@@ -814,11 +844,16 @@ def parse_articles_from_html(html_content, base_url='https://www.sermitsiaq.ag',
                     is_nuuk = 'source_nuuk' in slider_classes
                     
                     if is_nuuk:
-                        # Parse NUUK như 5 articles riêng lẻ
-                        nuuk_articles = parse_nuuk_articles(slider_elem, base_url, row_idx)
-                        if nuuk_articles:
-                            articles.extend(nuuk_articles)
-                            print(f"🏙️  Parsed NUUK: {len(nuuk_articles)} articles")
+                        # Parse NUUK như một container (giống slider)
+                        nuuk_container = parse_nuuk_articles(slider_elem, base_url, row_idx)
+                        if nuuk_container:
+                            nuuk_container['display_order'] = row_idx * 1000  # Đặt display_order dựa trên vị trí row
+                            nuuk_container['row_index'] = row_idx  # Lưu row_index
+                            nuuk_container['total_rows'] = total_rows  # Lưu tổng số rows
+                            articles.append(nuuk_container)
+                            slider_title = nuuk_container.get('layout_data', {}).get('slider_title', 'Untitled')
+                            slider_articles_count = len(nuuk_container.get('layout_data', {}).get('slider_articles', []))
+                            print(f"🏙️  Parsed NUUK container '{slider_title}': {slider_articles_count} articles")
                     else:
                         # Parse như slider thông thường
                         slider_data = parse_slider(slider_elem, base_url)

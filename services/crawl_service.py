@@ -410,7 +410,7 @@ class SermitsiaqCrawler:
             updated_article_ids = set()  # Track IDs đã được update để tránh đếm trùng
             skipped_articles_info = []  # Track thông tin articles bị skip để debug
             articles_to_update = []  # Track articles cần update sau khi save xong
-            # Note: existing_urls từ existing_articles_map đã là dict, không cần khai báo lại
+            existing_urls = {}  # Dict: {published_url: Article} - Track URLs trong batch này để tránh duplicate
             for idx, article_data in enumerate(articles):
                 try:
                     # ⚠️ KHÔNG set section='home' hardcoded ở đây
@@ -424,9 +424,10 @@ class SermitsiaqCrawler:
                     article_url = article_data.get('url', '')
                     layout_type = article_data.get('layout_type', '')
                     
-                    # Slider containers không có URL nhưng vẫn cần được lưu để giữ cấu trúc home page
+                    # Slider containers (slider, job_slider, 5_articles) không có URL nhưng vẫn cần được lưu để giữ cấu trúc home page
                     # Sử dụng element_guid hoặc display_order để identify
-                    is_slider_container = layout_type in ['slider', 'job_slider'] and not article_url
+                    # ⚠️ QUAN TRỌNG: 5_articles giờ là container (không tạo individual articles), giống slider và job_slider
+                    is_slider_container = layout_type in ['slider', 'job_slider', '5_articles'] and not article_url
                     
                     if not article_url and not is_slider_container:
                         # Không có URL và không phải slider container, skip
