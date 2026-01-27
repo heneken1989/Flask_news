@@ -596,16 +596,38 @@ class SermitsiaqCrawler:
                             continue
                     elif article_url:
                         # Articles có URL: check bằng published_url
-                        if article_url in existing_articles_map:
-                            # Đã tồn tại, sẽ update sau khi save xong tất cả articles mới
-                            articles_to_update.append({
-                                'type': 'article',
-                                'key': article_url,
-                                'article': existing_articles_map[article_url],
-                                'article_data': article_data,
-                                'display_order': display_order
-                            })
-                            continue
+                        # ⚠️ QUAN TRỌNG: Với 1_with_list_left/right, chỉ check trong section='home'
+                        # Vì chúng chỉ xuất hiện ở home, không nên check trong các sections khác
+                        if layout_type in ['1_with_list_left', '1_with_list_right']:
+                            # Check riêng trong section='home'
+                            existing_article = Article.query.filter_by(
+                                published_url=article_url,
+                                language=article_language,
+                                section='home'
+                            ).first()
+                            
+                            if existing_article:
+                                # Đã tồn tại trong section='home', sẽ update sau
+                                articles_to_update.append({
+                                    'type': 'article',
+                                    'key': article_url,
+                                    'article': existing_article,
+                                    'article_data': article_data,
+                                    'display_order': display_order
+                                })
+                                continue
+                        else:
+                            # Articles khác: check trong tất cả sections (như hiện tại)
+                            if article_url in existing_articles_map:
+                                # Đã tồn tại, sẽ update sau khi save xong tất cả articles mới
+                                articles_to_update.append({
+                                    'type': 'article',
+                                    'key': article_url,
+                                    'article': existing_articles_map[article_url],
+                                    'article_data': article_data,
+                                    'display_order': display_order
+                                })
+                                continue
                     
                     # Luôn tạo mới article (nếu chưa tồn tại)
                     print(f"  ➕ Will create new article: {article_data.get('title', 'Untitled')[:50]}... (URL: {article_url[:60] if article_url else 'no URL'}...)")

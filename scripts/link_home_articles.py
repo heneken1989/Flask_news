@@ -29,6 +29,7 @@ from scripts.crawl_home_layout import crawl_home_layout, save_layout_to_file
 from services.translation_service import translate_article
 from scripts.translate_article_urls import translate_url
 from scripts.generate_sitemaps import generate_sitemap
+from sqlalchemy import or_
 import time
 
 
@@ -855,13 +856,21 @@ def create_missing_en_articles(layout_items, language='da', dry_run=False, delay
         print(f"   Found {len(layout_urls)} unique URLs in layout to check")
         
         # Lấy DA articles có published_url trong layout
+        # ⚠️ QUAN TRỌNG: Với 1_with_list_left/right, chỉ lấy articles có section='home'
+        # Vì chúng chỉ xuất hiện ở home, không nên query vào các sections khác
         da_articles = Article.query.filter(
             Article.language == 'da',
             Article.is_home == True,
-            Article.published_url.in_(layout_urls)
+            Article.published_url.in_(layout_urls),
+            # Nếu layout_type là 1_with_list_left/right, phải có section='home'
+            # Nếu layout_type khác, không cần filter section
+            or_(
+                Article.layout_type.notin_(['1_with_list_left', '1_with_list_right']),
+                Article.section == 'home'
+            )
         ).all()
         
-        print(f"   Found {len(da_articles)} DA articles in layout to check")
+        print(f"   Found {len(da_articles)} DA articles in layout to check (filtered: 1_with_list_left/right only in section='home')")
         
         for idx, da_article in enumerate(da_articles, 1):
             try:
