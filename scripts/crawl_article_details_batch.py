@@ -31,6 +31,8 @@ import os
 import argparse
 from datetime import datetime
 import time
+from contextlib import contextmanager
+import shutil
 
 # Add parent directory to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -47,6 +49,199 @@ USER_DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__f
 LOGIN_URL = "https://www.sermitsiaq.ag/login"
 LOGIN_EMAIL = "aluu@greenland.org"
 LOGIN_PASSWORD = "LEn924924jfkjfk"
+
+
+def get_chrome_options_for_headless():
+    """
+    Trả về Chrome options cần thiết cho Linux headless server
+    Cần thiết khi chạy với root hoặc không có display
+    """
+    # --no-sandbox: Bỏ qua sandbox (cần thiết khi chạy với root)
+    # --disable-dev-shm-usage: Tránh lỗi shared memory trên VPS
+    # --disable-gpu: Tắt GPU (không cần trên server)
+    return "no-sandbox,disable-dev-shm-usage,disable-gpu"
+
+
+def kill_chrome_processes():
+    """
+    Kill tất cả Chrome/Chromium processes đang chạy để tránh conflict
+    """
+    import subprocess
+    try:
+        # Tìm tất cả Chrome processes
+        result = subprocess.run(
+            ['ps', 'aux'],
+            capture_output=True,
+            text=True
+        )
+        
+        chrome_pids = []
+        for line in result.stdout.split('\n'):
+            if any(keyword in line.lower() for keyword in ['chrome', 'chromium', 'chromedriver']):
+                # Tránh kill chính script này
+                if 'check_chrome_status.py' not in line and 'python' not in line.lower()[:50]:
+                    parts = line.split()
+                    if len(parts) > 1:
+                        try:
+                            pid = int(parts[1])
+                            chrome_pids.append(pid)
+                        except:
+                            pass
+        
+        if chrome_pids:
+            print(f"   🔪 Killing {len(chrome_pids)} Chrome/Chromium processes: {chrome_pids[:5]}{'...' if len(chrome_pids) > 5 else ''}")
+            for pid in chrome_pids:
+                try:
+                    os.kill(pid, 9)  # SIGKILL
+                except ProcessLookupError:
+                    # Process đã chết
+                    pass
+                except Exception as e:
+                    print(f"   ⚠️  Error killing process {pid}: {e}")
+            
+            # Đợi một chút để processes được kill
+            time.sleep(2)
+            print(f"   ✅ Killed Chrome processes")
+            return len(chrome_pids)
+        else:
+            return 0
+            
+    except Exception as e:
+        print(f"   ⚠️  Error killing Chrome processes: {e}")
+        return 0
+
+
+def cleanup_user_data_dir():
+    """
+    Xóa user_data_dir cũ nếu tồn tại để tránh conflict
+    """
+    if os.path.exists(USER_DATA_DIR):
+        try:
+            print(f"   🗑️  Removing old user_data_dir: {USER_DATA_DIR}")
+            shutil.rmtree(USER_DATA_DIR)
+            print(f"   ✅ Removed old user_data_dir")
+        except Exception as e:
+            print(f"   ⚠️  Error removing user_data_dir: {e}")
+            # Thử xóa từng file nếu không xóa được cả thư mục
+            try:
+                for root, dirs, files in os.walk(USER_DATA_DIR):
+                    for f in files:
+                        try:
+                            os.remove(os.path.join(root, f))
+                        except:
+                            pass
+                    for d in dirs:
+                        try:
+                            os.rmdir(os.path.join(root, d))
+                        except:
+                            pass
+                os.rmdir(USER_DATA_DIR)
+                print(f"   ✅ Removed user_data_dir (file by file)")
+            except:
+                pass
+
+
+def create_fresh_user_data_dir():
+    """
+    Tạo user_data_dir mới với permissions đúng
+    """
+    cleanup_user_data_dir()
+    os.makedirs(USER_DATA_DIR, exist_ok=True)
+    os.chmod(USER_DATA_DIR, 0o755)  # rwxr-xr-x
+    print(f"   ✅ Created fresh user_data_dir: {USER_DATA_DIR}")
+
+
+@contextmanager
+def start_browser_with_retry(headless=True, max_retries=2):
+    """
+    Start browser với retry logic: nếu không start được, xóa user_data_dir và thử lại
+    
+    Args:
+        headless: Run browser in headless mode
+        max_retries: Số lần retry tối đa
+    
+    Yields:
+        SB instance
+    """
+    chrome_opts = get_chrome_options_for_headless()
+    sb_context = None
+    sb = None
+    sb_entered = False
+    
+    for attempt in range(max_retries + 1):
+        try:
+            # Kill Chrome processes trước khi start (tránh conflict)
+            if attempt == 0:
+                # Lần đầu: kill Chrome processes nếu có
+                killed = kill_chrome_processes()
+                if killed > 0:
+                    print(f"   ⏳ Waiting 3 seconds for processes to fully terminate...")
+                    time.sleep(3)
+            else:
+                # Các lần retry: kill lại và tạo lại user_data_dir mới
+                print(f"   🔄 Retry attempt {attempt}/{max_retries}: Killing Chrome processes and creating fresh user_data_dir...")
+                kill_chrome_processes()
+                time.sleep(2)
+                create_fresh_user_data_dir()
+            
+            # Tạo user_data_dir nếu chưa tồn tại
+            if attempt == 0:
+                # Lần đầu: thử với user_data_dir hiện tại (nếu có)
+                os.makedirs(USER_DATA_DIR, exist_ok=True)
+                os.chmod(USER_DATA_DIR, 0o755)
+            
+            # Thử start browser - sử dụng context manager đúng cách
+            sb_context = SB(uc=True, headless=headless, user_data_dir=USER_DATA_DIR, chromium_arg=chrome_opts)
+            sb = sb_context.__enter__()  # Start browser và lấy SB instance
+            sb_entered = True
+            print(f"   ✅ Browser started successfully (attempt {attempt + 1}/{max_retries + 1})")
+            try:
+                yield sb
+            finally:
+                # Cleanup khi exit context
+                if sb_entered and sb_context:
+                    try:
+                        sb_context.__exit__(None, None, None)
+                    except Exception as cleanup_error:
+                        print(f"   ⚠️  Error during browser cleanup: {cleanup_error}")
+            return
+            
+        except Exception as e:
+            error_msg = str(e)
+            error_type = str(type(e))
+            
+            # Cleanup nếu browser đã được start nhưng có lỗi
+            if sb_entered and sb_context:
+                try:
+                    sb_context.__exit__(None, None, None)
+                except:
+                    pass
+                sb_entered = False
+                sb_context = None
+                sb = None
+            
+            # Kiểm tra xem có phải lỗi browser start không
+            is_browser_start_error = (
+                'SessionNotCreatedException' in error_type or 
+                'cannot connect to chrome' in error_msg.lower() or 
+                'chrome not reachable' in error_msg.lower() or
+                'session not created' in error_msg.lower()
+            )
+            
+            if is_browser_start_error:
+                if attempt < max_retries:
+                    print(f"   ⚠️  Browser start failed (attempt {attempt + 1}/{max_retries + 1}): {error_msg[:150]}")
+                    print(f"   🔄 Will retry with fresh user_data_dir...")
+                    sb = None
+                    continue
+                else:
+                    print(f"   ❌ Browser start failed after {max_retries + 1} attempts")
+                    print(f"   ❌ Last error: {error_msg[:200]}")
+                    raise
+            else:
+                # Lỗi khác, không retry - re-raise ngay
+                print(f"   ❌ Browser start failed with unexpected error: {error_msg[:200]}")
+                raise
 
 
 def get_articles_to_crawl(language=None, section=None, limit=None):
@@ -844,10 +1039,8 @@ def crawl_article_detail(url: str, language: str = 'da', headless: bool = True):
     """
     print(f"🔍 Crawling: {url[:70]}...")
     
-    # Tạo user_data_dir nếu chưa tồn tại
-    os.makedirs(USER_DATA_DIR, exist_ok=True)
-    
-    with SB(uc=True, headless=headless, user_data_dir=USER_DATA_DIR) as sb:
+    # Start browser với retry logic (tự động xóa và tạo lại user_data_dir nếu cần)
+    with start_browser_with_retry(headless=headless) as sb:
         # Đảm bảo đã login trước khi crawl (chỉ login 1 lần cho batch)
         # Note: Login sẽ được thực hiện ở batch_crawl_articles, không cần login lại mỗi article
         try:
@@ -855,12 +1048,29 @@ def crawl_article_detail(url: str, language: str = 'da', headless: bool = True):
             sb.open(url)
             sb.sleep(2)  # Wait for page to load
             
-            # Wait for bodytext content
+            # Kiểm tra xem có phải liveblog không (có .livefeed)
+            is_liveblog = False
             try:
-                sb.wait_for_element('.bodytext', timeout=10)
+                livefeed_elem = sb.find_element('.livefeed', timeout=3)
+                if livefeed_elem:
+                    is_liveblog = True
+                    print(f"   📺 Detected liveblog format")
             except:
-                print(f"   ⚠️  Timeout waiting for .bodytext")
-                return None
+                pass
+            
+            # Wait for content (bodytext hoặc livefeed)
+            if is_liveblog:
+                try:
+                    sb.wait_for_element('.livefeed', timeout=10)
+                except:
+                    print(f"   ⚠️  Timeout waiting for .livefeed")
+                    return None
+            else:
+                try:
+                    sb.wait_for_element('.bodytext', timeout=10)
+                except:
+                    print(f"   ⚠️  Timeout waiting for .bodytext")
+                    return None
             
             # Get article title
             title = None
@@ -914,26 +1124,49 @@ def crawl_article_detail(url: str, language: str = 'da', headless: bool = True):
                 except:
                     pass
             
-            # Get bodytext HTML
+            # Get content HTML (bodytext hoặc livefeed)
             bodytext_html = None
+            livefeed_html = None
+            
             try:
                 page_source = sb.get_page_source()
                 from bs4 import BeautifulSoup
                 soup = BeautifulSoup(page_source, 'html.parser')
                 
-                bodytext_div = soup.find('div', class_='bodytext', attrs={'data-element-guid': True})
-                if bodytext_div:
-                    bodytext_html = str(bodytext_div)
+                if is_liveblog:
+                    # Tìm livefeed container
+                    livefeed_div = soup.find('div', class_='livefeed')
+                    if not livefeed_div:
+                        # Try by ID pattern
+                        livefeed_div = soup.find('div', id=lambda x: x and 'livefeed' in str(x))
+                    
+                    if livefeed_div:
+                        livefeed_html = str(livefeed_div)
+                        print(f"   ✅ Found livefeed HTML ({len(livefeed_html)} chars)")
+                    else:
+                        # Fallback: try Selenium element
+                        try:
+                            livefeed_elem = sb.find_element('.livefeed', timeout=5)
+                            if livefeed_elem:
+                                livefeed_html = livefeed_elem.get_attribute('outerHTML')
+                                print(f"   ✅ Found livefeed via Selenium ({len(livefeed_html)} chars)")
+                        except:
+                            pass
                 else:
-                    # Fallback: try Selenium element
-                    try:
-                        bodytext_elem = sb.find_element('div.bodytext.large-12', timeout=5)
-                        if bodytext_elem:
-                            bodytext_html = bodytext_elem.get_attribute('outerHTML')
-                    except:
-                        pass
+                    # Tìm bodytext như bình thường
+                    bodytext_div = soup.find('div', class_='bodytext', attrs={'data-element-guid': True})
+                    if bodytext_div:
+                        bodytext_html = str(bodytext_div)
+                    else:
+                        # Fallback: try Selenium element
+                        try:
+                            bodytext_elem = sb.find_element('div.bodytext.large-12', timeout=5)
+                            if bodytext_elem:
+                                bodytext_html = bodytext_elem.get_attribute('outerHTML')
+                        except:
+                            pass
             except Exception as e:
-                print(f"   ⚠️  Error parsing bodytext: {e}")
+                print(f"   ⚠️  Error parsing content: {e}")
                 return None
             
             # Get paywall offers section
@@ -963,7 +1196,7 @@ def crawl_article_detail(url: str, language: str = 'da', headless: bool = True):
                 except:
                     pass
             
-            # Combine HTML - articleHeader (chứa subtitle) nên đặt đầu tiên, sau đó meta, rồi bodytext
+            # Combine HTML - articleHeader (chứa subtitle) nên đặt đầu tiên, sau đó meta, rồi bodytext/livefeed
             full_html = ''
             if article_header_html:
                 # Sử dụng articleHeader HTML để parser có thể parse subtitle
@@ -972,8 +1205,15 @@ def crawl_article_detail(url: str, language: str = 'da', headless: bool = True):
             elif meta_html:
                 # Fallback: chỉ có meta nếu không có articleHeader
                 full_html = meta_html
-            if bodytext_html:
+            
+            # Thêm livefeed hoặc bodytext
+            if livefeed_html:
+                full_html += livefeed_html
+                print(f"   ✅ Added livefeed to HTML ({len(livefeed_html)} chars)")
+            elif bodytext_html:
                 full_html += bodytext_html
+                print(f"   ✅ Added bodytext to HTML ({len(bodytext_html)} chars)")
+            
             if offers_html:
                 full_html += offers_html
             if footer_html:
@@ -983,9 +1223,16 @@ def crawl_article_detail(url: str, language: str = 'da', headless: bool = True):
                 print(f"   ❌ Could not find content")
                 return None
             
-            # Get element_guid from bodytext
+            # Get element_guid from bodytext hoặc livefeed
             element_guid = None
-            if bodytext_html:
+            if livefeed_html:
+                from bs4 import BeautifulSoup
+                soup = BeautifulSoup(livefeed_html, 'html.parser')
+                # Tìm element_guid từ livefeed container
+                livefeed_div = soup.find('div', class_='livefeed')
+                if livefeed_div:
+                    element_guid = livefeed_div.get('id', '').replace('livefeed_', '')
+            elif bodytext_html:
                 from bs4 import BeautifulSoup
                 soup = BeautifulSoup(bodytext_html, 'html.parser')
                 bodytext_div = soup.find('div', class_='bodytext')
@@ -1116,12 +1363,10 @@ def crawl_all(language=None, section=None, limit=None, headless=True, delay=2, a
     else:
         print()
     
-    # Tạo user_data_dir nếu chưa tồn tại
-    os.makedirs(USER_DATA_DIR, exist_ok=True)
-    
     # Login một lần trước khi bắt đầu crawl (sử dụng user_data_dir để lưu session)
     print("🔐 Initializing browser session with login...")
-    with SB(uc=True, headless=headless, user_data_dir=USER_DATA_DIR) as sb:
+    # Start browser với retry logic (tự động xóa và tạo lại user_data_dir nếu cần)
+    with start_browser_with_retry(headless=headless) as sb:
         if not ensure_login(sb):
             print("❌ Failed to login, cannot proceed with crawling")
             return

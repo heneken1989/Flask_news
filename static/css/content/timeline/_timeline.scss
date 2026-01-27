@@ -1,0 +1,124 @@
+@use "../../css_scss/components/vars" as *;
+
+.timeline {
+
+    ul {
+        padding: 0 0 0 1rem;
+        margin: 0.5rem 0 0.5rem 1rem;
+        position: relative;
+
+        &:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            bottom: 1.2rem;
+            width: 1px;
+            background-color: gray;
+        }
+
+        &:after {
+            content: "";
+            display: block;
+            height: 0.5rem;
+        }
+
+        ul:before, ul:after {
+            display: none;
+        }
+    }
+
+    li {
+        margin: 0 0 1rem;
+        padding: 0;
+        position: relative;
+        clear: both;
+    }
+
+    .timeline-marker {
+        border-radius: 100%;
+        position: absolute;
+        left: -1.35rem;
+        top: 0.25rem;
+        width: 0.8rem;
+        height: 0.8rem;
+    }
+
+    time {
+        font-size: 0.8rem;
+        display: block;
+        margin-bottom: 0.3rem;
+    }
+
+    h3 {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+    figure {
+        position: relative;
+        z-index: 1;
+        margin-bottom: 0.5rem;
+    }
+
+    .content[class*=" bg-"],
+    .content.hasContentPadding {
+        ul {
+            margin-left: 0.5rem;
+        }
+
+        figure {
+            margin-top: initial;
+            margin-right: initial;
+            margin-left: initial;
+
+            .caption {
+                margin-right: 0;
+                margin-left: 0;
+            }
+        }
+    }
+
+    .bodytext {
+        margin-bottom: 0;
+    }
+
+    .bodytext > * {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    @include desktop_down {
+        .content[class*=" bg-"] figure.mobile-floatLeft,
+        .content.hasContentPadding figure.mobile-floatLeft,
+        figure.mobile-floatLeft {
+            margin-right: 1rem;
+            margin-bottom: 0 !important; // override negative margin from _colors.scss to prevent overlap
+        }
+
+        .content[class*=" bg-"] figure.mobile-floatRight,
+        .content.hasContentPadding figure.mobile-floatRight,
+        figure.mobile-floatRight {
+            margin-left: 0.5rem;
+            margin-bottom: 0 !important; // override negative margin from _colors.scss to prevent overlap
+        }        
+    }
+
+    @include desktop {
+        .content[class*=" bg-"] figure.desktop-floatLeft,
+        .content.hasContentPadding figure.desktop-floatLeft,
+        figure.desktop-floatLeft {
+            margin-right: 1rem;
+        }
+
+        .content[class*=" bg-"] figure.desktop-floatRight,
+        .content.hasContentPadding figure.desktop-floatRight,
+        figure.desktop-floatRight {
+            margin-left: 0.5rem;
+        }
+    }
+}
+
+.bodytext .timeline h2 {
+    padding-top: 0;
+}

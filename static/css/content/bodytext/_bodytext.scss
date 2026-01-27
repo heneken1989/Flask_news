@@ -1,0 +1,205 @@
+
+/* Style for contentbox bodytext */
+@use "../../css_scss/components/vars" as *;
+
+:root {
+    --columns-gutter: #{$columns_gutter};
+    --bodytext-alignment-left: var(--columns-gutter) calc(100% - var(--bodytext-width));
+    --bodytext-alignment-center: calc((100% - var(--bodytext-width)) / 2);
+    --bodytext-alignment-right: calc(100% - var(--bodytext-width)) var(--columns-gutter);
+    --bodytext-alignment-default: var(--bodytext-alignment-left);
+    --bodytext-width-default: var(--large-8-width, 66.66666667%);
+    --bodytext-width: var(--bodytext-width-default);
+    --bodytext-alignment: var(--bodytext-alignment-default);
+    --lab-bodytext-link-color: var(--lab-link-color, #0078a0);
+    --fullWidth: calc(100vw - var(--lab-scrollbar-width));
+}
+
+.bodytext {
+    margin: 0 0 2rem;
+
+    & > * {
+        padding: var(--columns-gutter);        
+    }
+
+    &.bodytext {
+        padding: 0;
+    }
+
+    & > p {
+        margin-block: 0.1em;
+        padding: 0.4em var(--columns-gutter);
+    }
+    
+    & > .column,
+    & > .columns {
+        margin-bottom: 0;
+        float: left;
+
+        @include desktop {
+            &.large-12 {
+                float: none;
+                clear: both;
+            }
+        }
+
+        &.floatRight {
+            float: right;
+        }
+    }
+
+    & > p, 
+    & > h2, 
+    & > h3, 
+    & > h4, 
+    & > ul, 
+    & > ol {
+        width: 100%;
+        padding-inline: var(--bodytext-alignment);
+        overflow-wrap: break-word;
+    }
+    
+    & > ol,
+    & > ul {
+        margin-top: 0.1em;
+        padding-top: 0.4em;
+    }
+
+    & > ol li {
+        list-style-type: decimal;
+        margin: 0 0 0.5em 1.2rem;
+        list-style-position: outside;
+    }
+
+    & > ul li {
+        list-style-type: disc;
+        margin: 0 0 0.5em 1.2rem;
+        list-style-position: outside;
+    }
+
+    & > h2 {
+        font-size: 1.9em;
+        margin-block: 0;
+        padding-bottom: 0.2em;
+    }
+
+    & > h3 {
+        font-size: 1.4em;
+        margin-block: 0;
+        padding-bottom: 0.2em;
+        font-weight: 600;
+    }
+
+    & > p.quote {
+        font-size: 1.5rem;
+        font-style: italic;
+        line-height: 1.4em;
+
+        &:before {
+            content: "❞";
+            display: inline-block;
+            margin-right: 0.2em;
+        }
+    }
+
+    figure {
+        .content {
+            &.rounded-image {
+                .img {
+                    picture {
+                        img {
+                            clip-path: circle();
+                        }
+                    }
+                }
+
+                &[class^="border-"],
+                &[class^="bg-"],
+                &[class^="color_mobile_bg-"] {
+                    .img {
+                        padding-block: 1rem;
+                    }
+                }
+
+            }
+        }
+    }
+
+    .fullWidthContent {
+        width: var(--fullWidth);
+        left: calc(-1 * (var(--fullWidth) / 2) + 50%);
+    }
+
+    .row-section {
+        width: var(--fullWidth);
+        left: calc(-1 * (var(--fullWidth) / 2) + 50%);
+    }
+}
+
+.bodytext > p a,
+.bodytext > ul a,
+.bodytext > ol a,
+.bodytext > h2 a,
+.bodytext > h3 a,
+.bodytext > h4 a {
+    color: var(--lab-bodytext-link-color);
+}
+
+.bodytext a:hover {
+    text-decoration: underline;
+}
+
+@include mobile {
+    :root {
+        --bodytext-width: var(--small-12-width, 100%) !important;
+        --bodytext-alignment: var(--columns-gutter) !important;
+    }
+
+    .bodytext {
+        .row.columns.small-12 {
+            padding-left:0;
+            padding-right:0;
+        }
+    } 
+}
+
+// Page-styles:
+
+.pagestyle_centered:not(.custom-bodytext-alignment) {
+    .bodytext:not(footer .bodytext) > p, 
+    .bodytext:not(footer .bodytext) > h2, 
+    .bodytext:not(footer .bodytext) > h3, 
+    .bodytext:not(footer .bodytext) > h4, 
+    .bodytext:not(footer .bodytext) > ul, 
+    .bodytext:not(footer .bodytext) > ol {
+        padding-inline: var(--bodytext-alignment-center);
+    }
+}
+
+@include mobile {
+    .pagestyle_centered:not(.custom-bodytext-alignment) {
+        .bodytext:not(footer .bodytext) > p, 
+        .bodytext:not(footer .bodytext) > h2, 
+        .bodytext:not(footer .bodytext) > h3, 
+        .bodytext:not(footer .bodytext) > h4, 
+        .bodytext:not(footer .bodytext) > ul, 
+        .bodytext:not(footer .bodytext) > ol {
+            padding-inline: var(--columns-gutter);
+        }
+    }
+}
+
+// Lab 4
+.bodytext {
+    @include desktop_down {
+        .mobile-floatRight {
+            clear: right;
+        }
+    }
+
+    @include desktop {
+        .desktop-floatRight {
+            clear: right;
+        }
+    }
+}

@@ -2,6 +2,8 @@
 
 {% block head %}
     {% include 'partials/head.html' %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/livefeed.css') }}">
     {# Get title for page title: Priority 1: title block from content_blocks, Priority 2: h1 heading from content_blocks, Priority 3: article.title #}
     {% set title_block = None %}
     {% if article_detail and article_detail.content_blocks %}
@@ -304,37 +306,161 @@
 
                 <div data-element-guid="f68305b1-96ac-423b-f4b9-b27f1f691058" class="bodytext large-12 small-12 medium-12">
                     {% if article_detail and article_detail.content_blocks %}
-                    {# Render structured content blocks theo đúng thứ tự #}
-                    <div class="article-content">
-                        {# Kiểm tra xem có intro section không #}
-                        {% set has_intro = false %}
-                        {% set intro_count = 0 %}
-                        {% for block in article_detail.content_blocks %}
-                            {% if block.type == 'paragraph' and loop.index <= 2 %}
-                                {% set intro_count = intro_count + 1 %}
-                            {% endif %}
-                        {% endfor %}
-                        {% if intro_count >= 2 %}
-                            {% set has_intro = true %}
+                    {# Kiểm tra xem có phải livefeed/liveblog không #}
+                    {% set ns = namespace(is_livefeed=false) %}
+                    {% for block in article_detail.content_blocks %}
+                        {% if block.classes and 'livefeed-meta' in block.classes %}
+                            {% set ns.is_livefeed = true %}
                         {% endif %}
-                        
-                        {# Render intro section nếu có #}
-                        {% if has_intro %}
-                        <div class="bodytext intro">
-                            {% for block in article_detail.content_blocks[:2] %}
-                                {% if block.type == 'paragraph' %}
-                                {{ block.html|safe }}
+                    {% endfor %}
+                    {% set is_livefeed = ns.is_livefeed %}
+                    
+                    {% if is_livefeed %}
+                        {# Render livefeed dạng timeline #}
+                        <div class="column livefeed scrollbox vertical desktop-floatLeft mobile-floatLeft small-12 large-8 small-abs-12 large-abs-8">
+                            <div class="content timeline">
+                                <div class="feedContent">
+                                    <ul class="notices">
+                                        {% set ns = namespace(notice_started=false) %}
+                                        {% for block in article_detail.content_blocks %}
+                                            {# Skip header blocks #}
+                                            {% if block.type in ['title', 'subtitle', 'article_meta', 'header_image_caption'] %}
+                                                {# Already rendered in header #}
+                                                
+                                            {# Handle separator #}
+                                            {% elif block.classes and 'livefeed-separator' in block.classes %}
+                                                {% if ns.notice_started %}
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    {% set ns.notice_started = false %}
+                                                {% endif %}
+                                                
+                                            {# Handle heading - start new notice #}
+                                            {% elif block.type == 'heading' %}
+                                                {% if ns.notice_started %}
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                {% endif %}
+                                                {% set ns.notice_started = true %}
+                                                <li class="livefeed-item scroll-item snap-element">
+                                                    <span class="timeline-marker bg-primary"></span>
+                                                    <div class="notice column">
+                                                        <div class="content">
+                                                            <h2><a href="#">{{ block.text }}</a></h2>
+                                                
+                                            {# Handle content blocks within notice #}
+                                            {% elif ns.notice_started %}
+                                                {% if block.type == 'paragraph' and block.classes and 'livefeed-meta' in block.classes %}
+                                                            {{ block.html|safe }}
+                                                {% elif block.type == 'paragraph' %}
+                                                            <div class="text bodytext">
+                                                                {{ block.html|safe }}
+                                                            </div>
+                                                {% elif block.type == 'image' %}
+                                                            {% set figure_classes = '' %}
+                                                            {% if block.classes %}
+                                                                {% set figure_classes = block.classes|join(' ') %}
+                                                            {% endif %}
+                                                            <figure data-element-guid="{{ block.element_guid|default('') }}" class="{{ figure_classes }}">
+                                                                <div class="content" style="">
+                                                                    <div class="img fullwidthTarget">
+                                                                        <picture>
+                                                                            {% if block.image_sources.desktop_webp %}
+                                                                            <source srcset="{{ block.image_sources.desktop_webp }}" 
+                                                                                width="{{ block.image_sources.desktop_width|default('706') }}"
+                                                                                height="{{ block.image_sources.desktop_height|default('530') }}"
+                                                                                media="(min-width: 768px)"
+                                                                                type="image/webp">
+                                                                            {% endif %}
+                                                                            {% if block.image_sources.desktop_jpeg %}
+                                                                            <source srcset="{{ block.image_sources.desktop_jpeg }}" 
+                                                                                width="{{ block.image_sources.desktop_width|default('706') }}"
+                                                                                height="{{ block.image_sources.desktop_height|default('530') }}"
+                                                                                media="(min-width: 768px)"
+                                                                                type="image/jpeg">
+                                                                            {% endif %}
+                                                                            {% if block.image_sources.mobile_webp %}
+                                                                            <source srcset="{{ block.image_sources.mobile_webp }}" 
+                                                                                width="{{ block.image_sources.mobile_width|default('480') }}"
+                                                                                height="{{ block.image_sources.mobile_height|default('360') }}"
+                                                                                media="(max-width: 767px)"
+                                                                                type="image/webp">
+                                                                            {% endif %}
+                                                                            {% if block.image_sources.mobile_jpeg %}
+                                                                            <source srcset="{{ block.image_sources.mobile_jpeg }}" 
+                                                                                width="{{ block.image_sources.mobile_width|default('480') }}"
+                                                                                height="{{ block.image_sources.mobile_height|default('360') }}"
+                                                                                media="(max-width: 767px)"
+                                                                                type="image/jpeg">
+                                                                            {% endif %}
+                                                                            <img src="{{ block.image_sources.fallback|default('') }}" 
+                                                                                width="{{ block.image_sources.mobile_width|default('480') }}"
+                                                                                height="{{ block.image_sources.mobile_height|default('360') }}"
+                                                                                title="{{ block.image_sources.title|default('') }}"
+                                                                                alt="{{ block.image_sources.alt|default('') }}"
+                                                                                loading="lazy"
+                                                                                style="">
+                                                                        </picture>
+                                                                    </div>
+                                                                    {% if block.caption or block.author %}
+                                                                    <div class="caption" data-showmore="Vis mere">
+                                                                        {% if block.caption %}
+                                                                        <figcaption itemprop="caption" class="">{{ block.caption }}</figcaption>
+                                                                        {% endif %}
+                                                                        {% if block.author %}
+                                                                        <figcaption itemprop="author" class="" data-byline-prefix="">{{ block.author }}</figcaption>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                    {% endif %}
+                                                                </div>
+                                                            </figure>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        {# Close last notice if open #}
+                                        {% if ns.notice_started %}
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        {# Render structured content blocks theo đúng thứ tự (normal article) #}
+                        <div class="article-content">
+                            {# Kiểm tra xem có intro section không #}
+                            {% set has_intro = false %}
+                            {% set intro_count = 0 %}
+                            {% for block in article_detail.content_blocks %}
+                                {% if block.type == 'paragraph' and loop.index <= 2 %}
+                                    {% set intro_count = intro_count + 1 %}
                                 {% endif %}
                             {% endfor %}
-                        </div>
-                        {% endif %}
-                        
-                        {# Render content-text section với tất cả blocks còn lại #}
-                        <div class="bodytext {% if has_intro %}content-text{% endif %}">
-                            {% for block in article_detail.content_blocks %}
-                                {% if has_intro and loop.index <= 2 %}
-                                    {# Skip intro blocks #}
-                                {% else %}
+                            {% if intro_count >= 2 %}
+                                {% set has_intro = true %}
+                            {% endif %}
+                            
+                            {# Render intro section nếu có #}
+                            {% if has_intro %}
+                            <div class="bodytext intro">
+                                {% for block in article_detail.content_blocks[:2] %}
+                                    {% if block.type == 'paragraph' %}
+                                    {{ block.html|safe }}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            
+                            {# Render content-text section với tất cả blocks còn lại #}
+                            <div class="bodytext {% if has_intro %}content-text{% endif %}">
+                                {% for block in article_detail.content_blocks %}
+                                    {% if has_intro and loop.index <= 2 %}
+                                        {# Skip intro blocks #}
+                                    {% else %}
                                 {% if block.type == 'paragraph' %}
                                     {{ block.html|safe }}
                                 {% elif block.type == 'heading' %}
@@ -447,23 +573,26 @@
                         {% endfor %}
                         </div>
                     </div>
-                    {% elif article.content %}
-                    {# Fallback to raw HTML content #}
-                    <div class="article-content">
-                        <p></p>
-                        <div data-element-guid="6ff57721-8253-4df9-9b56-de1caea0a3a4" class="column google-ad floatRight widthAuto" style="">
-                            <span class="ad-label">{{ _('Annonce') }}</span>
-                            <div class="adunit" id="2018-Artikelbanner" style="display: none;" data-google-query-id=""></div>
-                            <script>
-                                googletag.cmd.push(function() {
-                                    googletag.display('2018-Artikelbanner');
-                                });
-                            </script>
-                        </div>
-                        {{ article.content|safe }}
-                    </div>
+                    {% endif %}
                     {% else %}
-                    <p>{{ _('Content not available') }}</p>
+                        {% if article.content %}
+                        {# Fallback to raw HTML content #}
+                        <div class="article-content">
+                            <p></p>
+                            <div data-element-guid="6ff57721-8253-4df9-9b56-de1caea0a3a4" class="column google-ad floatRight widthAuto" style="">
+                                <span class="ad-label">{{ _('Annonce') }}</span>
+                                <div class="adunit" id="2018-Artikelbanner" style="display: none;" data-google-query-id=""></div>
+                                <script>
+                                    googletag.cmd.push(function() {
+                                        googletag.display('2018-Artikelbanner');
+                                    });
+                                </script>
+                            </div>
+                            {{ article.content|safe }}
+                        </div>
+                        {% else %}
+                        <p>{{ _('Content not available') }}</p>
+                        {% endif %}
                     {% endif %}
                 </div>
 

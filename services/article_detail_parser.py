@@ -140,29 +140,42 @@ class ArticleDetailParser:
                     })
                     order += 1
         
-        # Find bodytext container
-        bodytext = soup.find('div', class_='bodytext')
-        if not bodytext:
-            bodytext = soup
+        # Kiểm tra xem có livefeed không (liveblog format)
+        livefeed = soup.find('div', class_='livefeed')
+        if not livefeed:
+            # Try by ID pattern
+            livefeed = soup.find('div', id=lambda x: x and 'livefeed' in str(x))
         
-        # Parse intro section (nếu có)
-        intro_div = bodytext.find('div', class_='intro')
-        if intro_div:
-            intro_blocks = ArticleDetailParser._parse_intro(intro_div, order)
-            blocks.extend(intro_blocks)
-            order += len(intro_blocks)
-        
-        # Parse content-text section - QUAN TRỌNG: giữ nguyên thứ tự các elements
-        content_div = bodytext.find('div', class_='content-text')
-        if content_div:
-            # Parse tất cả children theo đúng thứ tự
-            content_blocks = ArticleDetailParser._parse_content_text_ordered(content_div, order)
-            blocks.extend(content_blocks)
-            order += len(content_blocks)
-        elif not intro_div:
-            # If no intro/content-text, parse all elements
-            generic_blocks = ArticleDetailParser._parse_generic_content(bodytext, order)
-            blocks.extend(generic_blocks)
+        if livefeed:
+            # Parse livefeed content (liveblog format)
+            livefeed_blocks = ArticleDetailParser._parse_livefeed(livefeed, order)
+            blocks.extend(livefeed_blocks)
+            order += len(livefeed_blocks)
+        else:
+            # Parse bodytext như bình thường
+            # Find bodytext container
+            bodytext = soup.find('div', class_='bodytext')
+            if not bodytext:
+                bodytext = soup
+            
+            # Parse intro section (nếu có)
+            intro_div = bodytext.find('div', class_='intro')
+            if intro_div:
+                intro_blocks = ArticleDetailParser._parse_intro(intro_div, order)
+                blocks.extend(intro_blocks)
+                order += len(intro_blocks)
+            
+            # Parse content-text section - QUAN TRỌNG: giữ nguyên thứ tự các elements
+            content_div = bodytext.find('div', class_='content-text')
+            if content_div:
+                # Parse tất cả children theo đúng thứ tự
+                content_blocks = ArticleDetailParser._parse_content_text_ordered(content_div, order)
+                blocks.extend(content_blocks)
+                order += len(content_blocks)
+            elif not intro_div:
+                # If no intro/content-text, parse all elements
+                generic_blocks = ArticleDetailParser._parse_generic_content(bodytext, order)
+                blocks.extend(generic_blocks)
         
         # Parse paywall offers section (outside bodytext)
         offers_div = soup.find('div', class_='iteras-offers')
@@ -269,6 +282,113 @@ class ArticleDetailParser:
     def _parse_content_text(content_div, start_order: int) -> List[Dict]:
         """Parse content-text section (legacy method, redirects to ordered version)"""
         return ArticleDetailParser._parse_content_text_ordered(content_div, start_order)
+    
+    @staticmethod
+    def _parse_livefeed(livefeed_div, start_order: int) -> List[Dict]:
+        """
+        Parse livefeed content (liveblog format)
+        Mỗi notice item trong livefeed sẽ được parse thành các blocks riêng
+        """
+        blocks = []
+        order = start_order
+        
+        # Tìm tất cả notice items trong livefeed
+        notice_items = livefeed_div.find_all('li', class_='livefeed-item')
+        if not notice_items:
+            # Fallback: tìm các notice div trực tiếp
+            notice_items = livefeed_div.find_all('div', class_='notice')
+        
+        for notice_item in notice_items:
+            # Tìm notice div trong item
+            notice = notice_item.find('div', class_='notice')
+            if not notice:
+                notice = notice_item
+            
+            # Parse title
+            title_elem = notice.find('h2')
+            if title_elem:
+                title_link = title_elem.find('a')
+                if title_link:
+                    title_text = title_link.get_text(strip=True)
+                    blocks.append({
+                        'type': 'heading',
+                        'order': order,
+                        'level': 'h2',
+                        'html': str(title_elem),
+                        'text': title_text,
+                        'classes': title_elem.get('class', [])
+                    })
+                    order += 1
+            
+            # Parse meta (time và author)
+            meta_elem = notice.find('div', class_='meta')
+            if meta_elem:
+                time_elem = meta_elem.find('time')
+                author_elem = meta_elem.find('span', class_='author')
+                
+                meta_text = ''
+                if time_elem:
+                    meta_text += time_elem.get_text(strip=True)
+                if author_elem:
+                    if meta_text:
+                        meta_text += ' | '
+                    meta_text += author_elem.get_text(strip=True)
+                
+                if meta_text:
+                    blocks.append({
+                        'type': 'paragraph',
+                        'order': order,
+                        'html': str(meta_elem),
+                        'text': meta_text,
+                        'classes': ['meta', 'livefeed-meta']
+                    })
+                    order += 1
+            
+            # Parse bodytext content
+            bodytext_elem = notice.find('div', class_='text bodytext')
+            if bodytext_elem:
+                # Parse các elements trong bodytext (paragraphs, figures, etc.)
+                for element in bodytext_elem.children:
+                    if hasattr(element, 'name') and element.name:
+                        if element.name == 'p':
+                            text = element.get_text(strip=True)
+                            if text:
+                                blocks.append({
+                                    'type': 'paragraph',
+                                    'order': order,
+                                    'html': str(element),
+                                    'text': text,
+                                    'classes': element.get('class', [])
+                                })
+                                order += 1
+                        elif element.name == 'figure':
+                            figure_block = ArticleDetailParser._parse_figure(element, order)
+                            if figure_block:
+                                blocks.append(figure_block)
+                                order += 1
+                        elif element.name in ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']:
+                            blocks.append({
+                                'type': 'heading',
+                                'order': order,
+                                'level': element.name,
+                                'html': str(element),
+                                'text': element.get_text(strip=True),
+                                'classes': element.get('class', [])
+                            })
+                            order += 1
+            
+            # Thêm separator giữa các notice items (trừ item cuối)
+            if notice_item != notice_items[-1]:
+                blocks.append({
+                    'type': 'paragraph',
+                    'order': order,
+                    'html': '<hr class="livefeed-separator">',
+                    'text': '---',
+                    'classes': ['livefeed-separator']
+                })
+                order += 1
+        
+        return blocks
     
     @staticmethod
     def _parse_generic_content(container, start_order: int) -> List[Dict]:

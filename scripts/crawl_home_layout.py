@@ -17,6 +17,8 @@ import csv
 import argparse
 from pathlib import Path
 from datetime import datetime
+from contextlib import contextmanager
+import shutil
 
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -32,6 +34,17 @@ import re
 # Import app và database khi cần (sẽ import trong function khi cần app context)
 
 # Import database sau khi có app context
+
+
+def get_chrome_options_for_headless():
+    """
+    Trả về Chrome options cần thiết cho Linux headless server
+    Cần thiết khi chạy với root hoặc không có display
+    """
+    # --no-sandbox: Bỏ qua sandbox (cần thiết khi chạy với root)
+    # --disable-dev-shm-usage: Tránh lỗi shared memory trên VPS
+    # --disable-gpu: Tắt GPU (không cần trên server)
+    return "no-sandbox,disable-dev-shm-usage,disable-gpu"
 
 
 def extract_section_from_url(url):
@@ -169,8 +182,11 @@ def crawl_home_layout(home_url='https://www.sermitsiaq.ag', language='da',
     
     layout_items = []
     
+    # Chrome options cho Linux headless server
+    chrome_opts = get_chrome_options_for_headless()
+    
     try:
-        with SB(uc=True, headless=headless) as sb:
+        with SB(uc=True, headless=headless, chromium_arg=chrome_opts) as sb:
             # Navigate to home page
             print(f"\n📡 Opening {home_url}...")
             sb.open(home_url)

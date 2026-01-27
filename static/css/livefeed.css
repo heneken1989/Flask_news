@@ -1,0 +1,239 @@
+/* Livefeed styles - compiled from _livefeed.scss and _timeline.scss */
+
+/* Timeline base styles */
+.timeline ul {
+    padding: 0 0 0 1rem;
+    margin: 0.5rem 0 0.5rem 1rem;
+    position: relative;
+}
+
+.timeline ul:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    bottom: 1.2rem;
+    width: 1px;
+    background-color: gray;
+}
+
+.timeline ul:after {
+    content: "";
+    display: block;
+    height: 0.5rem;
+}
+
+.timeline ul ul:before,
+.timeline ul ul:after {
+    display: none;
+}
+
+.timeline li {
+    margin: 0 0 1rem;
+    padding: 0;
+    position: relative;
+    clear: both;
+}
+
+.timeline .timeline-marker {
+    border-radius: 100%;
+    position: absolute;
+    left: -1.35rem;
+    top: 0.25rem;
+    width: 0.8rem;
+    height: 0.8rem;
+}
+
+.timeline time {
+    font-size: 0.8rem;
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
+.timeline h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.timeline figure {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 0.5rem;
+}
+
+.timeline .bodytext {
+    margin-bottom: 0;
+}
+
+.timeline .bodytext > * {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+/* Livefeed specific styles */
+.livefeed h2 {
+    font-size: 1.2rem;
+}
+
+.livefeed h2 a {
+    color: inherit;
+}
+
+.livefeed .notices:before,
+.livefeed .notices:after {
+    display: none;
+}
+
+/* Removed individual li:before for continuous line */
+
+.livefeed.vertical li ul {
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.livefeed.vertical li li:before {
+    display: none;
+}
+
+.livefeed.vertical li > .column {
+    padding-top: 0.6rem;
+}
+
+.livefeed.vertical li > .column.notice {
+    padding-top: 0;
+}
+
+.livefeed .notices {
+    display: flex;
+    flex-direction: column;
+    padding-left: 0.5rem;
+    margin-left: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    position: relative;
+}
+
+/* Continuous vertical timeline line */
+.livefeed.vertical .notices:before {
+    content: "";
+    position: absolute;
+    left: -0.5rem;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: #ccc;
+    z-index: 0;
+}
+
+.livefeed .notices .timeline-marker {
+    left: -0.9rem;
+    top: 0.6rem;
+}
+
+.livefeed .notices .notice {
+    font-family: Arial, Helvetica, sans-serif;
+    overflow: hidden;
+}
+
+.livefeed .notices .notice h2 {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 0.2rem;
+}
+
+.livefeed .notices .notice h2 a {
+    color: inherit;
+    text-decoration: none;
+    display: block;
+}
+
+.livefeed .notices .notice h2 a:hover {
+    text-decoration: underline;
+}
+
+.livefeed .notices .notice h3 {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.livefeed .notices .notice .meta {
+    margin: 1em 0 0;
+    font-size: 0.9em;
+    letter-spacing: 0.05em;
+    line-height: 2em;
+    clear: both;
+    position: relative;
+    text-align: left;
+    padding-bottom: 0.5rem;
+    margin-top: 0.3rem;
+    margin-bottom: 1rem;
+    color: #666;
+}
+
+.livefeed .notices .notice .meta time {
+    display: inline-block;
+    margin-right: 1rem;
+}
+
+.livefeed .notices .notice .meta time:first-letter {
+    text-transform: uppercase;
+}
+
+.livefeed .notices .notice .meta .author {
+    display: inline-block;
+}
+
+.livefeed .notices .notice time {
+    margin-right: .1em;
+    margin-bottom: 0;
+    display: inline-block;
+    font-size: 1em;
+}
+
+.livefeed .notices .notice p {
+    font-size: 1rem;
+    font-weight: normal;
+    margin: 0 0 0.8rem 0;
+    line-height: 1.6;
+}
+
+.livefeed.vertical .notices .notice {
+    min-height: 4rem;
+}
+
+.livefeed.vertical .notices .notice:not(:last-child) .content {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+}
+
+/* Timeline marker with background color */
+.timeline-marker.bg-primary {
+    background-color: #226bd9;
+}
+
+.timeline-marker {
+    border-radius: 100%;
+    position: absolute;
+    width: 0.8rem;
+    height: 0.8rem;
+}
+
+/* Mobile responsive */
+@media (max-width: 767px) {
+    .livefeed .notices {
+        padding-left: 0.5rem;
+    }
+    
+    .livefeed .notices .notice time {
+        line-height: 1.2;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 68rem) {
+    .livefeed .notices {
+        padding-left: 1rem;
+    }
+}
+

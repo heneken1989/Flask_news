@@ -39,14 +39,16 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
-# Get user and group (default to www-data, or current user)
+# Get user and group (default to root for Chrome/Snap compatibility)
 if [ -z "$SERVICE_USER" ]; then
-    SERVICE_USER="www-data"
+    SERVICE_USER="root"
 fi
 
 if [ -z "$SERVICE_GROUP" ]; then
-    SERVICE_GROUP="www-data"
+    SERVICE_GROUP="root"
 fi
+
+echo -e "${YELLOW}Service will run as: ${GREEN}$SERVICE_USER:$SERVICE_GROUP${NC}"
 
 # Find Python virtual environment
 if [ -z "$VENV_PATH" ]; then
@@ -62,10 +64,20 @@ if [ -z "$VENV_PATH" ]; then
 fi
 
 # Update service file with actual paths
+echo -e "${YELLOW}Updating service file with paths and user settings...${NC}"
 sed -i "s|/path/to/GC_HRAI/flask|$FLASK_DIR|g" "$SCRIPT_DIR/crawl_sections.service"
 sed -i "s|/path/to/venv|$VENV_PATH|g" "$SCRIPT_DIR/crawl_sections.service"
-sed -i "s|User=www-data|User=$SERVICE_USER|g" "$SCRIPT_DIR/crawl_sections.service"
-sed -i "s|Group=www-data|Group=$SERVICE_GROUP|g" "$SCRIPT_DIR/crawl_sections.service"
+
+# Update User and Group (handle both www-data and root)
+sed -i "s|^User=.*|User=$SERVICE_USER|g" "$SCRIPT_DIR/crawl_sections.service"
+sed -i "s|^Group=.*|Group=$SERVICE_GROUP|g" "$SCRIPT_DIR/crawl_sections.service"
+
+# Verify User and Group are set correctly
+if grep -q "^User=$SERVICE_USER" "$SCRIPT_DIR/crawl_sections.service" && grep -q "^Group=$SERVICE_GROUP" "$SCRIPT_DIR/crawl_sections.service"; then
+    echo -e "${GREEN}✅ Service configured to run as: $SERVICE_USER:$SERVICE_GROUP${NC}"
+else
+    echo -e "${RED}⚠️  Warning: Could not verify User/Group in service file${NC}"
+fi
 
 # Copy service and timer files
 echo -e "${GREEN}Copying service files...${NC}"
@@ -81,6 +93,13 @@ echo -e "${GREEN}Enabling and starting timer...${NC}"
 systemctl enable crawl_sections.timer
 systemctl start crawl_sections.timer
 
+# Check service user/group configuration
+echo -e "${GREEN}Checking service configuration...${NC}"
+SERVICE_USER_CONFIG=$(grep "^User=" /etc/systemd/system/crawl_sections.service | cut -d'=' -f2)
+SERVICE_GROUP_CONFIG=$(grep "^Group=" /etc/systemd/system/crawl_sections.service | cut -d'=' -f2)
+echo -e "  Service User: ${GREEN}$SERVICE_USER_CONFIG${NC}"
+echo -e "  Service Group: ${GREEN}$SERVICE_GROUP_CONFIG${NC}"
+
 # Show status
 echo -e "${GREEN}Service status:${NC}"
 systemctl status crawl_sections.timer --no-pager
@@ -91,7 +110,19 @@ systemctl list-timers crawl_sections.timer --no-pager
 echo -e "${GREEN}✅ Setup completed!${NC}"
 echo -e "${YELLOW}Useful commands:${NC}"
 echo -e "  Check timer status: ${GREEN}systemctl status crawl_sections.timer${NC}"
-echo -e "  Check service logs: ${GREEN}journalctl -u crawl_sections.service -f${NC}"
+echo -e "  Check service status: ${GREEN}systemctl status crawl_sections.service${NC}"
+echo -e "  Check service user/group: ${GREEN}systemctl show crawl_sections.service | grep -E \"(User|Group|MainPID)\"${NC}"
+echo -e "  Check service user (simple): ${GREEN}grep -E \"^(User|Group)=\" /etc/systemd/system/crawl_sections.service${NC}"
+echo -e "  Check running process user: ${GREEN}ps aux | grep crawl_sections_multi_language${NC}"
+echo -e ""
+echo -e "${YELLOW}View logs (live):${NC}"
+echo -e "  Live log (follow): ${GREEN}journalctl -u crawl_sections.service -f${NC}"
+echo -e "  Last 100 lines: ${GREEN}journalctl -u crawl_sections.service -n 100${NC}"
+echo -e "  Last 100 lines + follow: ${GREEN}journalctl -u crawl_sections.service -n 100 -f${NC}"
+echo -e "  Since 1 hour ago: ${GREEN}journalctl -u crawl_sections.service --since \"1 hour ago\"${NC}"
+echo -e "  Since today: ${GREEN}journalctl -u crawl_sections.service --since today${NC}"
+echo -e ""
+echo -e "${YELLOW}Control service:${NC}"
 echo -e "  Manually run service: ${GREEN}systemctl start crawl_sections.service${NC}"
 echo -e "  Stop timer: ${GREEN}systemctl stop crawl_sections.timer${NC}"
 echo -e "  Disable timer: ${GREEN}systemctl disable crawl_sections.timer${NC}"

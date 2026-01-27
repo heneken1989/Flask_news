@@ -1,0 +1,193 @@
+
+/* Style for contentbox articleMeta */
+@use "../../css_scss/components/vars" as *;
+
+article .meta {
+    margin: 1em 0 0;
+    font-size: 0.9em;
+    letter-spacing: 0.05em;
+    line-height: 2em;
+    clear: both;
+    position: relative;
+    text-align: left;
+    padding-bottom: 1rem;
+    
+    .dates {
+        display: inline-block;
+
+        .dateGroup.dateModified {
+            margin-left: 0.5rem;
+        }
+        
+        .dateLabel {
+            text-transform: uppercase;
+            font-size: 0.78em;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+
+        time {
+            display: inline-block;
+
+            &:first-letter {
+                text-transform: uppercase;
+            }
+        }
+    }
+
+    .social {
+        float: right;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        .fi-social-copyLink {
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        .fi-social-talandeWebb {
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        button,
+        a {
+            border: 1px solid #505050;
+            border-radius: 100%;
+            display: inline-block;
+            width: 1.4em;
+            height: 1.4em;
+            font-size: 1.4em;
+            text-align: center;
+            color: inherit;
+            border-color: inherit;
+            margin: 0 2px 0 0;
+            padding-top: 0.16em;
+            padding-left: 0.05em;
+            transition: border-color 0.2s, color 0.2s;
+            vertical-align: middle;
+
+            &:hover {
+                border-color: #008CBA;
+                text-decoration: none;
+            }
+
+            &.fi-social-threads {
+                padding-top: 0.22em;
+                padding-left: 0.04em;
+            }
+
+            .share-text {
+                position: absolute;
+                height: 1px;
+                width: 1px;
+                overflow: hidden;
+            }
+        }
+    }
+
+    .translate {
+        clear: both;
+
+        a {
+            display: inline-block;
+            margin: 0 0.1rem 0;
+
+            figure {
+                display: inline-block;
+                margin: 0;
+                vertical-align: middle;
+
+                img {
+                    width: 28px;
+                }
+            }
+        }
+    }
+}
+
+@include mobile {
+    article .meta {
+        .dates .dateGroup {
+            display: block;
+
+            &.dateModified {
+                margin-left: 0;
+            }
+        }
+
+        .social {
+            float: none;
+            clear: both;
+            margin-top: 0.3em;
+            justify-content: center !important;
+        }
+    }
+}
+
+.custom-bodytext-width {
+    &.articleHeader-meta-bodytext-width {
+        .articleHeader {
+            .meta {
+                max-width: calc(var(--bodytext-width, 100%) + var(--columns-gutter) * 2);
+                
+                .social {
+                    float: none;
+                    justify-content: flex-end;
+                }
+            }
+        }
+    }
+}
+
+.custom-bodytext-alignment {
+    &.articleHeader-meta-bodytext-width {
+        .articleHeader {
+            .meta {
+                margin-inline: calc(var(--bodytext-alignment) - var(--columns-gutter));
+            }
+        }
+    }
+}
+
+// Page-styles:
+
+.pagestyle_centered {
+    article .meta {
+        text-align: center;
+
+        .social {
+            float: none;
+            justify-content: center !important;
+        }
+    }
+}
+
+.pagestyle_centered:not(.custom-bodytext-alignment) {
+    .meta {
+        margin-inline: auto;
+    }
+}
+
+// Page/article custom font colors
+body.custom-font-color {
+    article .meta {
+        opacity: 0.7;
+        color: inherit;
+
+        *, .dates * {
+            color: inherit;
+        }
+
+        .social {
+            a {
+                color: inherit;
+                border-color: currentColor;
+            }
+        }
+    }
+}
