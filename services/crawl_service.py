@@ -196,7 +196,8 @@ class SermitsiaqCrawler:
                             print(f"  💾 Saved {articles_created + 1} new articles, skipped {articles_skipped} existing...")
                         
                         articles_created += 1
-                        existing_urls.add(article_url)  # Add to set to avoid duplicates in same batch
+                        if article_url:
+                            existing_urls[article_url] = new_article  # Add to dict to avoid duplicates in same batch
                     except Exception as commit_error:
                         # IntegrityError hoặc unique constraint violation (race condition)
                         db.session.rollback()
@@ -204,7 +205,8 @@ class SermitsiaqCrawler:
                         if 'unique' in error_msg_str.lower() or 'duplicate' in error_msg_str.lower():
                             print(f"  ⏭️  Article already exists (duplicate detected during commit), skipping...")
                             articles_skipped += 1
-                            existing_urls.add(article_url)
+                            if article_url:
+                                existing_urls[article_url] = None  # Mark as processed
                         else:
                             # Re-raise nếu không phải duplicate error
                             raise
@@ -408,7 +410,7 @@ class SermitsiaqCrawler:
             updated_article_ids = set()  # Track IDs đã được update để tránh đếm trùng
             skipped_articles_info = []  # Track thông tin articles bị skip để debug
             articles_to_update = []  # Track articles cần update sau khi save xong
-            existing_urls = set()  # Track URLs đã xử lý trong batch này để tránh duplicate
+            # Note: existing_urls từ existing_articles_map đã là dict, không cần khai báo lại
             for idx, article_data in enumerate(articles):
                 try:
                     # ⚠️ KHÔNG set section='home' hardcoded ở đây
@@ -712,8 +714,8 @@ class SermitsiaqCrawler:
                     #         continue
                     
                     # Add vào existing_urls để tránh duplicate trong cùng batch (nếu chưa có)
-                    if article_url not in existing_urls:
-                        existing_urls.add(article_url)
+                    if article_url and article_url not in existing_urls:
+                        existing_urls[article_url] = None  # Mark as will be created
                     
                     # ⚠️ QUAN TRỌNG: Với các layout types có published_url (articles thông thường), 
                     # detect section từ URL. Các loại khác (sliders, containers) giữ section='home'
@@ -779,7 +781,7 @@ class SermitsiaqCrawler:
                         
                         articles_created += 1
                         if article_url:
-                            existing_urls.add(article_url)  # Add to set to avoid duplicates in same batch
+                            existing_urls[article_url] = new_article  # Add to dict to avoid duplicates in same batch
                     except Exception as commit_error:
                         # IntegrityError hoặc unique constraint violation (race condition)
                         db.session.rollback()
@@ -788,7 +790,7 @@ class SermitsiaqCrawler:
                             print(f"  ⏭️  Article already exists (duplicate detected during commit), skipping...")
                             articles_skipped += 1
                             if article_url:
-                                existing_urls.add(article_url)
+                                existing_urls[article_url] = None  # Mark as processed
                         else:
                             # Re-raise nếu không phải duplicate error
                             raise
