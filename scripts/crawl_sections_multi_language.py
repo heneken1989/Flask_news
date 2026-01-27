@@ -734,8 +734,9 @@ def process_home(max_articles=0, skip_crawl=False):
         crawl_danish_home(max_articles)
         crawl_greenlandic_home(max_articles)
     
-    # Remove duplicate DA articles trước khi match và translate
-    remove_duplicate_da_home_articles()
+    # ⚠️ TẠM COMMENT: Remove duplicate DA articles trước khi match và translate
+    # remove_duplicate_da_home_articles()
+    print(f"\n⚠️  TEMPORARY: Skipping duplicate removal for home to track where duplicates are created")
     
     match_dk_kl_home_articles()
     translate_dk_home_to_en()
@@ -761,8 +762,9 @@ def process_section(section_name, max_articles=0, skip_crawl=False):
         crawl_danish_section(section_name, max_articles)
         crawl_greenlandic_section(section_name, max_articles)
     
-    # Remove duplicate DA articles trước khi match và translate
-    remove_duplicate_da_articles_in_section(section_name)
+    # ⚠️ TẠM COMMENT: Remove duplicate DA articles trước khi match và translate
+    # remove_duplicate_da_articles_in_section(section_name)
+    print(f"\n⚠️  TEMPORARY: Skipping duplicate removal for section '{section_name}' to track where duplicates are created")
     
     match_dk_kl_section_articles(section_name)
     translate_dk_section_to_en(section_name)
