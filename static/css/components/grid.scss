@@ -1,0 +1,451 @@
+// Goal:
+// - Allow rearrangement of children using a class-name (second article displayed first on mobile etc.)
+// - Let site overide column-padding
+//
+// Issues:
+// - Gutters:
+//     - Cannot use negative margins on the parent. It may be a row using margin: auto.
+//     - Skipping padding-left on first element and padding-right on last will only work for one row.
+//     - Will use padding like earlier.
+
+@use 'sass:math';
+@use './vars' as *;
+
+.column,
+.columns {
+    position: relative;
+    padding-left: $columns_gutter;
+    padding-right: $columns_gutter;
+}
+
+.column {
+    margin-bottom: $columns_gutter;
+}
+
+// Note: Overflow auto will hide some GUI in the editor.
+// Try to avoid it ...
+// .column .content {
+//     overflow: auto;
+// }
+
+.fullWidth .column .content {
+    overflow: visible;
+}
+
+.row,
+.pageWidth {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: var(--lab_page_width, 68rem);
+    position: relative;
+}
+
+.row .columns .row .column {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.row.fullWidthContent {
+    max-width: unset;
+}
+
+.grid,
+.row {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+
+    &>.column,
+    &>.columns {
+        flex-shrink: 1;
+        flex-grow: 0;
+        flex-basis: auto;
+        order: 0;
+    }
+
+    &.grid-autosize {
+
+        &>.column,
+        &>.columns {
+            flex-grow: 1;
+        }
+    }
+    
+    // Đảm bảo articles trong cùng 1 hàng có cùng height
+    // Sử dụng align-items: stretch để các columns có cùng height
+    &.row-articles {
+        align-items: stretch;
+        
+        &>.column {
+            display: flex;
+            flex-direction: column;
+            
+            .content {
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+                
+                .media {
+                    flex-shrink: 0;
+                    
+                    figure {
+                        margin: 0;
+                        padding: 0;
+                        
+                        .img {
+                            position: relative;
+                            width: 100%;
+                            overflow: hidden;
+                            
+                            // Set aspect ratio để đảm bảo hình ảnh có cùng height
+                            // Aspect ratio ~1.54:1 (dựa trên 524x341 hoặc 353x230)
+                            padding-bottom: 65%;
+                            
+                            picture {
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                width: 100%;
+                                height: 100%;
+                                
+                                img {
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    object-position: center;
+                                    display: block;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Responsive: Mobile không cần aspect ratio cố định
+@include mobile {
+    .row.row-articles {
+        &>.column {
+            .content {
+                .media {
+                    figure {
+                        .img {
+                            padding-bottom: 0; // Reset aspect ratio trên mobile
+                            
+                            picture {
+                                position: relative;
+                                
+                                img {
+                                    width: 100%;
+                                    height: auto; // Auto height trên mobile
+                                    object-fit: contain; // Contain thay vì cover trên mobile
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.noGrid {
+    display: block;
+}
+
+// Display column (Defined by parent)
+.grid-column {
+    flex-direction: column;
+}
+
+.grid-row {
+    flex-direction: row;
+}
+
+@include mobile {
+
+    .row,
+    .pageWidth {
+        max-width: 100vw;
+    }
+
+    .mobile-grid-column {
+        flex-direction: column;
+    }
+}
+
+// Vertical / horizontal align children: (defined by parent)
+// For row-view: Affects vertical position
+// For column-view: Affects horizontal position
+.grid-align-start {
+    align-items: flex-start;
+}
+
+.grid-align-center {
+    align-items: center;
+}
+
+.grid-align-end {
+    align-items: flex-end;
+}
+
+.grid-align-stretch {
+    align-items: stretch;
+}
+
+.grid-justify-start {
+    justify-content: flex-start;
+}
+
+.grid-justify-center {
+    justify-content: center;
+}
+
+.grid-justify-end {
+    justify-content: flex-end;
+}
+
+.grid-justify-stretch {
+    justify-content: stretch;
+}
+
+// Vertical align self: (defined by element)
+.grid-vas-start {
+    align-self: flex-start;
+}
+
+.grid-vas-center {
+    align-self: center;
+}
+
+.grid-vas-end {
+    align-self: flex-end;
+}
+
+@include desktop_down {
+    .mobile-grid-vas-start {
+        align-self: flex-start;
+    }
+    
+    .mobile-grid-vas-center {
+        align-self: center;
+    }
+    
+    .mobile-grid-vas-end {
+        align-self: flex-end;
+    }
+}
+
+// Float item to left/right
+.grid-float-left {
+    margin-right: auto;
+}
+
+.grid-float-right {
+    margin-left: auto;
+}
+
+.grid-align-content-end {
+    > * {
+        justify-content: flex-end;
+    }
+}
+
+.grid-align-content-center {
+    > * {
+        justify-content: center;
+    }
+}
+
+.grid-content-row {
+    > * {
+        flex-direction: row !important;
+    }
+}
+
+.grid-content-column {
+    > * {
+        flex-direction: column !important;
+    }
+}
+
+.grid-fixed {
+    position: fixed !important;
+    width: 100%;
+    top: 0;
+    z-index: 2000;
+}
+
+.grid-fixed-bottom {
+    bottom: 0;
+    top: unset;
+}
+
+:root {
+    @for $i from 1 through $grid_span {
+        --large-#{$i}-width: calc(100% / #{$grid_span} * #{$i});
+        --small-#{$i}-width: calc(100% / #{$grid_span} * #{$i});
+    }
+} 
+
+@include mobile {
+    @for $i from 1 through $grid_span {
+        .small-#{$i} {
+            width: percentage(math.div($i, $grid_span));
+        }
+
+        // Negative value to pull left/top
+        .row>.small-pull-#{$i},
+        .grid>.small-pull-#{$i} {
+            order: -$i;
+        }
+
+        // Positive value to push right/bottom
+        .row>.small-push-#{$i},
+        .grid>.small-push-#{$i} {
+            order: $i;
+        }
+    }
+}
+
+
+@include tablet_up {
+    @for $i from 1 through $grid_span {
+        .large-#{$i} {
+            width: percentage(math.div($i, $grid_span));
+            // flex-basis: percentage($i/$grid_span);
+            // max-width: percentage($i/$grid_span);
+        }
+
+        .row>.large-pull-#{$i},
+        .grid>.large-pull-#{$i} {
+            order: -$i;
+        }
+
+        .row>.large-push-#{$i},
+        .grid>.large-push-#{$i} {
+            order: $i;
+        }
+    }
+}
+
+.spacing-none .column,
+.spacing-none .columns {
+    padding: 0;
+}
+
+.spacing-small .column {
+    padding: calc($columns_gutter / 2);
+}
+.spacing-small .columns {
+    padding-left: calc($columns_gutter / 2);
+    padding-right: calc($columns_gutter / 2);
+}
+
+.spacing-default .column {
+    padding: $columns_gutter;
+}
+.spacing-default .columns {
+    padding-left: $columns_gutter;
+    padding-right: $columns_gutter;
+}
+
+.spacing-large .column {
+    padding: $columns_gutter * 2;
+}
+.spacing-large .columns {
+    padding-left: $columns_gutter * 2;
+    padding-right: $columns_gutter * 2;
+}
+
+
+// Lab4
+
+@include desktop_down {
+    .mobile-fullWidth {
+        position: relative;
+        &.fullwidthTarget,
+        &:not(.fullwidthTarget) .fullwidthTarget {
+            position: relative;
+            flex: 0 0 auto;
+            width: calc(100vw - var(--lab-scrollbar-width));
+            left: calc(50% - (100vw - var(--lab-scrollbar-width)) / 2);
+        }
+    }
+}
+
+@include desktop {
+    .desktop-fullWidth {
+        position: relative;
+        &.fullwidthTarget,
+        &:not(.fullwidthTarget) .fullwidthTarget {
+            position: relative;
+            flex: 0 0 auto;
+            width: calc(100vw - var(--lab-scrollbar-width));
+            left: calc(50% - (100vw - var(--lab-scrollbar-width)) / 2);
+        }
+    }
+}
+
+// Lab 4 float-classes
+
+// Float-class for mobile only, not tablet/desktop
+@include mobile {
+    .mobile-floatRight {
+        float: right !important;
+        &.small-12 {
+            float: none !important;
+            clear: both !important;
+        }
+    }
+    .mobile-floatCenter {
+        float: none !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        &.small-12 {
+            float: none !important;
+            clear: both !important;
+        }
+    }
+    .mobile-floatLeft {
+        float: left !important;
+        &.small-12 {
+            float: none !important;
+            clear: both !important;
+        }
+    }
+}
+// Float-class for anything larger than mobile
+@include tablet_up {
+    .desktop-floatRight {
+        float: right !important;
+        &.large-12 {
+            float: none !important;
+            clear: both !important;
+        }
+    }
+    .desktop-floatCenter {
+        float: none !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        &.large-12 {
+            float: none !important;
+            clear: both !important;
+        }
+    }
+    figure.desktop-floatCenter {
+        display: flow-root !important;
+    }
+    .desktop-floatLeft {
+        float: left !important;
+        &.large-12 {
+            float: none !important;
+            clear: both !important;
+        }
+    }
+}

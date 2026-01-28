@@ -51,7 +51,7 @@
 </div>
                     {% endif %}
                     {# Tạo row mới #}
-<div data-element-guid="{{ row_guid_base }}{% if ns.row_index > 0 %}-{{ ns.row_index }}{% endif %}" class="row small-12 large-12" style="">
+<div data-element-guid="{{ row_guid_base }}{% if ns.row_index > 0 %}-{{ ns.row_index }}{% endif %}" class="row row-articles small-12 large-12" style="">
                     {% set ns.row_index = ns.row_index + 1 %}
                     {% set ns.current_row_size = 0 %}
                 {% endif %}
