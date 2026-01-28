@@ -1,18 +1,10 @@
 {% extends "base.html" %}
 
-{% block head %}
-    {% include 'partials/head.html' %}
+{% block extra_head %}
+    {# Additional CSS cho article detail #}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/livefeed.css') }}">
-    {# Get title for page title: Priority 1: title block from content_blocks, Priority 2: h1 heading from content_blocks, Priority 3: article.title #}
-    {% set title_block = None %}
-    {% if article_detail and article_detail.content_blocks %}
-        {% set title_block = article_detail.content_blocks | selectattr('type', 'equalto', 'title') | first %}
-        {% if not title_block %}
-            {% set title_block = article_detail.content_blocks | selectattr('type', 'equalto', 'heading') | selectattr('level', 'equalto', 'h1') | first %}
-        {% endif %}
-    {% endif %}
-    <title>{% if title_block and title_block.text %}{{ title_block.text }}{% else %}{{ article.title }}{% endif %} - Sermitsiaq</title>
+    {# Title đã được xử lý bởi base.html thông qua seo_meta, không cần override #}
     <style>
         /* Articlescroller navigation styles */
         .articlescroller nav .arrow {

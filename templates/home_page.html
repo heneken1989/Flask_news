@@ -1,8 +1,7 @@
 {% extends "base.html" %}
 
-{% block head %}
-    {% include 'partials/head.html' %}
-    <title>{{ _('Home') }} - Sermitsiaq</title>
+{% block extra_head %}
+    {# Additional CSS cho home page #}
     <style>
         /* Loại bỏ underline cho headlines khi hover */
         article a:hover,

@@ -113,15 +113,123 @@ def internal_error(error):
 
 @app.route('/set_language/<lang>')
 def set_language(lang):
-    """Set language and redirect back"""
-    if lang in app.config['BABEL_SUPPORTED_LOCALES']:
-        # If setting to default language, remove from session to use default
-        if lang == app.config['BABEL_DEFAULT_LOCALE']:
-            session.pop('language', None)  # Remove language from session
+    """Set language and redirect to appropriate URL"""
+    if lang not in app.config['BABEL_SUPPORTED_LOCALES']:
+        return redirect(request.referrer or '/')
+    
+    # Set language in session
+    if lang == app.config['BABEL_DEFAULT_LOCALE']:
+        session.pop('language', None)  # Remove language from session
+    else:
+        session['language'] = lang
+    
+    # Get referrer URL
+    referrer = request.referrer
+    if not referrer:
+        return redirect('/')
+    
+    # Parse referrer to check if it's an article page
+    from urllib.parse import urlparse
+    from database import Article
+    
+    parsed = urlparse(referrer)
+    path = parsed.path
+    
+    # Try to find article by path
+    article = None
+    from sqlalchemy import or_, and_
+    all_articles = Article.query.filter(
+        or_(
+            and_(Article.published_url.isnot(None), Article.published_url != ''),
+            and_(Article.published_url_en.isnot(None), Article.published_url_en != '')
+        )
+    ).all()
+    
+    for art in all_articles:
+        # Check published_url (DA)
+        if art.published_url:
+            art_parsed = urlparse(art.published_url)
+            if art_parsed.path == path:
+                article = art
+                break
+        
+        # Check published_url_en (EN)
+        if art.published_url_en:
+            art_en_parsed = urlparse(art.published_url_en)
+            if art_en_parsed.path == path:
+                article = art
+                break
+    
+    # If article found, try to find translation
+    if article:
+        print(f"🔍 set_language: Found article #{article.id} (lang: {article.language})")
+        print(f"   Looking for translation in language: {lang}")
+        
+        translation = None
+        
+        # Find all translations (including canonical and all translations)
+        translations = []
+        
+        if article.canonical_id:
+            # Article is a translation, find canonical first
+            canonical = Article.query.get(article.canonical_id)
+            if canonical:
+                print(f"   Article has canonical_id: {article.canonical_id} (canonical: #{canonical.id}, lang: {canonical.language})")
+                # Find all translations of canonical (including canonical itself)
+                translations = Article.query.filter(
+                    (Article.id == canonical.id) | 
+                    (Article.canonical_id == canonical.id)
+                ).all()
         else:
-            session['language'] = lang
-    # Redirect to home page if no referrer
-    return redirect(request.referrer or '/')
+            # Article is canonical, find all translations
+            print(f"   Article is canonical (no canonical_id)")
+            translations = Article.query.filter(
+                (Article.id == article.id) | 
+                (Article.canonical_id == article.id)
+            ).all()
+        
+        print(f"   Found {len(translations)} translations total")
+        for trans in translations:
+            print(f"      - Translation: #{trans.id} (lang: {trans.language})")
+        
+        # Find translation with target language
+        for trans in translations:
+            if trans.language == lang:
+                translation = trans
+                print(f"   ✅ Found translation: #{translation.id} (lang: {translation.language})")
+                break
+        
+        # If translation found, redirect to its URL
+        if translation:
+            # Use published_url_en if article is EN and has it, otherwise use published_url
+            url_to_use = None
+            if translation.language == 'en' and translation.published_url_en:
+                url_to_use = translation.published_url_en
+            elif translation.published_url:
+                url_to_use = translation.published_url
+            
+            if url_to_use:
+                # Parse URL to get path
+                if url_to_use.startswith('http'):
+                    trans_parsed = urlparse(url_to_use)
+                    redirect_path = trans_parsed.path
+                else:
+                    redirect_path = url_to_use
+                
+                print(f"   🔄 Redirecting to: {redirect_path}")
+                return redirect(redirect_path)
+            else:
+                print(f"   ⚠️  Translation found but no URL available")
+        else:
+            print(f"   ⚠️  No translation found for language: {lang}")
+            # If no translation found, check if current article is already in target language
+            if article.language == lang:
+                print(f"   ℹ️  Article is already in target language, keeping same URL")
+                return redirect(referrer)
+    
+    # Fallback: redirect to referrer (same page, language changed in session)
+    print(f"   🔄 Fallback: redirecting to referrer (same URL)")
+    return redirect(referrer)
 
 # Make translation functions available to all templates
 @app.context_processor

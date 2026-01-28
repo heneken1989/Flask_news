@@ -1,10 +1,28 @@
 <!DOCTYPE html>
+{% if seo_meta %}
+<html lang="{{ seo_meta.language }}-{{ 'DK' if seo_meta.language == 'da' else 'GL' if seo_meta.language == 'kl' else 'US' }}" dir="ltr" class="resp_fonts">
+{% else %}
 <html lang="da-DK" dir="ltr" class="resp_fonts">
+{% endif %}
 
     <head>
         {% block head %}
-            {# Default head content - có thể override trong child templates #}
-            {% include 'partials/head.html' %}
+            {# SEO Meta Tags - Dynamic từ database #}
+            {% if seo_meta %}
+                {% from 'macros/seo_meta.html' import render_seo_meta, render_structured_data %}
+                {{ render_seo_meta(seo_meta) }}
+                
+                {# Structured Data (JSON-LD) #}
+                {% if structured_data %}
+                    {{ render_structured_data(structured_data) }}
+                {% endif %}
+                
+                {# Include CSS, scripts, và các phần khác từ head_content #}
+                {% include 'partials/head_content.html' %}
+            {% else %}
+                {# Fallback: Dùng head.html cũ nếu không có seo_meta #}
+                {% include 'partials/head.html' %}
+            {% endif %}
         {% endblock %}
         
         {# Page-specific head content #}

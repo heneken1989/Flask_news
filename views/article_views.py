@@ -349,6 +349,32 @@ def home_test():
         if articles:
             print(f"   ⚠️  But we have {len(articles)} articles - check prepare_home_layouts logic")
     
+    # Generate SEO meta tags cho home test page - thay đổi theo ngôn ngữ
+    from utils_seo import get_seo_meta, get_structured_data
+    
+    # Title và description theo ngôn ngữ
+    home_titles = {
+        'da': "Sermitsiaq.AG Nyheder",
+        'kl': "Sermitsiaq.AG Allat",  # Greenlandic
+        'en': "Sermitsiaq.AG News"
+    }
+    home_descriptions = {
+        'da': "Sermitsiaq er Grønlands største nyhedssite med nyheder, debat og kultur.",
+        'kl': "Sermitsiaq Kalaallit Nunaanni allanngortitsineqartarpoq allat, oqaatigineq aamma kulturi.",  # Greenlandic
+        'en': "Sermitsiaq is Greenland's largest news site with news, debate and culture."
+    }
+    
+    seo_meta = get_seo_meta(
+        page_type='home',
+        language=current_language,
+        title=home_titles.get(current_language, home_titles['da']),
+        description=home_descriptions.get(current_language, home_descriptions['da'])
+    )
+    structured_data = get_structured_data(
+        page_type='home',
+        language=current_language
+    )
+    
     # Render template (template expect 'layouts', not 'articles')
     return render_template('home_page.html',
         layouts=layouts,  # Template expect 'layouts'
@@ -356,7 +382,9 @@ def home_test():
         articles_per_row=2,
         section='home',
         show_top_ad=True,
-        show_bottom_ad=False
+        show_bottom_ad=False,
+        seo_meta=seo_meta,
+        structured_data=structured_data
     )
 
 @article_view_bp.route('/')
@@ -807,13 +835,41 @@ def index():
     else:
         print(f"⚠️  No articles to prepare, returning empty layouts")
     
+    # Generate SEO meta tags cho home page - thay đổi theo ngôn ngữ
+    from utils_seo import get_seo_meta, get_structured_data
+    
+    # Title và description theo ngôn ngữ
+    home_titles = {
+        'da': "Sermitsiaq.COM Nyheder",
+        'kl': "Sermitsiaq.COM Allat",  # Greenlandic
+        'en': "Sermitsiaq.COM News"
+    }
+    home_descriptions = {
+        'da': "Sermitsiaq er Grønlands største nyhedssite med nyheder, debat og kultur.",
+        'kl': "Sermitsiaq Kalaallit Nunaanni allanngortitsineqartarpoq allat, oqaatigineq aamma kulturi.",  # Greenlandic
+        'en': "Sermitsiaq is Greenland's largest news site with news, debate and culture."
+    }
+    
+    seo_meta = get_seo_meta(
+        page_type='home',
+        language=current_language,
+        title=home_titles.get(current_language, home_titles['da']),
+        description=home_descriptions.get(current_language, home_descriptions['da'])
+    )
+    structured_data = get_structured_data(
+        page_type='home',
+        language=current_language
+    )
+    
     # Tạo response với headers để tránh cache issues
     response = make_response(render_template('home_page.html',
         layouts=layouts,
         section_title='Home',
         section='home',
         show_top_ad=True,
-        show_bottom_ad=False
+        show_bottom_ad=False,
+        seo_meta=seo_meta,
+        structured_data=structured_data
     ))
     
     # Thêm headers để tránh cache và CORS issues
@@ -858,15 +914,6 @@ def tag_section(section):
         from flask import abort
         abort(404)
     
-    # Section name mapping (Danish)
-    section_names = {
-        'samfund': 'Samfund',
-        'erhverv': 'Erhverv',
-        'kultur': 'Kultur',
-        'sport': 'Sport',
-        'podcasti': 'Podcasti'
-    }
-    
     # Get current language from session or default
     # Use get_locale() from flask_babel to be consistent with app default
     from flask_babel import get_locale
@@ -881,6 +928,34 @@ def tag_section(section):
         lang = request.args.get('lang')
         if lang in ['da', 'kl', 'en']:
             current_language = lang
+    
+    # Section name mapping theo ngôn ngữ
+    section_names = {
+        'da': {
+            'samfund': 'Samfund',
+            'erhverv': 'Erhverv',
+            'kultur': 'Kultur',
+            'sport': 'Sport',
+            'podcasti': 'Podcasti'
+        },
+        'kl': {
+            'samfund': 'Nalunaarsuit',  # Greenlandic translation
+            'erhverv': 'Suliniartitsisut',
+            'kultur': 'Kulturi',
+            'sport': 'Sport',
+            'podcasti': 'Podcasti'
+        },
+        'en': {
+            'samfund': 'Society',
+            'erhverv': 'Business',
+            'kultur': 'Culture',
+            'sport': 'Sport',
+            'podcasti': 'Podcast'
+        }
+    }
+    
+    # Lấy section name theo ngôn ngữ hiện tại
+    section_name = section_names.get(current_language, section_names['da']).get(section, section)
     
     # Query articles từ database theo section và language
     articles = []
@@ -968,8 +1043,32 @@ def tag_section(section):
         print(f"ℹ️  No articles found for section {section} (language: {current_language})")
         articles = []  # Giữ empty list để hiển thị view trống
     
-    # Section title
-    section_title = f'Tag: {section_names.get(section, section)}'
+    # Section title - dùng section name theo ngôn ngữ
+    section_title = f'Tag: {section_name}'
+    
+    # Generate SEO meta tags cho section page
+    # Title format: "Tag: Kultur" (giống trang gốc) - thay đổi theo ngôn ngữ
+    from utils_seo import get_seo_meta, get_structured_data
+    
+    # Description theo ngôn ngữ
+    descriptions = {
+        'da': f"Læs de seneste nyheder om {section_name} på Sermitsiaq.",
+        'kl': f"Allat najugaqat {section_name} Sermitsiaq-mi.",  # Greenlandic
+        'en': f"Read the latest news about {section_name} on Sermitsiaq."
+    }
+    description = descriptions.get(current_language, descriptions['da'])
+    
+    seo_meta = get_seo_meta(
+        page_type='section',
+        language=current_language,
+        section=section,
+        title=f"Tag: {section_name}",  # Format: "Tag: Kultur" (thay đổi theo ngôn ngữ)
+        description=description
+    )
+    structured_data = get_structured_data(
+        page_type='section',
+        language=current_language
+    )
     
     return render_template('front_page.html',
         articles=articles,
@@ -977,7 +1076,9 @@ def tag_section(section):
         articles_per_row=2,  # Default, sẽ bị override bởi grid_size pattern
         section=section,
         show_top_ad=True,
-        show_bottom_ad=False
+        show_bottom_ad=False,
+        seo_meta=seo_meta,
+        structured_data=structured_data
     )
 
 
@@ -994,7 +1095,6 @@ def article_detail(article_id=None, section=None, slug=None, url_path=None):
     - /<path:url_path> - Match với published_url để giữ nguyên URL structure
     """
     from database import db
-    from utils import get_article_with_fallback
     from urllib.parse import urlparse
     
     # Get current language
@@ -1038,66 +1138,109 @@ def article_detail(article_id=None, section=None, slug=None, url_path=None):
         # path: /samfund/article/123
         # Cần match path với path trong published_url
         
-        # Query tất cả articles có published_url
+        # Query tất cả articles có published_url HOẶC published_url_en
+        # (Articles tiếng Anh có thể chỉ có published_url_en)
+        from sqlalchemy import or_, and_
         all_articles = Article.query.filter(
-            Article.published_url.isnot(None),
-            Article.published_url != ''
+            or_(
+                and_(Article.published_url.isnot(None), Article.published_url != ''),
+                and_(Article.published_url_en.isnot(None), Article.published_url_en != '')
+            )
         ).all()
         
-        print(f"   Found {len(all_articles)} articles with published_url")
+        print(f"   Found {len(all_articles)} articles with published_url or published_url_en")
         
-        # Tìm tất cả articles có path match
-        # Check cả published_url (DA) và published_url_en (EN)
-        matching_articles = []
+        # Tìm article có path match
+        # Logic: 
+        # 1. Ưu tiên tìm article có language phù hợp với session language (nếu có)
+        # 2. Nếu không có session language, ưu tiên article không có canonical_id (article gốc DA)
+        # 3. Nếu path match với published_url_en → đó là article EN
+        # 4. Nếu path match với published_url → có thể là DA hoặc EN (cần check language)
+        
+        # Get session language để ưu tiên
+        session_lang = session.get('language')
+        
+        # First pass: Tìm tất cả articles match với path
+        matched_articles = []
         for art in all_articles:
-            # Check published_url (DA)
-            if art.published_url:
-                art_parsed = urlparse(art.published_url)
-                art_path = art_parsed.path
-                if art_path == path_only:
-                    matching_articles.append(art)
-                    continue  # Đã match, không cần check published_url_en
-            
-            # Check published_url_en (EN) nếu chưa match
+            # Check published_url_en (EN) - nếu match thì đó là article EN
             if art.published_url_en:
                 art_en_parsed = urlparse(art.published_url_en)
                 art_en_path = art_en_parsed.path
                 if art_en_path == path_only:
-                    matching_articles.append(art)
-        
-        print(f"   Found {len(matching_articles)} articles with matching path")
-        
-        # Ưu tiên 1: Chọn article với language hiện tại
-        if matching_articles:
-            for art in matching_articles:
-                if art.language == current_language:
-                    article = art
-                    print(f"   ✅ Found match with language '{current_language}': Article #{article.id}")
-                    break
+                    matched_articles.append(art)
+                    continue
             
-            # Ưu tiên 2: Nếu không có, chọn article đầu tiên
+            # Check published_url - có thể là DA hoặc EN (EN articles cũng có published_url = DA URL)
+            if art.published_url:
+                art_parsed = urlparse(art.published_url)
+                art_path = art_parsed.path
+                if art_path == path_only:
+                    matched_articles.append(art)
+        
+        # Second pass: Chọn article phù hợp nhất
+        if matched_articles:
+            # Ưu tiên 1: Article có language phù hợp với session language
+            if session_lang:
+                for art in matched_articles:
+                    if art.language == session_lang:
+                        article = art
+                        print(f"   ✅ Found article by session language ({session_lang}): Article #{article.id} (lang: {article.language})")
+                        break
+            
+            # Ưu tiên 2: Nếu chưa tìm thấy, ưu tiên article không có canonical_id (article gốc DA)
             if not article:
-                article = matching_articles[0]
-                print(f"   ⚠️  No match with language '{current_language}', using first match: Article #{article.id} (lang: {article.language})")
+                for art in matched_articles:
+                    if not art.canonical_id and art.language == 'da':
+                        article = art
+                        print(f"   ✅ Found article (canonical DA): Article #{article.id} (lang: {article.language})")
+                        break
+            
+            # Ưu tiên 3: Nếu vẫn chưa tìm thấy, lấy article đầu tiên match
+            if not article:
+                article = matched_articles[0]
+                print(f"   ✅ Found article (first match): Article #{article.id} (lang: {article.language})")
         
         if not article:
-            print(f"   ❌ No article found for path: {path_only}")
+            print(f"   ❌ No article found for path '{path_only}'")
             # Debug: Show first few published_urls for reference
             print(f"   Sample published_urls:")
             for art in all_articles[:5]:
                 if art.published_url:
                     art_parsed = urlparse(art.published_url)
                     print(f"      - {art_parsed.path}")
+                if art.published_url_en:
+                    art_en_parsed = urlparse(art.published_url_en)
+                    print(f"      - {art_en_parsed.path} (EN)")
     
-    # Fallback: Nếu không tìm thấy bằng path và có article_id (route /article/<article_id>)
-    # Thì mới dùng article_id để tìm (đây là ID thực sự trong database)
-    if not article and article_id and not section and not slug:
-        # Chỉ dùng article_id nếu không có section/slug (route /article/<article_id>)
-        article = get_article_with_fallback(article_id, preferred_language=current_language)
-    
+    # Nếu không tìm thấy article chính xác → 404 (không có fallback)
     if not article:
         from flask import abort
         abort(404)
+    
+    # ⚠️ QUAN TRỌNG: Update current_language dựa trên language của article đã tìm được
+    # NHƯNG: Chỉ auto-detect nếu session chưa có language được set (user chưa chọn ngôn ngữ)
+    # Nếu user đã chọn ngôn ngữ (có session['language']), giữ nguyên session language
+    # Điều này cho phép user đổi ngôn ngữ bằng icon mà không bị override bởi URL
+    
+    # Check xem user đã chọn ngôn ngữ chưa (có session language)
+    user_selected_language = session.get('language')
+    
+    if not user_selected_language:
+        # User chưa chọn ngôn ngữ → auto-detect từ URL
+        if article.language != current_language:
+            print(f"   🔄 Auto-detecting language from URL: {current_language} → {article.language}")
+            current_language = article.language
+            # Update session để UI hiển thị đúng ngôn ngữ
+            if article.language == 'da':
+                # DA là default, remove from session
+                session.pop('language', None)
+            else:
+                session['language'] = article.language
+    else:
+        # User đã chọn ngôn ngữ → dùng session language, không override
+        print(f"   ℹ️  User has selected language: {user_selected_language}, keeping it (not overriding from URL)")
+        current_language = user_selected_language
     
     # Format published date
     published_date_str = None
@@ -1105,11 +1248,12 @@ def article_detail(article_id=None, section=None, slug=None, url_path=None):
         from flask_babel import format_date
         published_date_str = format_date(article.published_date, format='long')
     
-    # Get related articles (cùng section, cùng language, exclude current article)
+    # Get related articles (cùng section, cùng language với article hiện tại, exclude current article)
     # ⚠️ Bỏ is_home=False vì articles có thể có is_home=True nhưng vẫn thuộc section này
+    # Dùng article.language thay vì current_language để đảm bảo lấy articles cùng language với article hiện tại
     related_articles = Article.query.filter_by(
         section=article.section,
-        language=current_language,
+        language=article.language,  # Dùng language của article hiện tại, không dùng current_language
         is_temp=False
     ).filter(
         Article.id != article.id
@@ -1358,6 +1502,21 @@ def article_detail(article_id=None, section=None, slug=None, url_path=None):
             'row_guid': 'podcasti-slider-detail'
         }
     
+    # Generate SEO meta tags từ database
+    # Dùng article.language thay vì current_language để đảm bảo SEO data đúng với article được hiển thị
+    from utils_seo import get_seo_meta, get_structured_data
+    seo_meta = get_seo_meta(
+        article=article,
+        page_type='article',
+        language=article.language,  # Dùng language của article, không dùng current_language
+        section=article.section
+    )
+    structured_data = get_structured_data(
+        article=article,
+        page_type='article',
+        language=article.language  # Dùng language của article, không dùng current_language
+    )
+    
     return render_template('article_detail.html',
         article=article,
         published_date_str=published_date_str,
@@ -1366,7 +1525,9 @@ def article_detail(article_id=None, section=None, slug=None, url_path=None):
         podcasti_slider_data=podcasti_slider_data,
         article_detail=article_detail,
         samfund_articles=samfund_articles_list,
-        podcasti_slider_detail_data=podcasti_slider_detail_data
+        podcasti_slider_detail_data=podcasti_slider_detail_data,
+        seo_meta=seo_meta,
+        structured_data=structured_data
     )
 
 
