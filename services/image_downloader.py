@@ -189,18 +189,26 @@ def download_and_update_image_data(image_data: Dict, base_url: str = 'https://ww
     for key, format_type in formats_to_download:
         if image_data.get(key):
             original_url = image_data[key]
-            relative_path = download_image(original_url, save_dir, image_id, format_type)
             
-            if relative_path:
-                # Tạo full URL
-                new_url = f"{base_url}{relative_path}"
-                updated_data[key] = new_url
-                print(f"      ✅ Downloaded {key}: {new_url}")
-            else:
-                # Giữ nguyên URL gốc nếu download lỗi (fallback về URL từ trang gốc)
-                print(f"      ⚠️  Failed to download {key}, keeping original URL: {original_url}")
-                # Đảm bảo vẫn giữ URL gốc
+            # Kiểm tra xem URL đã có .com domain chưa
+            if isinstance(original_url, str) and 'sermitsiaq.com' in original_url:
+                # Đã có .com domain, giữ nguyên
                 updated_data[key] = original_url
+                print(f"      ℹ️  {key} already has .com domain, keeping: {original_url[:80]}...")
+            else:
+                # Chưa có .com domain, download
+                relative_path = download_image(original_url, save_dir, image_id, format_type)
+                
+                if relative_path:
+                    # Tạo full URL
+                    new_url = f"{base_url}{relative_path}"
+                    updated_data[key] = new_url
+                    print(f"      ✅ Downloaded {key}: {new_url}")
+                else:
+                    # Giữ nguyên URL gốc nếu download lỗi (fallback về URL từ trang gốc)
+                    print(f"      ⚠️  Failed to download {key}, keeping original URL: {original_url[:80]}...")
+                    # Đảm bảo vẫn giữ URL gốc
+                    updated_data[key] = original_url
         else:
             # Nếu key không có trong image_data, tìm fallback từ các keys khác
             # Ưu tiên: fallback > desktop_webp > desktop_jpeg > mobile_webp > mobile_jpeg

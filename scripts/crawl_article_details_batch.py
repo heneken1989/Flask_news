@@ -40,9 +40,11 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from app import app
 from database import db, Article, ArticleDetail
 from services.article_detail_parser import ArticleDetailParser
+from services.image_downloader import download_and_update_image_data
 from seleniumbase import SB
 from deep_translator import GoogleTranslator
 import re
+import json
 
 # User data directory để lưu session login
 USER_DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'user_data')
@@ -1025,7 +1027,7 @@ def ensure_login(sb):
     return True
 
 
-def crawl_article_detail(url: str, language: str = 'da', headless: bool = True):
+def crawl_article_detail(url: str, language: str = 'da', headless: bool = True, download_images: bool = True):
     """
     Crawl article detail page và lưu vào database
     
@@ -1033,6 +1035,7 @@ def crawl_article_detail(url: str, language: str = 'da', headless: bool = True):
         url: URL của article detail page
         language: Language code ('da', 'kl', 'en')
         headless: Run browser in headless mode
+        download_images: Download images về .com domain nếu True
     
     Returns:
         ArticleDetail object or None
@@ -1256,6 +1259,100 @@ def crawl_article_detail(url: str, language: str = 'da', headless: bool = True):
                     article.title = title
                 if excerpt and not article.excerpt:
                     article.excerpt = excerpt
+                
+                # Download và cập nhật images từ article.image_data (header image)
+                # Function download_and_update_image_data sẽ tự kiểm tra từng URL và chỉ download những URL chưa có .com
+                if download_images and article.image_data:
+                    try:
+                        # Parse image_data (có thể là dict hoặc JSON string)
+                        img_data = article.image_data
+                        if isinstance(img_data, str):
+                            try:
+                                img_data = json.loads(img_data)
+                            except:
+                                img_data = {}
+                        
+                        # Luôn gọi download_and_update_image_data để kiểm tra và download từng URL
+                        if isinstance(img_data, dict) and len(img_data) > 0:
+                            print(f"   📥 Processing header image for article (ID: {article.id})...")
+                            try:
+                                updated_image_data = download_and_update_image_data(
+                                    img_data,
+                                    base_url='https://www.sermitsiaq.com',
+                                    download_all_formats=True  # Download tất cả formats cho article detail
+                                )
+                                # Update image_data trong Article
+                                article.image_data = updated_image_data
+                                print(f"   ✅ Updated header image_data")
+                            except Exception as e:
+                                print(f"   ⚠️  Error downloading header images: {e}")
+                                # Giữ nguyên image_data gốc nếu lỗi
+                        else:
+                            print(f"   ℹ️  No header image_data to process")
+                    except Exception as e:
+                        print(f"   ⚠️  Error processing header image_data: {e}")
+                
+                # Download và cập nhật images từ article_detail.content_blocks (images trong nội dung)
+                if download_images and article_detail.content_blocks:
+                    try:
+                        content_blocks = article_detail.content_blocks
+                        if isinstance(content_blocks, str):
+                            try:
+                                content_blocks = json.loads(content_blocks)
+                            except:
+                                content_blocks = []
+                        
+                        if isinstance(content_blocks, list):
+                            image_blocks_count = 0
+                            updated_blocks_count = 0
+                            
+                            # Tạo list mới để SQLAlchemy detect được thay đổi
+                            updated_content_blocks = []
+                            
+                            for block in content_blocks:
+                                # Tìm các image blocks
+                                if block.get('type') == 'image' and block.get('image_sources'):
+                                    image_blocks_count += 1
+                                    image_sources = block.get('image_sources', {})
+                                    
+                                    if isinstance(image_sources, dict) and len(image_sources) > 0:
+                                        print(f"   📥 Processing image block #{image_blocks_count}...")
+                                        try:
+                                            # Download và cập nhật image_sources
+                                            updated_image_sources = download_and_update_image_data(
+                                                image_sources,
+                                                base_url='https://www.sermitsiaq.com',
+                                                download_all_formats=True  # Download tất cả formats
+                                            )
+                                            # Tạo block mới với image_sources đã update
+                                            updated_block = block.copy()
+                                            updated_block['image_sources'] = updated_image_sources
+                                            updated_content_blocks.append(updated_block)
+                                            updated_blocks_count += 1
+                                            print(f"      ✅ Updated image block #{image_blocks_count}")
+                                        except Exception as e:
+                                            print(f"      ⚠️  Error downloading image block #{image_blocks_count}: {e}")
+                                            # Giữ nguyên block nếu lỗi
+                                            updated_content_blocks.append(block)
+                                    else:
+                                        # Không có image_sources, giữ nguyên block
+                                        updated_content_blocks.append(block)
+                                else:
+                                    # Không phải image block, giữ nguyên
+                                    updated_content_blocks.append(block)
+                            
+                            if image_blocks_count > 0:
+                                # Update content_blocks trong ArticleDetail với list mới
+                                article_detail.content_blocks = updated_content_blocks
+                                # Force mark as modified để đảm bảo SQLAlchemy detect thay đổi
+                                from sqlalchemy.orm.attributes import flag_modified
+                                flag_modified(article_detail, 'content_blocks')
+                                print(f"   ✅ Updated {updated_blocks_count}/{image_blocks_count} image blocks in content")
+                            else:
+                                print(f"   ℹ️  No image blocks found in content")
+                    except Exception as e:
+                        print(f"   ⚠️  Error processing content image blocks: {e}")
+                
                 db.session.commit()
             
             # Nếu là article_detail DA (không phải kl.sermitsiaq.ag), tự động tạo EN version
@@ -1322,7 +1419,7 @@ def update_is_temp_flag():
         db.session.rollback()
 
 
-def crawl_all(language=None, section=None, limit=None, headless=True, delay=2, auto_translate=True, translate_delay=0.3):
+def crawl_all(language=None, section=None, limit=None, headless=True, delay=2, auto_translate=True, translate_delay=0.3, download_images=True):
     """
     Crawl tất cả articles chưa có detail
     
@@ -1334,6 +1431,7 @@ def crawl_all(language=None, section=None, limit=None, headless=True, delay=2, a
         delay: Delay giữa các requests (seconds)
         auto_translate: Tự động translate article_detail DA sang EN sau khi crawl xong
         translate_delay: Delay giữa các lần translate (seconds)
+        download_images: Download images về .com domain nếu True
     """
     articles = get_articles_to_crawl(language=language, section=section, limit=limit)
     
@@ -1359,9 +1457,8 @@ def crawl_all(language=None, section=None, limit=None, headless=True, delay=2, a
     print(f"   Delay: {delay}s giữa các requests")
     print(f"   Auto-translate: {auto_translate}")
     if auto_translate:
-        print(f"   Translate delay: {translate_delay}s\n")
-    else:
-        print()
+        print(f"   Translate delay: {translate_delay}s")
+    print(f"   Download images: {download_images}\n")
     
     # Login một lần trước khi bắt đầu crawl (sử dụng user_data_dir để lưu session)
     print("🔐 Initializing browser session with login...")
@@ -1385,7 +1482,8 @@ def crawl_all(language=None, section=None, limit=None, headless=True, delay=2, a
         result = crawl_article_detail(
             url=article.published_url,
             language=article.language,
-            headless=headless
+            headless=headless,
+            download_images=download_images
         )
         
         if result:
@@ -1493,6 +1591,9 @@ Examples:
   
   # Chỉ translate các article_detail DA đã có
   python scripts/crawl_article_details_batch.py --translate-only
+  
+  # Crawl nhưng không download images
+  python scripts/crawl_article_details_batch.py --no-download-images
         """
     )
     
@@ -1518,6 +1619,8 @@ Examples:
                         help='Chỉ dịch các article_detail DA đã có, không crawl mới')
     parser.add_argument('--translate-limit', type=int,
                         help='Giới hạn số lượng article_detail để dịch')
+    parser.add_argument('--no-download-images', action='store_true',
+                        help='Tắt tự động download images về .com domain (mặc định: bật)')
     
     args = parser.parse_args()
     
@@ -1541,7 +1644,8 @@ Examples:
                 headless=not args.no_headless,
                 delay=args.delay,
                 auto_translate=not args.no_auto_translate,  # Mặc định bật auto-translate
-                translate_delay=args.translate_delay
+                translate_delay=args.translate_delay,
+                download_images=not args.no_download_images  # Mặc định bật download images
             )
 
 

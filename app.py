@@ -480,6 +480,28 @@ def sitemap_kl():
     """Generate and serve sitemap-KL.xml for KL"""
     return generate_sitemap_xml(language='kl', base_domain='www.sermitsiaq.com')
 
+# Serve robots.txt
+@app.route('/robots.txt')
+def robots_txt():
+    """Generate and serve robots.txt"""
+    from flask import Response
+    
+    robots_content = """User-agent: *
+Allow: /
+# Sitemaps
+Sitemap: https://www.sermitsiaq.com/sitemap.xml
+Sitemap: https://www.sermitsiaq.com/sitemap-DK.xml
+Sitemap: https://www.sermitsiaq.com/sitemap-KL.xml
+Sitemap: https://www.sermitsiaq.com/sitemap_news.xml
+
+# Disallow admin and login pages
+Disallow: /admin/
+Disallow: /login
+Disallow: /logout
+"""
+    
+    return Response(robots_content, mimetype='text/plain')
+
 # Serve Google News sitemap
 @app.route('/sitemap_news.xml')
 def sitemap_news():
