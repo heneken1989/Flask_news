@@ -203,6 +203,14 @@ def parse_article_element(article_element, base_url='https://www.sermitsiaq.ag')
         article_classes = article_element.get('class', [])
         grid_size = extract_grid_size_from_classes(article_classes)
         
+        # Extract content_classes (background color, border color, padding, etc.)
+        content_classes = None
+        content_div = article_element.find('div', class_='content')
+        if content_div:
+            content_classes_list = content_div.get('class', [])
+            if content_classes_list:
+                content_classes = ' '.join(content_classes_list)
+        
         return {
             'element_guid': element_guid,
             'title': title,
@@ -222,6 +230,7 @@ def parse_article_element(article_element, base_url='https://www.sermitsiaq.ag')
             'image_data': image_data,
             'article_id': article_id,
             'grid_size': grid_size,  # Lưu grid size từ HTML
+            'content_classes': content_classes,  # Lưu content classes (bg color, border, etc.)
         }
     except Exception as e:
         print(f"⚠️  Error parsing article element: {e}")
@@ -923,19 +932,18 @@ def parse_articles_from_html(html_content, base_url='https://www.sermitsiaq.ag',
                                 layout_data['title_parts'] = article_data['title_parts']
                             
                             # Check và lưu background colors nếu article có bg-* (cho tất cả layout types)
-                            content_div = article_elem.find('div', class_='content')
-                            if content_div:
-                                content_classes = content_div.get('class', [])
-                                content_class_str = ' '.join(content_classes) if content_classes else ''
+                            # Dùng content_classes từ article_data (đã parse trong parse_article_element)
+                            content_classes_str = article_data.get('content_classes', '')
+                            if content_classes_str:
                                 # Check bất kỳ background color nào (bg-black, bg-secondary, bg-primary, etc.)
-                                has_bg_color = any(cls.startswith('bg-') for cls in content_classes)
+                                has_bg_color = any(cls.startswith('bg-') for cls in content_classes_str.split())
                                 if has_bg_color:
                                     layout_data['has_bg_color'] = True
                                     # Giữ lại has_bg_black cho backward compatibility
-                                    if 'bg-black' in content_class_str:
+                                    if 'bg-black' in content_classes_str:
                                         layout_data['has_bg_black'] = True
-                                    # Lưu tất cả classes của content div để giữ nguyên styling
-                                    layout_data['content_classes'] = content_class_str
+                                # Lưu tất cả classes của content div để giữ nguyên styling
+                                layout_data['content_classes'] = content_classes_str
                             
                             if layout_type == '1_special_bg':
                                 # Check kicker
@@ -950,6 +958,13 @@ def parse_articles_from_html(html_content, base_url='https://www.sermitsiaq.ag',
                                     list_elem = row.find('div', class_='toplist')
                                 
                                 if list_elem:
+                                    # Extract list content classes (background, border, etc.)
+                                    list_content_div = list_elem.find('div', class_='content')
+                                    if list_content_div:
+                                        list_content_classes_list = list_content_div.get('class', [])
+                                        if list_content_classes_list:
+                                            layout_data['list_content_classes'] = ' '.join(list_content_classes_list)
+                                    
                                     # Extract list title - có thể là h3 với class headline hoặc không
                                     list_title_elem = list_elem.find('h3')
                                     if list_title_elem:
