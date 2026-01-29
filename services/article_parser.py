@@ -729,6 +729,13 @@ def parse_nuuk_articles(nuuk_elem, base_url='https://www.sermitsiaq.ag', row_ind
         element_guid = nuuk_elem.get('data-element-guid', '')
         slider_id = nuuk_elem.get('id', '')
         
+        # Detect source_class từ classes của element
+        slider_classes = nuuk_elem.get('class', [])
+        if 'source_nuuk_kl' in slider_classes:
+            source_class = 'source_nuuk_kl'
+        else:
+            source_class = 'source_nuuk'
+        
         # Parse slider title
         title_elem = nuuk_elem.find('h2', class_='articlescroller-header')
         slider_title = ''
@@ -753,7 +760,7 @@ def parse_nuuk_articles(nuuk_elem, base_url='https://www.sermitsiaq.ag', row_ind
         has_nav = inner_content.find('nav') is not None
         
         items = scroll_container.find_all('li', class_=lambda x: x and 'scroll-item' in x)
-        print(f"  🏙️  NUUK: Found {len(items)} items")
+        print(f"  🏙️  NUUK ({source_class}): Found {len(items)} items")
         
         # Parse các articles trong slider
         slider_articles = []
@@ -763,7 +770,7 @@ def parse_nuuk_articles(nuuk_elem, base_url='https://www.sermitsiaq.ag', row_ind
                 article_data['position'] = idx  # Thứ tự trong slider
                 slider_articles.append(article_data)
         
-        print(f"  ✅ NUUK: Successfully parsed {len(slider_articles)}/{len(items)} slider items")
+        print(f"  ✅ NUUK ({source_class}): Successfully parsed {len(slider_articles)}/{len(items)} slider items")
         
         # Build layout_data - giống như parse_slider()
         layout_data = {
@@ -772,7 +779,7 @@ def parse_nuuk_articles(nuuk_elem, base_url='https://www.sermitsiaq.ag', row_ind
             'slider_id': slider_id,
             'has_nav': has_nav,
             'items_per_view': 5,  # NUUK luôn có 5 items
-            'source_class': 'source_nuuk'
+            'source_class': source_class
         }
         
         # Trả về container dict (giống parse_slider())
@@ -839,9 +846,9 @@ def parse_articles_from_html(html_content, base_url='https://www.sermitsiaq.ag',
                 # Check xem row có chứa slider không - tìm div có class chứa 'articlescroller'
                 slider_elem = row.find('div', class_=lambda x: x and 'articlescroller' in x)
                 if slider_elem:
-                    # Check xem có phải NUUK không (source_nuuk class)
+                    # Check xem có phải NUUK không (source_nuuk hoặc source_nuuk_kl class)
                     slider_classes = slider_elem.get('class', [])
-                    is_nuuk = 'source_nuuk' in slider_classes
+                    is_nuuk = 'source_nuuk' in slider_classes or 'source_nuuk_kl' in slider_classes
                     
                     if is_nuuk:
                         # Parse NUUK như một container (giống slider)

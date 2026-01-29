@@ -217,6 +217,100 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                 layout_type = layout_item.get('layout_type', '')
                 display_order = layout_item.get('display_order', 0)
                 
+                # Xử lý 5_articles (NUUK slider) đặc biệt
+                # 5_articles cũng là slider container, nhưng chỉ có 1 record duy nhất mỗi ngôn ngữ
+                # → Tìm và update thay vì tạo mới (tránh duplicates)
+                if layout_type == '5_articles':
+                    stats['sliders_processed'] += 1
+                    print(f"   [{idx}/{len(layout_items)}] Processing 5_articles (NUUK): (display_order={display_order})")
+                    
+                    # Tìm 5_articles record mới nhất cho language này
+                    # ⚠️ Chỉ filter by (section='home', language, layout_type='5_articles')
+                    # KHÔNG dùng display_order vì có thể thay đổi
+                    existing_5articles = Article.query.filter_by(
+                        section='home',
+                        language=language,
+                        layout_type='5_articles'
+                    ).filter(
+                        or_(Article.is_deleted == False, Article.is_deleted.is_(None))
+                    ).order_by(Article.created_at.desc()).first()
+                    
+                    if existing_5articles:
+                        # Update existing record
+                        needs_update = False
+                        was_home = existing_5articles.is_home
+                        new_layout_data = layout_item.get('layout_data', {})
+                        new_grid_size = layout_item.get('grid_size', 6)
+                        new_title = layout_item.get('title', '')
+                        
+                        # Check các fields cần update
+                        if existing_5articles.display_order != display_order:
+                            needs_update = True
+                        if existing_5articles.grid_size != new_grid_size:
+                            needs_update = True
+                        if existing_5articles.title != new_title:
+                            needs_update = True
+                        if existing_5articles.layout_data != new_layout_data:
+                            needs_update = True
+                        if not was_home:
+                            needs_update = True
+                        
+                        if not dry_run and needs_update:
+                            existing_5articles.display_order = display_order
+                            existing_5articles.layout_data = new_layout_data
+                            existing_5articles.grid_size = new_grid_size
+                            existing_5articles.title = new_title
+                            existing_5articles.is_home = True
+                            existing_5articles.section = 'home'
+                            existing_5articles.element_guid = layout_item.get('element_guid', '')
+                            
+                            if existing_5articles.id not in updated_article_ids:
+                                updated_article_ids.add(existing_5articles.id)
+                                stats['articles_updated'] += 1
+                                if not was_home:
+                                    stats['articles_enabled'] += 1
+                                db.session.commit()
+                            
+                            print(f"      ✅ Updated 5_articles (ID: {existing_5articles.id})")
+                        elif not dry_run:
+                            print(f"      ⏭️  5_articles already up-to-date (ID: {existing_5articles.id})")
+                        else:
+                            print(f"      ⚠️  Would update 5_articles (ID: {existing_5articles.id}) - dry run")
+                    else:
+                        # 5_articles chưa tồn tại → tạo mới
+                        if not dry_run:
+                            new_5articles = Article(
+                                published_url='',  # 5_articles container không có URL
+                                layout_type='5_articles',
+                                display_order=display_order,
+                                layout_data=layout_item.get('layout_data', {}),
+                                grid_size=layout_item.get('grid_size', 6),
+                                section='home',
+                                is_home=True,
+                                language=language,
+                                title=layout_item.get('title', ''),
+                                slug='',
+                                element_guid=layout_item.get('element_guid', ''),
+                                k5a_url='',
+                                site_alias='sermitsiaq',
+                                instance='',
+                                is_paywall=False,
+                                paywall_class=''
+                            )
+                            db.session.add(new_5articles)
+                            db.session.commit()
+                            stats['articles_updated'] += 1
+                            print(f"      ✅ Created 5_articles (ID: {new_5articles.id})")
+                        else:
+                            print(f"      ⚠️  Would create 5_articles (dry run)")
+                    
+                    # Articles trong 5_articles slider đã được lưu trong layout_data
+                    slider_articles = layout_item.get('layout_data', {}).get('slider_articles', [])
+                    if slider_articles:
+                        print(f"         📋 5_articles contains {len(slider_articles)} articles (stored in layout_data only)")
+                    
+                    continue
+                
                 # Xử lý slider containers đặc biệt
                 if layout_type in ['slider', 'job_slider']:
                     stats['sliders_processed'] += 1
@@ -633,6 +727,76 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
         return stats
 
 
+def cleanup_5articles_duplicates(language='da', dry_run=False):
+    """
+    Cleanup các duplicate 5_articles records, chỉ giữ lại 1 record mới nhất
+    
+    Args:
+        language: Language code
+        dry_run: Nếu True, chỉ log không xóa
+    
+    Returns:
+        dict: Statistics về quá trình cleanup
+    """
+    print(f"\n{'='*60}")
+    print(f"🧹 Cleaning up 5_articles duplicates")
+    print(f"{'='*60}")
+    print(f"   Language: {language}")
+    print(f"   Dry run: {dry_run}")
+    
+    stats = {
+        'total_found': 0,
+        'kept': 0,
+        'deleted': 0
+    }
+    
+    with app.app_context():
+        # Tìm tất cả 5_articles cho language này
+        all_5articles = Article.query.filter_by(
+            section='home',
+            language=language,
+            layout_type='5_articles'
+        ).filter(
+            or_(Article.is_deleted == False, Article.is_deleted.is_(None))
+        ).order_by(Article.created_at.desc()).all()
+        
+        stats['total_found'] = len(all_5articles)
+        
+        if stats['total_found'] == 0:
+            print("   ℹ️  No 5_articles found")
+            return stats
+        
+        if stats['total_found'] == 1:
+            print(f"   ✅ Only 1 5_articles found (ID: {all_5articles[0].id}) - no cleanup needed")
+            stats['kept'] = 1
+            return stats
+        
+        # Giữ record mới nhất (đầu tiên trong list đã sort desc)
+        latest = all_5articles[0]
+        duplicates = all_5articles[1:]
+        
+        print(f"   Found {len(all_5articles)} 5_articles records")
+        print(f"   ✅ Keeping latest record (ID: {latest.id}, Created: {latest.created_at})")
+        stats['kept'] = 1
+        
+        # Xóa các duplicates
+        for duplicate in duplicates:
+            print(f"   🗑️  Deleting duplicate (ID: {duplicate.id}, Created: {duplicate.created_at})")
+            if not dry_run:
+                db.session.delete(duplicate)
+                stats['deleted'] += 1
+            else:
+                print(f"      ⚠️  Would delete (dry run)")
+        
+        if not dry_run and stats['deleted'] > 0:
+            db.session.commit()
+            print(f"\n   ✅ Cleanup completed: {stats['deleted']} duplicates deleted")
+        elif dry_run:
+            print(f"\n   ⚠️  Dry run: would delete {len(duplicates)} duplicates")
+        
+        return stats
+
+
 def mark_list_articles_for_deletion(language='da', dry_run=False):
     """
     Mark các 1_with_list_left/right articles là is_deleted=True trước khi crawl lại
@@ -940,6 +1104,221 @@ def translate_slider_containers(language='da', dry_run=False, delay=0.5):
             print(f"\n   First 5 errors:")
             for error in stats['error_list'][:5]:
                 print(f"      - DA ID {error['da_id']}: {error['error']}")
+        
+        return stats
+
+
+def create_or_update_5_articles_en(dry_run=False, delay=0.5):
+    """
+    Xử lý riêng cho 5_articles: Tạo/Update EN từ DA MỚI NHẤT
+    
+    ⚠️ LOGIC ĐẶC BIỆT:
+    - 5_articles KHÔNG CÓ published_url (cả DA và EN)
+    - Chỉ nên có TỐI ĐA 1 EN 5_article (dịch từ DA mới nhất)
+    - Nếu có nhiều EN 5_articles → XÓA cũ, giữ/tạo mới từ DA mới nhất
+    
+    Args:
+        dry_run: Nếu True, chỉ log không thực hiện
+        delay: Delay giữa các lần translate (giây)
+    
+    Returns:
+        dict: Statistics
+    """
+    print(f"\n{'='*60}")
+    print(f"📦 Processing 5_articles EN (from latest DA)")
+    print(f"{'='*60}")
+    
+    stats = {
+        'da_found': 0,
+        'en_found': 0,
+        'en_created': 0,
+        'en_updated': 0,
+        'en_deleted': 0,
+        'errors': 0
+    }
+    
+    with app.app_context():
+        # 1. Lấy DA 5_article MỚI NHẤT
+        da_latest = Article.query.filter(
+            Article.language == 'da',
+            Article.layout_type == '5_articles',
+            Article.section == 'home',
+            or_(Article.is_deleted == False, Article.is_deleted.is_(None))
+        ).order_by(Article.created_at.desc()).first()
+        
+        if not da_latest:
+            print("   ⚠️  No DA 5_articles found")
+            return stats
+        
+        stats['da_found'] = 1
+        print(f"   ✅ Found DA 5_article (ID: {da_latest.id})")
+        print(f"      Title: {da_latest.title[:60] if da_latest.title else 'N/A'}...")
+        print(f"      Created: {da_latest.created_at}")
+        
+        # 2. Tìm TẤT CẢ EN 5_articles hiện có
+        en_articles = Article.query.filter(
+            Article.language == 'en',
+            Article.layout_type == '5_articles',
+            Article.section == 'home',
+            or_(Article.is_deleted == False, Article.is_deleted.is_(None))
+        ).order_by(Article.created_at.desc()).all()
+        
+        stats['en_found'] = len(en_articles)
+        print(f"   📊 Found {len(en_articles)} existing EN 5_articles")
+        
+        # 3. Xác định action
+        if len(en_articles) == 0:
+            # Chưa có → CREATE
+            print(f"   🌐 No EN 5_article found → Creating new one")
+            
+            if not dry_run:
+                try:
+                    en_article = translate_article(
+                        da_latest,
+                        target_language='en',
+                        delay=delay
+                    )
+                    
+                    if not en_article:
+                        print(f"      ❌ translate_article() returned None")
+                        stats['errors'] += 1
+                        return stats
+                    
+                    # Set metadata
+                    en_article.layout_type = '5_articles'
+                    en_article.section = 'home'
+                    en_article.is_home = da_latest.is_home
+                    en_article.display_order = da_latest.display_order
+                    en_article.grid_size = da_latest.grid_size
+                    
+                    # Copy image_data
+                    if da_latest.image_data:
+                        en_article.image_data = da_latest.image_data
+                    
+                    # Copy layout_data
+                    if da_latest.layout_data:
+                        en_article.layout_data = da_latest.layout_data.copy() if isinstance(da_latest.layout_data, dict) else da_latest.layout_data
+                    
+                    db.session.add(en_article)
+                    db.session.commit()
+                    
+                    stats['en_created'] = 1
+                    print(f"      ✅ Created EN 5_article (ID: {en_article.id})")
+                except Exception as e:
+                    print(f"      ❌ Error creating EN article: {e}")
+                    db.session.rollback()
+                    stats['errors'] += 1
+            else:
+                print(f"      📝 Would create EN 5_article (dry run)")
+        
+        elif len(en_articles) == 1:
+            # Đã có 1 → UPDATE từ DA mới nhất
+            en_existing = en_articles[0]
+            print(f"   ♻️  Found 1 EN 5_article (ID: {en_existing.id}) → Updating from latest DA")
+            
+            if not dry_run:
+                try:
+                    updated = False
+                    
+                    # Update title nếu DA có title mới
+                    if da_latest.title:
+                        translated_title = translate_article_field(da_latest.title, 'en', delay=0.1)
+                        if translated_title and translated_title != en_existing.title:
+                            en_existing.title = translated_title
+                            updated = True
+                    
+                    # Update metadata
+                    if en_existing.display_order != da_latest.display_order:
+                        en_existing.display_order = da_latest.display_order
+                        updated = True
+                    
+                    if en_existing.grid_size != da_latest.grid_size:
+                        en_existing.grid_size = da_latest.grid_size
+                        updated = True
+                    
+                    if en_existing.is_home != da_latest.is_home:
+                        en_existing.is_home = da_latest.is_home
+                        updated = True
+                    
+                    # Update image_data
+                    if da_latest.image_data and en_existing.image_data != da_latest.image_data:
+                        en_existing.image_data = da_latest.image_data
+                        updated = True
+                    
+                    if updated:
+                        db.session.commit()
+                        stats['en_updated'] = 1
+                        print(f"      ✅ Updated EN 5_article")
+                    else:
+                        print(f"      ⏭️  EN 5_article already up to date")
+                except Exception as e:
+                    print(f"      ❌ Error updating EN article: {e}")
+                    db.session.rollback()
+                    stats['errors'] += 1
+            else:
+                print(f"      📝 Would update EN 5_article (dry run)")
+        
+        else:
+            # Có NHIỀU HƠN 1 → Giữ 1 mới nhất, XÓA cũ, UPDATE từ DA
+            en_keep = en_articles[0]  # Mới nhất
+            en_to_delete = en_articles[1:]  # Các cũ khác
+            
+            print(f"   ⚠️  Found {len(en_articles)} EN 5_articles (should be only 1)")
+            print(f"      → Keeping EN ID {en_keep.id} (newest)")
+            print(f"      → Deleting {len(en_to_delete)} old EN articles")
+            
+            if not dry_run:
+                try:
+                    # Xóa các EN cũ
+                    for old_en in en_to_delete:
+                        print(f"         🗑️  Deleting old EN ID {old_en.id}")
+                        db.session.delete(old_en)
+                    
+                    stats['en_deleted'] = len(en_to_delete)
+                    
+                    # Update EN giữ lại từ DA mới nhất
+                    updated = False
+                    
+                    if da_latest.title:
+                        translated_title = translate_article_field(da_latest.title, 'en', delay=0.1)
+                        if translated_title and translated_title != en_keep.title:
+                            en_keep.title = translated_title
+                            updated = True
+                    
+                    if en_keep.display_order != da_latest.display_order:
+                        en_keep.display_order = da_latest.display_order
+                        updated = True
+                    
+                    if en_keep.grid_size != da_latest.grid_size:
+                        en_keep.grid_size = da_latest.grid_size
+                        updated = True
+                    
+                    if da_latest.image_data:
+                        en_keep.image_data = da_latest.image_data
+                        updated = True
+                    
+                    db.session.commit()
+                    
+                    if updated:
+                        stats['en_updated'] = 1
+                        print(f"      ✅ Deleted {len(en_to_delete)} old EN, updated kept EN")
+                    else:
+                        print(f"      ✅ Deleted {len(en_to_delete)} old EN, kept EN already up to date")
+                except Exception as e:
+                    print(f"      ❌ Error cleaning up EN articles: {e}")
+                    db.session.rollback()
+                    stats['errors'] += 1
+            else:
+                print(f"      📝 Would delete {len(en_to_delete)} old EN and update kept EN (dry run)")
+        
+        print()
+        print(f"📊 5_articles EN processing complete:")
+        print(f"   DA found: {stats['da_found']}")
+        print(f"   EN found: {stats['en_found']}")
+        print(f"   EN created: {stats['en_created']}")
+        print(f"   EN updated: {stats['en_updated']}")
+        print(f"   EN deleted: {stats['en_deleted']}")
+        print(f"   Errors: {stats['errors']}")
         
         return stats
 
@@ -1329,6 +1708,12 @@ Examples:
                 dry_run=args.dry_run,
                 reset_first=not args.no_reset
             )
+            
+            # ⚠️ QUAN TRỌNG: Cleanup KL 5_articles duplicates
+            print(f"\n{'='*60}")
+            print(f"🧹 Cleanup: Removing duplicate KL 5_articles")
+            print(f"{'='*60}")
+            cleanup_5articles_duplicates(language='kl', dry_run=args.dry_run)
         else:
             print(f"   ⚠️  No KL layout found, skipping KL processing")
         
@@ -1440,6 +1825,12 @@ Examples:
         reset_first=not args.no_reset  # Reset nếu không có --no-reset
     )
     
+    # ⚠️ QUAN TRỌNG: Cleanup 5_articles duplicates sau khi link xong
+    print(f"\n{'='*60}")
+    print(f"🧹 Cleanup: Removing duplicate 5_articles")
+    print(f"{'='*60}")
+    cleanup_5articles_duplicates(language=args.language, dry_run=args.dry_run)
+    
     # Step 3 & 4: Tạo và link EN articles (nếu should_process_all)
     # Sau khi link DA articles, check và tạo EN articles nếu chưa có
     # Chỉ tạo nếu:
@@ -1464,6 +1855,16 @@ Examples:
             delay=0.5
         )
         
+        # ⚠️ XỬ LÝ RIÊNG: 5_articles (Create/Update EN from latest DA)
+        # 5_articles không có published_url, xử lý riêng với logic đặc biệt
+        print(f"\n{'='*60}")
+        print(f"📦 Step {step_num}.1: Processing 5_articles EN")
+        print(f"{'='*60}")
+        create_or_update_5_articles_en(
+            dry_run=args.dry_run,
+            delay=0.5
+        )
+        
         # ⚠️ QUAN TRỌNG: Delete old EN articles SAU KHI tạo mới, TRƯỚC KHI link
         # Để tránh có 2 articles cùng URL cùng is_home=True
         step_num_delete = f"{step_num}.1"
@@ -1483,6 +1884,12 @@ Examples:
             dry_run=args.dry_run,
             reset_first=not args.no_reset  # Reset EN articles trước khi link
         )
+        
+        # ⚠️ QUAN TRỌNG: Cleanup EN 5_articles duplicates
+        print(f"\n{'='*60}")
+        print(f"🧹 Cleanup: Removing duplicate EN 5_articles")
+        print(f"{'='*60}")
+        cleanup_5articles_duplicates(language='en', dry_run=args.dry_run)
         
         # ⚠️ QUAN TRỌNG: Translate slider containers SAU KHI EN sliders đã được tạo
         # (EN sliders được tạo trong link_articles_with_layout cho EN)
