@@ -28,6 +28,7 @@ from services.article_parser import parse_articles_from_html, parse_article_elem
 from services.image_downloader import download_and_update_image_data
 from urllib.parse import urljoin, urlparse
 from bs4 import BeautifulSoup
+from sqlalchemy import or_
 import time
 import re
 
@@ -394,38 +395,63 @@ def crawl_home_layout(home_url='https://www.sermitsiaq.ag', language='da',
                         # Check if article already exists in database
                         # Dùng db.session.expire_all() để refresh query và tránh cache cũ
                         db.session.expire_all()
-                        existing = Article.query.filter_by(
-                            published_url=article_url,
-                            language=language
-                        ).first()
                         
-                        if existing:
-                            # ⚠️ QUAN TRỌNG: Nếu article đã có ở các tag khác (section != 'home'), skip
-                            # Vì article đã được crawl từ section đó rồi, không cần crawl lại từ home
-                            if existing.section and existing.section != 'home':
-                                print(f"      ⏭️  Article already exists in section '{existing.section}' (ID: {existing.id}), skipping...")
-                                print(f"         ℹ️  Article đã có ở tag khác, không cần crawl lại từ home")
-                                articles_skipped += 1
-                                continue
+                        # ⚠️ QUAN TRỌNG: Với 1_with_list_left/right, chỉ tìm articles có section='home' và chưa bị deleted
+                        # Vì chúng cần tạo mới mỗi lần chạy (old articles đã bị mark is_deleted=True)
+                        if layout_type in ['1_with_list_left', '1_with_list_right']:
+                            # Tìm article với section='home' và chưa bị deleted
+                            existing = Article.query.filter_by(
+                                published_url=article_url,
+                                language=language,
+                                section='home'
+                            ).filter(
+                                or_(Article.is_deleted == False, Article.is_deleted.is_(None))
+                            ).first()
                             
-                            # Update existing article: set is_home=True, section='home'
-                            # ⚠️ KHÔNG set is_temp=True khi update (chỉ set khi tạo mới)
-                            if not existing.is_home or existing.section != 'home':
-                                existing.is_home = True
-                                existing.section = 'home'
-                                if article_info.get('display_order'):
-                                    existing.display_order = article_info.get('display_order')
-                                if layout_type:
-                                    existing.layout_type = layout_type
-                                db.session.commit()
-                                articles_updated += 1
-                                print(f"      ✅ Updated existing article (ID: {existing.id}): is_home=True, section='home'")
+                            if existing:
+                                # Article đã có với section='home' và chưa bị deleted → skip (đã tạo trong session này)
+                                print(f"      ⏭️  1_with_list article already exists in section='home' (ID: {existing.id}), skipping...")
+                                articles_skipped += 1
+                                crawled_urls_in_session.add(article_url)
+                                continue
                             else:
-                                print(f"      ⏭️  Article already exists and is home (ID: {existing.id}), skipping...")
-                            articles_skipped += 1
-                            # Mark URL as crawled trong session
-                            crawled_urls_in_session.add(article_url)
-                            continue
+                                # Không tìm thấy (vì đã bị mark deleted hoặc chưa có) → tạo mới
+                                print(f"      ✅ Creating new 1_with_list article (old one marked deleted or not exists)")
+                                # Proceed to create new article below
+                        else:
+                            # Với các layout type khác, query như cũ (không filter section)
+                            existing = Article.query.filter_by(
+                                published_url=article_url,
+                                language=language
+                            ).first()
+                            
+                            if existing:
+                                # ⚠️ QUAN TRỌNG: Nếu article đã có ở các tag khác (section != 'home'), skip
+                                # Vì article đã được crawl từ section đó rồi, không cần crawl lại từ home
+                                if existing.section and existing.section != 'home':
+                                    print(f"      ⏭️  Article already exists in section '{existing.section}' (ID: {existing.id}), skipping...")
+                                    print(f"         ℹ️  Article đã có ở tag khác, không cần crawl lại từ home")
+                                    articles_skipped += 1
+                                    continue
+                                
+                                # Update existing article: set is_home=True, section='home'
+                                # ⚠️ KHÔNG set is_temp=True khi update (chỉ set khi tạo mới)
+                                if not existing.is_home or existing.section != 'home':
+                                    existing.is_home = True
+                                    existing.section = 'home'
+                                    if article_info.get('display_order'):
+                                        existing.display_order = article_info.get('display_order')
+                                    if layout_type:
+                                        existing.layout_type = layout_type
+                                    db.session.commit()
+                                    articles_updated += 1
+                                    print(f"      ✅ Updated existing article (ID: {existing.id}): is_home=True, section='home'")
+                                else:
+                                    print(f"      ⏭️  Article already exists and is home (ID: {existing.id}), skipping...")
+                                articles_skipped += 1
+                                # Mark URL as crawled trong session
+                                crawled_urls_in_session.add(article_url)
+                                continue
                         
                         try:
                             # Navigate to article page

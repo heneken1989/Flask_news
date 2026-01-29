@@ -553,13 +553,16 @@
                                         {% endif %}
                                     </div>
                                 {% elif block.type == 'article_footer_tags' %}
-                                    <div data-element-guid="{{ block.element_guid|default('') }}" class="column articleFooter">
+                                    {# Replace old tags block with new tags from article.tags field #}
+                                    {% if article.tags %}
+                                    <div data-element-guid="{{ block.element_guid|default('f68305b1-96ac-423b-f4b9-b27f1f691058') }}" class="column articleFooter">
                                         <span class="tags">
-                                            {% for tag in block.tags %}
-                                            <a href="{{ tag.url }}">{{ tag.text }}</a>
+                                            {% for tag in article.tags %}
+                                            <a href="/tag/{{ tag|lower|replace(' ', '%20') }}">{{ tag }}</a>
                                             {% endfor %}
                                         </span>
                                     </div>
+                                    {% endif %}
                                 {% endif %}
                             {% endif %}
                         {% endfor %}
@@ -587,16 +590,6 @@
                         {% endif %}
                     {% endif %}
                 </div>
-
-                {% if article.layout_data and article.layout_data.tags %}
-                <div data-element-guid="f68305b1-96ac-423b-f4b9-b27f1f691058" class="column articleFooter">
-                    <span class="tags">
-                        {% for tag in article.layout_data.tags %}
-                        <a href="/tag/{{ tag|lower|replace(' ', '%20') }}">{{ tag }}</a>
-                        {% endfor %}
-                    </span>
-                </div>
-                {% endif %}
 
                 <div class="row social">
                     <div class="column large-12 small-12">

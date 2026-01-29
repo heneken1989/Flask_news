@@ -68,6 +68,9 @@ class Article(db.Model):
     # Translation temp flag (để tránh duplicate khi translate)
     is_temp = db.Column(db.Boolean, default=False)  # True = đang trong quá trình translate, chưa show
     
+    # Soft delete flag (đặc biệt cho 1_with_list_left/right articles)
+    is_deleted = db.Column(db.Boolean, default=False)  # True = đã mark để xóa, chờ replace bằng version mới
+    
     # Thời gian
     published_date = db.Column(db.DateTime)  # Thời gian publish từ website gốc
     crawled_at = db.Column(db.DateTime, default=datetime.utcnow)  # Thời gian crawl
@@ -92,6 +95,9 @@ class Article(db.Model):
     
     # Metadata từ crawl
     crawl_metadata = db.Column(db.JSON)  # Lưu thêm metadata nếu cần
+    
+    # Tags (extracted from article detail)
+    tags = db.Column(db.JSON)  # Array of tags: ["EU-KOMMISSIONEN", "GRØNLAND", "POLITIK"]
     
     # Multi-language support
     language = db.Column(db.String(2), nullable=False, default='da')  # 'da', 'kl', 'en'
@@ -179,6 +185,7 @@ class Article(db.Model):
             'kicker_below': (self.layout_data or {}).get('kicker_below') if self.layout_data else None,  # Kicker below (ví dụ "OPDATERET")
             'kicker_below_classes': (self.layout_data or {}).get('kicker_below_classes', 'kicker below primary color_mobile_primary') if self.layout_data else None,
             'title_parts': (self.layout_data or {}).get('title_parts') if self.layout_data else None,  # Title parts với highlights
+            'tags': self.tags or [],  # Tags field (array of tag strings)
             'language': self.language,  # Thêm language
             'canonical_id': self.canonical_id,  # Thêm canonical_id
             'original_language': self.original_language  # Thêm original_language

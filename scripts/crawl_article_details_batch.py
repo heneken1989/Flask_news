@@ -1255,6 +1255,46 @@ def crawl_article_detail(url: str, language: str = 'da', headless: bool = True, 
             # Update article if exists
             article = Article.query.filter_by(published_url=url).first()
             if article:
+                # Extract và cập nhật tags từ ArticleDetail.content_blocks
+                try:
+                    content_blocks = article_detail.content_blocks
+                    if isinstance(content_blocks, str):
+                        try:
+                            content_blocks = json.loads(content_blocks)
+                        except:
+                            content_blocks = []
+                    
+                    if isinstance(content_blocks, list):
+                        # Tìm article_footer_tags block
+                        tags_block = None
+                        for block in content_blocks:
+                            if block.get('type') == 'article_footer_tags':
+                                tags_block = block
+                                break
+                        
+                        if tags_block and tags_block.get('tags'):
+                            # Extract tag texts từ tags block
+                            tags_list = []
+                            for tag_item in tags_block.get('tags', []):
+                                if isinstance(tag_item, dict):
+                                    tag_text = tag_item.get('text', '').strip()
+                                    if tag_text:
+                                        tags_list.append(tag_text)
+                            
+                            if tags_list:
+                                # Update tags field (field mới, không lưu vào layout_data)
+                                # Chỉ update nếu tags mới khác với tags cũ
+                                existing_tags = article.tags if article.tags else []
+                                if existing_tags != tags_list:
+                                    article.tags = tags_list
+                                    from sqlalchemy.orm.attributes import flag_modified
+                                    flag_modified(article, 'tags')
+                                    print(f"   🏷️  Updated tags: {', '.join(tags_list[:5])}{'...' if len(tags_list) > 5 else ''}")
+                                else:
+                                    print(f"   ℹ️  Tags already up to date: {len(tags_list)} tags")
+                except Exception as e:
+                    print(f"   ⚠️  Error extracting tags: {e}")
+                
                 if title and not article.title:
                     article.title = title
                 if excerpt and not article.excerpt:

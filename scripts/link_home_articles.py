@@ -79,6 +79,7 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
     print(f"   Total layout items: {len(layout_items)}")
     print(f"   Dry run: {dry_run}")
     print(f"   Reset first: {reset_first}")
+    print(f"   ⚠️  Note: Only linking articles with is_deleted=False or NULL")
     
     stats = {
         'total_items': len(layout_items),
@@ -114,10 +115,12 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
         print(f"   Found {len(layout_slider_keys)} slider containers in layout")
         
         # Pre-fetch tất cả articles của language này để lookup nhanh
+        # ⚠️ QUAN TRỌNG: Chỉ lấy articles chưa bị mark deleted (is_deleted=False hoặc NULL)
         print(f"\n📚 Pre-fetching articles for language '{language}'...")
         all_articles = Article.query.filter(
             Article.published_url.isnot(None),
-            Article.published_url != ''
+            Article.published_url != '',
+            or_(Article.is_deleted == False, Article.is_deleted.is_(None))
         ).all()
         
         # Tạo map: published_url -> Article
@@ -140,12 +143,14 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
             articles_to_disable = []
             
             # 1. Articles với published_url không trong layout
+            # ⚠️ Chỉ disable articles chưa bị mark deleted
             articles_with_url = Article.query.filter(
                 Article.language == language,
                 Article.is_home == True,
                 Article.published_url.isnot(None),
                 Article.published_url != '',
-                Article.published_url.notin_(layout_urls)
+                Article.published_url.notin_(layout_urls),
+                or_(Article.is_deleted == False, Article.is_deleted.is_(None))
             ).all()
             
             for article in articles_with_url:
@@ -158,11 +163,13 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                     articles_to_disable.append(article)
             
             # 2. Slider containers không trong layout
+            # ⚠️ Chỉ disable slider containers chưa bị mark deleted
             slider_containers = Article.query.filter(
                 Article.language == language,
                 Article.is_home == True,
                 Article.layout_type.in_(['slider', 'job_slider']),
-                Article.section == 'home'
+                Article.section == 'home',
+                or_(Article.is_deleted == False, Article.is_deleted.is_(None))
             ).all()
             
             for slider in slider_containers:
@@ -218,11 +225,14 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                     # Với slider, tìm hoặc tạo slider container article
                     # Slider container không có published_url, dùng (layout_type, display_order) làm key
                     # ⚠️ KHÔNG filter is_home=True vì có thể slider đang is_home=False cần được enable
+                    # ⚠️ Chỉ tìm slider chưa bị mark deleted
                     existing_slider = Article.query.filter_by(
                         section='home',
                         language=language,
                         layout_type=layout_type,
                         display_order=display_order
+                    ).filter(
+                        or_(Article.is_deleted == False, Article.is_deleted.is_(None))
                     ).first()
                     
                     if existing_slider:
@@ -388,9 +398,12 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                             # Tìm EN version từ DA article
                             # Cách 1: Tìm bằng canonical_id (EN có canonical_id = DA.id)
                             # Với 1_with_list_left/right: chỉ tìm EN article có section='home'
+                            # ⚠️ Chỉ tìm EN article chưa bị mark deleted
                             query = Article.query.filter_by(
                                 canonical_id=da_article.id,
                                 language='en'
+                            ).filter(
+                                or_(Article.is_deleted == False, Article.is_deleted.is_(None))
                             )
                             if require_home_section:
                                 query = query.filter_by(section='home')
@@ -413,9 +426,12 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                                         
                                         # ⚠️ CRITICAL: Check lần cuối xem EN article đã tồn tại chưa
                                         # (có thể đã được tạo bởi iteration trước trong cùng 1 lần chạy)
+                                        # ⚠️ Chỉ check EN article chưa bị mark deleted
                                         final_check = Article.query.filter_by(
                                             published_url=da_article.published_url,
                                             language='en'
+                                        ).filter(
+                                            or_(Article.is_deleted == False, Article.is_deleted.is_(None))
                                         )
                                         if require_home_section:
                                             final_check = final_check.filter_by(section='home')
@@ -615,6 +631,121 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                 print(f"      - {error}")
         
         return stats
+
+
+def mark_list_articles_for_deletion(language='da', dry_run=False):
+    """
+    Mark các 1_with_list_left/right articles là is_deleted=True trước khi crawl lại
+    Mục đích: Đánh dấu để xóa sau khi đã tạo mới và link xong
+    
+    Args:
+        language: Language code
+        dry_run: Nếu True, chỉ log không update
+    
+    Returns:
+        dict: Statistics về quá trình mark
+    """
+    print(f"\n{'='*60}")
+    print(f"🗑️  Marking old 1_with_list articles for deletion")
+    print(f"{'='*60}")
+    print(f"   Language: {language}")
+    print(f"   Dry run: {dry_run}")
+    
+    stats = {
+        'marked': 0,
+        'errors': 0
+    }
+    
+    with app.app_context():
+        try:
+            # Find all 1_with_list_left/right articles chưa bị mark deleted
+            list_articles = Article.query.filter(
+                Article.language == language,
+                Article.layout_type.in_(['1_with_list_left', '1_with_list_right']),
+                Article.section == 'home',
+                or_(Article.is_deleted == False, Article.is_deleted.is_(None))
+            ).all()
+            
+            print(f"   Found {len(list_articles)} 1_with_list articles to mark")
+            
+            if not dry_run:
+                for article in list_articles:
+                    article.is_deleted = True
+                    stats['marked'] += 1
+                
+                if list_articles:
+                    db.session.commit()
+                    print(f"   ✅ Marked {stats['marked']} articles for deletion")
+                else:
+                    print(f"   ℹ️  No articles to mark")
+            else:
+                stats['marked'] = len(list_articles)
+                print(f"   ⚠️  Would mark {len(list_articles)} articles (dry run)")
+        
+        except Exception as e:
+            stats['errors'] += 1
+            print(f"   ❌ Error marking articles: {e}")
+            if not dry_run:
+                db.session.rollback()
+            raise
+    
+    return stats
+
+
+def delete_marked_articles(language='da', dry_run=False):
+    """
+    Delete các articles có is_deleted=True sau khi đã tạo mới và link xong
+    
+    Args:
+        language: Language code
+        dry_run: Nếu True, chỉ log không delete
+    
+    Returns:
+        dict: Statistics về quá trình delete
+    """
+    print(f"\n{'='*60}")
+    print(f"🗑️  Deleting old marked articles")
+    print(f"{'='*60}")
+    print(f"   Language: {language}")
+    print(f"   Dry run: {dry_run}")
+    
+    stats = {
+        'deleted': 0,
+        'errors': 0
+    }
+    
+    with app.app_context():
+        try:
+            # Find all articles with is_deleted=True for this language
+            marked_articles = Article.query.filter(
+                Article.language == language,
+                Article.is_deleted == True
+            ).all()
+            
+            print(f"   Found {len(marked_articles)} marked articles to delete")
+            
+            if not dry_run:
+                for article in marked_articles:
+                    db.session.delete(article)
+                    stats['deleted'] += 1
+                
+                if marked_articles:
+                    db.session.commit()
+                    print(f"   ✅ Deleted {stats['deleted']} old articles")
+                else:
+                    print(f"   ℹ️  No articles to delete")
+            else:
+                stats['deleted'] = len(marked_articles)
+                print(f"   ⚠️  Would delete {len(marked_articles)} articles (dry run)")
+        
+        except Exception as e:
+            stats['errors'] += 1
+            print(f"   ❌ Error deleting articles: {e}")
+            if not dry_run:
+                db.session.rollback()
+            raise
+    
+    return stats
 
 
 def translate_slider_containers(language='da', dry_run=False, delay=0.5):
@@ -858,6 +989,7 @@ def create_missing_en_articles(layout_items, language='da', dry_run=False, delay
         # Lấy DA articles có published_url trong layout
         # ⚠️ QUAN TRỌNG: Với 1_with_list_left/right, chỉ lấy articles có section='home'
         # Vì chúng chỉ xuất hiện ở home, không nên query vào các sections khác
+        # ⚠️ Chỉ lấy articles chưa bị mark deleted
         da_articles = Article.query.filter(
             Article.language == 'da',
             Article.is_home == True,
@@ -867,7 +999,9 @@ def create_missing_en_articles(layout_items, language='da', dry_run=False, delay
             or_(
                 Article.layout_type.notin_(['1_with_list_left', '1_with_list_right']),
                 Article.section == 'home'
-            )
+            ),
+            # Chỉ lấy articles chưa bị deleted
+            or_(Article.is_deleted == False, Article.is_deleted.is_(None))
         ).all()
         
         print(f"   Found {len(da_articles)} DA articles in layout to check (filtered: 1_with_list_left/right only in section='home')")
@@ -891,9 +1025,12 @@ def create_missing_en_articles(layout_items, language='da', dry_run=False, delay
                 # Check xem đã có EN version chưa
                 # EN articles có published_url = DA URL (từ layout)
                 # Với 1_with_list_left/right: chỉ tìm EN article có section='home'
+                # ⚠️ Chỉ tìm EN article chưa bị mark deleted
                 query = Article.query.filter_by(
                     published_url=da_article.published_url,
                     language='en'
+                ).filter(
+                    or_(Article.is_deleted == False, Article.is_deleted.is_(None))
                 )
                 if da_article.layout_type in ['1_with_list_left', '1_with_list_right']:
                     query = query.filter_by(section='home')
@@ -936,9 +1073,12 @@ def create_missing_en_articles(layout_items, language='da', dry_run=False, delay
                     try:
                         # ⚠️ CRITICAL: Check lần cuối xem EN article đã tồn tại chưa
                         # (có thể đã được tạo bởi iteration trước trong cùng 1 lần chạy)
+                        # ⚠️ Chỉ check EN article chưa bị mark deleted
                         final_check = Article.query.filter_by(
                             published_url=da_article.published_url,
                             language='en'
+                        ).filter(
+                            or_(Article.is_deleted == False, Article.is_deleted.is_(None))
                         )
                         if da_article.layout_type in ['1_with_list_left', '1_with_list_right']:
                             final_check = final_check.filter_by(section='home')
@@ -1107,6 +1247,22 @@ Examples:
         not args.no_create_en  # Mặc định xử lý tất cả nếu không có --no-create-en
     )
     
+    # Step 0: Mark old 1_with_list articles for deletion (cho tất cả languages sẽ xử lý)
+    # ⚠️ QUAN TRỌNG: Mark TRƯỚC KHI crawl để crawl có thể tạo mới
+    if should_process_all:
+        # Mark cho cả KL, DA, EN
+        for lang in ['kl', 'da', 'en']:
+            print(f"\n{'='*60}")
+            print(f"🗑️  Step 0: Marking old {lang.upper()} 1_with_list articles")
+            print(f"{'='*60}")
+            mark_list_articles_for_deletion(language=lang, dry_run=args.dry_run)
+    else:
+        # Chỉ mark cho language hiện tại
+        print(f"\n{'='*60}")
+        print(f"🗑️  Step 0: Marking old {args.language.upper()} 1_with_list articles")
+        print(f"{'='*60}")
+        mark_list_articles_for_deletion(language=args.language, dry_run=args.dry_run)
+    
     # Step 1: Xử lý KL trước (nếu should_process_all)
     if should_process_all:
         print(f"\n{'='*60}")
@@ -1168,6 +1324,48 @@ Examples:
             )
         else:
             print(f"   ⚠️  No KL layout found, skipping KL processing")
+        
+        # ⚠️ QUAN TRỌNG: Match DA và KL articles SAU KHI cả hai đã được process
+        # Matching step set canonical_id cho KL articles → link với DA articles
+        # Cần thiết cho language switcher DA ↔ KL
+        if kl_layout_items and not args.dry_run:
+            print(f"\n{'='*60}")
+            print(f"🔗 Step 1.5: Matching DA and KL home articles")
+            print(f"{'='*60}")
+            
+            with app.app_context():
+                from services.article_matcher import match_and_link_articles
+                
+                # Get DA articles (chỉ lấy articles chưa bị mark deleted)
+                da_articles = Article.query.filter_by(
+                    language='da',
+                    is_home=True
+                ).filter(
+                    or_(Article.is_deleted == False, Article.is_deleted.is_(None))
+                ).all()
+                
+                # Get KL articles (chỉ lấy articles chưa bị mark deleted)
+                kl_articles = Article.query.filter_by(
+                    language='kl',
+                    is_home=True
+                ).filter(
+                    or_(Article.is_deleted == False, Article.is_deleted.is_(None))
+                ).all()
+                
+                print(f"   Found {len(da_articles)} DA articles")
+                print(f"   Found {len(kl_articles)} KL articles")
+                
+                if da_articles and kl_articles:
+                    stats = match_and_link_articles(da_articles, kl_articles)
+                    print(f"   ✅ Matched {stats['matched_count']} articles")
+                    print(f"   ⚠️  Unmatched DA: {len(stats['unmatched_dk'])}")
+                    print(f"   ⚠️  Unmatched KL: {len(stats['unmatched_kl'])}")
+                else:
+                    print(f"   ⚠️  No articles to match")
+        elif kl_layout_items and args.dry_run:
+            print(f"\n{'='*60}")
+            print(f"🔗 Step 1.5: Would match DA and KL home articles (dry run)")
+            print(f"{'='*60}")
     
     # Load hoặc crawl layout cho language hiện tại
     if args.crawl or not args.layout_file:
@@ -1356,6 +1554,22 @@ Examples:
                 print(f"   ⚠️  Error generating sitemap for {lang.upper()}: {e}")
         
         print(f"   ✅ Sitemaps generated successfully!")
+    
+    # Step: Delete old marked 1_with_list articles (sau khi đã link xong)
+    # ⚠️ QUAN TRỌNG: Delete SAU KHI link để minimize thời gian user thấy sự không ổn định
+    if should_process_all:
+        # Delete cho cả KL, DA, EN
+        for lang in ['kl', 'da', 'en']:
+            print(f"\n{'='*60}")
+            print(f"🗑️  Deleting old {lang.upper()} marked articles")
+            print(f"{'='*60}")
+            delete_marked_articles(language=lang, dry_run=args.dry_run)
+    else:
+        # Chỉ delete cho language hiện tại
+        print(f"\n{'='*60}")
+        print(f"🗑️  Deleting old {args.language.upper()} marked articles")
+        print(f"{'='*60}")
+        delete_marked_articles(language=args.language, dry_run=args.dry_run)
     
     # Step cuối cùng: Check và crawl article details nếu có articles với is_temp=True
     if not args.dry_run:

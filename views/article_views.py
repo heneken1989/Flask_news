@@ -901,18 +901,29 @@ def podcasti_section():
 @article_view_bp.route('/tag/<section>')
 def tag_section(section):
     """
-    Display articles by section/category
-    Route: /tag/samfund, /tag/erhverv, /tag/kultur, /tag/sport, /tag/podcasti
-    Shows 50 newest articles from the specified section
+    Display articles by section/category or tag
+    Routes:
+    - /tag/samfund, /tag/erhverv, /tag/kultur, /tag/sport, /tag/podcasti (sections)
+    - /tag/{tag_name} (dynamic tags from article.layout_data['tags'])
+    
+    Shows articles filtered by section (if valid section) or by tag name
     """
     from database import db
+    from sqlalchemy import func, or_
     
-    # Validate section
+    # Decode URL-encoded tag name (replace %20 with space, etc.)
+    import urllib.parse
+    section = urllib.parse.unquote(section)
+    
+    # Validate section - check if it's a predefined section
     valid_sections = ['samfund', 'erhverv', 'kultur', 'sport', 'podcasti']
-    if section not in valid_sections:
-        # Return 404 or redirect to home
-        from flask import abort
-        abort(404)
+    is_section = section.lower() in valid_sections
+    
+    # If not a valid section, treat it as a tag name
+    if not is_section:
+        # Query articles by tag name in layout_data['tags']
+        # This will be handled later in the query logic
+        pass
     
     # Get current language from session or default
     # Use get_locale() from flask_babel to be consistent with app default
@@ -954,32 +965,61 @@ def tag_section(section):
         }
     }
     
-    # Lấy section name theo ngôn ngữ hiện tại
-    section_name = section_names.get(current_language, section_names['da']).get(section, section)
-    
-    # Query articles từ database theo section và language
-    articles = []
-    try:
-        # Query articles với language filter
-        # Đối với DA (Danish) - ngôn ngữ gốc, không cần filter is_temp
-        # Đối với EN/KL - chỉ show articles đã hoàn thành translate (is_temp=False)
-        # ⚠️ Bỏ is_home=False vì articles có thể có is_home=True nhưng vẫn thuộc section này
+    # Determine section_name and query logic
+    if is_section:
+        # Lấy section name theo ngôn ngữ hiện tại
+        section_name = section_names.get(current_language, section_names['da']).get(section, section)
+        
+        # Query articles theo section
         query = Article.query.filter_by(
             section=section,
             language=current_language
         )
+    else:
+        # Treat as tag name - query articles by tag in layout_data['tags']
+        tag_name = section  # Use the decoded tag name
+        section_name = tag_name  # Use tag name as display name
         
-        # Chỉ filter is_temp=False cho EN và KL (translated articles)
-        # DA articles không bao giờ là temp vì chúng là ngôn ngữ gốc
-        if current_language in ['en', 'kl']:
-            query = query.filter_by(is_temp=False)
+        # Query articles where tags field contains the tag name
+        # PostgreSQL JSONB: check if tags array contains the tag name (case-insensitive)
+        # Use jsonb_array_elements_text to extract tags and compare case-insensitively
+        from sqlalchemy import text as sql_text
         
-        articles = query.order_by(Article.published_date.desc().nullslast())\
-                       .limit(100).all()  # Lấy nhiều hơn để filter duplicate
+        # Method: Use PostgreSQL jsonb_array_elements_text with LOWER() for case-insensitive match
+        # This is more reliable than ILIKE on cast to text, especially for Unicode characters
+        query = Article.query.filter(
+            Article.language == current_language,
+            Article.tags.isnot(None)
+        ).filter(
+            sql_text("""
+                EXISTS (
+                    SELECT 1 
+                    FROM jsonb_array_elements_text(articles.tags) AS tag
+                    WHERE LOWER(tag) = LOWER(:tag_name)
+                )
+            """).bindparams(tag_name=tag_name)
+        )
+    
+    # Chỉ filter is_temp=False cho EN và KL (translated articles)
+    # DA articles không bao giờ là temp vì chúng là ngôn ngữ gốc
+    if current_language in ['en', 'kl']:
+        query = query.filter_by(is_temp=False)
+    
+    # Query articles từ database
+    articles = []
+    try:
         
-        # ⚠️ QUAN TRỌNG: Loại bỏ duplicate articles theo k5a_url
-        # Nếu có nhiều articles cùng k5a_url, chỉ giữ lại article mới nhất (created_at mới nhất)
-        k5a_url_to_article = {}  # Dict: {k5a_url: Article} - giữ article mới nhất
+        # Order by: ưu tiên articles có section != 'home' trước, sau đó mới đến published_date
+        # Sử dụng CASE WHEN để sort: section != 'home' = 0 (ưu tiên), section = 'home' = 1 (sau)
+        from sqlalchemy import case
+        articles = query.order_by(
+            case((Article.section != 'home', 0), else_=1),  # Ưu tiên section != 'home'
+            Article.published_date.desc().nullslast()
+        ).limit(100).all()  # Lấy nhiều hơn để filter duplicate
+        
+        # ⚠️ QUAN TRỌNG: Loại bỏ duplicate articles theo k5a_url hoặc published_url
+        # Nếu có nhiều articles cùng published_url, ưu tiên article có section != 'home'
+        k5a_url_to_article = {}  # Dict: {k5a_url: Article} - giữ article ưu tiên
         seen_urls = set()  # Track published_url để tránh duplicate theo URL (cho articles không có k5a_url)
         
         for article in articles:
@@ -994,22 +1034,46 @@ def tag_section(section):
                     # Chưa có article với k5a_url này → thêm vào
                     k5a_url_to_article[article.k5a_url] = article
                 else:
-                    # Đã có article với k5a_url này → so sánh created_at
+                    # Đã có article với k5a_url này → ưu tiên section != 'home'
                     existing_article = k5a_url_to_article[article.k5a_url]
-                    if article.created_at and existing_article.created_at:
-                        # Giữ article mới hơn (created_at lớn hơn)
-                        if article.created_at > existing_article.created_at:
-                            k5a_url_to_article[article.k5a_url] = article
-                    elif article.created_at:
-                        # Article hiện tại có created_at, article cũ không có → giữ article mới
+                    
+                    # Ưu tiên: section != 'home' > section == 'home'
+                    if existing_article.section == 'home' and article.section != 'home':
+                        # Article mới không phải home, article cũ là home → thay thế
                         k5a_url_to_article[article.k5a_url] = article
-                    # Nếu cả hai đều không có created_at, giữ article đầu tiên (đã có)
+                    elif existing_article.section != 'home' and article.section == 'home':
+                        # Article cũ không phải home, article mới là home → giữ article cũ
+                        pass
+                    else:
+                        # Cả hai cùng loại (cùng home hoặc cùng không home) → giữ article mới hơn (created_at)
+                        if article.created_at and existing_article.created_at:
+                            if article.created_at > existing_article.created_at:
+                                k5a_url_to_article[article.k5a_url] = article
+                        elif article.created_at:
+                            k5a_url_to_article[article.k5a_url] = article
             else:
-                # Không có k5a_url → filter theo published_url như cũ
+                # Không có k5a_url → filter theo published_url
                 if article.published_url not in seen_urls:
                     seen_urls.add(article.published_url)
-                    # Thêm vào k5a_url_to_article với key là published_url (để xử lý thống nhất)
                     k5a_url_to_article[article.published_url] = article
+                else:
+                    # Đã có article với published_url này → ưu tiên section != 'home'
+                    existing_article = k5a_url_to_article[article.published_url]
+                    
+                    # Ưu tiên: section != 'home' > section == 'home'
+                    if existing_article.section == 'home' and article.section != 'home':
+                        # Article mới không phải home, article cũ là home → thay thế
+                        k5a_url_to_article[article.published_url] = article
+                    elif existing_article.section != 'home' and article.section == 'home':
+                        # Article cũ không phải home, article mới là home → giữ article cũ
+                        pass
+                    else:
+                        # Cả hai cùng loại → giữ article mới hơn (created_at)
+                        if article.created_at and existing_article.created_at:
+                            if article.created_at > existing_article.created_at:
+                                k5a_url_to_article[article.published_url] = article
+                        elif article.created_at:
+                            k5a_url_to_article[article.published_url] = article
         
         # Tạo list unique articles từ k5a_url_to_article
         unique_articles = list(k5a_url_to_article.values())
@@ -1061,8 +1125,8 @@ def tag_section(section):
     seo_meta = get_seo_meta(
         page_type='section',
         language=current_language,
-        section=section,
-        title=f"Tag: {section_name}",  # Format: "Tag: Kultur" (thay đổi theo ngôn ngữ)
+        section=section if is_section else None,  # Only pass section if it's a valid section
+        title=f"Tag: {section_name}",
         description=description
     )
     structured_data = get_structured_data(
