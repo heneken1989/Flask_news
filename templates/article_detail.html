@@ -553,11 +553,22 @@
                                         {% endif %}
                                     </div>
                                 {% elif block.type == 'article_footer_tags' %}
-                                    {# Replace old tags block with new tags from article.tags field #}
-                                    {% if article.tags %}
+                                    {# Tags with fallback: article.tags (priority) -> block.tags (fallback) #}
+                                    {% set tags_to_display = article.tags if article.tags else [] %}
+                                    {% if not tags_to_display and block.tags %}
+                                        {# Fallback: extract tags from block.tags #}
+                                        {% set tags_to_display = [] %}
+                                        {% for tag_item in block.tags %}
+                                            {% if tag_item.text %}
+                                                {% set _ = tags_to_display.append(tag_item.text) %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                    
+                                    {% if tags_to_display %}
                                     <div data-element-guid="{{ block.element_guid|default('f68305b1-96ac-423b-f4b9-b27f1f691058') }}" class="column articleFooter">
                                         <span class="tags">
-                                            {% for tag in article.tags %}
+                                            {% for tag in tags_to_display %}
                                             <a href="/tag/{{ tag|lower|replace(' ', '%20') }}">{{ tag }}</a>
                                             {% endfor %}
                                         </span>
@@ -615,21 +626,26 @@
                 </div>
                 {% endif %}
                 
-                <!-- SAMFUND Articles: 2 articles row -->
+                <!-- SAMFUND Articles: 2 articles row + 3 articles row -->
                 {% if samfund_articles and samfund_articles|length >= 2 %}
-                <div data-element-guid="samfund-articles-2" class="row small-12 large-12" style="">
-                    {% set articles = samfund_articles[:2] %}
-                    {% set row_guid = 'samfund-articles-row-1' %}
-                    {% include 'partials/layout_2_articles.html' %}
+                {# Row 1: 2 articles (grid_size=6 each) #}
+                <div data-element-guid="samfund-articles-row-1" class="row row-articles" style="">
+                {% for article_item in samfund_articles[:2] %}
+                    {% set article = article_item %}
+                    {% set article_grid_size = article.grid_size|default(6) %}
+                    {% include 'partials/article_item.html' %}
+                {% endfor %}
                 </div>
                 {% endif %}
                 
-                <!-- SAMFUND Articles: 3 articles row -->
                 {% if samfund_articles and samfund_articles|length >= 5 %}
-                <div data-element-guid="samfund-articles-3" class="row small-12 large-12" style="">
-                    {% set articles = samfund_articles[2:5] %}
-                    {% set row_guid = 'samfund-articles-row-2' %}
-                    {% include 'partials/layout_3_articles.html' %}
+                {# Row 2: 3 articles (grid_size=4 each) #}
+                <div data-element-guid="samfund-articles-row-2" class="row row-articles" style="">
+                {% for article_item in samfund_articles[2:5] %}
+                    {% set article = article_item %}
+                    {% set article_grid_size = article.grid_size|default(4) %}
+                    {% include 'partials/article_item.html' %}
+                {% endfor %}
                 </div>
                 {% endif %}
 

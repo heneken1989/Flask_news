@@ -199,6 +199,92 @@ def set_language(lang):
                 print(f"   ✅ Found translation: #{translation.id} (lang: {translation.language})")
                 break
         
+        # ⚠️ FALLBACK: Nếu không tìm thấy translation qua canonical_id, thử match bằng image_id
+        if not translation:
+            print(f"   🔍 No translation found via canonical_id, trying image_id match...")
+            
+            # Extract image_id từ article hiện tại
+            image_id = None
+            if article.image_data:
+                import re
+                image_urls = [
+                    article.image_data.get('desktop_webp'),
+                    article.image_data.get('desktop_jpeg'),
+                    article.image_data.get('mobile_webp'),
+                    article.image_data.get('mobile_jpeg'),
+                    article.image_data.get('fallback')
+                ]
+                
+                for url in image_urls:
+                    if not url:
+                        continue
+                    # Extract imageId từ URL (ví dụ: ?imageId=2333823 hoặc /2333823.webp)
+                    match = re.search(r'[?&]imageId=(\d+)', url)
+                    if match:
+                        image_id = match.group(1)
+                        break
+                    match = re.search(r'/(\d+)\.(webp|jpg|jpeg)', url)
+                    if match:
+                        image_id = match.group(1)
+                        break
+            
+            if image_id:
+                print(f"   📸 Extracted image_id: {image_id}")
+                
+                # Tìm articles khác có cùng image_id
+                all_articles_with_image = Article.query.filter(
+                    Article.id != article.id,  # Exclude current article
+                    Article.language == lang,  # Target language
+                    Article.image_data.isnot(None)
+                ).all()
+                
+                # ⚠️ ƯU TIÊN: Match trong cùng section trước, sau đó mới match khác section
+                candidates_same_section = []
+                candidates_diff_section = []
+                
+                for candidate in all_articles_with_image:
+                    if not candidate.image_data:
+                        continue
+                    
+                    # Check xem candidate có cùng image_id không
+                    candidate_urls = [
+                        candidate.image_data.get('desktop_webp'),
+                        candidate.image_data.get('desktop_jpeg'),
+                        candidate.image_data.get('mobile_webp'),
+                        candidate.image_data.get('mobile_jpeg'),
+                        candidate.image_data.get('fallback')
+                    ]
+                    
+                    has_image_id = False
+                    for url in candidate_urls:
+                        if not url:
+                            continue
+                        # Check both formats: ?imageId=2303998 and /2303998.webp
+                        if f'imageId={image_id}' in url or f'/{image_id}.' in url:
+                            has_image_id = True
+                            break
+                    
+                    if has_image_id:
+                        # Phân loại theo section
+                        if candidate.section == article.section:
+                            candidates_same_section.append(candidate)
+                        else:
+                            candidates_diff_section.append(candidate)
+                
+                # Ưu tiên candidates cùng section
+                if candidates_same_section:
+                    translation = candidates_same_section[0]
+                    print(f"   ✅ Found translation via image_id (same section '{article.section}'): #{translation.id} (lang: {translation.language})")
+                elif candidates_diff_section:
+                    translation = candidates_diff_section[0]
+                    print(f"   ✅ Found translation via image_id (diff section '{translation.section}'): #{translation.id} (lang: {translation.language})")
+                    print(f"      ℹ️  Original section: '{article.section}' → Translation section: '{translation.section}'")
+                
+                if not translation:
+                    print(f"   ⚠️  No translation found with image_id: {image_id}")
+            else:
+                print(f"   ⚠️  Could not extract image_id from article")
+        
         # If translation found, redirect to its URL
         if translation:
             # Use published_url_en if article is EN and has it, otherwise use published_url

@@ -2,7 +2,7 @@
 {# Usage: {% include 'partials/layout_2_articles.html' with context %} #}
 {# Requires: articles (list of 2 articles), row_guid #}
 
-<div data-element-guid="{{ row_guid|default('') }}" class="row small-12 large-12" style="">
+<div data-element-guid="{{ row_guid|default('') }}" class="row row-articles" style="">
 {% for article in articles[:2] %}
     {% set article_grid_size = article.grid_size|default(6) %}
     {% set layout_data = article.layout_data|default({}) %}

@@ -1323,47 +1323,32 @@ def article_detail(article_id=None, section=None, slug=None, url_path=None):
         Article.id != article.id
     ).order_by(Article.published_date.desc().nullslast()).limit(20).all()  # Lấy nhiều hơn để filter duplicate
     
-    # ⚠️ Loại bỏ duplicate articles theo k5a_url
-    # Nếu có nhiều articles cùng k5a_url, chỉ giữ lại article mới nhất (created_at mới nhất)
-    k5a_url_to_article = {}  # Dict: {k5a_url: Article} - giữ article mới nhất
-    seen_urls = set()  # Track published_url để tránh duplicate theo URL (cho articles không có k5a_url)
+    # ⚠️ Loại bỏ duplicate articles theo published_url và k5a_url
+    # Nếu có nhiều articles cùng published_url hoặc k5a_url, chỉ giữ lại article đầu tiên (mới nhất theo published_date)
+    seen_published_urls = set()  # Track published_url để tránh duplicate
+    seen_k5a_urls = set()  # Track k5a_url để tránh duplicate (cùng article ID từ trang gốc)
+    unique_related_articles = []
     
     for art in related_articles:
         if not art.published_url:
-            # Articles không có URL (sliders) vẫn giữ lại, xử lý sau
+            # Articles không có URL (sliders, containers) → skip
             continue
         
-        # Xử lý articles có published_url
+        # Check duplicate theo k5a_url trước (ưu tiên vì unique hơn)
+        if art.k5a_url and art.k5a_url in seen_k5a_urls:
+            # Đã có article với k5a_url này → skip
+            continue
+        
+        # Check duplicate theo published_url
+        if art.published_url in seen_published_urls:
+            # Đã có article với published_url này → skip
+            continue
+        
+        # Article này chưa duplicate → thêm vào
         if art.k5a_url:
-            # Có k5a_url → check duplicate theo k5a_url
-            if art.k5a_url not in k5a_url_to_article:
-                # Chưa có article với k5a_url này → thêm vào
-                k5a_url_to_article[art.k5a_url] = art
-            else:
-                # Đã có article với k5a_url này → so sánh created_at
-                existing_article = k5a_url_to_article[art.k5a_url]
-                if art.created_at and existing_article.created_at:
-                    # Giữ article mới hơn (created_at lớn hơn)
-                    if art.created_at > existing_article.created_at:
-                        k5a_url_to_article[art.k5a_url] = art
-                elif art.created_at:
-                    # Article hiện tại có created_at, article cũ không có → giữ article mới
-                    k5a_url_to_article[art.k5a_url] = art
-                # Nếu cả hai đều không có created_at, giữ article đầu tiên (đã có)
-        else:
-            # Không có k5a_url → filter theo published_url như cũ
-            if art.published_url not in seen_urls:
-                seen_urls.add(art.published_url)
-                # Thêm vào k5a_url_to_article với key là published_url (để xử lý thống nhất)
-                k5a_url_to_article[art.published_url] = art
-    
-    # Tạo list unique articles từ k5a_url_to_article
-    unique_related_articles = list(k5a_url_to_article.values())
-    
-    # Thêm lại articles không có URL (sliders)
-    for art in related_articles:
-        if not art.published_url:
-            unique_related_articles.append(art)
+            seen_k5a_urls.add(art.k5a_url)
+        seen_published_urls.add(art.published_url)
+        unique_related_articles.append(art)
     
     # Sắp xếp lại theo published_date desc và giới hạn 5 articles
     unique_related_articles.sort(key=lambda x: (x.published_date or datetime.min, x.created_at or datetime.min), reverse=True)
@@ -1505,23 +1490,41 @@ def article_detail(article_id=None, section=None, slug=None, url_path=None):
         Article.id != article.id  # Exclude current article
     ).order_by(Article.published_date.desc().nullslast()).limit(10).all()  # Lấy nhiều hơn để filter duplicate
     
-    # Loại bỏ duplicate articles (cùng published_url)
-    seen_urls = set()
+    # Loại bỏ duplicate articles (cùng k5a_url hoặc published_url)
+    seen_k5a_urls = set()
+    seen_published_urls = set()
     unique_samfund_articles = []
     for art in samfund_articles:
-        if art.published_url and art.published_url not in seen_urls:
-            seen_urls.add(art.published_url)
-            unique_samfund_articles.append(art)
-        elif not art.published_url:
-            # Articles không có URL vẫn giữ lại
-            unique_samfund_articles.append(art)
+        if not art.published_url:
+            # Articles không có URL → skip
+            continue
+        
+        # Check duplicate theo k5a_url trước (ưu tiên vì unique hơn)
+        if art.k5a_url and art.k5a_url in seen_k5a_urls:
+            continue
+        
+        # Check duplicate theo published_url
+        if art.published_url in seen_published_urls:
+            continue
+        
+        # Article này chưa duplicate → thêm vào
+        if art.k5a_url:
+            seen_k5a_urls.add(art.k5a_url)
+        seen_published_urls.add(art.published_url)
+        unique_samfund_articles.append(art)
+        
         if len(unique_samfund_articles) >= 5:
             break
     
     # Convert to dict và update URLs
     samfund_articles_list = []
-    for art in unique_samfund_articles:
+    for idx, art in enumerate(unique_samfund_articles):
         art_dict = art.to_dict()
+        # Set grid_size theo pattern 2-3-2-3... (row đầu 2 articles = 6+6, row sau 3 articles = 4+4+4)
+        if idx < 2:
+            art_dict['grid_size'] = 6  # Row 1: 2 articles
+        else:
+            art_dict['grid_size'] = 4  # Row 2: 3 articles
         samfund_articles_list.append(art_dict)
     
     # Get 10 articles từ section "PODCASTI" để hiển thị slider dưới SAMFUND articles
@@ -1534,16 +1537,29 @@ def article_detail(article_id=None, section=None, slug=None, url_path=None):
         Article.id != article.id  # Exclude current article
     ).order_by(Article.published_date.desc().nullslast()).limit(15).all()  # Lấy nhiều hơn để filter duplicate
     
-    # Loại bỏ duplicate articles (cùng published_url)
-    seen_urls = set()
+    # Loại bỏ duplicate articles (cùng k5a_url hoặc published_url)
+    seen_k5a_urls = set()
+    seen_published_urls = set()
     unique_podcasti_articles = []
     for art in podcasti_articles:
-        if art.published_url and art.published_url not in seen_urls:
-            seen_urls.add(art.published_url)
-            unique_podcasti_articles.append(art)
-        elif not art.published_url:
-            # Articles không có URL vẫn giữ lại
-            unique_podcasti_articles.append(art)
+        if not art.published_url:
+            # Articles không có URL → skip
+            continue
+        
+        # Check duplicate theo k5a_url trước (ưu tiên vì unique hơn)
+        if art.k5a_url and art.k5a_url in seen_k5a_urls:
+            continue
+        
+        # Check duplicate theo published_url
+        if art.published_url in seen_published_urls:
+            continue
+        
+        # Article này chưa duplicate → thêm vào
+        if art.k5a_url:
+            seen_k5a_urls.add(art.k5a_url)
+        seen_published_urls.add(art.published_url)
+        unique_podcasti_articles.append(art)
+        
         if len(unique_podcasti_articles) >= 10:
             break
     

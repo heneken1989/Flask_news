@@ -2,7 +2,7 @@
 {# Usage: {% include 'partials/layout_3_articles.html' with context %} #}
 {# Requires: articles (list of 3 articles), row_guid #}
 
-<div data-element-guid="{{ row_guid|default('') }}" class="row small-12 large-12" style="">
+<div data-element-guid="{{ row_guid|default('') }}" class="row row-articles" style="">
 {% for article in articles[:3] %}
     <article data-element-guid="{{ article.element_guid|default('') }}" class="column {% if article.is_paywall %}paywall{% endif %} {{ article.paywall_class|default('') }} small-12 large-4 small-abs-12 large-abs-4 " data-site-alias="{{ article.site_alias|default('sermitsiaq') }}" data-section="{{ article.section|default('') }}" data-instance="{{ article.instance|default('') }}" itemscope>
     {% set layout_data = article.layout_data|default({}) %}
