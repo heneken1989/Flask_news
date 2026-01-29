@@ -426,28 +426,29 @@ def crawl_home_layout(home_url='https://www.sermitsiaq.ag', language='da',
                             ).first()
                             
                             if existing:
-                                # ⚠️ QUAN TRỌNG: Nếu article đã có ở các tag khác (section != 'home'), skip
-                                # Vì article đã được crawl từ section đó rồi, không cần crawl lại từ home
-                                if existing.section and existing.section != 'home':
-                                    print(f"      ⏭️  Article already exists in section '{existing.section}' (ID: {existing.id}), skipping...")
-                                    print(f"         ℹ️  Article đã có ở tag khác, không cần crawl lại từ home")
-                                    articles_skipped += 1
-                                    continue
-                                
-                                # Update existing article: set is_home=True, section='home'
+                                # Update existing article: set is_home=True, display_order, layout_type
+                                # ⚠️ KHÔNG update section - giữ nguyên section gốc (có thể từ section pages)
                                 # ⚠️ KHÔNG set is_temp=True khi update (chỉ set khi tạo mới)
-                                if not existing.is_home or existing.section != 'home':
+                                needs_update = False
+                                if not existing.is_home:
+                                    needs_update = True
+                                if article_info.get('display_order') and existing.display_order != article_info.get('display_order'):
+                                    needs_update = True
+                                if layout_type and existing.layout_type != layout_type:
+                                    needs_update = True
+                                
+                                if needs_update:
                                     existing.is_home = True
-                                    existing.section = 'home'
+                                    # ⚠️ KHÔNG update section - giữ nguyên section gốc
                                     if article_info.get('display_order'):
                                         existing.display_order = article_info.get('display_order')
                                     if layout_type:
                                         existing.layout_type = layout_type
                                     db.session.commit()
                                     articles_updated += 1
-                                    print(f"      ✅ Updated existing article (ID: {existing.id}): is_home=True, section='home'")
+                                    print(f"      ✅ Updated existing article (ID: {existing.id}, section='{existing.section}'): is_home=True")
                                 else:
-                                    print(f"      ⏭️  Article already exists and is home (ID: {existing.id}), skipping...")
+                                    print(f"      ⏭️  Article already exists and is up-to-date (ID: {existing.id}, section='{existing.section}'), skipping...")
                                 articles_skipped += 1
                                 # Mark URL as crawled trong session
                                 crawled_urls_in_session.add(article_url)
@@ -715,16 +716,9 @@ def crawl_home_layout(home_url='https://www.sermitsiaq.ag', language='da',
                             layout_type_final = layout_type or source
                             is_temp_value = layout_type_final in ['1_article', '2_articles', '3_articles']
                             
-                            # ⚠️ QUAN TRỌNG: Với các layout types có published_url (articles thông thường), 
-                            # detect section từ URL. Các loại khác (sliders, containers) giữ section='home'
-                            # Layout types cần detect section: 1_full, 1_article, 2_articles, 3_articles, 1_special_bg
-                            article_layout_types = ['1_full', '1_article', '2_articles', '3_articles', '1_special_bg']
-                            
-                            if layout_type_final in article_layout_types:
-                                article_section = extract_section_from_url(article_url)
-                            else:
-                                # Sliders, containers, 1_with_list_left, 1_with_list_right, 5_articles, etc. giữ section='home'
-                                article_section = 'home'
+                            # ⚠️ QUAN TRỌNG: TẤT CẢ articles TẠO MỚI từ home crawl đều có section='home'
+                            # (Không detect từ URL, không quan tâm layout_type)
+                            article_section = 'home'
                             
                             new_article = Article(
                                 element_guid=article_data.get('element_guid', '') or article_info.get('element_guid', ''),
@@ -732,7 +726,7 @@ def crawl_home_layout(home_url='https://www.sermitsiaq.ag', language='da',
                                 slug=article_data.get('slug', ''),
                                 published_url=article_url,
                                 k5a_url=article_data.get('k5a_url', '') or article_info.get('k5a_url', ''),
-                                section=article_section,  # ⚠️ Detect section từ URL cho 1_article, 2_articles, 3_articles
+                                section=article_section,  # ⚠️ TẤT CẢ articles từ home crawl đều có section='home'
                                 site_alias=article_data.get('site_alias', 'sermitsiaq'),
                                 instance=article_data.get('instance', ''),
                                 published_date=article_data.get('published_date'),

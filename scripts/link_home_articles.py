@@ -558,12 +558,9 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                                                 en_article.display_order = da_article.display_order
                                                 en_article.layout_type = da_article.layout_type
                                                 
-                                                # ⚠️ QUAN TRỌNG: Với 1_with_list_left/right, EN article phải có section='home'
-                                                if da_article.layout_type in ['1_with_list_left', '1_with_list_right']:
-                                                    en_article.section = 'home'
-                                                    print(f"         ✅ Set section='home' for {da_article.layout_type}")
-                                                else:
-                                                    en_article.section = da_article.section
+                                                # ⚠️ QUAN TRỌNG: Copy section từ DA article
+                                                # (Nếu DA được tạo từ home crawl → section='home', nếu từ section pages → section=<section_name>)
+                                                en_article.section = da_article.section
                                                 
                                                 en_article.grid_size = da_article.grid_size
                                                 en_article.is_home = da_article.is_home
@@ -1507,12 +1504,9 @@ def create_missing_en_articles(layout_items, language='da', dry_run=False, delay
                             
                             en_article.grid_size = da_article.grid_size
                             en_article.is_home = da_article.is_home
-                            # ⚠️ QUAN TRỌNG: Với 1_with_list_left/right, EN article phải có section='home'
-                            if da_article.layout_type in ['1_with_list_left', '1_with_list_right']:
-                                en_article.section = 'home'
-                                print(f"         ✅ Set section='home' for {da_article.layout_type}")
-                            else:
-                                en_article.section = da_article.section  # Giữ nguyên section gốc
+                            # ⚠️ QUAN TRỌNG: Copy section từ DA article
+                            # (Nếu DA được tạo từ home crawl → section='home', nếu từ section pages → section=<section_name>)
+                            en_article.section = da_article.section
                             
                             # Save vào database
                             db.session.add(en_article)
