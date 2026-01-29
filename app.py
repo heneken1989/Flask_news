@@ -129,11 +129,13 @@ def set_language(lang):
         return redirect('/')
     
     # Parse referrer to check if it's an article page
-    from urllib.parse import urlparse
+    from urllib.parse import urlparse, unquote
     from database import Article
     
     parsed = urlparse(referrer)
-    path = parsed.path
+    path = unquote(parsed.path)  # URL decode path (ø thay vì %C3%B8)
+    
+    print(f"🔍 set_language: Trying to find article for path: {path}")
     
     # Try to find article by path
     article = None
@@ -145,12 +147,15 @@ def set_language(lang):
         )
     ).all()
     
+    print(f"   Found {len(all_articles)} articles to check")
+    
     for art in all_articles:
         # Check published_url (DA)
         if art.published_url:
             art_parsed = urlparse(art.published_url)
             if art_parsed.path == path:
                 article = art
+                print(f"   ✅ Matched via published_url: Article #{art.id} (lang: {art.language})")
                 break
         
         # Check published_url_en (EN)
@@ -158,7 +163,11 @@ def set_language(lang):
             art_en_parsed = urlparse(art.published_url_en)
             if art_en_parsed.path == path:
                 article = art
+                print(f"   ✅ Matched via published_url_en: Article #{art.id} (lang: {art.language})")
                 break
+    
+    if not article:
+        print(f"   ❌ No article found for path: {path}")
     
     # If article found, try to find translation
     if article:
