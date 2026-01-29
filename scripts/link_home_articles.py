@@ -1315,6 +1315,13 @@ Examples:
                 print(f"   🔄 Would crawl KL layout (dry run)")
         
         if kl_layout_items:
+            # ⚠️ QUAN TRỌNG: Delete old KL articles SAU KHI crawl (tạo mới), TRƯỚC KHI link
+            # Để tránh có 2 articles cùng URL cùng is_home=True
+            print(f"\n{'='*60}")
+            print(f"🗑️  Step 1.1: Deleting old KL marked articles")
+            print(f"{'='*60}")
+            delete_marked_articles(language='kl', dry_run=args.dry_run)
+            
             # Link KL articles
             link_articles_with_layout(
                 kl_layout_items,
@@ -1407,12 +1414,25 @@ Examples:
         if not layout_items:
             return
     
-    # Step 2: Link articles với layout (DA)
+    # Step 2: Delete old DA articles SAU KHI crawl (tạo mới), TRƯỚC KHI link
+    # ⚠️ QUAN TRỌNG: Delete TRƯỚC link để tránh có 2 articles cùng URL cùng is_home=True
     if should_process_all:
         print(f"\n{'='*60}")
         print(f"🔗 Step 2: Processing DA articles")
         print(f"{'='*60}")
+        
+        print(f"\n{'='*60}")
+        print(f"🗑️  Step 2.1: Deleting old DA marked articles")
+        print(f"{'='*60}")
+        delete_marked_articles(language='da', dry_run=args.dry_run)
+    else:
+        # Nếu chỉ chạy cho 1 language (không phải 'all'), delete sau khi crawl
+        print(f"\n{'='*60}")
+        print(f"🗑️  Deleting old {args.language.upper()} marked articles")
+        print(f"{'='*60}")
+        delete_marked_articles(language=args.language, dry_run=args.dry_run)
     
+    # Link articles với layout
     link_articles_with_layout(
         layout_items, 
         language=args.language, 
@@ -1444,7 +1464,15 @@ Examples:
             delay=0.5
         )
         
-        # Link EN articles với layout (sau khi đã tạo xong)
+        # ⚠️ QUAN TRỌNG: Delete old EN articles SAU KHI tạo mới, TRƯỚC KHI link
+        # Để tránh có 2 articles cùng URL cùng is_home=True
+        step_num_delete = f"{step_num}.1"
+        print(f"\n{'='*60}")
+        print(f"🗑️  Step {step_num_delete}: Deleting old EN marked articles")
+        print(f"{'='*60}")
+        delete_marked_articles(language='en', dry_run=args.dry_run)
+        
+        # Link EN articles với layout (sau khi đã tạo xong và delete old)
         step_num = "4" if should_process_all else "3"
         print(f"\n{'='*60}")
         print(f"🔗 Step {step_num}: Linking EN articles with layout")
@@ -1478,6 +1506,13 @@ Examples:
             dry_run=True,
             delay=0.5
         )
+        
+        # ⚠️ QUAN TRỌNG: Delete old EN articles SAU KHI tạo mới, TRƯỚC KHI link
+        step_num_delete = f"{step_num}.1"
+        print(f"\n{'='*60}")
+        print(f"🗑️  Step {step_num_delete}: Would delete old EN marked articles (dry run)")
+        print(f"{'='*60}")
+        delete_marked_articles(language='en', dry_run=True)
         
         # Link EN articles với layout (dry run)
         step_num = "4" if should_process_all else "3"
@@ -1555,21 +1590,8 @@ Examples:
         
         print(f"   ✅ Sitemaps generated successfully!")
     
-    # Step: Delete old marked 1_with_list articles (sau khi đã link xong)
-    # ⚠️ QUAN TRỌNG: Delete SAU KHI link để minimize thời gian user thấy sự không ổn định
-    if should_process_all:
-        # Delete cho cả KL, DA, EN
-        for lang in ['kl', 'da', 'en']:
-            print(f"\n{'='*60}")
-            print(f"🗑️  Deleting old {lang.upper()} marked articles")
-            print(f"{'='*60}")
-            delete_marked_articles(language=lang, dry_run=args.dry_run)
-    else:
-        # Chỉ delete cho language hiện tại
-        print(f"\n{'='*60}")
-        print(f"🗑️  Deleting old {args.language.upper()} marked articles")
-        print(f"{'='*60}")
-        delete_marked_articles(language=args.language, dry_run=args.dry_run)
+    # ⚠️ NOTE: Old marked articles đã được deleted TRƯỚC KHI link (sau mỗi lần crawl)
+    # Không cần delete lại ở đây nữa
     
     # Step cuối cùng: Check và crawl article details nếu có articles với is_temp=True
     if not args.dry_run:

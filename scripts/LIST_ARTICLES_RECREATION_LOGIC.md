@@ -26,19 +26,24 @@ Tạo mới các articles có `layout_type = '1_with_list_left'` hoặc `'1_with
                    │
                    ▼
 ┌─────────────────────────────────────────────────────────┐
-│ Step 1-N: Process articles như bình thường             │
-│ - Link articles với layout                            │
-│ - Match DA ↔ KL                                        │
-│ - Create EN articles                                   │
-│ - CHƯA DELETE articles cũ → user vẫn thấy old data   │
+│ Step 0b: DELETE old marked articles                   │
+│ - DELETE articles có is_deleted=True NGAY             │
+│ - SAU BƯỚC NÀY: Chỉ còn new articles                  │
+│ ⚠️ DELETE TRƯỚC KHI link để tránh duplicate!          │
 └──────────────────┬──────────────────────────────────────┘
                    │
                    ▼
 ┌─────────────────────────────────────────────────────────┐
-│ Step Final: Delete old marked articles                │
-│ - DELETE articles có is_deleted=True                  │
-│ - Theo ngôn ngữ: KL, DA, EN                           │
-│ - SAU BƯỚC NÀY: User chỉ thấy new data                │
+│ Step 1-N: Process articles như bình thường             │
+│ - Link articles với layout (chỉ new articles)         │
+│ - Match DA ↔ KL                                        │
+│ - Create EN articles                                   │
+│ - Translate slider containers                         │
+└──────────────────┬──────────────────────────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────────────────────────┐
+│ ✅ DONE: User thấy new data, no duplicates            │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -53,17 +58,23 @@ Mark  │ Old articles still visible      │ Old: is_deleted=True ✓
   ↓   │                                 │
 Crawl │ Old articles still visible      │ Old: is_deleted=True
   ↓   │                                 │ New: is_deleted=False ✓
-Link  │ Old articles still visible      │ Old: is_deleted=True
-  ↓   │ (but new articles prepared)     │ New: is_deleted=False, linked ✓
   ↓   │                                 │
-Delete│ 🔄 SWITCH: Old → New            │ Old: DELETED ✓
-  ↓   │                                 │ New: is_deleted=False, linked
-Final │ ✅ New articles visible         │ New: is_deleted=False, linked
+Delete│ 🔄 INSTANT SWITCH: Old → New    │ Old: DELETED ✓
+  ↓   │ (< 1 giây)                      │ New: is_deleted=False
+  ↓   │                                 │
+Link  │ ✅ New articles visible         │ New: is_deleted=False, linked ✓
+  ↓   │                                 │
+Final │ ✅ New articles fully linked    │ New: is_deleted=False, linked
 ```
 
 **⚠️ QUAN TRỌNG**: Thời gian user thấy sự không ổn định được minimize:
-- Mark + Crawl + Link: User vẫn thấy old data (stable)
+- Mark + Crawl: User vẫn thấy old data (stable)
 - Delete: Instant switch từ old → new (< 1 giây)
+- Link: User thấy new data (stable), chỉ cần update metadata
+
+**Lý do delete TRƯỚC link:**
+- Tránh có 2 articles cùng URL cùng `is_home=True` trong DB
+- Nếu delete SAU link, có thể có duplicate trong khoảng thời gian link
 
 ## 🔧 Implementation Details
 
@@ -150,15 +161,36 @@ if should_process_all:
 else:
     mark_list_articles_for_deletion(language=args.language, dry_run=args.dry_run)
 
-# ... (crawl, link, translate)
+# Step 1: Crawl KL layout (tạo mới KL articles)
+kl_layout_items = crawl_home_layout(language='kl', ...)
 
-# Step Final: Delete marked articles (AFTER link)
-if should_process_all:
-    for lang in ['kl', 'da', 'en']:
-        delete_marked_articles(language=lang, dry_run=args.dry_run)
-else:
-    delete_marked_articles(language=args.language, dry_run=args.dry_run)
+# Step 1.1: ⚠️ DELETE old KL articles NGAY sau khi crawl, TRƯỚC KHI link
+delete_marked_articles(language='kl', dry_run=args.dry_run)
+
+# Step 1.2: Link KL articles (chỉ new articles, no duplicates)
+link_articles_with_layout(kl_layout_items, language='kl', ...)
+
+# Step 2: Crawl DA layout (tạo mới DA articles)
+layout_items = crawl_home_layout(language='da', ...)
+
+# Step 2.1: ⚠️ DELETE old DA articles NGAY sau khi crawl, TRƯỚC KHI link
+delete_marked_articles(language='da', dry_run=args.dry_run)
+
+# Step 2.2: Link DA articles (chỉ new articles, no duplicates)
+link_articles_with_layout(layout_items, language='da', ...)
+
+# Step 3: Create EN articles từ DA
+create_missing_en_articles(layout_items, language='da', ...)
+
+# Step 3.1: ⚠️ DELETE old EN articles NGAY sau khi tạo mới, TRƯỚC KHI link
+delete_marked_articles(language='en', dry_run=args.dry_run)
+
+# Step 3.2: Link EN articles (chỉ new articles, no duplicates)
+link_articles_with_layout(layout_items, language='en', ...)
 ```
+
+**⚠️ KEY CHANGE:** Delete AFTER crawl (create new), BEFORE link
+- Tránh duplicate: Old (is_deleted=True, is_home=True) + New (is_deleted=False, is_home=True)
 
 ## ✅ Benefits
 
@@ -169,11 +201,19 @@ else:
 
 ## ⚠️ Notes
 
-### Why mark instead of delete immediately?
+### Why mark → crawl → delete → link (not delete immediately)?
 
-- **Mark first**: Cho phép crawl tạo mới mà không lo trùng URL
-- **Delete later**: Sau khi new articles đã sẵn sàng và linked
-- **Result**: User experience tốt hơn (không thấy "missing articles")
+- **Mark first**: Đánh dấu old articles để crawl biết cần tạo mới
+- **Crawl**: Tạo new articles (is_deleted=False, section='home')
+- **Delete BEFORE link**: Xóa old articles TRƯỚC KHI link
+  - ✅ Tránh duplicate: Old + New cùng URL cùng is_home=True
+  - ✅ Khi link, chỉ còn new articles
+- **Link**: Update metadata cho new articles (display_order, layout_data, etc.)
+
+**Result:**
+- No duplicates trên home page
+- User experience ổn định (thấy old → instant switch → thấy new)
+- Link step đơn giản hơn (không lo conflict với old articles)
 
 ### Why only for 1_with_list_left/right?
 
