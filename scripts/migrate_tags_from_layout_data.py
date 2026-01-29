@@ -15,17 +15,20 @@ from database import db, Article, ArticleDetail
 import json
 from sqlalchemy.orm.attributes import flag_modified
 
-def migrate_tags(limit=None, language=None):
+def migrate_tags(limit=None, language=None, missing_only=False):
     """
     Migrate tags từ ArticleDetail.content_blocks sang Article.tags field
     
     Args:
         limit: Giới hạn số articles xử lý (None = tất cả)
         language: Chỉ migrate articles với language này (None = tất cả)
+        missing_only: Chỉ migrate articles chưa có tags (tags is None or empty)
     """
     with app.app_context():
         print("=" * 60)
         print("🔄 Migrating tags from ArticleDetail to Article.tags field")
+        if missing_only:
+            print("   (Only updating articles with missing tags)")
         print("=" * 60)
         print()
         
@@ -50,21 +53,15 @@ def migrate_tags(limit=None, language=None):
         
         for idx, detail in enumerate(details, 1):
             try:
-                # Tìm article tương ứng - chỉ tìm trong các section (trừ 'home' ra)
-                # VÀ language phải match với ArticleDetail.language
-                article = Article.query.filter(
+                # Tìm TẤT CẢ articles có cùng published_url và language
+                # Bao gồm cả section='home' và các section khác (sport, samfund, etc.)
+                articles_to_update = Article.query.filter(
                     Article.published_url == detail.published_url,
-                    Article.section != 'home',  # Loại trừ section='home'
                     Article.language == detail.language  # Language phải match
-                ).first()
+                ).all()
                 
-                # Nếu không tìm thấy, có thể article có section='home' hoặc không có published_url match hoặc language không match
-                if not article:
-                    skipped_count += 1
-                    continue
-                
-                # Skip nếu article đã được xử lý (có thể có nhiều ArticleDetail cho cùng 1 article)
-                if article.id in articles_processed:
+                # Nếu không tìm thấy articles nào
+                if not articles_to_update:
                     skipped_count += 1
                     continue
                 
@@ -101,24 +98,42 @@ def migrate_tags(limit=None, language=None):
                 if not tags_list:
                     # Không có tags trong ArticleDetail
                     skipped_count += 1
-                    articles_processed.add(article.id)
                     continue
                 
-                # Kiểm tra xem article đã có tags trong field mới chưa
-                existing_tags = article.tags if article.tags else []
+                # Update tags cho TẤT CẢ articles tìm thấy (NGOẠI TRỪ section='home')
+                updated_in_batch = 0
+                for article in articles_to_update:
+                    # Skip nếu article có section='home'
+                    if article.section == 'home':
+                        continue
+                    
+                    # Skip nếu article đã được xử lý
+                    if article.id in articles_processed:
+                        continue
+                    
+                    # Kiểm tra xem article đã có tags trong field mới chưa
+                    existing_tags = article.tags if article.tags else []
+                    
+                    # Nếu missing_only=True và article đã có tags → skip
+                    if missing_only and existing_tags:
+                        articles_processed.add(article.id)
+                        continue
+                    
+                    if existing_tags == tags_list:
+                        # Tags đã được migrate rồi
+                        articles_processed.add(article.id)
+                        continue
+                    
+                    # Migrate tags sang field mới
+                    article.tags = tags_list
+                    flag_modified(article, 'tags')
+                    
+                    migrated_count += 1
+                    updated_in_batch += 1
+                    articles_processed.add(article.id)
                 
-                if existing_tags == tags_list:
-                    # Tags đã được migrate rồi
+                if updated_in_batch == 0:
                     skipped_count += 1
-                    articles_processed.add(article.id)
-                    continue
-                
-                # Migrate tags sang field mới
-                article.tags = tags_list
-                flag_modified(article, 'tags')
-                
-                migrated_count += 1
-                articles_processed.add(article.id)
                 
                 if idx % 100 == 0:
                     print(f"   Processed {idx}/{len(details)} ArticleDetail records... (migrated: {migrated_count}, skipped: {skipped_count})")
@@ -149,8 +164,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Migrate tags from layout_data to tags field')
     parser.add_argument('--limit', type=int, help='Limit number of articles to process')
     parser.add_argument('--language', choices=['da', 'kl', 'en'], help='Only migrate articles with this language')
+    parser.add_argument('--missing-only', action='store_true', help='Only migrate articles with missing tags')
     
     args = parser.parse_args()
     
-    migrate_tags(limit=args.limit, language=args.language)
+    migrate_tags(limit=args.limit, language=args.language, missing_only=args.missing_only)
 

@@ -36,23 +36,23 @@ msgstr "Ujarlerit..."
 
 #: templates/partials/header.html:68
 msgid "Køb abonnement"
-msgstr "Abonnementi pisariaq"
+msgstr "Køb abonnement"
 
 #: templates/partials/header.html:71
 msgid "Log ind"
-msgstr "Illersimavoq"
+msgstr "Log ind"
 
 #: templates/partials/header.html:104 templates/partials/header.html:119
 #: templates/partials/header.html:399 templates/partials/header.html:414
 #: templates/partials/header.html:490
 msgid "SAMFUND"
-msgstr "NAALAGAFFIIT"
+msgstr "INUIAQATIGIIT"
 
 #: templates/partials/header.html:107 templates/partials/header.html:139
 #: templates/partials/header.html:402 templates/partials/header.html:434
 #: templates/partials/header.html:504
 msgid "ERHVERV"
-msgstr "SULIAQATIGIINNIT"
+msgstr "INUUSSUTISSARSIUTIT"
 
 #: templates/partials/header.html:110 templates/partials/header.html:147
 #: templates/partials/header.html:405 templates/partials/header.html:442
@@ -64,13 +64,13 @@ msgstr "KULTURI"
 #: templates/partials/header.html:408 templates/partials/header.html:445
 #: templates/partials/header.html:515
 msgid "SPORT"
-msgstr "SPORT"
+msgstr "TIMERSORNEQ"
 
 #: templates/partials/header.html:116 templates/partials/header.html:153
 #: templates/partials/header.html:411 templates/partials/header.html:448
 #: templates/partials/header.html:518
 msgid "JOB"
-msgstr "SULIAQATIGIINNIT"
+msgstr "SULIFFISSAT"
 
 #: templates/partials/header.html:122 templates/partials/header.html:417
 msgid "POLITIK"
