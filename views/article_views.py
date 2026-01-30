@@ -381,7 +381,7 @@ def home_test():
         section_title='Home Test',
         articles_per_row=2,
         section='home',
-        show_top_ad=True,
+        show_top_ad=False,
         show_bottom_ad=False,
         seo_meta=seo_meta,
         structured_data=structured_data
@@ -866,7 +866,7 @@ def index():
         layouts=layouts,
         section_title='Home',
         section='home',
-        show_top_ad=True,
+        show_top_ad=False,
         show_bottom_ad=False,
         seo_meta=seo_meta,
         structured_data=structured_data
@@ -1139,7 +1139,7 @@ def tag_section(section):
         section_title=section_title,
         articles_per_row=2,  # Default, sẽ bị override bởi grid_size pattern
         section=section,
-        show_top_ad=True,
+        show_top_ad=False,
         show_bottom_ad=False,
         seo_meta=seo_meta,
         structured_data=structured_data
