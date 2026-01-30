@@ -1,14 +1,14 @@
 [Unit]
-Description=Run Sermitsiaq Crawler every hour
+Description=Run Sermitsiaq Crawler every 30 minutes
 Requires=crawl_sections.service
 
 [Timer]
-# Run every hour
-OnCalendar=hourly
+# Run every 30 minutes (at :00 and :30 of each hour)
+OnCalendar=*:0/30
 # Run immediately if missed (e.g., server was down)
 Persistent=true
-# Add random delay (0-300 seconds) to avoid system load spikes
-RandomizedDelaySec=300
+# Add random delay (0-180 seconds) to avoid system load spikes
+RandomizedDelaySec=180
 
 [Install]
 WantedBy=timers.target
