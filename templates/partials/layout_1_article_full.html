@@ -7,7 +7,7 @@
     
     {% set has_bg_color = article.layout_data and article.layout_data.get('has_bg_color') %}
     {% set content_classes = article.layout_data.get('content_classes', '') if article.layout_data else '' %}
-    <div class="content {% if content_classes %}{{ content_classes }}{% endif %}" style="">
+    <div class="{{ article.layout_data.content_classes|default('content') }}" style="">
         
         <a itemprop="url" class="" href="{{ article.url|default('#') }}" data-k5a-url="{{ article.k5a_url|default(article.url|default('#')) }}" rel="" style="text-decoration: none;">
 
@@ -66,7 +66,7 @@
             
             <div class="floatingText">
 {% if article.kicker_floating %}
-                <div style="" class="kicker floating bg-primary color_mobile_bg-primary hasTextPadding mobile-hasTextPadding">
+                <div style="" class="{{ article.layout_data.kicker_floating_classes|default('kicker floating bg-primary color_mobile_bg-primary hasTextPadding mobile-hasTextPadding') }}">
 {{ article.kicker_floating }}
 </div>
 {% endif %}

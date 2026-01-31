@@ -34,7 +34,7 @@
 <article data-element-guid="{{ article.element_guid|default('') }}" class="column {% if article.is_paywall %}paywall{% endif %} {{ article.paywall_class|default('') }} small-12 large-6 small-abs-12 large-abs-6 " data-site-alias="{{ article.site_alias|default('sermitsiaq') }}" data-section="{{ article.section|default('') }}" data-instance="{{ article.instance|default('') }}" itemscope>
 {% endif %}
     
-    <div class="content color_mobile_no_bg_color mobile_no_border_color border_width_14 border_width_mobile_14" style="">
+    <div class="{{ article.layout_data.content_classes|default('content color_mobile_no_bg_color mobile_no_border_color border_width_14 border_width_mobile_14') }}" style="">
         
         <a itemprop="url" class="" href="{{ article.url|default('#') }}" data-k5a-url="{{ article.k5a_url|default(article.url|default('#')) }}" rel="" style="text-decoration: none;">
 
@@ -94,7 +94,7 @@
             
             <div class="floatingText">
 {% if article.kicker_floating %}
-                <div style="" class="kicker floating bg-primary color_mobile_bg-primary hasTextPadding mobile-hasTextPadding">
+                <div style="" class="{{ article.layout_data.kicker_floating_classes|default('kicker floating bg-primary color_mobile_bg-primary hasTextPadding mobile-hasTextPadding') }}">
 {{ article.kicker_floating }}
 </div>
 {% endif %}

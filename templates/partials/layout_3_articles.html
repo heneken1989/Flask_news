@@ -8,7 +8,7 @@
     {% set layout_data = article.layout_data|default({}) %}
     {% set has_bg_black = layout_data.get('has_bg_black', False) %}
     {% set content_classes = layout_data.get('content_classes', '') %}
-    <div class="content {% if has_bg_black %}{{ content_classes|default('bg-black color_mobile_bg-black border-bg-black mobile_border-bg-black border_width_14 border_width_mobile_14 hasContentPadding mobile-hasContentPadding hasBorder mobile-hasBorder') }}{% endif %}" style="">
+    <div class="{{ article.layout_data.content_classes|default('content') }}" style="">
         
         <a itemprop="url" class="" href="{{ article.url|default('#') }}" data-k5a-url="{{ article.k5a_url|default(article.url|default('#')) }}" rel="" style="text-decoration: none;">
 
@@ -68,7 +68,7 @@
             
             <div class="floatingText">
 {% if article.kicker_floating %}
-                <div style="" class="kicker floating bg-primary color_mobile_bg-primary hasTextPadding mobile-hasTextPadding">
+                <div style="" class="{{ article.layout_data.kicker_floating_classes|default('kicker floating bg-primary color_mobile_bg-primary hasTextPadding mobile-hasTextPadding') }}">
 {{ article.kicker_floating }}
 </div>
 {% endif %}

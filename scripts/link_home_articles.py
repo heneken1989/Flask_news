@@ -602,16 +602,28 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                             needs_update = True  # Cần enable is_home
                         
                         # ⚠️ QUAN TRỌNG: Check layout_data có thay đổi không
-                        # Chỉ merge các field metadata, KHÔNG ghi đè các field đã được translate
+                        # Merge các field metadata VÀ kicker/title fields từ layout mới
                         existing_layout_data = matched_article.layout_data or {}
                         
-                        # Chỉ merge các field metadata từ layout_item (không ghi đè field đã translate)
-                        # Các field đã được translate: kicker_below, kicker_floating, title_parts, list_items, list_title
-                        metadata_fields = ['row_index', 'article_index_in_row', 'total_rows', 'kicker_below_classes']
+                        # Fields cần update từ layout mới:
+                        # - Metadata: row_index, article_index_in_row, total_rows, kicker_below_classes, kicker_floating_classes, content_classes
+                        # - Display fields: kicker_floating, kicker_below, title_parts
+                        # - KHÔNG update: list_items, list_title (xử lý riêng phía dưới)
+                        metadata_fields = ['row_index', 'article_index_in_row', 'total_rows', 'kicker_below_classes', 'kicker_floating_classes', 'content_classes']
+                        
+                        # Kicker/title fields: update cho DA và KL (được crawl riêng), KHÔNG update cho EN (đã translate)
+                        if language in ['da', 'kl']:
+                            # DA/KL articles: update tất cả fields từ home layout mới (crawl riêng cho mỗi language)
+                            display_fields = ['kicker_floating', 'kicker_below', 'title_parts']
+                        else:
+                            # EN articles: KHÔNG update kicker/title fields (giữ nguyên đã translate từ DA)
+                            display_fields = []
+                        
+                        all_fields = metadata_fields + display_fields
                         layout_data_changed = False
                         
-                        # Check và merge chỉ các field metadata
-                        for field in metadata_fields:
+                        # Check và merge các fields
+                        for field in all_fields:
                             layout_value = layout_item.get(field) or (layout_item.get('layout_data', {}).get(field) if layout_item.get('layout_data') else None)
                             existing_value = existing_layout_data.get(field)
                             
@@ -644,18 +656,108 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                         if not dry_run and needs_update:
                             matched_article.display_order = display_order
                             matched_article.layout_type = layout_type
-                            matched_article.layout_data = merged_layout_data
                             matched_article.grid_size = layout_item.get('grid_size', 6)
                             matched_article.is_home = True
+                            
+                            # ⚠️ CRITICAL: Chỉ update layout_data và flag_modified KHI layout_data thực sự thay đổi
+                            # Tránh unnecessary updates và flag_modified calls
+                            if layout_data_changed:
+                                matched_article.layout_data = merged_layout_data
+                                # SQLAlchemy doesn't auto-detect dict mutations in JSONB fields
+                                from sqlalchemy.orm.attributes import flag_modified
+                                flag_modified(matched_article, 'layout_data')
+                                
+                                # ⚠️ QUAN TRỌNG: Nếu là DA article và layout_data có display fields thay đổi
+                                # → Tự động update EN article tương ứng (dịch lại display fields)
+                                if language == 'da' and any(field in merged_layout_data for field in ['kicker_floating', 'kicker_below', 'title_parts']):
+                                    # Tìm EN article tương ứng
+                                    en_article = Article.query.filter_by(
+                                        canonical_id=matched_article.id,
+                                        language='en'
+                                    ).filter(
+                                        or_(Article.is_deleted == False, Article.is_deleted.is_(None))
+                                    ).first()
+                                    
+                                    if en_article:
+                                        try:
+                                            from deep_translator import GoogleTranslator
+                                            translator = GoogleTranslator(source='da', target='en')
+                                            
+                                            # Get EN existing layout_data
+                                            en_layout_data = en_article.layout_data or {}
+                                            en_layout_data_changed = False
+                                            
+                                            # Translate kicker_floating
+                                            if 'kicker_floating' in merged_layout_data and merged_layout_data['kicker_floating']:
+                                                translated_kicker = translator.translate(merged_layout_data['kicker_floating'])
+                                                if translated_kicker != en_layout_data.get('kicker_floating'):
+                                                    en_layout_data['kicker_floating'] = translated_kicker
+                                                    en_layout_data_changed = True
+                                                    print(f"         🌐 Translated kicker_floating for EN: '{merged_layout_data['kicker_floating']}' → '{translated_kicker}'")
+                                            
+                                            # Copy kicker_floating_classes (không dịch)
+                                            if 'kicker_floating_classes' in merged_layout_data:
+                                                if en_layout_data.get('kicker_floating_classes') != merged_layout_data['kicker_floating_classes']:
+                                                    en_layout_data['kicker_floating_classes'] = merged_layout_data['kicker_floating_classes']
+                                                    en_layout_data_changed = True
+                                            
+                                            # Translate kicker_below
+                                            if 'kicker_below' in merged_layout_data and merged_layout_data['kicker_below']:
+                                                translated_kicker_below = translator.translate(merged_layout_data['kicker_below'])
+                                                if translated_kicker_below != en_layout_data.get('kicker_below'):
+                                                    en_layout_data['kicker_below'] = translated_kicker_below
+                                                    en_layout_data_changed = True
+                                            
+                                            # Copy kicker_below_classes (không dịch)
+                                            if 'kicker_below_classes' in merged_layout_data:
+                                                if en_layout_data.get('kicker_below_classes') != merged_layout_data['kicker_below_classes']:
+                                                    en_layout_data['kicker_below_classes'] = merged_layout_data['kicker_below_classes']
+                                                    en_layout_data_changed = True
+                                            
+                                            # Translate title_parts
+                                            if 'title_parts' in merged_layout_data and merged_layout_data['title_parts']:
+                                                translated_parts = []
+                                                for part in merged_layout_data['title_parts']:
+                                                    if isinstance(part, dict) and 'text' in part:
+                                                        translated_text = translator.translate(part['text'])
+                                                        translated_parts.append({
+                                                            'text': translated_text,
+                                                            'color_class': part.get('color_class')
+                                                        })
+                                                if translated_parts != en_layout_data.get('title_parts'):
+                                                    en_layout_data['title_parts'] = translated_parts
+                                                    en_layout_data_changed = True
+                                            
+                                            # Copy metadata fields (không dịch)
+                                            for meta_field in ['row_index', 'article_index_in_row', 'total_rows', 'content_classes']:
+                                                if meta_field in merged_layout_data:
+                                                    if en_layout_data.get(meta_field) != merged_layout_data[meta_field]:
+                                                        en_layout_data[meta_field] = merged_layout_data[meta_field]
+                                                        en_layout_data_changed = True
+                                            
+                                            # Update EN article nếu có thay đổi
+                                            if en_layout_data_changed:
+                                                en_article.layout_data = en_layout_data
+                                                flag_modified(en_article, 'layout_data')
+                                                db.session.commit()
+                                                print(f"         ✅ Updated EN article (ID: {en_article.id}) layout_data")
+                                        except Exception as e:
+                                            print(f"         ⚠️  Error updating EN article: {e}")
+                                            # Continue processing, không rollback DA article
+                            
                             # ⚠️ KHÔNG update section='home' - giữ nguyên section gốc
                             # ⚠️ KHÔNG set is_temp=True khi link (chỉ set khi crawl mới)
                             
+                            # ⚠️ QUAN TRỌNG: Commit TRƯỚC KHI check duplicate
+                            # để đảm bảo update được lưu ngay cả khi article xuất hiện nhiều lần trong layout
+                            db.session.commit()
+                            
+                            # Track updated articles để báo cáo stats
                             if matched_article.id not in updated_article_ids:
                                 updated_article_ids.add(matched_article.id)
                                 stats['articles_updated'] += 1
                                 if not was_home:
                                     stats['articles_enabled'] += 1
-                                db.session.commit()
                             
                             # Mark URL as processed
                             processed_urls.add(published_url)

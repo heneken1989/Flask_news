@@ -9,7 +9,7 @@
     {% set has_bg_black = layout_data.get('has_bg_black', False) %}
     <article data-element-guid="{{ article.element_guid|default('') }}" class="column {% if article.is_paywall %}paywall{% endif %} {{ article.paywall_class|default('') }} small-12 large-{{ article_grid_size }} small-abs-12 large-abs-{{ article_grid_size }} " data-site-alias="{{ article.site_alias|default('sermitsiaq') }}" data-section="{{ article.section|default('') }}" data-instance="{{ article.instance|default('') }}" itemscope>
     
-    <div class="content {% if has_bg_black %}bg-black color_mobile_bg-black border-bg-black mobile_border-bg-black border_width_14 border_width_mobile_14 hasContentPadding mobile-hasContentPadding hasBorder mobile-hasBorder{% endif %}" style="">
+    <div class="{{ article.layout_data.content_classes|default('content') }}" style="">
         
         <a itemprop="url" class="" href="{{ article.url|default('#') }}" data-k5a-url="{{ article.k5a_url|default(article.url|default('#')) }}" rel="" style="text-decoration: none;">
 
@@ -68,7 +68,7 @@
             
             <div class="floatingText">
 {% if article.kicker_floating %}
-                <div style="" class="kicker floating bg-primary color_mobile_bg-primary hasTextPadding mobile-hasTextPadding">
+                <div style="" class="{{ article.layout_data.kicker_floating_classes|default('kicker floating bg-primary color_mobile_bg-primary hasTextPadding mobile-hasTextPadding') }}">
 {{ article.kicker_floating }}
 </div>
 {% endif %}

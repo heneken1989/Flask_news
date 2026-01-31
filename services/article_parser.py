@@ -174,11 +174,14 @@ def parse_article_element(article_element, base_url='https://www.sermitsiaq.ag')
         
         # Extract kicker floating (text màu xanh trên hình ảnh)
         kicker_floating = None
+        kicker_floating_classes = None
         floating_text_elem = article_element.find('div', class_='floatingText')
         if floating_text_elem:
             kicker_elem = floating_text_elem.find('div', class_=lambda x: x and 'kicker' in x and 'floating' in x)
             if kicker_elem:
                 kicker_floating = kicker_elem.get_text(strip=True)
+                # Lấy classes của kicker floating để giữ nguyên styling (màu background, padding, etc.)
+                kicker_floating_classes = ' '.join(kicker_elem.get('class', []))
         
         # Extract kicker below (text nằm giữa media và headline, ví dụ "OPDATERET")
         kicker_below = None
@@ -225,6 +228,7 @@ def parse_article_element(article_element, base_url='https://www.sermitsiaq.ag')
             'is_paywall': is_paywall,
             'paywall_class': paywall_class,
             'kicker_floating': kicker_floating,
+            'kicker_floating_classes': kicker_floating_classes,  # Classes của kicker floating (màu, padding, etc.)
             'kicker_below': kicker_below,  # Kicker below (ví dụ "OPDATERET")
             'kicker_below_classes': kicker_below_classes,  # Classes của kicker below
             'image_data': image_data,
@@ -921,6 +925,8 @@ def parse_articles_from_html(html_content, base_url='https://www.sermitsiaq.ag',
                             # Thêm kicker_floating vào layout_data nếu có (cho tất cả layout types)
                             if article_data.get('kicker_floating'):
                                 layout_data['kicker_floating'] = article_data['kicker_floating']
+                                # Lưu classes để giữ nguyên màu background, padding, etc.
+                                layout_data['kicker_floating_classes'] = article_data.get('kicker_floating_classes', 'kicker floating bg-secondary color_mobile_bg-secondary')
                             
                             # Thêm kicker_below vào layout_data nếu có (cho tất cả layout types)
                             if article_data.get('kicker_below'):
