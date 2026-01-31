@@ -65,6 +65,7 @@
 
 {% block content %}
 <section id="mainArticleSection" class="main article">
+    {% if show_top_ad|default(false) %}
     <div data-element-guid="7d822755-62f3-40c3-c9d3-9e2ecd0411cd" class="placeholder placement-top">
         <div data-element-guid="ac8983ec-0a70-4188-aa31-8dede9a0776e" class="column google-ad small-12 large-12 small-abs-12 large-abs-12" style="">
             <span class="ad-label">{{ _('Annonce') }}</span>
@@ -76,6 +77,7 @@
             </script>
         </div>
     </div>
+    {% endif %}
     
     <main class="pageWidth">
         <article class=" ">
@@ -519,6 +521,7 @@
                                     </figure>
                                     {% endif %}
                                 {% elif block.type == 'ad' %}
+                                    {% if show_top_ad|default(false) %}
                                     <div data-element-guid="{{ block.element_guid|default('') }}" class="column google-ad {% if block.classes %}{{ block.classes|join(' ') }}{% endif %}" style="">
                                         <span class="ad-label">{{ _('Annonce') }}</span>
                                         <div class="adunit" id="{{ block.ad_id }}" style="display: none;" data-google-query-id=""></div>
@@ -528,6 +531,7 @@
                                             });
                                         </script>
                                     </div>
+                                    {% endif %}
                                 {% elif block.type == 'paywall_offer' %}
                                     <div class="iteras-offers">
                                         <div class=""></div>
@@ -585,6 +589,7 @@
                         {# Fallback to raw HTML content #}
                         <div class="article-content">
                             <p></p>
+                            {% if show_top_ad|default(false) %}
                             <div data-element-guid="6ff57721-8253-4df9-9b56-de1caea0a3a4" class="column google-ad floatRight widthAuto" style="">
                                 <span class="ad-label">{{ _('Annonce') }}</span>
                                 <div class="adunit" id="2018-Artikelbanner" style="display: none;" data-google-query-id=""></div>
@@ -594,6 +599,7 @@
                                     });
                                 </script>
                             </div>
+                            {% endif %}
                             {{ article.content|safe }}
                         </div>
                         {% else %}
@@ -753,6 +759,7 @@
         </section>
     </main>
     
+    {% if show_top_ad|default(false) %}
     <div data-element-guid="ac834632-8f4f-4d1f-b6c9-11178f4d4a12" class="placeholder placement-left">
         <div data-element-guid="7c8b0f46-7b66-4aea-e7a9-4451489839c3" class="column google-ad small-12 large-12 small-abs-12 large-abs-12 sticky" style="top: 120px;">
             <span class="ad-label">{{ _('Annonce') }}</span>
@@ -776,6 +783,7 @@
             </script>
         </div>
     </div>
+    {% endif %}
 </section>
 
 <script>

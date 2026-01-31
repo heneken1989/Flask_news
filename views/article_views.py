@@ -1606,6 +1606,8 @@ def article_detail(article_id=None, section=None, slug=None, url_path=None):
         article_detail=article_detail,
         samfund_articles=samfund_articles_list,
         podcasti_slider_detail_data=podcasti_slider_detail_data,
+        show_top_ad=False,
+        show_bottom_ad=False,
         seo_meta=seo_meta,
         structured_data=structured_data
     )
@@ -1905,7 +1907,9 @@ def article_detail_test():
         related_articles=related_articles,
         job_slider_data=job_slider_data,
         podcasti_slider_data=podcasti_slider_data,
-        article_detail=article_detail
+        article_detail=article_detail,
+        show_top_ad=False,
+        show_bottom_ad=False
     )
 
 
