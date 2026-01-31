@@ -96,6 +96,16 @@
                 
                 <div data-element-guid="{{ article.element_guid|default('') }}" class="articleHeader column hasCaption">
                     
+                    {# Get kicker (section/category) from content_blocks #}
+                    {% set kicker_block = None %}
+                    {% if article_detail and article_detail.content_blocks %}
+                        {% set kicker_block = article_detail.content_blocks | selectattr('type', 'equalto', 'kicker') | first %}
+                    {% endif %}
+                    
+                    {% if kicker_block and kicker_block.text %}
+                    <p class="{{ kicker_block.classes|join(' ') if kicker_block.classes else 'kicker' }}" style="">{{ kicker_block.text }}</p>
+                    {% endif %}
+                    
                     {# Get title: Priority 1: title block from content_blocks, Priority 2: h1 heading from content_blocks, Priority 3: article.title #}
                     {% set title_block = None %}
                     {% if article_detail and article_detail.content_blocks %}
@@ -318,7 +328,7 @@
                                         {% set ns = namespace(notice_started=false) %}
                                         {% for block in article_detail.content_blocks %}
                                             {# Skip header blocks #}
-                                            {% if block.type in ['title', 'subtitle', 'article_meta', 'header_image_caption'] %}
+                                            {% if block.type in ['kicker', 'title', 'subtitle', 'article_meta', 'header_image_caption'] %}
                                                 {# Already rendered in header #}
                                                 
                                             {# Handle separator #}
@@ -459,8 +469,8 @@
                                     {{ block.html|safe }}
                                 {% elif block.type == 'heading' %}
                                     <{{ block.level }}>{{ block.text }}</{{ block.level }}>
-                                {% elif block.type == 'subtitle' %}
-                                    {# Subtitle đã được hiển thị ở header, skip ở đây #}
+                                {% elif block.type in ['kicker', 'title', 'subtitle'] %}
+                                    {# Already rendered in header, skip here #}
                                 {% elif block.type == 'image' %}
                                     {# Skip images with class headerImage in body - their captions will be moved to header #}
                                     {# Check if block has headerImage class or is marked as header image #}
