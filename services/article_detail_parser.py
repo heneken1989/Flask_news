@@ -50,6 +50,25 @@ class ArticleDetailParser:
             article_header = soup.find('div', class_=lambda x: x and 'articleHeader' in ' '.join(x) if isinstance(x, list) else 'articleHeader' in str(x))
         
         if article_header:
+            # Parse kicker (section/category tag) - nằm trước title
+            # <p class="kicker quaternary color_mobile_quaternary">TURISME</p>
+            kicker_elem = article_header.find('p', class_='kicker')
+            if not kicker_elem:
+                # Try finding any p with class containing 'kicker'
+                kicker_elem = article_header.find('p', class_=lambda x: x and 'kicker' in ' '.join(x) if isinstance(x, list) else 'kicker' in str(x))
+            
+            if kicker_elem:
+                kicker_text = kicker_elem.get_text(strip=True)
+                if kicker_text:
+                    blocks.append({
+                        'type': 'kicker',
+                        'order': order,
+                        'html': str(kicker_elem),
+                        'text': kicker_text,
+                        'classes': kicker_elem.get('class', [])
+                    })
+                    order += 1
+            
             # Parse title (h1.headline.mainTitle) - ưu tiên cao nhất
             title_elem = article_header.find('h1', class_='headline')
             if not title_elem:
