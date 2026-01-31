@@ -575,6 +575,78 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
     return translated_blocks
 
 
+def extract_and_update_article_tags(article_detail: ArticleDetail, article_url: str) -> bool:
+    """
+    Extract tags từ ArticleDetail.content_blocks và update vào Article.tags
+    
+    Args:
+        article_detail: ArticleDetail object chứa content_blocks
+        article_url: URL của article (published_url)
+        
+    Returns:
+        True nếu update thành công, False nếu không
+    """
+    try:
+        # Tìm Article tương ứng
+        article = Article.query.filter_by(
+            published_url=article_url,
+            language=article_detail.language
+        ).first()
+        
+        if not article:
+            print(f"   ⚠️  No Article found with URL: {article_url} (language: {article_detail.language})")
+            return False
+        
+        # Extract tags từ content_blocks
+        content_blocks = article_detail.content_blocks
+        if isinstance(content_blocks, str):
+            try:
+                content_blocks = json.loads(content_blocks)
+            except:
+                content_blocks = []
+        
+        if not isinstance(content_blocks, list):
+            return False
+        
+        # Tìm article_footer_tags block
+        tags_block = None
+        for block in content_blocks:
+            if block.get('type') == 'article_footer_tags':
+                tags_block = block
+                break
+        
+        if not tags_block or not tags_block.get('tags'):
+            print(f"   ℹ️  No tags found in content_blocks")
+            return False
+        
+        # Extract tag texts
+        tags_list = []
+        for tag_item in tags_block.get('tags', []):
+            if isinstance(tag_item, dict):
+                tag_text = tag_item.get('text', '').strip()
+                if tag_text:
+                    tags_list.append(tag_text)
+        
+        if not tags_list:
+            return False
+        
+        # Update tags field nếu khác với tags cũ
+        existing_tags = article.tags if article.tags else []
+        if existing_tags != tags_list:
+            article.tags = tags_list
+            from sqlalchemy.orm.attributes import flag_modified
+            flag_modified(article, 'tags')
+            db.session.commit()
+            print(f"   🏷️  Updated Article.tags: {', '.join(tags_list[:5])}{'...' if len(tags_list) > 5 else ''}")
+            return True
+        else:
+            print(f"   ℹ️  Article.tags already up to date: {len(tags_list)} tags")
+            return False
+    except Exception as e:
+        print(f"   ⚠️  Error extracting/updating tags: {e}")
+        return False
+
+
 def create_en_article_detail_from_da(da_article_detail: ArticleDetail, delay: float = 0.3) -> ArticleDetail:
     """
     Tạo article_detail EN từ article_detail DA
@@ -597,8 +669,10 @@ def create_en_article_detail_from_da(da_article_detail: ArticleDetail, delay: fl
     existing_en_detail = ArticleDetail.query.filter_by(published_url=en_url, language='en').first()
     
     if existing_en_detail:
-        # Đã có EN version → skip
+        # Đã có EN version → skip translation
         print(f"   ℹ️  EN version already exists (ID: {existing_en_detail.id}), skipping translation")
+        # Nhưng vẫn cần extract và update tags cho EN Article (nếu chưa có)
+        extract_and_update_article_tags(existing_en_detail, en_url)
         return existing_en_detail
     
     # Dịch content_blocks
@@ -622,6 +696,10 @@ def create_en_article_detail_from_da(da_article_detail: ArticleDetail, delay: fl
         db.session.add(en_article_detail)
         db.session.commit()
         print(f"   ✅ Created EN article_detail (ID: {en_article_detail.id}, Blocks: {len(translated_blocks)})")
+        
+        # ⚠️ QUAN TRỌNG: Extract và update tags từ translated content_blocks vào EN Article
+        extract_and_update_article_tags(en_article_detail, en_url)
+        
         return en_article_detail
     except Exception as e:
         # Rollback nếu lỗi (đặc biệt là IntegrityError)
@@ -634,6 +712,8 @@ def create_en_article_detail_from_da(da_article_detail: ArticleDetail, delay: fl
             existing_en = ArticleDetail.query.filter_by(published_url=en_url, language='en').first()
             if existing_en:
                 print(f"   ℹ️  EN version already exists (ID: {existing_en.id}), skipping translation")
+                # Extract và update tags cho existing EN Article
+                extract_and_update_article_tags(existing_en, en_url)
                 return existing_en
             else:
                 print(f"   ⚠️  Unique constraint error - might need to run migration script")

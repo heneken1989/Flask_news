@@ -4,7 +4,7 @@
 
 <article data-element-guid="{{ article.element_guid|default('') }}" class="column {{ article.paywall_class|default('') }} small-12 large-{{ article_grid_size|default(article.grid_size|default(6)) }} small-abs-12 large-abs-{{ article_grid_size|default(article.grid_size|default(6)) }} " data-site-alias="{{ article.site_alias|default('sermitsiaq') }}" data-section="{{ article.section|default('') }}" data-instance="{{ article.instance|default('') }}" itemscope>
     
-    <div class="{{ article.layout_data.content_classes|default('content') }}" style="">
+    <div class="{% if is_home_page|default(false) %}{{ article.layout_data.content_classes|default('content') }}{% else %}content{% endif %}" style="">
         
         <a itemprop="url" class="" href="{{ article.url|default('#') }}" data-k5a-url="{{ article.k5a_url|default(article.url|default('#')) }}" rel="">
 
