@@ -428,9 +428,52 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
                     translated_html = re.sub(r'candiesis', 'candies is', translated_html, flags=re.IGNORECASE)
                     
                     # Fix duplicate words caused by HTML tag splitting
-                    # E.g., "The most recent recent" -> "The most recent"
-                    # Pattern: word followed by same word (case-insensitive)
-                    translated_html = re.sub(r'\b(\w+)\s+\1\b', r'\1', translated_html, flags=re.IGNORECASE)
+                    # E.g., <span>The most recent </span>recent interest
+                    # Problem: "recent" appears at end of first node and start of second node
+                    # Solution: Check last word of each text node against first word of next node
+                    try:
+                        from bs4 import BeautifulSoup
+                        soup = BeautifulSoup(translated_html, 'html.parser')
+                        
+                        # Get all text nodes
+                        text_nodes = list(soup.find_all(string=True))
+                        
+                        # Check each pair of consecutive text nodes
+                        for i in range(len(text_nodes) - 1):
+                            current_node = text_nodes[i]
+                            next_node = text_nodes[i + 1]
+                            
+                            if current_node and next_node:
+                                current_text = current_node.string or ''
+                                next_text = next_node.string or ''
+                                
+                                # Get last word of current node
+                                current_words = current_text.strip().split()
+                                next_words = next_text.strip().split()
+                                
+                                if current_words and next_words:
+                                    last_word = current_words[-1].strip('.,!?;:')
+                                    first_word = next_words[0].strip('.,!?;:')
+                                    
+                                    # Check if they're the same (case-insensitive)
+                                    if last_word.lower() == first_word.lower() and len(last_word) > 2:
+                                        # Remove duplicate from next node
+                                        # Rebuild next node text without first word
+                                        if len(next_words) > 1:
+                                            new_next_text = ' '.join(next_words[1:])
+                                            # Preserve leading space if original had it
+                                            if next_text.startswith(' '):
+                                                new_next_text = ' ' + new_next_text
+                                            next_node.replace_with(new_next_text)
+                                        else:
+                                            # Only one word - remove entire node
+                                            next_node.replace_with('')
+                        
+                        translated_html = str(soup)
+                        
+                    except Exception as e:
+                        # If fixing fails, keep original translated HTML
+                        print(f"      ⚠️  Could not fix duplicate words: {e}")
                     
                     translated_block['html'] = translated_html
                     
