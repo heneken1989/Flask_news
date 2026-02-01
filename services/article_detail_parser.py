@@ -177,24 +177,26 @@ class ArticleDetailParser:
             if not bodytext:
                 bodytext = soup
             
-            # Parse intro section (nếu có)
-            intro_div = bodytext.find('div', class_='intro')
-            if intro_div:
-                intro_blocks = ArticleDetailParser._parse_intro(intro_div, order)
-                blocks.extend(intro_blocks)
-                order += len(intro_blocks)
-            
-            # Parse content-text section - QUAN TRỌNG: giữ nguyên thứ tự các elements
+            # Parse content-text section FIRST - QUAN TRỌNG: giữ nguyên thứ tự các elements
+            # Note: content-text thường chứa toàn bộ nội dung bao gồm cả phần intro
+            # (do paywall pattern: intro = preview, content-text = full content)
             content_div = bodytext.find('div', class_='content-text')
             if content_div:
-                # Parse tất cả children theo đúng thứ tự
+                # Nếu có content-text, CHỈ parse content-text (bỏ qua intro để tránh duplicate)
                 content_blocks = ArticleDetailParser._parse_content_text_ordered(content_div, order)
                 blocks.extend(content_blocks)
                 order += len(content_blocks)
-            elif not intro_div:
-                # If no intro/content-text, parse all elements
-                generic_blocks = ArticleDetailParser._parse_generic_content(bodytext, order)
-                blocks.extend(generic_blocks)
+            else:
+                # Nếu KHÔNG có content-text, parse intro section
+                intro_div = bodytext.find('div', class_='intro')
+                if intro_div:
+                    intro_blocks = ArticleDetailParser._parse_intro(intro_div, order)
+                    blocks.extend(intro_blocks)
+                    order += len(intro_blocks)
+                else:
+                    # If no intro/content-text, parse all elements
+                    generic_blocks = ArticleDetailParser._parse_generic_content(bodytext, order)
+                    blocks.extend(generic_blocks)
         
         # Parse paywall offers section (outside bodytext)
         offers_div = soup.find('div', class_='iteras-offers')
