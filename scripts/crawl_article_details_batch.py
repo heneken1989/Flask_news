@@ -362,6 +362,9 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
                     if translated_text and translated_text[0].islower():
                         translated_text = translated_text[0].upper() + translated_text[1:]
                     
+                    # Fix duplicate words (in case translation created them)
+                    translated_text = re.sub(r'\b(\w+)\s+\1\b', r'\1', translated_text, flags=re.IGNORECASE)
+                    
                     translated_block['text'] = translated_text
                     time.sleep(delay)  # Delay để tránh rate limit
                 except Exception as e:
@@ -424,6 +427,11 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
                     # Sửa lỗi "candiesis" -> "candies is" nếu có
                     translated_html = re.sub(r'candiesis', 'candies is', translated_html, flags=re.IGNORECASE)
                     
+                    # Fix duplicate words caused by HTML tag splitting
+                    # E.g., "The most recent recent" -> "The most recent"
+                    # Pattern: word followed by same word (case-insensitive)
+                    translated_html = re.sub(r'\b(\w+)\s+\1\b', r'\1', translated_html, flags=re.IGNORECASE)
+                    
                     translated_block['html'] = translated_html
                     
                     # Cập nhật text field từ HTML sau khi dịch (để đảm bảo text và HTML đồng bộ)
@@ -434,6 +442,8 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
                         extracted_text = soup.get_text(separator=' ', strip=True)
                         # Normalize khoảng trắng (đảm bảo có khoảng sau dấu phẩy)
                         extracted_text = re.sub(r'(,)([A-Za-z])', r'\1 \2', extracted_text)
+                        # Fix duplicate words in extracted text
+                        extracted_text = re.sub(r'\b(\w+)\s+\1\b', r'\1', extracted_text, flags=re.IGNORECASE)
                         # Chỉ cập nhật nếu text field đã được dịch (tránh ghi đè text gốc)
                         if block.get('text') and translated_block.get('text'):
                             translated_block['text'] = extracted_text
