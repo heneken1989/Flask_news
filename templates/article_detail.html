@@ -19,7 +19,9 @@
         .main.article .articleHeader h2,
         .main.article .articleHeader .media,
         .main.article .articleHeader .caption,
-        .main.article .articleHeader .meta {
+        .main.article .articleHeader .meta,
+        .main.article .articleHeader .kicker,
+        .main.article .articleHeader p.kicker {
             padding-left: 0.7rem !important;
             margin-left: 0 !important;
         }
@@ -49,6 +51,16 @@
         /* Article footer (tags) alignment - match bodytext padding */
         .main.article .articleFooter.column {
             padding-left: 0.7rem !important;
+        }
+        
+        /* Mobile: Add padding to images and captions in bodytext */
+        @media (max-width: 767px) {
+            .main.article .bodytext figure,
+            .main.article .bodytext .column.hasImage,
+            .main.article .bodytext .caption {
+                padding-left: 0.7rem !important;
+                padding-right: 0.7rem !important;
+            }
         }
         
         /* Articlescroller navigation styles */
