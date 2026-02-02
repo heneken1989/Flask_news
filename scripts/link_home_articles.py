@@ -719,7 +719,19 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                                                 translated_parts = []
                                                 for part in merged_layout_data['title_parts']:
                                                     if isinstance(part, dict) and 'text' in part:
-                                                        translated_text = translator.translate(part['text'])
+                                                        original_text = part['text']
+                                                        
+                                                        # Preserve leading/trailing spaces
+                                                        leading_space = ' ' if original_text.startswith(' ') else ''
+                                                        trailing_space = ' ' if original_text.endswith(' ') and not original_text.endswith('\n') else ''
+                                                        
+                                                        # Translate text (GoogleTranslator strips spaces)
+                                                        text_to_translate = original_text.strip()
+                                                        translated_text = translator.translate(text_to_translate)
+                                                        
+                                                        # Restore spaces
+                                                        translated_text = leading_space + translated_text + trailing_space
+                                                        
                                                         translated_parts.append({
                                                             'text': translated_text,
                                                             'color_class': part.get('color_class')
