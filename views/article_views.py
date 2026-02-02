@@ -213,26 +213,8 @@ def home_test():
                     article_dict['display_order'] = display_order
                     article_dict['layout_type'] = layout_type
                     
-                    # ⚠️ QUAN TRỌNG: Nếu đang xem EN, xóa title_parts để template chỉ dùng article.title
-                    # Template ưu tiên title_parts hơn article.title, nên nếu có title_parts từ DA,
-                    # nó sẽ hiển thị DA title thay vì EN title
-                    if current_language == 'en':
-                        # Xóa title_parts từ article_dict nếu có (có thể từ DB)
-                        if 'title_parts' in article_dict:
-                            if display_order < 5:
-                                print(f"         🗑️  Removing title_parts from article_dict (EN language, will use article.title instead)")
-                            del article_dict['title_parts']
-                    
                     # Merge layout_data: giữ lại từ DB, update với data từ layout_item
                     existing_layout_data = article_dict.get('layout_data', {}) or {}
-                    
-                    # ⚠️ QUAN TRỌNG: Nếu đang xem EN, xóa title_parts từ layout_data
-                    if current_language == 'en':
-                        # Xóa title_parts từ existing_layout_data nếu có
-                        if 'title_parts' in existing_layout_data:
-                            if display_order < 5:
-                                print(f"         🗑️  Removing title_parts from layout_data (EN language, will use article.title instead)")
-                            del existing_layout_data['title_parts']
                     
                     new_layout_data = {
                         'row_index': layout_item.get('row_index', -1),
@@ -263,14 +245,8 @@ def home_test():
                             new_layout_data['list_title'] = list_title
                     
                     # Merge với existing (ưu tiên existing cho list_items và list_title nếu không có trong new)
-                    # ⚠️ QUAN TRỌNG: KHÔNG merge title_parts từ layout_item vào existing_layout_data khi language là EN
                     layout_item_data = layout_item.get('layout_data', {}) or {}
                     for key, value in layout_item_data.items():
-                        if current_language == 'en' and key == 'title_parts':
-                            # Skip title_parts khi language là EN (để template dùng article.title thay vì title_parts)
-                            if display_order < 5:
-                                print(f"         ⚠️  Skipping title_parts from layout_item (EN language, will use article.title)")
-                            continue
                         existing_layout_data[key] = value
                     
                     # Merge new_layout_data vào existing
@@ -284,10 +260,6 @@ def home_test():
                             existing_layout_data[key] = value
                     
                     article_dict['layout_data'] = existing_layout_data
-                    
-                    # ⚠️ QUAN TRỌNG: Đảm bảo title_parts không có trong article_dict khi language là EN (double check)
-                    if current_language == 'en' and 'title_parts' in article_dict:
-                        del article_dict['title_parts']
                     
                     article_dict['grid_size'] = layout_item.get('grid_size', 6)
                     article_dict['is_home'] = True
@@ -674,26 +646,8 @@ def index():
                     article_dict['display_order'] = display_order
                     article_dict['layout_type'] = layout_type
                     
-                    # ⚠️ QUAN TRỌNG: Nếu đang xem EN, xóa title_parts để template chỉ dùng article.title
-                    # Template ưu tiên title_parts hơn article.title, nên nếu có title_parts từ DA,
-                    # nó sẽ hiển thị DA title thay vì EN title
-                    if current_language == 'en':
-                        # Xóa title_parts từ article_dict nếu có (có thể từ DB)
-                        if 'title_parts' in article_dict:
-                            if display_order < 5:
-                                print(f"         🗑️  Removing title_parts from article_dict (EN language, will use article.title instead)")
-                            del article_dict['title_parts']
-                    
                     # Merge layout_data: giữ lại từ DB, update với data từ layout_item
                     existing_layout_data = article_dict.get('layout_data', {}) or {}
-                    
-                    # ⚠️ QUAN TRỌNG: Nếu đang xem EN, xóa title_parts từ layout_data
-                    if current_language == 'en':
-                        # Xóa title_parts từ existing_layout_data nếu có
-                        if 'title_parts' in existing_layout_data:
-                            if display_order < 5:
-                                print(f"         🗑️  Removing title_parts from layout_data (EN language, will use article.title instead)")
-                            del existing_layout_data['title_parts']
                     
                     new_layout_data = {
                         'row_index': layout_item.get('row_index', -1),
@@ -724,14 +678,8 @@ def index():
                             new_layout_data['list_title'] = list_title
                     
                     # Merge với existing (ưu tiên existing cho list_items và list_title nếu không có trong new)
-                    # ⚠️ QUAN TRỌNG: KHÔNG merge title_parts từ layout_item vào existing_layout_data khi language là EN
                     layout_item_data = layout_item.get('layout_data', {}) or {}
                     for key, value in layout_item_data.items():
-                        if current_language == 'en' and key == 'title_parts':
-                            # Skip title_parts khi language là EN (để template dùng article.title thay vì title_parts)
-                            if display_order < 5:
-                                print(f"         ⚠️  Skipping title_parts from layout_item (EN language, will use article.title)")
-                            continue
                         existing_layout_data[key] = value
                     
                     # Merge new_layout_data vào existing
@@ -745,10 +693,6 @@ def index():
                             existing_layout_data[key] = value
                     
                     article_dict['layout_data'] = existing_layout_data
-                    
-                    # ⚠️ QUAN TRỌNG: Đảm bảo title_parts không có trong article_dict khi language là EN (double check)
-                    if current_language == 'en' and 'title_parts' in article_dict:
-                        del article_dict['title_parts']
                     
                     article_dict['grid_size'] = layout_item.get('grid_size', 6)
                     article_dict['is_home'] = True
