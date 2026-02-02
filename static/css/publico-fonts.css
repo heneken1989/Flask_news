@@ -1,0 +1,29 @@
+/* Publico Headline Web - Roman (Normal/Regular 400) */
+@font-face {
+    font-family: 'Publico Headline Web';
+    src: url('../fonts/PublicoHeadline-Roman-Web.woff2') format('woff2'),
+         url('../fonts/PublicoHeadline-Roman-Web.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Publico Headline Web - Bold (700) */
+@font-face {
+    font-family: 'Publico Headline Web';
+    src: url('../fonts/PublicoHeadline-Bold-Web.woff2') format('woff2'),
+         url('../fonts/PublicoHeadline-Bold-Web.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Publico Headline Web - Black (900) */
+@font-face {
+    font-family: 'Publico Headline Web';
+    src: url('../fonts/PublicoHeadline-Black-Web.woff2') format('woff2'),
+         url('../fonts/PublicoHeadline-Black-Web.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
