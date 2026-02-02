@@ -6,6 +6,41 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/livefeed.css') }}">
     {# Title đã được xử lý bởi base.html thông qua seo_meta, không cần override #}
     <style>
+        /* Fix alignment: Remove ALL padding to align articleHeader with bodytext at left edge */
+        
+        /* Remove column padding from articleHeader */
+        .main.article .articleHeader.column {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+        
+        /* Remove padding from all articleHeader children to ensure left edge alignment */
+        .main.article .articleHeader h1,
+        .main.article .articleHeader h2,
+        .main.article .articleHeader .media,
+        .main.article .articleHeader .caption,
+        .main.article .articleHeader .meta {
+            padding-left: 0.7rem !important;
+            margin-left: 0 !important;
+        }
+        
+        /* Remove padding from bodytext children */
+        .main.article .bodytext > p,
+        .main.article .bodytext > h2,
+        .main.article .bodytext > h3,
+        .main.article .bodytext > h4,
+        .main.article .bodytext > ul,
+        .main.article .bodytext > ol {
+            padding-left: 0.7rem !important;
+            margin-left: 0 !important;
+        }
+        
+        /* Override for all bodytext children */
+        .main.article .bodytext > * {
+            padding-left: 0 !important;
+        }
+    </style>
+    <style>
         /* Articlescroller navigation styles */
         .articlescroller nav .arrow {
             position: absolute;
