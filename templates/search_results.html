@@ -5,361 +5,111 @@
 {% block body_class %}l4 search site_sermitsiaq{% endblock %}
 
 {% block content %}
-<style>
-    /* Search page specific styles */
-    .search-page {
-        max-width: 1088px;
-        margin: 0 auto;
-        padding: 2rem 1rem;
-    }
+<section class="main front" id="main">
+    <h1 class="hidden-heading">Search - sermitsiaq</h1>
     
-    .search-header {
-        margin-bottom: 2rem;
-    }
-    
-    .search-header h1 {
-        font-family: "IBM Plex Sans", sans-serif;
-        font-size: 1.875rem;
-        font-weight: bold;
-        color: rgba(2,61,130,1);
-        margin-bottom: 1rem;
-    }
-    
-    .search-form {
-        display: flex;
-        gap: 0.5rem;
-        margin-bottom: 2rem;
-    }
-    
-    .search-form input[type="text"] {
-        flex: 1;
-        padding: 0.75rem 1rem;
-        font-size: 1rem;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-    }
-    
-    .search-form button {
-        padding: 0.75rem 2rem;
-        background-color: rgba(34,107,217,1);
-        color: white;
-        border: none;
-        border-radius: 4px;
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background-color 0.2s;
-    }
-    
-    .search-form button:hover {
-        background-color: rgba(2,61,130,1);
-    }
-    
-    .search-results-info {
-        margin-bottom: 1.5rem;
-        color: #666;
-        font-size: 0.95rem;
-    }
-    
-    .search-results-list {
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-    }
-    
-    .search-result-item {
-        display: flex;
-        gap: 1.5rem;
-        padding-bottom: 2rem;
-        border-bottom: 1px solid #e0e0e0;
-    }
-    
-    .search-result-item:last-child {
-        border-bottom: none;
-    }
-    
-    .search-result-image {
-        flex-shrink: 0;
-        width: 200px;
-        height: 130px;
-        overflow: hidden;
-        border-radius: 4px;
-    }
-    
-    .search-result-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-    
-    .search-result-content {
-        flex: 1;
-    }
-    
-    .search-result-kicker {
-        font-family: "IBM Plex Sans", sans-serif;
-        font-size: 0.875rem;
-        font-weight: 600;
-        color: rgba(254,89,112,1);
-        text-transform: uppercase;
-        margin-bottom: 0.5rem;
-    }
-    
-    .search-result-title {
-        font-family: "Publico Headline Web", serif;
-        font-size: 1.5rem;
-        font-weight: 700;
-        line-height: 1.3;
-        margin-bottom: 0.5rem;
-    }
-    
-    .search-result-title a {
-        color: #000;
-        text-decoration: none;
-        transition: color 0.2s;
-    }
-    
-    .search-result-title a:hover {
-        color: rgba(34,107,217,1);
-    }
-    
-    .search-result-excerpt {
-        font-size: 0.95rem;
-        line-height: 1.5;
-        color: #333;
-        margin-bottom: 0.5rem;
-    }
-    
-    .search-result-meta {
-        font-size: 0.875rem;
-        color: #666;
-    }
-    
-    .search-no-results {
-        text-align: center;
-        padding: 3rem 1rem;
-    }
-    
-    .search-no-results h2 {
-        font-family: "IBM Plex Sans", sans-serif;
-        font-size: 1.5rem;
-        color: #666;
-        margin-bottom: 1rem;
-    }
-    
-    .search-pagination {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 1rem;
-        margin-top: 3rem;
-        padding-top: 2rem;
-        border-top: 1px solid #e0e0e0;
-    }
-    
-    .search-pagination a,
-    .search-pagination span {
-        padding: 0.5rem 1rem;
-        border-radius: 4px;
-        text-decoration: none;
-        font-weight: 600;
-    }
-    
-    .search-pagination a {
-        background-color: rgba(34,107,217,1);
-        color: white;
-        transition: background-color 0.2s;
-    }
-    
-    .search-pagination a:hover {
-        background-color: rgba(2,61,130,1);
-    }
-    
-    .search-pagination span {
-        color: #666;
-    }
-    
-    .search-pagination a.disabled {
-        background-color: #ccc;
-        cursor: not-allowed;
-        pointer-events: none;
-    }
-    
-    /* Mobile responsive */
-    @media (max-width: 767px) {
-        .search-page {
-            padding: 1rem 0.7rem;
-        }
-        
-        .search-header h1 {
-            font-size: 1.5rem;
-        }
-        
-        .search-form {
-            flex-direction: column;
-        }
-        
-        .search-result-item {
-            flex-direction: column;
-            gap: 1rem;
-        }
-        
-        .search-result-image {
-            width: 100%;
-            height: 200px;
-        }
-        
-        .search-result-title {
-            font-size: 1.25rem;
-        }
-    }
-    
-    /* Spinner animation */
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-    
-    .dac-hidden {
-        display: none;
-    }
-    
-    /* Load more button hover */
-    .nextBtn.bg-primary:hover {
-        background-color: rgba(2,61,130,1) !important;
-    }
-</style>
-
-<div class="search-page">
-    <div class="search-header">
-        <h1>{{ _('Søg i vores arkiver') }}</h1>
-        
-        <!-- Search form -->
-        <form class="search-form" action="{{ url_for('article_views.search') }}" method="get" role="search">
-            <input 
-                type="text" 
-                name="q" 
-                placeholder="{{ _('Skriv søgeord …') }}" 
-                value="{{ search_query }}"
-                required
-            >
-            <button type="submit">{{ _('Søg') }}</button>
-        </form>
-    </div>
-    
-    {% if search_query %}
-        <!-- Results info -->
-        {% if total_results > 0 %}
-        <div class="search-results-info">
-            {{ _('Viser') }} {{ (page - 1) * per_page + 1 }}-{{ min(page * per_page, total_results) }} {{ _('af') }} {{ total_results }} {{ _('resultater for') }} <strong>"{{ search_query }}"</strong>
-        </div>
-        
-        <!-- Results list -->
-        <div class="search-results-list">
-            {% for article in articles %}
-            <article class="search-result-item">
-                {% if article.image and (article.image.desktop_webp or article.image.desktop_jpeg or article.image.fallback) %}
-                <div class="search-result-image">
-                    <a href="{{ article.url }}">
-                        <picture>
-                            {% if article.image.desktop_webp %}
-                            <source type="image/webp" srcset="{{ article.image.desktop_webp }}" media="(min-width: 768px)">
-                            {% endif %}
-                            {% if article.image.desktop_jpeg %}
-                            <source type="image/jpeg" srcset="{{ article.image.desktop_jpeg }}" media="(min-width: 768px)">
-                            {% endif %}
-                            {% if article.image.mobile_webp %}
-                            <source type="image/webp" srcset="{{ article.image.mobile_webp }}" media="(max-width: 767px)">
-                            {% endif %}
-                            {% if article.image.mobile_jpeg %}
-                            <source type="image/jpeg" srcset="{{ article.image.mobile_jpeg }}" media="(max-width: 767px)">
-                            {% endif %}
-                            <img 
-                                src="{{ article.image.fallback or article.image.desktop_jpeg or article.image.desktop_webp }}" 
-                                alt="{{ article.image.alt or article.title }}"
-                                loading="lazy"
-                            >
-                        </picture>
-                    </a>
-                </div>
-                {% endif %}
+    <div class="page-content">
+        <div class="row small-12 large-12">
+            <div id="labradorSearch" class="labradorSearch small-12 large-12 small-abs-12 large-abs-12">
                 
-                <div class="search-result-content">
-                    {% if article.kicker %}
-                    <p class="search-result-kicker">{{ article.kicker }}</p>
-                    {% endif %}
-                    
-                    <h2 class="search-result-title">
-                        <a href="{{ article.url }}">{{ article.title }}</a>
-                    </h2>
-                    
-                    {% if article.excerpt %}
-                    <p class="search-result-excerpt">{{ article.excerpt[:190] }}{% if article.excerpt|length > 190 %}...{% endif %}</p>
-                    {% endif %}
-                    
-                    <div class="search-result-meta">
-                        {% if article.section %}
-                        <span class="section">{{ article.section|upper }}</span>
-                        {% endif %}
-                        {% if article.published_date %}
-                        <span class="date"> • 
-                            {% if article.published_date is string %}
-                                {{ article.published_date[:10] }}
-                            {% else %}
-                                {{ article.published_date.strftime('%d.%m.%Y') }}
-                            {% endif %}
-                        </span>
+                <div class="content">
+                    <form action="{{ url_for('article_views.search') }}" class="row grid-justify-center nosites" role="search">
+                        <div class="column large-12 small-12">
+                            <h1 class="t26 tm26 font-weight-bold m-font-weight-bold octonary color_mobile_octonary font-IBMPlexSans">{{ _('Søg i vores arkiver') }}</h1>
+                        </div>
+                        
+                        <div class="column large-12 small-12 grid">
+                            <input type="text" name="query" placeholder="{{ _('Skriv søgeord …') }}" value="{{ search_query }}" required>
+                            <button type="submit" class="ellipsis main-btn bg-primary" value="">{{ _('Søg') }}</button>
+                        </div>
+                    </form>
+
+                    <div class="labclient-content row" id="search-results-list">
+                        {% if search_query and total_results > 0 %}
+                            {% for article in articles %}
+                            <article class="column small-12 large-12 small-abs-12 large-abs-12" data-section="{{ article.section or '' }}" data-instance="{{ article.id }}">
+                                <div class="content">
+                                    <a itemprop="url" href="{{ article.url }}">
+                                        
+                                        <div class="media desktop-floatLeft mobile-floatLeft">
+                                            {% if article.image and (article.image.desktop_webp or article.image.desktop_jpeg or article.image.fallback) %}
+                                            <figure class="desktop-floatLeft mobile-floatLeft" style="width:177px;">
+                                                <div class="img fullwidthTarget">
+                                                    <picture>
+                                                        {% if article.image.desktop_webp %}
+                                                        <source srcset="{{ article.image.desktop_webp }}" width="177" height="116" media="(min-width: 768px)" type="image/webp">
+                                                        {% endif %}
+                                                        {% if article.image.desktop_jpeg %}
+                                                        <source srcset="{{ article.image.desktop_jpeg }}" width="177" height="116" media="(min-width: 768px)" type="image/jpeg">
+                                                        {% endif %}
+                                                        {% if article.image.mobile_webp %}
+                                                        <source srcset="{{ article.image.mobile_webp }}" width="120" height="78" media="(max-width: 767px)" type="image/webp">
+                                                        {% endif %}
+                                                        {% if article.image.mobile_jpeg %}
+                                                        <source srcset="{{ article.image.mobile_jpeg }}" width="120" height="78" media="(max-width: 767px)" type="image/jpeg">
+                                                        {% endif %}
+                                                        <img src="{{ article.image.fallback or article.image.desktop_jpeg or article.image.desktop_webp }}" 
+                                                             width="120" height="78" 
+                                                             title="{{ article.title }}" 
+                                                             alt="{{ article.image.alt or '' }}">
+                                                    </picture>
+                                                </div>
+                                            </figure>
+                                            {% endif %}
+                                            
+                                            <div class="floatingText">
+                                                <div class="labels"></div>
+                                            </div>
+                                        </div>
+
+                                        <h2 itemprop="headline" class="headline">{{ article.title }}</h2>
+                                        <p itemprop="description" class="subtitle">
+                                            {% if article.excerpt %}{{ article.excerpt[:190] }}{% if article.excerpt|length > 190 %}...{% endif %}{% endif %}<span class="info"><span class="sitealias label">sermitsiaq</span>{% if article.published_date %}<span class="date fi-clock"> {{ article.published_date.strftime('%m/%d/%Y - %I:%M %p') if article.published_date is not string else article.published_date }}</span>{% endif %}{% if article.section %}<span class="section_tag fi-price-tag"> {{ article.section }}</span>{% endif %}</span>
+                                        </p>
+
+                                    </a>
+                                    
+                                    {% if article.published_date %}
+                                    <time itemprop="datePublished" datetime="{{ article.published_date if article.published_date is string else article.published_date.isoformat() }}"></time>
+                                    {% endif %}
+                                </div>
+                            </article>
+                            {% endfor %}
+                        {% elif search_query %}
+                            <div class="column small-12 large-12">
+                                <p class="nohits">{{ _('Søgningen gav desværre ingen resultater. Prøv igen med et andet søgeord.') }}</p>
+                            </div>
                         {% endif %}
                     </div>
+                    
+                    <span class="dac-hidden" id="loading-spinner" style="display: none; text-align: center; padding: 2rem;">
+                        <i class="lab-spinner"></i>
+                    </span>
+
+                    {% if search_query and has_next %}
+                    <nav class="">
+                        <a class="nextBtn bg-primary" 
+                           href="{{ url_for('article_views.search', q=search_query, page=page+1, lang=current_language) }}" 
+                           data-nav="next" 
+                           data-page="{{ page + 1 }}"
+                           data-query="{{ search_query }}"
+                           data-lang="{{ current_language }}"
+                           title="{{ _('Display more hits') }}">{{ _('Vis mere') }}</a>
+                    </nav>
+                    {% endif %}
+
                 </div>
-            </article>
-            {% endfor %}
+
+            </div>
         </div>
-        
-        <!-- Load More Button -->
-        <div id="load-more-container">
-            <span class="dac-hidden" id="loading-spinner" style="display: none; text-align: center; padding: 2rem;">
-                <i class="lab-spinner" style="display: inline-block; width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid rgba(34,107,217,1); border-radius: 50%; animation: spin 1s linear infinite;"></i>
-            </span>
-            
-            {% if pagination.has_next %}
-            <nav class="search-pagination" style="margin-top: 2rem;">
-                <a class="nextBtn bg-primary" 
-                   href="{{ url_for('article_views.search', q=search_query, page=pagination.next_num, lang=current_language) }}" 
-                   data-nav="next" 
-                   data-page="{{ pagination.next_num }}"
-                   data-query="{{ search_query }}"
-                   data-lang="{{ current_language }}"
-                   data-total-pages="{{ pagination.pages }}"
-                   title="{{ _('Display more hits') }}"
-                   style="display: inline-block; padding: 0.75rem 2rem; background-color: rgba(34,107,217,1); color: white; border: none; border-radius: 4px; font-size: 1rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: background-color 0.2s;">
-                    {{ _('Vis mere') }}
-                </a>
-            </nav>
-            {% endif %}
-        </div>
-        
-        {% else %}
-        <!-- No results -->
-        <div class="search-no-results">
-            <h2>{{ _('Søgningen gav desværre ingen resultater.') }}</h2>
-            <p>{{ _('Prøv igen med et andet søgeord.') }}</p>
-        </div>
-        {% endif %}
-    {% else %}
-        <!-- No query provided -->
-        <div class="search-no-results">
-            <p>{{ _('Indtast et søgeord for at søge i vores arkiver.') }}</p>
-        </div>
-    {% endif %}
-</div>
+    </div>
+</section>
 
 <script>
 (function() {
     const loadMoreBtn = document.querySelector('.nextBtn[data-nav="next"]');
     const spinner = document.getElementById('loading-spinner');
-    const resultsList = document.querySelector('.search-results-list');
-    const loadMoreContainer = document.getElementById('load-more-container');
+    const resultsList = document.getElementById('search-results-list');
     
     if (loadMoreBtn) {
         loadMoreBtn.addEventListener('click', function(e) {
@@ -368,9 +118,9 @@
             const nextPage = parseInt(this.dataset.page);
             const query = this.dataset.query;
             const lang = this.dataset.lang;
-            const totalPages = parseInt(this.dataset.totalPages);
             
             // Show spinner, hide button
+            spinner.classList.remove('dac-hidden');
             spinner.style.display = 'block';
             this.style.display = 'none';
             
@@ -391,90 +141,95 @@
                         // Update button for next page
                         if (data.has_next) {
                             loadMoreBtn.dataset.page = nextPage + 1;
-                            loadMoreBtn.style.display = 'inline-block';
+                            loadMoreBtn.href = `{{ url_for('article_views.search') }}?q=${encodeURIComponent(query)}&page=${nextPage + 1}&lang=${lang}`;
+                            loadMoreBtn.style.display = '';
                         } else {
                             // No more pages, remove button
-                            loadMoreContainer.remove();
+                            loadMoreBtn.parentElement.remove();
                         }
                     } else {
                         // No more results
-                        loadMoreContainer.remove();
+                        loadMoreBtn.parentElement.remove();
                     }
                     
                     spinner.style.display = 'none';
+                    spinner.classList.add('dac-hidden');
                 })
                 .catch(error => {
                     console.error('Error loading more results:', error);
                     spinner.style.display = 'none';
-                    loadMoreBtn.style.display = 'inline-block';
-                    alert('{{ _("Der opstod en fejl ved indlæsning af flere resultater. Prøv venligst igen.") }}');
+                    spinner.classList.add('dac-hidden');
+                    loadMoreBtn.style.display = '';
                 });
         });
     }
     
-    // Function to create article HTML
+    // Function to create article HTML (matching original structure)
     function createArticleHTML(article) {
-        let html = '<article class="search-result-item">';
+        let html = `<article class="column small-12 large-12 small-abs-12 large-abs-12" data-section="${article.section || ''}" data-instance="${article.id}">`;
+        html += '<div class="content">';
+        html += `<a itemprop="url" href="${article.url}">`;
         
-        // Image
+        // Media section
+        html += '<div class="media desktop-floatLeft mobile-floatLeft">';
         if (article.image && (article.image.desktop_webp || article.image.desktop_jpeg || article.image.fallback)) {
-            html += '<div class="search-result-image">';
-            html += `<a href="${article.url}">`;
+            html += '<figure class="desktop-floatLeft mobile-floatLeft" style="width:177px;">';
+            html += '<div class="img fullwidthTarget">';
             html += '<picture>';
             
             if (article.image.desktop_webp) {
-                html += `<source type="image/webp" srcset="${article.image.desktop_webp}" media="(min-width: 768px)">`;
+                html += `<source srcset="${article.image.desktop_webp}" width="177" height="116" media="(min-width: 768px)" type="image/webp">`;
             }
             if (article.image.desktop_jpeg) {
-                html += `<source type="image/jpeg" srcset="${article.image.desktop_jpeg}" media="(min-width: 768px)">`;
+                html += `<source srcset="${article.image.desktop_jpeg}" width="177" height="116" media="(min-width: 768px)" type="image/jpeg">`;
             }
             if (article.image.mobile_webp) {
-                html += `<source type="image/webp" srcset="${article.image.mobile_webp}" media="(max-width: 767px)">`;
+                html += `<source srcset="${article.image.mobile_webp}" width="120" height="78" media="(max-width: 767px)" type="image/webp">`;
             }
             if (article.image.mobile_jpeg) {
-                html += `<source type="image/jpeg" srcset="${article.image.mobile_jpeg}" media="(max-width: 767px)">`;
+                html += `<source srcset="${article.image.mobile_jpeg}" width="120" height="78" media="(max-width: 767px)" type="image/jpeg">`;
             }
             
             const imgSrc = article.image.fallback || article.image.desktop_jpeg || article.image.desktop_webp;
-            const imgAlt = article.image.alt || article.title;
-            html += `<img src="${imgSrc}" alt="${escapeHtml(imgAlt)}" loading="lazy">`;
+            html += `<img src="${imgSrc}" width="120" height="78" title="${escapeHtml(article.title)}" alt="${escapeHtml(article.image.alt || '')}">`;
             
             html += '</picture>';
-            html += '</a>';
             html += '</div>';
+            html += '</figure>';
         }
-        
-        // Content
-        html += '<div class="search-result-content">';
-        
-        // Kicker
-        if (article.kicker) {
-            html += `<p class="search-result-kicker">${escapeHtml(article.kicker)}</p>`;
-        }
-        
-        // Title
-        html += '<h2 class="search-result-title">';
-        html += `<a href="${article.url}">${escapeHtml(article.title)}</a>`;
-        html += '</h2>';
-        
-        // Excerpt
-        if (article.excerpt) {
-            const excerpt = article.excerpt.length > 190 ? article.excerpt.substring(0, 190) + '...' : article.excerpt;
-            html += `<p class="search-result-excerpt">${escapeHtml(excerpt)}</p>`;
-        }
-        
-        // Meta
-        html += '<div class="search-result-meta">';
-        if (article.section) {
-            html += `<span class="section">${escapeHtml(article.section.toUpperCase())}</span>`;
-        }
-        if (article.published_date) {
-            const date = typeof article.published_date === 'string' ? article.published_date.substring(0, 10) : article.published_date;
-            html += `<span class="date"> • ${date}</span>`;
-        }
+        html += '<div class="floatingText"><div class="labels"></div></div>';
         html += '</div>';
         
-        html += '</div>'; // search-result-content
+        // Title
+        html += `<h2 itemprop="headline" class="headline">${escapeHtml(article.title)}</h2>`;
+        
+        // Subtitle with excerpt and meta info
+        html += '<p itemprop="description" class="subtitle">';
+        if (article.excerpt) {
+            const excerpt = article.excerpt.length > 190 ? article.excerpt.substring(0, 190) + '...' : article.excerpt;
+            html += escapeHtml(excerpt);
+        }
+        html += '<span class="info">';
+        html += '<span class="sitealias label">sermitsiaq</span>';
+        if (article.published_date) {
+            const date = typeof article.published_date === 'string' ? article.published_date : article.published_date;
+            html += `<span class="date fi-clock"> ${date}</span>`;
+        }
+        if (article.section) {
+            html += `<span class="section_tag fi-price-tag"> ${escapeHtml(article.section)}</span>`;
+        }
+        html += '</span>';
+        html += '</p>';
+        
+        html += '</a>';
+        
+        // Time element
+        if (article.published_date) {
+            const datetime = typeof article.published_date === 'string' ? article.published_date : article.published_date;
+            html += `<time itemprop="datePublished" datetime="${datetime}"></time>`;
+        }
+        
+        html += '</div>'; // content
         html += '</article>';
         
         return html;
@@ -482,6 +237,7 @@
     
     // Escape HTML to prevent XSS
     function escapeHtml(text) {
+        if (!text) return '';
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;

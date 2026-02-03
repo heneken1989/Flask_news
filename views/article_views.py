@@ -1986,7 +1986,7 @@ def search():
             current_language = lang
     
     # Get search query from 'q' or 'query' parameter
-    search_query = request.args.get('q') or request.args.get('query', '').strip()
+    search_query = request.args.get('query', request.args.get('q', '')).strip()
     
     # Get pagination parameters
     page = request.args.get('page', 1, type=int)

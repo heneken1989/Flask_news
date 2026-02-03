@@ -1,0 +1,267 @@
+@use "../../css_scss/components/vars" as *;
+
+.labradorSearch {
+    $input_border: 1px solid #bbbbbb;
+    display: flex;
+    padding: 0 0 2rem;
+
+    .content {
+        flex: 1;
+    }
+
+    article .content {
+        .headline  {
+            font-size: 1.8rem;
+        }
+    }
+
+    .row:not([class*=bg-]) {
+        background-color: transparent !important;
+    }
+
+    .grid {
+        input {
+            flex: 1 1 75%;
+        }
+
+        button {
+            flex: 1 1 25%;
+            cursor: pointer;
+        }
+    }
+
+    .advanced-options {
+        width: 100%;
+        position: relative;
+
+        .advanced-expander {
+            cursor: pointer;
+            position: absolute;
+            right: 1rem;
+            top: -2rem;
+
+            &:before {
+                float: right;
+                margin: 0.2em 0.5rem;
+                font-size: 1.4rem;
+            }
+        }
+
+        .advanced-content {
+            display: none;
+            border: $input_border;
+            padding: 1.4rem 1rem 1rem;
+            flex-wrap: wrap;
+            user-select: none;
+            margin: 0.5rem 0;
+        }
+
+        .heading {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .sites {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .toggleAll {
+            padding: 2px 12px;
+            cursor: pointer;
+        }
+
+        .sites {
+            li {
+                flex: 0 0 25%;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                padding-top: 0;
+                padding-bottom: 0;
+                margin:0;
+        
+                @include desktop_down {
+                    flex: 0 0 100%;
+                }
+        
+                label {
+                    cursor: pointer;
+        
+                    input {
+                        cursor: inherit;
+                    }
+                }
+            }
+        }
+
+        &.expanded {
+            margin-bottom: 2rem;
+
+            .advanced-content {
+                display: flex;
+            }
+        }
+    }
+
+    form {
+        input[name="query"], button {
+            padding: 1.2rem;
+            border: 0;
+            margin: 0;
+            height: 62px;
+            margin-bottom: 2rem;
+        }
+
+        input[name="query"] {
+            color: #000;
+            border: $input_border;
+            border-right: 0;
+        }
+
+        .searchparams {
+            border-bottom: $input_border;
+            padding-bottom: 2rem;
+        }
+
+        &.nosites {
+            select {
+                display: none;
+            }
+        }
+    }
+
+    article.column {
+        margin: 0 0 3rem !important;
+
+        .content {
+            .text {
+                margin-left: 184px;
+            }
+
+            p, 
+            h2 {
+                margin: 0;
+                padding: 0;
+            }
+
+            h2 {
+                font-size: 1.4rem !important;
+                margin-bottom: 0.4rem;
+            }
+
+            p.url {
+                color: gray;
+                
+            }
+
+            .section_tag {
+                margin-left: 0.5rem;
+            }
+
+            @include desktop_down {
+                .media {
+                    margin-bottom: 0.7rem;
+                }
+            }
+        }
+
+        .label {
+            float: none;
+            margin: 0 .2rem 0 0;
+            padding: .4em 0.8em 0.2rem;
+            vertical-align: middle;
+            background-color: #707070;
+            border-radius: 1rem;
+            letter-spacing: 0.05rem;
+        }
+    }
+
+    picture.svg {
+        width: 120px;
+    }
+    
+    nav {
+        text-align: center;
+
+        a {
+            display: inline-block;
+            margin: 1rem;
+            padding: 0.7rem 2rem;
+            text-decoration: none;
+            color: initial;
+
+            &:hover {
+                text-decoration: underline;
+            }
+
+            &.disabled {
+                display: none;
+            }
+        }
+    }
+
+    .labclient-content .nohitsLabel {
+        text-align: center;
+    }
+
+    @include desktop_down {
+        > .content {
+            overflow: hidden;
+        }
+
+        .advanced-options .sites li {
+            white-space: normal;
+        }
+
+        .labclient-content .boxalign-left {
+            float:left;
+        }
+
+        article.column .content .text {
+            margin-left: 0;
+        }
+
+        picture.svg {
+            width: 70px;
+        }
+
+        form {
+            select {
+                margin-left: 0;
+            }
+        }    
+
+        .grid {
+            input {
+                flex: 1 1 60%;
+            }
+
+            button {
+                flex: 1 1 40%;
+            }
+        }
+
+        article.column .label.sitealias {
+            display: none;
+        }
+    }
+
+    @include mobile_up {
+        article.column .content figure.desktop-floatLeft {
+            margin-right: 1.5rem;
+        }
+    }
+
+    article.column .content .info {
+        display: block;
+        margin: 5px 0 0;
+    }
+
+    #loading-spinner {
+        margin: 100px auto;
+    }
+}
