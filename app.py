@@ -73,6 +73,13 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Initialize database
 db.init_app(app)
 
+# Add Python built-in functions to Jinja2 globals
+app.jinja_env.globals.update({
+    'min': min,
+    'max': max,
+    'len': len,
+})
+
 # Register Jinja2 filters
 @app.template_filter('group_articles')
 def group_articles_filter(articles, articles_per_row=2):

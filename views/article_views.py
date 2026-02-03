@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, request, make_response, session
+from flask import Blueprint, render_template, request, make_response, session, jsonify
 from datetime import datetime
 from utils import apply_grid_size_pattern, prepare_home_layouts, get_home_articles_by_language
 from database import Article, Category, db
+from sqlalchemy import or_, func
 
 article_view_bp = Blueprint('article_views', __name__)
 
@@ -1948,3 +1949,219 @@ def advertise():
             current_language = lang
     
     return render_template('advertise.html', current_language=current_language)
+
+
+@article_view_bp.route('/cse')
+@article_view_bp.route('/search')
+def search():
+    """
+    Search page - tìm kiếm bài viết theo query
+    Hỗ trợ cả /cse (giống trang gốc) và /search
+    
+    Query parameters:
+    - q: search query (required)
+    - query: alternative parameter name for 'q'
+    - page: pagination (default: 1)
+    """
+    from flask_babel import get_locale
+    
+    # Get current language
+    current_language = 'da'  # Default
+    try:
+        locale = get_locale()
+        if locale and str(locale) in ['da', 'kl', 'en']:
+            current_language = str(locale)
+    except:
+        pass
+    
+    # Check session
+    session_lang = session.get('language')
+    if session_lang and session_lang in ['da', 'kl', 'en']:
+        current_language = session_lang
+    
+    # Check URL parameter for language override
+    if request.args.get('lang'):
+        lang = request.args.get('lang')
+        if lang in ['da', 'kl', 'en']:
+            current_language = lang
+    
+    # Get search query from 'q' or 'query' parameter
+    search_query = request.args.get('q') or request.args.get('query', '').strip()
+    
+    # Get pagination parameters
+    page = request.args.get('page', 1, type=int)
+    per_page = 20  # Number of results per page
+    
+    print(f"\n{'='*60}")
+    print(f"🔍 Search Page")
+    print(f"{'='*60}")
+    print(f"   Language: {current_language}")
+    print(f"   Query: {search_query}")
+    print(f"   Page: {page}")
+    
+    articles = []
+    total_results = 0
+    
+    if search_query:
+        try:
+            # Build search query - PostgreSQL full-text search
+            # Search in: title, excerpt, content, tags
+            
+            # Search pattern (case-insensitive)
+            search_pattern = f"%{search_query}%"
+            
+            # Use DISTINCT ON to get only the latest article per image_header_id (image_data->>'element_guid')
+            # This removes duplicates when same article has multiple versions
+            from sqlalchemy import distinct, select, literal_column
+            from sqlalchemy.sql import text
+            
+            # Import ArticleDetail for author search
+            from database import ArticleDetail
+            
+            # Subquery to get the latest article ID for each unique image element_guid
+            # LEFT JOIN với ArticleDetail để search trong author info
+            subquery = db.session.query(
+                func.max(Article.id).label('max_id')
+            ).outerjoin(
+                ArticleDetail,
+                db.and_(
+                    Article.published_url == ArticleDetail.published_url,
+                    Article.language == ArticleDetail.language
+                )
+            ).filter(
+                Article.language == current_language,
+                Article.is_temp == False,
+                or_(
+                    Article.title.ilike(search_pattern),
+                    Article.excerpt.ilike(search_pattern),
+                    Article.content.ilike(search_pattern),
+                    func.lower(func.cast(Article.tags, db.String)).contains(search_query.lower()),
+                    # Search trong author info (content_blocks JSON)
+                    func.lower(func.cast(ArticleDetail.content_blocks, db.String)).contains(search_query.lower())
+                )
+            ).group_by(
+                func.coalesce(
+                    func.cast(Article.image_data['element_guid'], db.String),
+                    func.cast(Article.id, db.String)  # Fallback to ID if no image_data
+                )
+            ).subquery()
+            
+            # Main query - get articles with IDs from subquery
+            query = Article.query.filter(
+                Article.id.in_(
+                    db.session.query(subquery.c.max_id)
+                )
+            )
+            
+            # Count total unique results
+            total_results = query.count()
+            
+            print(f"   📊 Found {total_results} unique results (after deduplication)")
+            
+            # Apply pagination and ordering
+            articles_query = query.order_by(
+                Article.created_at.desc()  # Order by created_at DESC to show newest first
+            ).paginate(
+                page=page,
+                per_page=per_page,
+                error_out=False
+            )
+            
+            # Convert to dict for template
+            articles = [article.to_dict() for article in articles_query.items]
+            
+            print(f"   📄 Showing {len(articles)} results on page {page}")
+            
+        except Exception as e:
+            print(f"   ⚠️  Error searching articles: {e}")
+            import traceback
+            traceback.print_exc()
+    
+    # Calculate pagination info
+    total_pages = (total_results + per_page - 1) // per_page if total_results > 0 else 0
+    has_prev = page > 1
+    has_next = page < total_pages
+    
+    # Check if this is an AJAX request
+    is_ajax = request.args.get('ajax') == '1'
+    
+    if is_ajax:
+        # Return JSON response for AJAX load more
+        return jsonify({
+            'articles': articles,
+            'total_results': total_results,
+            'page': page,
+            'per_page': per_page,
+            'total_pages': total_pages,
+            'has_prev': has_prev,
+            'has_next': has_next
+        })
+    
+    # Regular request - render template
+    # Get the pagination object for template (using same deduplication logic)
+    if search_query:
+        search_pattern = f"%{search_query}%"
+        
+        # Import ArticleDetail for author search
+        from database import ArticleDetail
+        
+        # Subquery to get the latest article ID for each unique image element_guid
+        # LEFT JOIN với ArticleDetail để search trong author info
+        subquery = db.session.query(
+            func.max(Article.id).label('max_id')
+        ).outerjoin(
+            ArticleDetail,
+            db.and_(
+                Article.published_url == ArticleDetail.published_url,
+                Article.language == ArticleDetail.language
+            )
+        ).filter(
+            Article.language == current_language,
+            Article.is_temp == False,
+            or_(
+                Article.title.ilike(search_pattern),
+                Article.excerpt.ilike(search_pattern),
+                Article.content.ilike(search_pattern),
+                func.lower(func.cast(Article.tags, db.String)).contains(search_query.lower()),
+                # Search trong author info (content_blocks JSON)
+                func.lower(func.cast(ArticleDetail.content_blocks, db.String)).contains(search_query.lower())
+            )
+        ).group_by(
+            func.coalesce(
+                func.cast(Article.image_data['element_guid'], db.String),
+                func.cast(Article.id, db.String)  # Fallback to ID if no image_data
+            )
+        ).subquery()
+        
+        query = Article.query.filter(
+            Article.id.in_(
+                db.session.query(subquery.c.max_id)
+            )
+        )
+    else:
+        query = Article.query.filter(
+            Article.language == current_language,
+            Article.is_temp == False
+        )
+    
+    # Get pagination object (order by created_at DESC to show newest versions first)
+    pagination = query.order_by(
+        Article.created_at.desc()
+    ).paginate(
+        page=page,
+        per_page=per_page,
+        error_out=False
+    )
+    
+    return render_template('search_results.html',
+        search_query=search_query,
+        articles=articles,
+        total_results=total_results,
+        page=page,
+        per_page=per_page,
+        total_pages=total_pages,
+        has_prev=has_prev,
+        has_next=has_next,
+        current_language=current_language,
+        pagination=pagination  # Pass pagination object for template
+    )
