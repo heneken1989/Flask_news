@@ -2004,24 +2004,82 @@ def search():
     
     if search_query:
         try:
-            # Build search query - PostgreSQL full-text search
-            # Search in: title, excerpt, content, tags
+            # Build search query - Tokenized search like original website
+            # Split query into individual words for better matching
+            # Search in: title, excerpt, content, tags, author
             
-            # Search pattern (case-insensitive)
-            search_pattern = f"%{search_query}%"
-            
-            # Use DISTINCT ON to get only the latest article per image_header_id (image_data->>'element_guid')
-            # This removes duplicates when same article has multiple versions
-            from sqlalchemy import distinct, select, literal_column
+            from sqlalchemy import distinct, select, literal_column, case
             from sqlalchemy.sql import text
-            
-            # Import ArticleDetail for author search
             from database import ArticleDetail
+            import re
             
-            # Subquery to get the latest article ID for each unique image element_guid
-            # LEFT JOIN với ArticleDetail để search trong author info
+            # Tokenize search query - split into words (minimum 2 characters)
+            # Remove special characters and split by whitespace
+            words = [w.strip() for w in re.split(r'\s+', search_query) if len(w.strip()) >= 2]
+            
+            print(f"   🔤 Tokenized query: {words}")
+            
+            if not words:
+                # If no valid words, fall back to original query
+                words = [search_query]
+            
+            # Build OR conditions for each word
+            # Each article must match at least one word in any field
+            word_conditions = []
+            for word in words:
+                word_pattern = f"%{word}%"
+                word_conditions.append(
+                    or_(
+                        Article.title.ilike(word_pattern),
+                        Article.excerpt.ilike(word_pattern),
+                        Article.content.ilike(word_pattern),
+                        func.lower(func.cast(Article.tags, db.String)).contains(word.lower()),
+                        # Search trong author info via joined ArticleDetail
+                        func.lower(func.cast(ArticleDetail.content_blocks, db.String)).contains(word.lower())
+                    )
+                )
+            
+            # Combine all word conditions with OR
+            # This means: article matches if it contains ANY of the words
+            combined_word_conditions = or_(*word_conditions)
+            
+            # Calculate relevance score for ranking
+            # Count how many words match in each field
+            relevance_expressions = []
+            for word in words:
+                word_pattern = f"%{word}%"
+                # For each word, add 1 point for each field it appears in
+                relevance_expressions.append(
+                    case(
+                        (Article.title.ilike(word_pattern), 3),  # Title matches worth 3 points
+                        else_=0
+                    )
+                )
+                relevance_expressions.append(
+                    case(
+                        (Article.excerpt.ilike(word_pattern), 2),  # Excerpt matches worth 2 points
+                        else_=0
+                    )
+                )
+                relevance_expressions.append(
+                    case(
+                        (Article.content.ilike(word_pattern), 1),  # Content matches worth 1 point
+                        else_=0
+                    )
+                )
+            
+            # Sum all relevance scores
+            relevance_score = sum(relevance_expressions) if relevance_expressions else literal_column('0')
+            
+            # Subquery to get the latest article ID for each unique published_url_id
+            # WITH relevance scoring
             subquery = db.session.query(
-                func.max(Article.id).label('max_id')
+                func.max(Article.id).label('max_id'),
+                func.regexp_replace(
+                    Article.published_url,
+                    '.*/([0-9]+)$',
+                    '\\1'
+                ).label('url_id')
             ).outerjoin(
                 ArticleDetail,
                 db.and_(
@@ -2031,27 +2089,22 @@ def search():
             ).filter(
                 Article.language == current_language,
                 Article.is_temp == False,
-                or_(
-                    Article.title.ilike(search_pattern),
-                    Article.excerpt.ilike(search_pattern),
-                    Article.content.ilike(search_pattern),
-                    func.lower(func.cast(Article.tags, db.String)).contains(search_query.lower()),
-                    # Search trong author info (content_blocks JSON)
-                    func.lower(func.cast(ArticleDetail.content_blocks, db.String)).contains(search_query.lower())
-                )
+                combined_word_conditions  # Apply word-based search
             ).group_by(
-                # Group by article ID in URL (extracted from published_url)
-                # Example: .../debat-om-usa/2338049 -> 2338049
-                # This handles live-blog articles that get updated with different images/titles
-                func.regexp_replace(
-                    Article.published_url,
-                    '.*/([0-9]+)$',  # Match digits at end of URL
-                    '\\1'  # Extract just the number
-                )
+                'url_id'  # Group by article ID in URL
             ).subquery()
             
-            # Main query - get articles with IDs from subquery
-            query = Article.query.filter(
+            # Main query - get articles with relevance scoring
+            query = db.session.query(
+                Article,
+                relevance_score.label('relevance')
+            ).outerjoin(
+                ArticleDetail,
+                db.and_(
+                    Article.published_url == ArticleDetail.published_url,
+                    Article.language == ArticleDetail.language
+                )
+            ).filter(
                 Article.id.in_(
                     db.session.query(subquery.c.max_id)
                 )
@@ -2062,19 +2115,22 @@ def search():
             
             print(f"   📊 Found {total_results} unique results (after deduplication)")
             
-            # Apply pagination and ordering
-            articles_query = query.order_by(
-                Article.created_at.desc()  # Order by created_at DESC to show newest first
+            # Apply ordering by relevance (highest first), then by created_at
+            articles_paginated = query.order_by(
+                text('relevance DESC'),  # Most relevant first
+                Article.created_at.desc()  # Then newest first
             ).paginate(
                 page=page,
                 per_page=per_page,
                 error_out=False
             )
             
-            # Convert to dict for template
-            articles = [article.to_dict() for article in articles_query.items]
+            # Convert to dict for template (extract Article object from tuple)
+            articles = [item[0].to_dict() for item in articles_paginated.items]
             
             print(f"   📄 Showing {len(articles)} results on page {page}")
+            if articles:
+                print(f"   🏆 Top result relevance scores: {[item[1] for item in articles_paginated.items[:3]]}")
             
         except Exception as e:
             print(f"   ⚠️  Error searching articles: {e}")
@@ -2102,62 +2158,34 @@ def search():
         })
     
     # Regular request - render template
-    # Get the pagination object for template (using same deduplication logic)
+    # Re-use the same pagination object from above (articles_paginated)
+    # to avoid duplicate query execution
     if search_query:
-        search_pattern = f"%{search_query}%"
-        
-        # Import ArticleDetail for author search
-        from database import ArticleDetail
-        
-        # Subquery to get the latest article ID for each unique image element_guid
-        # LEFT JOIN với ArticleDetail để search trong author info
-        subquery = db.session.query(
-            func.max(Article.id).label('max_id')
-        ).outerjoin(
-            ArticleDetail,
-            db.and_(
-                Article.published_url == ArticleDetail.published_url,
-                Article.language == ArticleDetail.language
+        try:
+            # Use the already executed query result
+            pagination = articles_paginated
+        except:
+            # Fallback if articles_paginated doesn't exist (shouldn't happen)
+            pagination = Article.query.filter(
+                Article.language == current_language,
+                Article.is_temp == False
+            ).order_by(
+                Article.created_at.desc()
+            ).paginate(
+                page=page,
+                per_page=per_page,
+                error_out=False
             )
-        ).filter(
-            Article.language == current_language,
-            Article.is_temp == False,
-            or_(
-                Article.title.ilike(search_pattern),
-                Article.excerpt.ilike(search_pattern),
-                Article.content.ilike(search_pattern),
-                func.lower(func.cast(Article.tags, db.String)).contains(search_query.lower()),
-                # Search trong author info (content_blocks JSON)
-                func.lower(func.cast(ArticleDetail.content_blocks, db.String)).contains(search_query.lower())
-            )
-        ).group_by(
-            # Group by article ID in URL (same as main query)
-            func.regexp_replace(
-                Article.published_url,
-                '.*/([0-9]+)$',
-                '\\1'
-            )
-        ).subquery()
-        
-        query = Article.query.filter(
-            Article.id.in_(
-                db.session.query(subquery.c.max_id)
-            )
-        )
     else:
-        query = Article.query.filter(
+        # No search query - show empty results
+        pagination = Article.query.filter(
             Article.language == current_language,
             Article.is_temp == False
+        ).limit(0).paginate(
+            page=page,
+            per_page=per_page,
+            error_out=False
         )
-    
-    # Get pagination object (order by created_at DESC to show newest versions first)
-    pagination = query.order_by(
-        Article.created_at.desc()
-    ).paginate(
-        page=page,
-        per_page=per_page,
-        error_out=False
-    )
     
     return render_template('search_results.html',
         search_query=search_query,
