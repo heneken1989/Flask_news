@@ -63,8 +63,8 @@
                                         </div>
 
                                         <h2 itemprop="headline" class="headline">{{ article.title }}</h2>
-                                        <p itemprop="description" class="subtitle">
-                                            {% if article.excerpt %}{{ article.excerpt[:190] }}{% if article.excerpt|length > 190 %}...{% endif %}{% endif %}<span class="info"><span class="sitealias label">sermitsiaq</span>{% if article.published_date %}<span class="date fi-clock"> {{ article.published_date.strftime('%m/%d/%Y - %I:%M %p') if article.published_date is not string else article.published_date }}</span>{% endif %}{% if article.section %}<span class="section_tag fi-price-tag"> {{ article.section }}</span>{% endif %}</span>
+                                        <p itemprop="description" class="subtitle" style="">
+                                            {% if article.excerpt %}{{ article.excerpt[:190] }}{% if article.excerpt|length > 190 %}...{% endif %}{% endif %}<span class="info"><span class="sitealias label">sermitsiaq</span>{% if article.published_date %}<span class="date fi-clock"> {{ article.published_date.strftime('%-m/%-d/%Y - %I:%M %p') if article.published_date is not string else article.published_date }}</span>{% endif %}{% if article.section %}<span class="section_tag fi-price-tag"> {{ article.section|lower }}</span>{% endif %}</span>
                                         </p>
 
                                     </a>
