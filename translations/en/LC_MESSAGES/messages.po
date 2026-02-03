@@ -228,6 +228,26 @@ msgstr "Chief Translator"
 msgid "tolk"
 msgstr "translator"
 
+#: templates/search_results.html:3 templates/search_results.html:18
+msgid "Søg i vores arkiver"
+msgstr "Search our archives"
+
+#: templates/search_results.html:22
+msgid "Skriv søgeord …"
+msgstr "Enter search term..."
+
+#: templates/search_results.html:80
+msgid "Søgningen gav desværre ingen resultater. Prøv igen med et andet søgeord."
+msgstr "Sorry, the search returned no results. Try again with a different search term."
+
+#: templates/search_results.html:97
+msgid "Vis mere"
+msgstr "Show more"
+
+#: templates/search_results.html:97
+msgid "Display more hits"
+msgstr "Display more hits"
+
 #~ msgid ""
 #~ "Project-Id-Version: PROJECT VERSION\n"
 #~ "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
