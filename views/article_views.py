@@ -2040,9 +2040,13 @@ def search():
                     func.lower(func.cast(ArticleDetail.content_blocks, db.String)).contains(search_query.lower())
                 )
             ).group_by(
-                func.coalesce(
-                    func.cast(Article.image_data['element_guid'], db.String),
-                    func.cast(Article.id, db.String)  # Fallback to ID if no image_data
+                # Group by article ID in URL (extracted from published_url)
+                # Example: .../debat-om-usa/2338049 -> 2338049
+                # This handles live-blog articles that get updated with different images/titles
+                func.regexp_replace(
+                    Article.published_url,
+                    '.*/([0-9]+)$',  # Match digits at end of URL
+                    '\\1'  # Extract just the number
                 )
             ).subquery()
             
@@ -2127,9 +2131,11 @@ def search():
                 func.lower(func.cast(ArticleDetail.content_blocks, db.String)).contains(search_query.lower())
             )
         ).group_by(
-            func.coalesce(
-                func.cast(Article.image_data['element_guid'], db.String),
-                func.cast(Article.id, db.String)  # Fallback to ID if no image_data
+            # Group by article ID in URL (same as main query)
+            func.regexp_replace(
+                Article.published_url,
+                '.*/([0-9]+)$',
+                '\\1'
             )
         ).subquery()
         

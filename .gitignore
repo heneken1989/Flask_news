@@ -70,3 +70,7 @@ logs/
 *.key
 *.crt
 
+# Home layout files (auto-generated, too large)
+scripts/home_layouts/
+scripts/home_layouts/*.json
+scripts/home_layouts/*.backup*
