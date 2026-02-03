@@ -164,6 +164,7 @@ class Article(db.Model):
             'id': self.id,
             'element_guid': self.element_guid,
             'title': self.title,
+            'excerpt': self.excerpt or '',  # Subtitle/description for search results
             'url': article_url,  # URL với path gốc (giữ nguyên structure từ published_url)
             'published_url': self.published_url,  # Giữ lại URL gốc để reference
             'k5a_url': self.k5a_url or f'/a/{self.id}',
