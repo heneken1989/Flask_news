@@ -228,6 +228,26 @@ msgstr "Cheftolk"
 msgid "tolk"
 msgstr "tolk"
 
+#: templates/search_results.html:3 templates/search_results.html:18
+msgid "Søg i vores arkiver"
+msgstr "Ujarlerit uagutsinni toqqorsivinni"
+
+#: templates/search_results.html:22
+msgid "Skriv søgeord …"
+msgstr "Oqaatsit ujarlerit …"
+
+#: templates/search_results.html:80
+msgid "Søgningen gav desværre ingen resultater. Prøv igen med et andet søgeord."
+msgstr "Ajuusaarpugut, ujaasineq iluatsinngilaq. Oqaatsit allat atorlugit ujaasineq misileqqiguk."
+
+#: templates/search_results.html:97
+msgid "Vis mere"
+msgstr "Annertunerusumik takutikkit"
+
+#: templates/search_results.html:97
+msgid "Display more hits"
+msgstr "Annertunerusumik takutikkit"
+
 #~ msgid ""
 #~ "Project-Id-Version: PROJECT VERSION\n"
 #~ "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"

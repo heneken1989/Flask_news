@@ -1965,25 +1965,33 @@ def search():
     """
     from flask_babel import get_locale
     
-    # Get current language
-    current_language = 'da'  # Default
-    try:
-        locale = get_locale()
-        if locale and str(locale) in ['da', 'kl', 'en']:
-            current_language = str(locale)
-    except:
-        pass
+    # Get current language - using same logic as all other pages
+    # Priority: URL path prefix > URL parameter > Session > Flask-Babel locale > Default
+    current_language = 'da'  # Default fallback
     
-    # Check session
-    session_lang = session.get('language')
-    if session_lang and session_lang in ['da', 'kl', 'en']:
-        current_language = session_lang
-    
-    # Check URL parameter for language override
-    if request.args.get('lang'):
+    # Priority 1: URL path prefix (e.g., /kl/cse or /kl/search)
+    if request.path.startswith('/kl/'):
+        current_language = 'kl'
+    elif request.path.startswith('/en/'):
+        current_language = 'en'
+    elif request.path.startswith('/da/'):
+        current_language = 'da'
+    # Priority 2: URL parameter (?lang=kl)
+    elif request.args.get('lang'):
         lang = request.args.get('lang')
         if lang in ['da', 'kl', 'en']:
             current_language = lang
+    # Priority 3: Session language
+    elif session.get('language') in ['da', 'kl', 'en']:
+        current_language = session.get('language')
+    # Priority 4: Flask-Babel locale
+    else:
+        try:
+            locale = get_locale()
+            if locale and str(locale) in ['da', 'kl', 'en']:
+                current_language = str(locale)
+        except:
+            pass
     
     # Get search query from 'q' or 'query' parameter
     search_query = request.args.get('query', request.args.get('q', '')).strip()
@@ -1995,9 +2003,13 @@ def search():
     print(f"\n{'='*60}")
     print(f"🔍 Search Page")
     print(f"{'='*60}")
-    print(f"   Language: {current_language}")
-    print(f"   Query: {search_query}")
-    print(f"   Page: {page}")
+    print(f"   🌍 Current Language: {current_language.upper()}")
+    print(f"   🔒 Language Filter: ACTIVE (only {current_language} articles)")
+    print(f"   📝 Query: {search_query}")
+    print(f"   📄 Page: {page}")
+    print(f"   🛣️  Request Path: {request.path}")
+    print(f"   🔗 Request URL: {request.url}")
+    print(f"   📋 Session language: {session.get('language', 'N/A')}")
     
     articles = []
     total_results = 0
@@ -2015,7 +2027,14 @@ def search():
             
             # Tokenize search query - split into words (minimum 2 characters)
             # Remove special characters and split by whitespace
-            words = [w.strip() for w in re.split(r'\s+', search_query) if len(w.strip()) >= 2]
+            # Also remove trailing punctuation like "nøgletal:" -> "nøgletal"
+            words = []
+            for w in re.split(r'\s+', search_query):
+                w = w.strip()
+                # Remove trailing punctuation (:, ;, ,, ., !, ?)
+                w = re.sub(r'[:;,.!?]+$', '', w)
+                if len(w) >= 2:
+                    words.append(w)
             
             print(f"   🔤 Tokenized query: {words} ({len(words)} words)")
             
@@ -2203,6 +2222,7 @@ def search():
                 print(f"   ✅ Filtering: articles must match ≥{required_matches} words")
             
             # Main query - get articles with relevance scoring
+            # 🔒 CRITICAL: Add language filter here too for double safety
             query = db.session.query(
                 Article,
                 relevance_score.label('relevance')
@@ -2213,6 +2233,7 @@ def search():
                     Article.language == ArticleDetail.language
                 )
             ).filter(
+                Article.language == current_language,  # 🔒 LANGUAGE FILTER (double check)
                 Article.id.in_(
                     db.session.query(subquery.c.max_id)
                 )
@@ -2222,6 +2243,18 @@ def search():
             total_results = query.count()
             
             print(f"   📊 Found {total_results} unique results (after deduplication + {required_percentage*100:.0f}% threshold filter)")
+            print(f"   🔒 Language filter: Article.language == '{current_language}' (STRICT)")
+            
+            # Debug: Check if any results have wrong language
+            if total_results > 0:
+                sample_articles = query.limit(3).all()
+                for item in sample_articles:
+                    article = item[0] if isinstance(item, tuple) else item
+                    if hasattr(article, 'language'):
+                        if article.language != current_language:
+                            print(f"   ⚠️  WARNING: Found article with wrong language!")
+                            print(f"      ID: {article.id}, Title: {article.title[:50]}")
+                            print(f"      Expected: {current_language}, Got: {article.language}")
             
             # Apply ordering by relevance (highest first), then by created_at
             articles_paginated = query.order_by(
@@ -2239,6 +2272,102 @@ def search():
             print(f"   📄 Showing {len(articles)} results on page {page}")
             if articles:
                 print(f"   🏆 Top result relevance scores: {[item[1] for item in articles_paginated.items[:3]]}")
+                
+                # Debug: Show first article details to verify language
+                try:
+                    first_item = articles_paginated.items[0]
+                    print(f"\n   🔍 DEBUG - First result details:")
+                    print(f"      Item type: {type(first_item)}")
+                    
+                    # Extract Article object from Row or tuple
+                    # Row object contains (Article, relevance_score) tuple
+                    if hasattr(first_item, '__getitem__'):
+                        # Row object - access by index
+                        first_article = first_item[0]  # Article object
+                        relevance = first_item[1] if len(first_item) > 1 else None
+                        print(f"      Relevance score: {relevance}")
+                    elif isinstance(first_item, tuple):
+                        first_article = first_item[0]
+                    else:
+                        first_article = first_item
+                    
+                    print(f"      Article type: {type(first_article)}")
+                    print(f"      Article repr: {first_article}")
+                    
+                    if first_article:
+                        # Try to get article attributes
+                        article_id = None
+                        article_language = None
+                        article_title = None
+                        article_url = None
+                        
+                        # Try different ways to access attributes
+                        if hasattr(first_article, 'id'):
+                            article_id = first_article.id
+                        elif hasattr(first_article, '__getitem__'):
+                            try:
+                                article_id = first_article['id']
+                            except:
+                                pass
+                        
+                        if hasattr(first_article, 'language'):
+                            article_language = first_article.language
+                        elif hasattr(first_article, '__getitem__'):
+                            try:
+                                article_language = first_article['language']
+                            except:
+                                pass
+                        
+                        if hasattr(first_article, 'title'):
+                            article_title = first_article.title
+                        elif hasattr(first_article, '__getitem__'):
+                            try:
+                                article_title = first_article['title']
+                            except:
+                                pass
+                        
+                        if hasattr(first_article, 'published_url'):
+                            article_url = first_article.published_url
+                        elif hasattr(first_article, '__getitem__'):
+                            try:
+                                article_url = first_article['published_url']
+                            except:
+                                pass
+                        
+                        print(f"      ID: {article_id}")
+                        print(f"      Language: {article_language} (expected: {current_language})")
+                        print(f"      Title: {article_title[:80] if article_title else 'N/A'}...")
+                        print(f"      Published URL: {article_url[:80] if article_url else 'N/A'}...")
+                        
+                        # Check if language matches
+                        if article_language:
+                            if article_language != current_language:
+                                print(f"      ⚠️  WARNING: Language mismatch! Article has language='{article_language}' but expected '{current_language}'")
+                            else:
+                                print(f"      ✅ Language matches: {article_language}")
+                                
+                                # Debug: Check why this article matches Danish query
+                                if article_language == 'kl' and any(word.lower() in search_query.lower() for word in ['centrale', 'nøgletal', 'fremtiden', 'dyster']):
+                                    print(f"\n      🔍 DEBUG - Why does KL article match DA query?")
+                                    if hasattr(first_article, 'excerpt') and first_article.excerpt:
+                                        excerpt_lower = first_article.excerpt.lower()
+                                        matched_words = [w for w in words if w.lower() in excerpt_lower]
+                                        if matched_words:
+                                            print(f"         Matched words in excerpt: {matched_words}")
+                                    if hasattr(first_article, 'content') and first_article.content:
+                                        content_lower = first_article.content.lower()
+                                        matched_words = [w for w in words if w.lower() in content_lower]
+                                        if matched_words:
+                                            print(f"         Matched words in content: {matched_words[:5]}...")
+                        else:
+                            print(f"      ⚠️  Could not determine article language")
+                    else:
+                        print(f"      ⚠️  Could not extract article object")
+                        
+                except Exception as e:
+                    print(f"      ⚠️  Error in debug logging: {e}")
+                    import traceback
+                    traceback.print_exc()
             
         except Exception as e:
             print(f"   ⚠️  Error searching articles: {e}")
