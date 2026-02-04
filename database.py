@@ -160,15 +160,164 @@ class Article(db.Model):
             except Exception as e:
                 article_url = f'/article/{self.id}'
         
+        # Extract excerpt with fallback logic
+        # Priority:
+        # 1. article.excerpt
+        # 2. ArticleDetail.content_blocks (type='subtitle')
+        # 3. ArticleDetail.content_blocks (type='intro')
+        # 4. ArticleDetail.content_blocks (type='paragraph' - first one)
+        # 5. article.content (first paragraph)
+        excerpt_text = self.excerpt or ''
+        
+        if not excerpt_text and self.published_url:
+            # Try to get from ArticleDetail.content_blocks
+            try:
+                article_detail = ArticleDetail.query.filter_by(
+                    published_url=self.published_url,
+                    language=self.language
+                ).first()
+                
+                if article_detail and article_detail.content_blocks:
+                    # Priority 2: subtitle block
+                    for block in article_detail.content_blocks:
+                        if block.get('type') == 'subtitle':
+                            excerpt_text = block.get('text', '').strip()
+                            if excerpt_text:
+                                break
+                    
+                    # Priority 3: intro block
+                    if not excerpt_text:
+                        for block in article_detail.content_blocks:
+                            if block.get('type') == 'intro':
+                                excerpt_text = block.get('text', '').strip()
+                                if excerpt_text:
+                                    break
+                    
+                    # Priority 4: first paragraph block
+                    if not excerpt_text:
+                        for block in article_detail.content_blocks:
+                            if block.get('type') == 'paragraph':
+                                text = block.get('text', '')
+                                if not text:
+                                    # Try to extract from HTML
+                                    html = block.get('html', '')
+                                    if html:
+                                        from bs4 import BeautifulSoup
+                                        soup = BeautifulSoup(html, 'html.parser')
+                                        text = soup.get_text(strip=True)
+                                if text:
+                                    excerpt_text = text.strip()
+                                    break
+            except Exception:
+                # If query fails, fall back to content
+                pass
+        
+        # Priority 5: Extract from article.content if still no excerpt
+        if not excerpt_text and self.content:
+            # Fallback: Extract first paragraph from content (strip HTML)
+            import re
+            # Remove HTML tags using regex
+            text_only = re.sub(r'<[^>]+>', '', self.content or '')
+            # Remove extra whitespace and newlines
+            text_only = ' '.join(text_only.split())
+            # Get first 200 characters
+            if text_only:
+                excerpt_text = text_only[:200]
+                # Don't cut mid-word if possible
+                if len(text_only) > 200:
+                    last_space = excerpt_text.rfind(' ')
+                    if last_space > 150:  # Only use if we have enough text
+                        excerpt_text = excerpt_text[:last_space] + '...'
+                    else:
+                        excerpt_text = excerpt_text + '...'
+        
+        # Get current language for multilingual section display
+        current_language = self.language  # Default to article's language
+        try:
+            from flask_babel import get_locale
+            from flask import has_request_context
+            if has_request_context():
+                locale = get_locale()
+                if locale and str(locale) in ['da', 'kl', 'en']:
+                    current_language = str(locale)
+                # Check session as fallback
+                from flask import session
+                session_lang = session.get('language')
+                if session_lang and session_lang in ['da', 'kl', 'en']:
+                    current_language = session_lang
+        except:
+            pass  # Use article's language as fallback
+        
+        # Section mappings for all languages
+        section_mappings = {
+            # Base sections (internal keys)
+            'kultur': {
+                'da': 'kultur',
+                'kl': 'kulturi',
+                'en': 'culture'
+            },
+            'samfund': {
+                'da': 'samfund',
+                'kl': 'inuiaqatigiit',
+                'en': 'society'
+            },
+            'erhverv': {
+                'da': 'erhverv',
+                'kl': 'inuussutissarsiutit',
+                'en': 'business'
+            },
+            'sport': {
+                'da': 'sport',
+                'kl': 'timersorneq',
+                'en': 'sport'
+            },
+            'podcasti': {
+                'da': 'podcasti',
+                'kl': 'podcasti',
+                'en': 'podcast'
+            }
+        }
+        
+        # Extract section from URL if section='home'
+        # Priority: section from URL > section from database
+        display_section = self.section
+        
+        if display_section == 'home' and url_to_use:
+            # Extract section from URL path
+            path = urlparse(url_to_use).path.strip('/')
+            
+            # Reverse mapping: URL section → base section
+            url_to_base = {}
+            for base_section, lang_map in section_mappings.items():
+                for lang, url_section in lang_map.items():
+                    url_to_base[url_section] = base_section
+            
+            path_parts = path.split('/')
+            if path_parts:
+                section_from_url = path_parts[0].lower()
+                
+                # Find base section from URL
+                base_section = url_to_base.get(section_from_url)
+                if base_section:
+                    # Map to current language
+                    display_section = section_mappings[base_section].get(current_language, base_section)
+                elif section_from_url in ['kultur', 'samfund', 'erhverv', 'sport', 'podcasti']:
+                    # Direct Danish section match
+                    display_section = section_mappings[section_from_url].get(current_language, section_from_url)
+        
+        # Map section to current language (for all sections, not just 'home')
+        if display_section in section_mappings:
+            display_section = section_mappings[display_section].get(current_language, display_section)
+        
         return {
             'id': self.id,
             'element_guid': self.element_guid,
             'title': self.title,
-            'excerpt': self.excerpt or '',  # Subtitle/description for search results
+            'excerpt': excerpt_text,  # Subtitle/description with fallback from content
             'url': article_url,  # URL với path gốc (giữ nguyên structure từ published_url)
             'published_url': self.published_url,  # Giữ lại URL gốc để reference
             'k5a_url': self.k5a_url or f'/a/{self.id}',
-            'section': self.section,
+            'section': display_section,  # Section từ URL nếu section='home', else từ DB
             'site_alias': self.site_alias,
             'instance': self.instance,
             'published_date': self.published_date.isoformat() if self.published_date else '',

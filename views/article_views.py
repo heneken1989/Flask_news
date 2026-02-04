@@ -2017,14 +2017,61 @@ def search():
             # Remove special characters and split by whitespace
             words = [w.strip() for w in re.split(r'\s+', search_query) if len(w.strip()) >= 2]
             
-            print(f"   🔤 Tokenized query: {words}")
+            print(f"   🔤 Tokenized query: {words} ({len(words)} words)")
             
             if not words:
                 # If no valid words, fall back to original query
                 words = [search_query]
             
-            # Build OR conditions for each word
-            # Each article must match at least one word in any field
+            # Calculate dynamic threshold based on query length
+            # Similar to Sermitsiaq.ag CSE behavior:
+            # - 1-3 words: 100% match (must match all)
+            # - 4-6 words: 50% match
+            # - 7+ words: 75% match
+            total_words = len(words)
+            import math
+            if total_words <= 3:
+                required_percentage = 1.0  # 100% - must match all words
+            elif total_words <= 6:
+                required_percentage = 0.5  # 50% - match at least half
+            else:
+                required_percentage = 0.75  # 75% - match most words for long queries
+            
+            required_matches = math.ceil(total_words * required_percentage)
+            
+            print(f"   🎯 Dynamic threshold: {required_percentage*100:.0f}% = {required_matches}/{total_words} words must match")
+            
+            # Build word match expressions - count how many words match
+            # ⚠️ IMPORTANT: Words are searched INDEPENDENTLY (no order/proximity required)
+            # - "Trump Grønland" and "Grønland Trump" give SAME results
+            # - Words can appear anywhere in article (title, excerpt, content, tags, author)
+            # - Only COUNT matters: how many words matched, not WHERE or ORDER
+            # For each word, create a CASE that returns 1 if word matches ANY field, else 0
+            word_match_expressions = []
+            for word in words:
+                word_pattern = f"%{word}%"  # Pattern matching: word can appear anywhere
+                # Check if word appears in ANY field (title, excerpt, content, tags, author)
+                # Order doesn't matter - just count if word exists
+                word_match = case(
+                    (
+                        or_(
+                            Article.title.ilike(word_pattern),
+                            Article.excerpt.ilike(word_pattern),
+                            Article.content.ilike(word_pattern),
+                            func.lower(func.cast(Article.tags, db.String)).contains(word.lower()),
+                            func.lower(func.cast(ArticleDetail.content_blocks, db.String)).contains(word.lower())
+                        ),
+                        1  # Word matched (anywhere, any order)
+                    ),
+                    else_=0  # Word not matched
+                )
+                word_match_expressions.append(word_match)
+            
+            # Sum all word matches to get total matched words count
+            matched_words_count = sum(word_match_expressions) if word_match_expressions else literal_column('0')
+            
+            # Build OR conditions for each word (for initial filtering - at least one word must match)
+            # This is just for performance - filter out articles with zero matches early
             word_conditions = []
             for word in words:
                 word_pattern = f"%{word}%"
@@ -2039,8 +2086,7 @@ def search():
                     )
                 )
             
-            # Combine all word conditions with OR
-            # This means: article matches if it contains ANY of the words
+            # Initial filter: article must match at least ONE word (performance optimization)
             combined_word_conditions = or_(*word_conditions)
             
             # Calculate relevance score for ranking
@@ -2071,15 +2117,38 @@ def search():
             # Sum all relevance scores
             relevance_score = sum(relevance_expressions) if relevance_expressions else literal_column('0')
             
-            # Subquery to get the latest article ID for each unique published_url_id
-            # WITH relevance scoring
-            subquery = db.session.query(
+            # Build matched_words_count expression for subquery
+            # Calculate how many words match for each article
+            subquery_word_match_expressions = []
+            for word in words:
+                word_pattern = f"%{word}%"
+                word_match = case(
+                    (
+                        or_(
+                            Article.title.ilike(word_pattern),
+                            Article.excerpt.ilike(word_pattern),
+                            Article.content.ilike(word_pattern),
+                            func.lower(func.cast(Article.tags, db.String)).contains(word.lower()),
+                            func.lower(func.cast(ArticleDetail.content_blocks, db.String)).contains(word.lower())
+                        ),
+                        1
+                    ),
+                    else_=0
+                )
+                subquery_word_match_expressions.append(word_match)
+            
+            subquery_matched_words_count = sum(subquery_word_match_expressions) if subquery_word_match_expressions else literal_column('0')
+            
+            # ⭐ EXACT MATCH PRIORITY: If any article matches 100% (all words), show ONLY those
+            # This matches Sermitsiaq.ag behavior: long queries with exact matches show only perfect matches
+            perfect_match_subquery = db.session.query(
                 func.max(Article.id).label('max_id'),
                 func.regexp_replace(
                     Article.published_url,
                     '.*/([0-9]+)$',
                     '\\1'
-                ).label('url_id')
+                ).label('url_id'),
+                func.max(subquery_matched_words_count).label('matched_words')
             ).outerjoin(
                 ArticleDetail,
                 db.and_(
@@ -2089,10 +2158,49 @@ def search():
             ).filter(
                 Article.language == current_language,
                 Article.is_temp == False,
-                combined_word_conditions  # Apply word-based search
+                combined_word_conditions
             ).group_by(
-                'url_id'  # Group by article ID in URL
+                'url_id'
+            ).having(
+                func.max(subquery_matched_words_count) == total_words  # 🎯 PERFECT MATCH: 100% (all words)
             ).subquery()
+            
+            # Check if there are any perfect matches
+            perfect_match_count = db.session.query(perfect_match_subquery.c.max_id).count()
+            
+            if perfect_match_count > 0:
+                # ✅ Found perfect matches - show ONLY those (exact match priority)
+                subquery = perfect_match_subquery
+                print(f"   ⭐ Found {perfect_match_count} perfect match(es) (100% = {total_words}/{total_words} words)")
+                print(f"   🎯 Showing ONLY perfect matches (exact match priority)")
+            else:
+                # ❌ No perfect matches - use dynamic threshold
+                subquery = db.session.query(
+                    func.max(Article.id).label('max_id'),
+                    func.regexp_replace(
+                        Article.published_url,
+                        '.*/([0-9]+)$',
+                        '\\1'
+                    ).label('url_id'),
+                    func.max(subquery_matched_words_count).label('matched_words')
+                ).outerjoin(
+                    ArticleDetail,
+                    db.and_(
+                        Article.published_url == ArticleDetail.published_url,
+                        Article.language == ArticleDetail.language
+                    )
+                ).filter(
+                    Article.language == current_language,
+                    Article.is_temp == False,
+                    combined_word_conditions
+                ).group_by(
+                    'url_id'
+                ).having(
+                    func.max(subquery_matched_words_count) >= required_matches  # 🔒 DYNAMIC THRESHOLD FILTER
+                ).subquery()
+                
+                print(f"   ✅ No perfect matches found - using {required_percentage*100:.0f}% threshold")
+                print(f"   ✅ Filtering: articles must match ≥{required_matches} words")
             
             # Main query - get articles with relevance scoring
             query = db.session.query(
@@ -2113,7 +2221,7 @@ def search():
             # Count total unique results
             total_results = query.count()
             
-            print(f"   📊 Found {total_results} unique results (after deduplication)")
+            print(f"   📊 Found {total_results} unique results (after deduplication + {required_percentage*100:.0f}% threshold filter)")
             
             # Apply ordering by relevance (highest first), then by created_at
             articles_paginated = query.order_by(
