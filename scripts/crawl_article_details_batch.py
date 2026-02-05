@@ -42,9 +42,16 @@ from database import db, Article, ArticleDetail
 from services.article_detail_parser import ArticleDetailParser
 from services.image_downloader import download_and_update_image_data
 from seleniumbase import SB
-from deep_translator import GoogleTranslator
 import re
 import json
+import requests
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
+# Google Cloud Translation API key từ environment variable
+GOOGLE_TRANSLATE_API_KEY = os.environ.get('GOOGLE_TRANSLATE_API_KEY')
 
 # User data directory để lưu session login
 USER_DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'user_data')
@@ -326,10 +333,49 @@ def convert_da_url_to_en_url(da_url: str) -> str:
     return en_url
 
 
+def translate_text_with_google_cloud(text, source_lang='da', target_lang='en'):
+    """
+    Dịch text với Google Cloud Translation API
+    
+    Args:
+        text: Text cần dịch
+        source_lang: Source language code
+        target_lang: Target language code
+        
+    Returns:
+        Translated text hoặc None nếu lỗi
+    """
+    if not GOOGLE_TRANSLATE_API_KEY:
+        print(f"      ⚠️  GOOGLE_TRANSLATE_API_KEY not set in environment")
+        return None
+    
+    try:
+        url = "https://translation.googleapis.com/language/translate/v2"
+        params = {
+            'key': GOOGLE_TRANSLATE_API_KEY,
+            'q': text,
+            'source': source_lang,
+            'target': target_lang,
+            'format': 'text'
+        }
+        
+        response = requests.post(url, params=params, timeout=10)
+        
+        if response.status_code == 200:
+            result = response.json()
+            return result['data']['translations'][0]['translatedText']
+        else:
+            print(f"      ⚠️  Google Cloud API Error: {response.status_code} - {response.text[:200]}")
+            return None
+    except Exception as e:
+        print(f"      ⚠️  Error with Google Cloud Translation: {e}")
+        return None
+
+
 def translate_content_blocks(content_blocks: list, source_lang: str = 'da', target_lang: str = 'en', delay: float = 0.3) -> list:
     """
     Dịch content_blocks từ source_lang sang target_lang
-    Sử dụng GoogleTranslator từ deep_translator (giống translation_service)
+    Sử dụng Google Cloud Translation API
     
     Args:
         content_blocks: List of content blocks
@@ -343,7 +389,6 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
     if not content_blocks:
         return []
     
-    translator = GoogleTranslator(source=source_lang, target=target_lang)
     translated_blocks = []
     
     for block in content_blocks:
@@ -355,18 +400,22 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
             if block.get('text'):
                 try:
                     original_text = block['text']
-                    translated_text = translator.translate(original_text)
+                    translated_text = translate_text_with_google_cloud(original_text, source_lang, target_lang)
                     
-                    # Viết hoa chữ đầu câu nếu chưa viết hoa
-                    # Chỉ viết hoa nếu chữ đầu là chữ thường
-                    if translated_text and translated_text[0].islower():
-                        translated_text = translated_text[0].upper() + translated_text[1:]
-                    
-                    # Fix duplicate words (in case translation created them)
-                    translated_text = re.sub(r'\b(\w+)\s+\1\b', r'\1', translated_text, flags=re.IGNORECASE)
-                    
-                    translated_block['text'] = translated_text
-                    time.sleep(delay)  # Delay để tránh rate limit
+                    if translated_text:
+                        # Viết hoa chữ đầu câu nếu chưa viết hoa
+                        # Chỉ viết hoa nếu chữ đầu là chữ thường
+                        if translated_text[0].islower():
+                            translated_text = translated_text[0].upper() + translated_text[1:]
+                        
+                        # Fix duplicate words (in case translation created them)
+                        translated_text = re.sub(r'\b(\w+)\s+\1\b', r'\1', translated_text, flags=re.IGNORECASE)
+                        
+                        translated_block['text'] = translated_text
+                        time.sleep(delay)  # Delay để tránh rate limit
+                    else:
+                        # Nếu dịch lỗi, giữ nguyên text
+                        translated_block['text'] = block['text']
                 except Exception as e:
                     print(f"      ⚠️  Translation error for text: {e}")
                     # Giữ nguyên text nếu dịch lỗi
@@ -388,33 +437,55 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
                     html = re.sub(r'(,)([A-Za-z])', r'\1 \2', html)  # Dấu phẩy trước chữ cái
                     html = re.sub(r'(</[^>]+>)([A-Za-z])', r'\1 \2', html)  # Closing tag trước chữ cái
                     
-                    # Tìm tất cả text nodes và dịch
-                    first_text_node = True  # Flag để biết text node đầu tiên
-                    def translate_html_text(match):
-                        nonlocal first_text_node
-                        text = match.group(1)
-                        if text.strip():
-                            try:
-                                translated = translator.translate(text)
-                                
-                                # Viết hoa chữ đầu của text node đầu tiên trong block
-                                # (thường là đầu câu/đoạn)
-                                if first_text_node and translated:
-                                    # Tìm chữ cái đầu tiên và viết hoa
-                                    for i, char in enumerate(translated):
-                                        if char.isalpha():
-                                            translated = translated[:i] + char.upper() + translated[i+1:]
-                                            break
-                                    first_text_node = False
-                                
-                                time.sleep(delay)
-                                return f'>{translated}<'
-                            except:
-                                return match.group(0)
-                        return match.group(0)
+                    # CẢI THIỆN: Dịch toàn bộ paragraph cùng lúc (full context) thay vì từng đoạn nhỏ
+                    # Nhưng vẫn giữ các logic fix lỗi: khoảng trắng, viết hoa đầu dòng, duplicate words
+                    from bs4 import BeautifulSoup
+                    soup = BeautifulSoup(html, 'html.parser')
                     
-                    # Dịch text giữa các tags
-                    translated_html = re.sub(r'>([^<]+)<', translate_html_text, html)
+                    # Extract toàn bộ text từ HTML (có context đầy đủ)
+                    full_text = soup.get_text(separator=' ', strip=False)
+                    
+                    if full_text.strip():
+                        # Dịch toàn bộ text cùng lúc (có context đầy đủ) với Google Cloud API
+                        translated_full_text = translate_text_with_google_cloud(full_text, source_lang, target_lang)
+                        time.sleep(delay)
+                        
+                        if not translated_full_text:
+                            # Nếu dịch lỗi, giữ nguyên HTML
+                            translated_html = html
+                            translated_block['html'] = translated_html
+                            continue
+                        
+                        # Viết hoa chữ đầu câu (giữ logic cũ)
+                        if translated_full_text and translated_full_text[0].islower():
+                            # Tìm chữ cái đầu tiên và viết hoa
+                            for i, char in enumerate(translated_full_text):
+                                if char.isalpha():
+                                    translated_full_text = translated_full_text[:i] + char.upper() + translated_full_text[i+1:]
+                                    break
+                        
+                        # Fix duplicate words (giữ logic cũ)
+                        translated_full_text = re.sub(r'\b(\w+)\s+\1\b', r'\1', translated_full_text, flags=re.IGNORECASE)
+                        
+                        # Thay thế text trong HTML
+                        # QUAN TRỌNG: Thay thế TẤT CẢ text nodes, không chỉ node đầu tiên
+                        # Nếu chỉ thay node đầu tiên, các node khác vẫn còn text DA
+                        text_nodes = soup.find_all(string=True)
+                        first_text_node = None
+                        
+                        for text_node in text_nodes:
+                            if text_node.strip():
+                                if first_text_node is None:
+                                    # Node đầu tiên: thay bằng translated text
+                                    first_text_node = text_node
+                                    text_node.replace_with(translated_full_text)
+                                else:
+                                    # Các node khác: xóa (để tránh duplicate text DA)
+                                    text_node.replace_with('')
+                        
+                        translated_html = str(soup)
+                    else:
+                        translated_html = html
                     
                     # BƯỚC 2: Sửa lại sau khi dịch (đảm bảo không có lỗi mới)
                     # Thêm khoảng trắng nếu vẫn còn pattern "word<tag" sau khi dịch
@@ -503,9 +574,12 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
             # Dịch caption nếu có
             if block.get('caption'):
                 try:
-                    translated_caption = translator.translate(block['caption'])
-                    translated_block['caption'] = translated_caption
-                    time.sleep(delay)
+                    translated_caption = translate_text_with_google_cloud(block['caption'], source_lang, target_lang)
+                    if translated_caption:
+                        translated_block['caption'] = translated_caption
+                        time.sleep(delay)
+                    else:
+                        translated_block['caption'] = block['caption']
                 except Exception as e:
                     print(f"      ⚠️  Translation error for header_image_caption caption: {e}")
                     translated_block['caption'] = block['caption']
@@ -525,9 +599,12 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
                     # Dịch description nếu có
                     if byline.get('description'):
                         try:
-                            translated_desc = translator.translate(byline['description'])
-                            translated_byline['description'] = translated_desc
-                            time.sleep(delay)
+                            translated_desc = translate_text_with_google_cloud(byline['description'], source_lang, target_lang)
+                            if translated_desc:
+                                translated_byline['description'] = translated_desc
+                                time.sleep(delay)
+                            else:
+                                translated_byline['description'] = byline['description']
                         except Exception as e:
                             print(f"      ⚠️  Translation error for byline description: {e}")
                             # Giữ nguyên nếu dịch lỗi
@@ -544,9 +621,12 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
                     # Dịch label (ví dụ: "Offentliggjort" -> "Published")
                     if date_info.get('label'):
                         try:
-                            translated_label = translator.translate(date_info['label'])
-                            translated_date_info['label'] = translated_label
-                            time.sleep(delay)
+                            translated_label = translate_text_with_google_cloud(date_info['label'], source_lang, target_lang)
+                            if translated_label:
+                                translated_date_info['label'] = translated_label
+                                time.sleep(delay)
+                            else:
+                                translated_date_info['label'] = date_info['label']
                         except Exception as e:
                             print(f"      ⚠️  Translation error for date label: {e}")
                             translated_date_info['label'] = date_info['label']
@@ -554,9 +634,12 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
                     # Dịch title (ví dụ: "Offentliggjort mandag 19. jan 2026 06:04" -> "Published Monday 19. Jan 2026 06:04")
                     if date_info.get('title'):
                         try:
-                            translated_title = translator.translate(date_info['title'])
-                            translated_date_info['title'] = translated_title
-                            time.sleep(delay)
+                            translated_title = translate_text_with_google_cloud(date_info['title'], source_lang, target_lang)
+                            if translated_title:
+                                translated_date_info['title'] = translated_title
+                                time.sleep(delay)
+                            else:
+                                translated_date_info['title'] = date_info['title']
                         except Exception as e:
                             print(f"      ⚠️  Translation error for date title: {e}")
                             translated_date_info['title'] = date_info['title']
@@ -564,9 +647,12 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
                     # Dịch text (ví dụ: "mandag 19. jan 2026 06:04" -> "Monday 19. Jan 2026 06:04")
                     if date_info.get('text'):
                         try:
-                            translated_text = translator.translate(date_info['text'])
-                            translated_date_info['text'] = translated_text
-                            time.sleep(delay)
+                            translated_text = translate_text_with_google_cloud(date_info['text'], source_lang, target_lang)
+                            if translated_text:
+                                translated_date_info['text'] = translated_text
+                                time.sleep(delay)
+                            else:
+                                translated_date_info['text'] = date_info['text']
                         except Exception as e:
                             print(f"      ⚠️  Translation error for date text: {e}")
                             translated_date_info['text'] = date_info['text']
@@ -588,9 +674,12 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
                     # Dịch tag text nếu có
                     if tag.get('text'):
                         try:
-                            translated_text = translator.translate(tag['text'])
-                            translated_tag['text'] = translated_text
-                            time.sleep(delay)
+                            translated_text = translate_text_with_google_cloud(tag['text'], source_lang, target_lang)
+                            if translated_text:
+                                translated_tag['text'] = translated_text
+                                time.sleep(delay)
+                            else:
+                                translated_tag['text'] = tag['text']
                         except Exception as e:
                             print(f"      ⚠️  Translation error for tag text: {e}")
                             # Giữ nguyên nếu dịch lỗi
@@ -603,9 +692,12 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
             # Dịch caption nếu có
             if block.get('caption'):
                 try:
-                    translated_caption = translator.translate(block['caption'])
-                    translated_block['caption'] = translated_caption
-                    time.sleep(delay)
+                    translated_caption = translate_text_with_google_cloud(block['caption'], source_lang, target_lang)
+                    if translated_caption:
+                        translated_block['caption'] = translated_caption
+                        time.sleep(delay)
+                    else:
+                        translated_block['caption'] = block['caption']
                 except Exception as e:
                     print(f"      ⚠️  Translation error for image caption: {e}")
                     # Giữ nguyên nếu dịch lỗi
@@ -614,9 +706,12 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
             # Dịch author nếu có
             if block.get('author'):
                 try:
-                    translated_author = translator.translate(block['author'])
-                    translated_block['author'] = translated_author
-                    time.sleep(delay)
+                    translated_author = translate_text_with_google_cloud(block['author'], source_lang, target_lang)
+                    if translated_author:
+                        translated_block['author'] = translated_author
+                        time.sleep(delay)
+                    else:
+                        translated_block['author'] = block['author']
                 except Exception as e:
                     print(f"      ⚠️  Translation error for image author: {e}")
                     # Giữ nguyên nếu dịch lỗi

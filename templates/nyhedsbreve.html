@@ -1,0 +1,391 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {% include 'partials/head.html' %}
+    <title>{{ _('Nyhedsbreve') }} - Sermitsiaq</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js'></script>
+    <script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+    <script src='//www.google.com/recaptcha/api.js?hl=da'></script>
+    <style>
+      /* Scope all styles to subscription_form_container to avoid affecting footer */
+      .subscription_form_container {
+        max-width: 540px;
+        margin: 0 auto;
+        background-color: #ffffff;
+      }
+      
+      .subscription_form_container select {
+        appearance: menulist;
+      }
+
+      .subscription_form_container input[type="email"],
+      .subscription_form_container input[type="number"],
+      .subscription_form_container input[type="password"],
+      .subscription_form_container input[type="search"],
+      .subscription_form_container input[type="tel"],
+      .subscription_form_container input[type="text"],
+      .subscription_form_container input[type="url"],
+      .subscription_form_container input[type="color"],
+      .subscription_form_container input[type="date"],
+      .subscription_form_container input[type="month"],
+      .subscription_form_container input[type="week"],
+      .subscription_form_container input[type="datetime"],
+      .subscription_form_container input[type="datetime-local"],
+      .subscription_form_container input:not([type]),
+      .subscription_form_container textarea {
+        transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #d1d1d1;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+
+      .subscription_form_container input[type="email"]:not(:read-only):focus,
+      .subscription_form_container input[type="number"]:not(:read-only):focus,
+      .subscription_form_container input[type="password"]:not(:read-only):focus,
+      .subscription_form_container input[type="search"]:not(:read-only):focus,
+      .subscription_form_container input[type="tel"]:not(:read-only):focus,
+      .subscription_form_container input[type="text"]:not(:read-only):focus,
+      .subscription_form_container input[type="url"]:not(:read-only):focus,
+      .subscription_form_container input[type="color"]:not(:read-only):focus,
+      .subscription_form_container input[type="date"]:not(:read-only):focus,
+      .subscription_form_container input[type="month"]:not(:read-only):focus,
+      .subscription_form_container input[type="week"]:not(:read-only):focus,
+      .subscription_form_container input[type="datetime"]:not(:read-only):focus,
+      .subscription_form_container input[type="datetime-local"]:not(:read-only):focus,
+      .subscription_form_container input:not(:read-only):focus,
+      .subscription_form_container textarea:not(:read-only):focus,
+      .subscription_form_container select:not(:read-only):focus {
+        border-color: #86b7fe;
+        outline: 0;
+        box-shadow: 0 0 0 .125rem rgba(13, 110, 253, .25);
+      }
+
+      .subscription_form_container input[type="email"]:read-only,
+      .subscription_form_container input[type="email"]:read-only:focus,
+      .subscription_form_container input[type="number"]:read-only,
+      .subscription_form_container input[type="number"]:read-only:focus,
+      .subscription_form_container input[type="password"]:read-only,
+      .subscription_form_container input[type="password"]:read-only:focus,
+      .subscription_form_container input[type="search"]:read-only,
+      .subscription_form_container input[type="search"]:read-only:focus,
+      .subscription_form_container input[type="tel"]:read-only,
+      .subscription_form_container input[type="tel"]:read-only:focus,
+      .subscription_form_container input[type="text"]:read-only,
+      .subscription_form_container input[type="text"]:read-only:focus,
+      .subscription_form_container input[type="url"]:read-only,
+      .subscription_form_container input[type="url"]:read-only:focus,
+      .subscription_form_container input[type="color"]:read-only,
+      .subscription_form_container input[type="color"]:read-only:focus,
+      .subscription_form_container input[type="date"]:read-only,
+      .subscription_form_container input[type="date"]:read-only:focus,
+      .subscription_form_container input[type="month"]:read-only,
+      .subscription_form_container input[type="month"]:read-only:focus,
+      .subscription_form_container input[type="week"]:read-only,
+      .subscription_form_container input[type="week"]:read-only:focus,
+      .subscription_form_container input[type="datetime"]:read-only,
+      .subscription_form_container input[type="datetime"]:read-only:focus,
+      .subscription_form_container input[type="datetime-local"]:read-only,
+      .subscription_form_container input[type="datetime-local"]:read-only:focus,
+      .subscription_form_container textarea:read-only,
+      .subscription_form_container textarea:read-only:focus {
+        border-color: #d1d1d1;
+        background-color: #f1f1f1;
+        color: #7a7a7a;
+      }
+
+      .subscription_form_container p { 
+        margin-bottom: 0;
+      }
+      
+      .subscription_form_container input[type='text'], 
+      .subscription_form_container input[type='email'] {
+        background-color: #ffffff;
+      }
+      
+      .subscription_form_container input[type="submit"] {
+        background-color: #a8130d;
+        border-color: #a8130d;
+        color: #ffffff;
+      }
+      
+      .subscription_form_container .content {
+        background-color: #ffffff;
+        padding: 20px;
+      }
+      
+      .subscription_form_container .error {
+        clear: both;
+        color: #cc0033;
+        display: inline-block;
+        font-size: 14px;
+        margin: 0 0 10px 0;
+      }
+      
+      .subscription_form_container abbr {
+        cursor: default !important;
+        text-decoration: none !important;
+      }
+      
+      .subscription_form_container a {
+        color: #222;
+        text-decoration: underline;
+      }
+      
+      .subscription_form_container label, 
+      .subscription_form_container label.label-inline {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 700;
+      }
+      
+      .subscription_form_container #errorContainer {
+        display: none;
+        background-color: #FFDDDD;
+        border: 1px solid #FF2323;
+        padding: 10px;
+        margin-bottom: 20px;
+      }
+      
+      .subscription_form_container #errorContainer label {
+        display: inline !important;
+      }
+      
+      .subscription_form_container #errorContainer ul li {
+        list-style-type: none;
+      }
+      
+      .subscription_form_container .img {
+        max-width: 100%;
+        height: auto;
+        max-height: 95vh;
+      }
+      
+      .subscription_form_container .checkboxes label {
+        margin-bottom: 0;
+        margin-left: 0;
+        display: inline-block;
+        white-space: nowrap;
+      }
+      
+      .subscription_form_container .checkboxes input {
+        vertical-align: middle;
+      }
+      
+      .subscription_form_container .checkboxes label span {
+        vertical-align: middle;
+      }
+      
+      .subscription_form_container div.radio_buttons div.controls label, 
+      .subscription_form_container span.chbox {
+        font-weight: normal !important;
+      }
+
+      .subscription_form_container .form-group {
+        margin-bottom: 1rem;
+      }
+      
+      .subscription_form_container .form-check {
+        position: relative;
+        display: block;
+        padding-left: 1.25rem;
+        margin-bottom: 15px;
+      }
+      
+      .subscription_form_container .form-check-label {
+        margin-bottom: 0;
+        margin-left: .5rem;
+        font-weight: normal;
+        display: flex;
+        align-items: flex-start;
+        margin-left: 25px;
+      }
+      
+      .subscription_form_container .form-check-input {
+        position: absolute;
+        margin-top: .5rem;
+        margin-left: -1.25rem;
+      }
+      
+      .subscription_form_container .field-hint {
+        font-size: 0.7em;
+        line-height: 1em;
+        font-weight: normal;
+        margin-bottom: .5em;
+      }
+      
+      .subscription_form_container .reset-section {
+        height: 1px;
+        clear: left;
+      }
+      
+      .subscription_form_container select {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #d1d1d1;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+      
+    </style>
+{% endblock %}
+
+{% block content %}
+<section class="main front" id="main">
+    <h1 class="hidden-heading">Nyhedsbreve - sermitsiaq</h1>
+    
+    <!-- Page Content -->
+    <div class="page-content">
+        <div class="row small-12 large-12" style="">
+            <div class="column small-12 large-12 small-abs-12 large-abs-12">
+                <div class="subscription_form_container">
+                    <div class="content" style="background-color: #ffffff; padding: 20px;">
+                <div class="banner" style="padding: 0px; background-color: #ffffff; text-align: center;">
+                    <div class="row">
+                        <div class="column">
+                            <img id="logo" src="https://img.peytzmail.com/image/upload/c_lfill,h_38,q_auto,w_200/v1539333296/sermitsiaq/logo-49bf220f4a0cb0e-nierado51dqsmln3hkzj.png" alt="Sermitsiaq Logo" />
+                        </div>
+                    </div>
+                </div>
+                <div style="clear: both;overflow:hidden;"></div>
+                <br />
+                
+                <div id="errorContainer">
+                    <p>Ret venligst følgende fejl og prøv igen:</p>
+                    <ul></ul>
+                </div>
+                
+                <p style="text-align: center;"></p>
+                <h4 style="text-align: center;" id="title">Tilmeld dig vores nyhedsbrev</h4>
+                <p id="short_description" style="margin-bottom: 20px;">
+                    Få vort nyhedsbrev, hvor vi dagligt sender et nyhedsoverblik direkte til din indbakke. <br> <br> 
+                    <i>Du vil dagligt modtage en email med et overblik over de seneste nyheder og stillingsopslag. Du kan altid framelde dig nyhedsbrevet. Vi deler ikke dine informationer med 3. part uden dit samtykke.</i>
+                </p>
+
+                <form class="form-horizontal new_subscriber" id="edit_subscriber" novalidate="novalidate" action="https://sermitsiaq.peytzmail.com/f/profile/tilmelding-nyhedsbrev-dk" accept-charset="UTF-8" method="post">
+                    <input type="hidden" name="authenticity_token" value="BBnaXAENNnVK-6z4c-OkC5mG2edCJsuTYN0Zv3UM5DwsuqPR_-8zycafVupmdLTEWYh25rUz0ZF0TleQ1ukpgg" autocomplete="off" />
+                    <input value="tilmelding-nyhedsbrev-dk" autocomplete="off" type="hidden" name="subscriber[subscription_form_id]" id="subscriber_subscription_form_id" />
+                    
+                    <div class="control-group hidden subscription_form_subscription_form_id">
+                        <div class="controls">
+                            <input value="tilmelding-nyhedsbrev-dk" class="hidden" autocomplete="off" type="hidden" name="subscription_form[subscription_form_id]" id="subscription_form_subscription_form_id" />
+                        </div>
+                    </div>
+                    
+                    <fieldset>
+                        <p></p>
+                        <p style="clear:both;">
+                            <label for="subscriber_email" style="">
+                                <span>E-mail</span>
+                                <abbr id="email" title="Påkrævet">*</abbr>
+                            </label>
+                            <div class="control-group email required subscriber_email">
+                                <div class="controls">
+                                    <input value="" label="false" class="string email required" type="email" name="subscriber[email]" id="subscriber_email" required />
+                                </div>
+                            </div>
+                        </p>
+                        
+                        <p style="clear:both;">
+                            <label for="subscriber_country" style="">
+                                <span>Land</span>
+                                <abbr id="country" title="Påkrævet">*</abbr>
+                            </label>
+                            <div class="control-group select optional subscriber_country">
+                                <div class="controls">
+                                    <select class="select optional" name="subscriber[country]" id="subscriber_country" required>
+                                        <option value="" label=" "></option>
+                                        <option value="option1">Grønland</option>
+                                        <option value="option5">Danmark</option>
+                                        <option value="option3">Andet</option>
+                                        <option value="option4">Kalaallit Nunaat</option>
+                                        <option value="option6">Nuna alla</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br />
+                        </p>
+                        
+                        <div class="float-left" style="clear:both;">
+                            <span id="headline" style="font-weight: bold;">Vælg nyhedsbreve</span>
+                        </div>
+
+                        <div class="float-left" style="clear:both;">
+                            <div class="form-group form-check">
+                                <input type="checkbox" name="mailinglist_ids[]" id="cb_sermitsiaq-com" value="sermitsiaq-ag" class="form-check-input" />
+                                <label class="form-check-label" for="cb_sermitsiaq-com">
+                                    <b>Sermitsiaq.com</b>
+                                    <p style="font-size: 12px; line-height: 16px; margin-bottom: 0.5rem;">- Dansk version - Danskisoortaa</p>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="float-left" style="clear:both;">
+                            <div class="form-group form-check">
+                                <input type="checkbox" name="mailinglist_ids[]" id="cb_sermitsiaq-kl" value="sermitsiaq-kl" class="form-check-input" />
+                                <label class="form-check-label" for="cb_sermitsiaq-kl">
+                                    <b>Sermitsiaq KL</b>
+                                    <p style="font-size: 12px; line-height: 16px; margin-bottom: 1.5rem;">- Grønlandsk version - Kalaallisoortaa</p>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div style="width: 300px; margin: 0 auto; clear: both; padding-bottom: 10px;">
+                            <div class="g-recaptcha" data-sitekey="6LfOvpkUAAAAAGy6T4A_8_eFiGmDPzHhJ-8WEXGn"></div>
+                            <p></p>
+                        </div>
+                        
+                        <div style="clear:both">&nbsp;</div>
+                        <div style="text-align: center;">
+                            <input class="button-primary" type="submit" id="button" value="Tilmeld">
+                        </div>
+                    </fieldset>
+                </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+    // Form validation
+    $(document).ready(function() {
+        $("#edit_subscriber").validate({
+            rules: {
+                "subscriber[email]": {
+                    required: true,
+                    email: true
+                },
+                "subscriber[country]": {
+                    required: true
+                }
+            },
+            messages: {
+                "subscriber[email]": {
+                    required: "E-mail er påkrævet",
+                    email: "Indtast en gyldig e-mailadresse"
+                },
+                "subscriber[country]": {
+                    required: "Land er påkrævet"
+                }
+            },
+            errorContainer: "#errorContainer",
+            errorLabelContainer: "#errorContainer ul",
+            wrapper: "li",
+            submitHandler: function(form) {
+                // Check if at least one newsletter is selected
+                if ($('input[name="mailinglist_ids[]"]:checked').length === 0) {
+                    alert("Vælg mindst ét nyhedsbrev");
+                    return false;
+                }
+                form.submit();
+            }
+        });
+    });
+</script>
+{% endblock %}
