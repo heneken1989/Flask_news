@@ -636,6 +636,10 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
                         try:
                             translated_title = translate_text_with_google_cloud(date_info['title'], source_lang, target_lang)
                             if translated_title:
+                                # Loại bỏ " PM" hoặc " AM" ở cuối chuỗi (Google dịch có thể tự động thêm)
+                                # Ví dụ: "Published Friday, January 30, 2026 12:16 PM" -> "Published Friday, January 30, 2026 12:16"
+                                # Xử lý cả trường hợp có hoặc không có khoảng trắng trước PM/AM
+                                translated_title = re.sub(r'\s*(PM|AM)$', '', translated_title, flags=re.IGNORECASE)
                                 translated_date_info['title'] = translated_title
                                 time.sleep(delay)
                             else:
@@ -649,6 +653,10 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
                         try:
                             translated_text = translate_text_with_google_cloud(date_info['text'], source_lang, target_lang)
                             if translated_text:
+                                # Loại bỏ " PM" hoặc " AM" ở cuối chuỗi (Google dịch có thể tự động thêm)
+                                # Ví dụ: "Friday, January 30, 2026 12:16 PM" -> "Friday, January 30, 2026 12:16"
+                                # Xử lý cả trường hợp có hoặc không có khoảng trắng trước PM/AM
+                                translated_text = re.sub(r'\s*(PM|AM)$', '', translated_text, flags=re.IGNORECASE)
                                 translated_date_info['text'] = translated_text
                                 time.sleep(delay)
                             else:
