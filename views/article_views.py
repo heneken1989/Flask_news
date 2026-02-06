@@ -2353,6 +2353,366 @@ def god_presseskik():
     )
 
 
+@article_view_bp.route('/privatlivspolitik')
+def privatlivspolitik():
+    """
+    Privatlivspolitik page - hiển thị nội dung cố định về privacy policy với job slider và related articles
+    """
+    from datetime import datetime
+    from flask_babel import get_locale
+    
+    # Get current language from session or default
+    try:
+        current_language = str(get_locale()) if get_locale() else 'da'
+    except:
+        current_language = session.get('language', 'da')
+    
+    # Check URL parameter for language override
+    if request.args.get('lang'):
+        lang = request.args.get('lang')
+        if lang in ['da', 'kl', 'en']:
+            current_language = lang
+    
+    # Get job slider data từ home page (giống article_detail)
+    job_slider_data = None
+    all_home_sliders = Article.query.filter_by(
+        section='home',
+        language=current_language,
+        is_temp=False,
+        is_home=True,
+        layout_type='job_slider'
+    ).all()
+    
+    job_articles = None
+    for slider in all_home_sliders:
+        if slider.layout_data and slider.layout_data.get('source_class') in ['source_job-dk', 'source_feed_random_kl_jobs', 'source_feed_random_dk_jobs', 'source_job']:
+            job_articles = slider
+            break
+    
+    if job_articles and job_articles.layout_data:
+        layout_data = job_articles.layout_data
+        if layout_data.get('slider_articles'):
+            slider_articles = layout_data.get('slider_articles', [])[:10]
+            
+            # Update URLs từ published_url sang Flask app URL
+            from database import Article as ArticleModel
+            updated_slider_articles = []
+            for item in slider_articles:
+                updated_item = item.copy()
+                if item.get('id'):
+                    try:
+                        article_obj = ArticleModel.query.get(item['id'])
+                        if article_obj:
+                            article_dict = article_obj.to_dict()
+                            updated_item['url'] = article_dict.get('url', item.get('url', '#'))
+                    except:
+                        updated_item['url'] = item.get('url', '#')
+                else:
+                    published_url = item.get('url') or item.get('published_url')
+                    if published_url:
+                        try:
+                            article_obj = ArticleModel.query.filter_by(published_url=published_url).first()
+                            if article_obj:
+                                article_dict = article_obj.to_dict()
+                                updated_item['url'] = article_dict.get('url', published_url)
+                            else:
+                                updated_item['url'] = published_url
+                        except:
+                            updated_item['url'] = published_url
+                updated_slider_articles.append(updated_item)
+            
+            job_slider_data = {
+                'slider_title': layout_data.get('slider_title', 'JOB'),
+                'slider_articles': updated_slider_articles,
+                'slider_id': layout_data.get('slider_id', 'job-slider-privatlivspolitik'),
+                'source_class': layout_data.get('source_class', 'source_feed_random_dk_jobs'),
+                'items_per_view': layout_data.get('items_per_view', 4),
+                'has_nav': layout_data.get('has_nav', True),
+                'header_link': layout_data.get('header_link'),
+                'extra_classes': layout_data.get('extra_classes', []),
+                'header_classes': layout_data.get('header_classes', [])
+            }
+    
+    # Get related articles từ section "samfund" (giống article_detail)
+    samfund_articles = Article.query.filter_by(
+        section='samfund',
+        language=current_language,
+        is_temp=False
+    ).order_by(Article.published_date.desc().nullslast()).limit(10).all()
+    
+    # Loại bỏ duplicate articles
+    seen_k5a_urls = set()
+    seen_published_urls = set()
+    unique_samfund_articles = []
+    for art in samfund_articles:
+        if not art.published_url:
+            continue
+        
+        if art.k5a_url and art.k5a_url in seen_k5a_urls:
+            continue
+        
+        if art.published_url in seen_published_urls:
+            continue
+        
+        if art.k5a_url:
+            seen_k5a_urls.add(art.k5a_url)
+        seen_published_urls.add(art.published_url)
+        unique_samfund_articles.append(art)
+    
+    # Sắp xếp lại và giới hạn 5 articles
+    unique_samfund_articles.sort(key=lambda x: (x.published_date or datetime.min, x.created_at or datetime.min), reverse=True)
+    samfund_articles_list = unique_samfund_articles[:5]
+    
+    # Convert to dict for template
+    samfund_articles_list = [art.to_dict() for art in samfund_articles_list]
+    
+    return render_template('privatlivspolitik.html', 
+        current_language=current_language,
+        job_slider_data=job_slider_data,
+        samfund_articles=samfund_articles_list
+    )
+
+
+@article_view_bp.route('/ophavsret')
+def ophavsret():
+    """
+    Ophavsret page - hiển thị nội dung cố định về copyright với job slider và related articles
+    """
+    from datetime import datetime
+    from flask_babel import get_locale
+    
+    # Get current language from session or default
+    try:
+        current_language = str(get_locale()) if get_locale() else 'da'
+    except:
+        current_language = session.get('language', 'da')
+    
+    # Check URL parameter for language override
+    if request.args.get('lang'):
+        lang = request.args.get('lang')
+        if lang in ['da', 'kl', 'en']:
+            current_language = lang
+    
+    # Get job slider data từ home page (giống article_detail)
+    job_slider_data = None
+    all_home_sliders = Article.query.filter_by(
+        section='home',
+        language=current_language,
+        is_temp=False,
+        is_home=True,
+        layout_type='job_slider'
+    ).all()
+    
+    job_articles = None
+    for slider in all_home_sliders:
+        if slider.layout_data and slider.layout_data.get('source_class') in ['source_job-dk', 'source_feed_random_kl_jobs', 'source_feed_random_dk_jobs', 'source_job']:
+            job_articles = slider
+            break
+    
+    if job_articles and job_articles.layout_data:
+        layout_data = job_articles.layout_data
+        if layout_data.get('slider_articles'):
+            slider_articles = layout_data.get('slider_articles', [])[:10]
+            
+            # Update URLs từ published_url sang Flask app URL
+            from database import Article as ArticleModel
+            updated_slider_articles = []
+            for item in slider_articles:
+                updated_item = item.copy()
+                if item.get('id'):
+                    try:
+                        article_obj = ArticleModel.query.get(item['id'])
+                        if article_obj:
+                            article_dict = article_obj.to_dict()
+                            updated_item['url'] = article_dict.get('url', item.get('url', '#'))
+                    except:
+                        updated_item['url'] = item.get('url', '#')
+                else:
+                    published_url = item.get('url') or item.get('published_url')
+                    if published_url:
+                        try:
+                            article_obj = ArticleModel.query.filter_by(published_url=published_url).first()
+                            if article_obj:
+                                article_dict = article_obj.to_dict()
+                                updated_item['url'] = article_dict.get('url', published_url)
+                            else:
+                                updated_item['url'] = published_url
+                        except:
+                            updated_item['url'] = published_url
+                updated_slider_articles.append(updated_item)
+            
+            job_slider_data = {
+                'slider_title': layout_data.get('slider_title', 'JOB'),
+                'slider_articles': updated_slider_articles,
+                'slider_id': layout_data.get('slider_id', 'job-slider-ophavsret'),
+                'source_class': layout_data.get('source_class', 'source_feed_random_dk_jobs'),
+                'items_per_view': layout_data.get('items_per_view', 4),
+                'has_nav': layout_data.get('has_nav', True),
+                'header_link': layout_data.get('header_link'),
+                'extra_classes': layout_data.get('extra_classes', []),
+                'header_classes': layout_data.get('header_classes', [])
+            }
+    
+    # Get related articles từ section "samfund" (giống article_detail)
+    samfund_articles = Article.query.filter_by(
+        section='samfund',
+        language=current_language,
+        is_temp=False
+    ).order_by(Article.published_date.desc().nullslast()).limit(10).all()
+    
+    # Loại bỏ duplicate articles
+    seen_k5a_urls = set()
+    seen_published_urls = set()
+    unique_samfund_articles = []
+    for art in samfund_articles:
+        if not art.published_url:
+            continue
+        
+        if art.k5a_url and art.k5a_url in seen_k5a_urls:
+            continue
+        
+        if art.published_url in seen_published_urls:
+            continue
+        
+        if art.k5a_url:
+            seen_k5a_urls.add(art.k5a_url)
+        seen_published_urls.add(art.published_url)
+        unique_samfund_articles.append(art)
+    
+    # Sắp xếp lại và giới hạn 5 articles
+    unique_samfund_articles.sort(key=lambda x: (x.published_date or datetime.min, x.created_at or datetime.min), reverse=True)
+    samfund_articles_list = unique_samfund_articles[:5]
+    
+    # Convert to dict for template
+    samfund_articles_list = [art.to_dict() for art in samfund_articles_list]
+    
+    return render_template('ophavsret.html', 
+        current_language=current_language,
+        job_slider_data=job_slider_data,
+        samfund_articles=samfund_articles_list
+    )
+
+
+@article_view_bp.route('/bestyrelse-og-god-fondsledelse')
+def bestyrelse_og_god_fondsledelse():
+    """
+    Bestyrelse og god fondsledelse page - hiển thị nội dung cố định về board và governance với job slider và related articles
+    """
+    from datetime import datetime
+    from flask_babel import get_locale
+    
+    # Get current language from session or default
+    try:
+        current_language = str(get_locale()) if get_locale() else 'da'
+    except:
+        current_language = session.get('language', 'da')
+    
+    # Check URL parameter for language override
+    if request.args.get('lang'):
+        lang = request.args.get('lang')
+        if lang in ['da', 'kl', 'en']:
+            current_language = lang
+    
+    # Get job slider data từ home page (giống article_detail)
+    job_slider_data = None
+    all_home_sliders = Article.query.filter_by(
+        section='home',
+        language=current_language,
+        is_temp=False,
+        is_home=True,
+        layout_type='job_slider'
+    ).all()
+    
+    job_articles = None
+    for slider in all_home_sliders:
+        if slider.layout_data and slider.layout_data.get('source_class') in ['source_job-dk', 'source_feed_random_kl_jobs', 'source_feed_random_dk_jobs', 'source_job']:
+            job_articles = slider
+            break
+    
+    if job_articles and job_articles.layout_data:
+        layout_data = job_articles.layout_data
+        if layout_data.get('slider_articles'):
+            slider_articles = layout_data.get('slider_articles', [])[:10]
+            
+            # Update URLs từ published_url sang Flask app URL
+            from database import Article as ArticleModel
+            updated_slider_articles = []
+            for item in slider_articles:
+                updated_item = item.copy()
+                if item.get('id'):
+                    try:
+                        article_obj = ArticleModel.query.get(item['id'])
+                        if article_obj:
+                            article_dict = article_obj.to_dict()
+                            updated_item['url'] = article_dict.get('url', item.get('url', '#'))
+                    except:
+                        updated_item['url'] = item.get('url', '#')
+                else:
+                    published_url = item.get('url') or item.get('published_url')
+                    if published_url:
+                        try:
+                            article_obj = ArticleModel.query.filter_by(published_url=published_url).first()
+                            if article_obj:
+                                article_dict = article_obj.to_dict()
+                                updated_item['url'] = article_dict.get('url', published_url)
+                            else:
+                                updated_item['url'] = published_url
+                        except:
+                            updated_item['url'] = published_url
+                updated_slider_articles.append(updated_item)
+            
+            job_slider_data = {
+                'slider_title': layout_data.get('slider_title', 'JOB'),
+                'slider_articles': updated_slider_articles,
+                'slider_id': layout_data.get('slider_id', 'job-slider-bestyrelse'),
+                'source_class': layout_data.get('source_class', 'source_feed_random_dk_jobs'),
+                'items_per_view': layout_data.get('items_per_view', 4),
+                'has_nav': layout_data.get('has_nav', True),
+                'header_link': layout_data.get('header_link'),
+                'extra_classes': layout_data.get('extra_classes', []),
+                'header_classes': layout_data.get('header_classes', [])
+            }
+    
+    # Get related articles từ section "samfund" (giống article_detail)
+    samfund_articles = Article.query.filter_by(
+        section='samfund',
+        language=current_language,
+        is_temp=False
+    ).order_by(Article.published_date.desc().nullslast()).limit(10).all()
+    
+    # Loại bỏ duplicate articles
+    seen_k5a_urls = set()
+    seen_published_urls = set()
+    unique_samfund_articles = []
+    for art in samfund_articles:
+        if not art.published_url:
+            continue
+        
+        if art.k5a_url and art.k5a_url in seen_k5a_urls:
+            continue
+        
+        if art.published_url in seen_published_urls:
+            continue
+        
+        if art.k5a_url:
+            seen_k5a_urls.add(art.k5a_url)
+        seen_published_urls.add(art.published_url)
+        unique_samfund_articles.append(art)
+    
+    # Sắp xếp lại và giới hạn 5 articles
+    unique_samfund_articles.sort(key=lambda x: (x.published_date or datetime.min, x.created_at or datetime.min), reverse=True)
+    samfund_articles_list = unique_samfund_articles[:5]
+    
+    # Convert to dict for template
+    samfund_articles_list = [art.to_dict() for art in samfund_articles_list]
+    
+    return render_template('bestyrelse_og_god_fondsledelse.html', 
+        current_language=current_language,
+        job_slider_data=job_slider_data,
+        samfund_articles=samfund_articles_list
+    )
+
+
 @article_view_bp.route('/sprogpolitik')
 def sprogpolitik():
     """
