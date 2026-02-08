@@ -181,14 +181,38 @@ class ArticleDetailParser:
             # Note: content-text thường chứa toàn bộ nội dung bao gồm cả phần intro
             # (do paywall pattern: intro = preview, content-text = full content)
             content_div = bodytext.find('div', class_='content-text')
+            intro_div = bodytext.find('div', class_='intro')
+            
             if content_div:
                 # Nếu có content-text, CHỈ parse content-text (bỏ qua intro để tránh duplicate)
-                content_blocks = ArticleDetailParser._parse_content_text_ordered(content_div, order)
-                blocks.extend(content_blocks)
-                order += len(content_blocks)
+                # QUAN TRỌNG: Kiểm tra xem content-text có chứa intro không
+                # Nếu content-text chứa intro, thì intro đã được include trong content-text
+                # Nếu content-text KHÔNG chứa intro, thì intro là phần riêng biệt và cần được parse
+                
+                # Kiểm tra xem content-text có chứa intro div không
+                intro_in_content = content_div.find('div', class_='intro')
+                
+                if intro_in_content:
+                    # content-text chứa intro → chỉ parse content-text (intro đã được include)
+                    content_blocks = ArticleDetailParser._parse_content_text_ordered(content_div, order)
+                    blocks.extend(content_blocks)
+                    order += len(content_blocks)
+                elif intro_div and intro_div not in content_div.descendants:
+                    # content-text KHÔNG chứa intro, và intro là phần riêng biệt
+                    # Trong trường hợp này, intro là preview, content-text là full content
+                    # Nhưng để tránh duplicate, CHỈ parse content-text (vì content-text là full version)
+                    # Bỏ qua intro để tránh duplicate
+                    content_blocks = ArticleDetailParser._parse_content_text_ordered(content_div, order)
+                    blocks.extend(content_blocks)
+                    order += len(content_blocks)
+                else:
+                    # content-text không có intro, và không có intro riêng biệt
+                    # Chỉ parse content-text
+                    content_blocks = ArticleDetailParser._parse_content_text_ordered(content_div, order)
+                    blocks.extend(content_blocks)
+                    order += len(content_blocks)
             else:
                 # Nếu KHÔNG có content-text, parse intro section
-                intro_div = bodytext.find('div', class_='intro')
                 if intro_div:
                     intro_blocks = ArticleDetailParser._parse_intro(intro_div, order)
                     blocks.extend(intro_blocks)
