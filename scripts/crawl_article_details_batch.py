@@ -382,16 +382,24 @@ def translate_text_with_google_cloud(text, source_lang='da', target_lang='en'):
 # ============================================================================
 
 @contextmanager
-def start_browser_for_translate(headless=True):
+def start_browser_for_translate(headless=True, kill_chrome_first=True):
     """
     Start browser để sử dụng Google Translate Web
     
     Args:
         headless: Run browser in headless mode
+        kill_chrome_first: Kill Chrome processes trước khi start (default: True)
     
     Yields:
         SB instance
     """
+    # Kill Chrome processes TRƯỚC khi tạo browser mới
+    if kill_chrome_first:
+        killed = kill_chrome_processes()
+        if killed > 0:
+            print(f"   ⏳ Waiting 2 seconds for Chrome processes to fully terminate...")
+            time.sleep(2)
+    
     chrome_opts = get_chrome_options_for_headless()
     os.makedirs(USER_DATA_DIR_TRANSLATE, exist_ok=True)
     os.chmod(USER_DATA_DIR_TRANSLATE, 0o755)
@@ -402,7 +410,15 @@ def start_browser_for_translate(headless=True):
     try:
         yield sb
     finally:
-        sb_context.__exit__(None, None, None)
+        try:
+            sb_context.__exit__(None, None, None)
+        except Exception as e:
+            print(f"   ⚠️  Error closing translate browser: {e}")
+        
+        # Kill Chrome sau khi dùng xong để cleanup
+        if kill_chrome_first:
+            time.sleep(1)
+            kill_chrome_processes()
 
 
 def translate_content_blocks(content_blocks: list, source_lang: str = 'da', target_lang: str = 'en', delay: float = 0.3, translation_method: str = 'web', sb=None, headless: bool = True) -> list:
