@@ -715,30 +715,59 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                                                     en_layout_data_changed = True
                                             
                                             # Translate title_parts
+                                            # ⚠️ QUAN TRỌNG: Dùng EN article's title để reconstruct title_parts
+                                            # thay vì dịch từng part riêng lẻ (tránh dịch sai tên riêng)
                                             if 'title_parts' in merged_layout_data and merged_layout_data['title_parts']:
-                                                translated_parts = []
-                                                for part in merged_layout_data['title_parts']:
-                                                    if isinstance(part, dict) and 'text' in part:
-                                                        original_text = part['text']
-                                                        
-                                                        # Preserve leading/trailing spaces
-                                                        leading_space = ' ' if original_text.startswith(' ') else ''
-                                                        trailing_space = ' ' if original_text.endswith(' ') and not original_text.endswith('\n') else ''
-                                                        
-                                                        # Translate text (GoogleTranslator strips spaces)
-                                                        text_to_translate = original_text.strip()
-                                                        translated_text = translator.translate(text_to_translate)
-                                                        
-                                                        # Restore spaces
-                                                        translated_text = leading_space + translated_text + trailing_space
-                                                        
-                                                        translated_parts.append({
-                                                            'text': translated_text,
-                                                            'color_class': part.get('color_class')
-                                                        })
-                                                if translated_parts != en_layout_data.get('title_parts'):
-                                                    en_layout_data['title_parts'] = translated_parts
-                                                    en_layout_data_changed = True
+                                                original_title_parts = merged_layout_data['title_parts']
+                                                
+                                                # Dùng EN article's title để reconstruct title_parts
+                                                if en_article.title:
+                                                    translated_title = en_article.title
+                                                    
+                                                    # Reconstruct title_parts từ translated_title
+                                                    # Giữ nguyên color_class từ original parts
+                                                    if ':' in translated_title:
+                                                        # Split theo ":" để tìm highlighted part
+                                                        parts = translated_title.split(':', 1)
+                                                        translated_parts = [
+                                                            {'text': parts[0] + ':', 'color_class': original_title_parts[0].get('color_class') if original_title_parts and isinstance(original_title_parts[0], dict) else None},
+                                                            {'text': parts[1], 'color_class': None}
+                                                        ]
+                                                    else:
+                                                        # Không có ":" - giữ highlight cho toàn bộ hoặc part đầu tiên
+                                                        translated_parts = [
+                                                            {'text': translated_title, 'color_class': original_title_parts[0].get('color_class') if original_title_parts and isinstance(original_title_parts[0], dict) else None}
+                                                        ]
+                                                    
+                                                    if translated_parts != en_layout_data.get('title_parts'):
+                                                        en_layout_data['title_parts'] = translated_parts
+                                                        en_layout_data_changed = True
+                                                        print(f"         ✅ Reconstructed title_parts from EN article title")
+                                                else:
+                                                    # Fallback: Dịch từng part như cũ nếu không có EN title
+                                                    translated_parts = []
+                                                    for part in merged_layout_data['title_parts']:
+                                                        if isinstance(part, dict) and 'text' in part:
+                                                            original_text = part['text']
+                                                            
+                                                            # Preserve leading/trailing spaces
+                                                            leading_space = ' ' if original_text.startswith(' ') else ''
+                                                            trailing_space = ' ' if original_text.endswith(' ') and not original_text.endswith('\n') else ''
+                                                            
+                                                            # Translate text (GoogleTranslator strips spaces)
+                                                            text_to_translate = original_text.strip()
+                                                            translated_text = translator.translate(text_to_translate)
+                                                            
+                                                            # Restore spaces
+                                                            translated_text = leading_space + translated_text + trailing_space
+                                                            
+                                                            translated_parts.append({
+                                                                'text': translated_text,
+                                                                'color_class': part.get('color_class')
+                                                            })
+                                                    if translated_parts != en_layout_data.get('title_parts'):
+                                                        en_layout_data['title_parts'] = translated_parts
+                                                        en_layout_data_changed = True
                                             
                                             # Copy metadata fields (không dịch)
                                             for meta_field in ['row_index', 'article_index_in_row', 'total_rows', 'content_classes']:

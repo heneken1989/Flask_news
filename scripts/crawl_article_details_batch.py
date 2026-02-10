@@ -46,6 +46,8 @@ import re
 import json
 import requests
 from dotenv import load_dotenv
+# Import Google Translate Web helper functions
+from scripts.google_translate_web_helper import translate_text_with_google_web, translate_content_blocks_with_web
 
 # Load environment variables
 load_dotenv()
@@ -53,8 +55,11 @@ load_dotenv()
 # Google Cloud Translation API key từ environment variable
 GOOGLE_TRANSLATE_API_KEY = os.environ.get('GOOGLE_TRANSLATE_API_KEY')
 
+
 # User data directory để lưu session login
 USER_DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'user_data')
+# User data directory riêng cho Google Translate Web
+USER_DATA_DIR_TRANSLATE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'user_data_translate')
 LOGIN_URL = "https://www.sermitsiaq.ag/login"
 LOGIN_EMAIL = "aluu@greenland.org"
 LOGIN_PASSWORD = "LEn924924jfkjfk"
@@ -335,7 +340,7 @@ def convert_da_url_to_en_url(da_url: str) -> str:
 
 def translate_text_with_google_cloud(text, source_lang='da', target_lang='en'):
     """
-    Dịch text với Google Cloud Translation API
+    Dịch text với Google Cloud Translation API (PHƯƠNG ÁN DỰ PHÒNG)
     
     Args:
         text: Text cần dịch
@@ -372,20 +377,64 @@ def translate_text_with_google_cloud(text, source_lang='da', target_lang='en'):
         return None
 
 
-def translate_content_blocks(content_blocks: list, source_lang: str = 'da', target_lang: str = 'en', delay: float = 0.3) -> list:
+# ============================================================================
+# GOOGLE TRANSLATE WEB FUNCTIONS (Tích hợp từ test_translate_article_web.py)
+# ============================================================================
+
+@contextmanager
+def start_browser_for_translate(headless=True):
+    """
+    Start browser để sử dụng Google Translate Web
+    
+    Args:
+        headless: Run browser in headless mode
+    
+    Yields:
+        SB instance
+    """
+    chrome_opts = get_chrome_options_for_headless()
+    os.makedirs(USER_DATA_DIR_TRANSLATE, exist_ok=True)
+    os.chmod(USER_DATA_DIR_TRANSLATE, 0o755)
+    
+    sb_context = SB(uc=True, headless=headless, user_data_dir=USER_DATA_DIR_TRANSLATE, chromium_arg=chrome_opts)
+    sb = sb_context.__enter__()
+    
+    try:
+        yield sb
+    finally:
+        sb_context.__exit__(None, None, None)
+
+
+def translate_content_blocks(content_blocks: list, source_lang: str = 'da', target_lang: str = 'en', delay: float = 0.3, translation_method: str = 'cloud', sb=None, headless: bool = True) -> list:
     """
     Dịch content_blocks từ source_lang sang target_lang
-    Sử dụng Google Cloud Translation API
+    Hỗ trợ 2 phương án:
+    - 'cloud': Google Cloud Translation API (phương án dự phòng)
+    - 'web': Google Translate Web (phương án chính)
     
     Args:
         content_blocks: List of content blocks
         source_lang: Source language code ('da')
         target_lang: Target language code ('en')
         delay: Delay giữa các lần translate (giây) để tránh rate limit
+        translation_method: 'cloud' hoặc 'web' (default: 'cloud')
+        sb: SeleniumBase instance (chỉ cần khi translation_method='web')
+        headless: Run browser in headless mode (chỉ cần khi translation_method='web')
         
     Returns:
         Translated content blocks
     """
+    if translation_method == 'web':
+        # Sử dụng Google Translate Web
+        if not sb:
+            # Tạo browser instance nếu chưa có
+            with start_browser_for_translate(headless=headless) as sb_instance:
+                return translate_content_blocks_with_web(sb_instance, content_blocks, source_lang, target_lang, delay=delay)
+        else:
+            # Sử dụng browser instance đã có
+            return translate_content_blocks_with_web(sb, content_blocks, source_lang, target_lang, delay=delay)
+    
+    # Mặc định: Sử dụng Google Cloud Translation API (phương án dự phòng)
     if not content_blocks:
         return []
     
@@ -803,13 +852,15 @@ def extract_and_update_article_tags(article_detail: ArticleDetail, article_url: 
         return False
 
 
-def create_en_article_detail_from_da(da_article_detail: ArticleDetail, delay: float = 0.3) -> ArticleDetail:
+def create_en_article_detail_from_da(da_article_detail: ArticleDetail, delay: float = 0.3, translation_method: str = 'cloud', headless: bool = True) -> ArticleDetail:
     """
     Tạo article_detail EN từ article_detail DA
     
     Args:
         da_article_detail: ArticleDetail object với language='da'
         delay: Delay giữa các lần translate (giây) để tránh rate limit
+        translation_method: 'cloud' hoặc 'web' (default: 'cloud')
+        headless: Run browser in headless mode (chỉ cần khi translation_method='web')
         
     Returns:
         ArticleDetail object với language='en' hoặc existing nếu đã tồn tại
@@ -832,13 +883,28 @@ def create_en_article_detail_from_da(da_article_detail: ArticleDetail, delay: fl
         return existing_en_detail
     
     # Dịch content_blocks
-    print(f"   🌐 Translating content blocks from DA to EN...")
-    translated_blocks = translate_content_blocks(
-        da_article_detail.content_blocks or [],
-        source_lang='da',
-        target_lang='en',
-        delay=delay
-    )
+    print(f"   🌐 Translating content blocks from DA to EN using {translation_method.upper()} method...")
+    if translation_method == 'web':
+        # Sử dụng Google Translate Web
+        with start_browser_for_translate(headless=headless) as sb:
+            translated_blocks = translate_content_blocks(
+                da_article_detail.content_blocks or [],
+                source_lang='da',
+                target_lang='en',
+                delay=delay,
+                translation_method='web',
+                sb=sb,
+                headless=headless
+            )
+    else:
+        # Sử dụng Google Cloud Translation API (phương án dự phòng)
+        translated_blocks = translate_content_blocks(
+            da_article_detail.content_blocks or [],
+            source_lang='da',
+            target_lang='en',
+            delay=delay,
+            translation_method='cloud'
+        )
     
     # Tạo ArticleDetail mới với language='en'
     en_article_detail = ArticleDetail(
@@ -879,12 +945,14 @@ def create_en_article_detail_from_da(da_article_detail: ArticleDetail, delay: fl
         raise
 
 
-def translate_da_article_details_to_en(limit=None):
+def translate_da_article_details_to_en(limit=None, translation_method='cloud', headless=True):
     """
     Dịch tất cả article_detail từ DA sang EN
     
     Args:
         limit: Giới hạn số lượng articles để dịch
+        translation_method: 'cloud' hoặc 'web' (default: 'cloud')
+        headless: Run browser in headless mode (chỉ cần khi translation_method='web')
     """
     # Lấy tất cả article_detail có language='da' và published_url không phải kl.sermitsiaq.ag
     query = ArticleDetail.query.filter(
@@ -922,7 +990,7 @@ def translate_da_article_details_to_en(limit=None):
                 continue
             
             # Tạo EN version
-            en_detail = create_en_article_detail_from_da(da_detail)
+            en_detail = create_en_article_detail_from_da(da_detail, delay=0.3, translation_method=translation_method, headless=headless)
             if en_detail:
                 success_count += 1
             else:
@@ -1695,7 +1763,7 @@ def update_is_temp_flag():
         db.session.rollback()
 
 
-def crawl_all(language=None, section=None, limit=None, headless=True, delay=2, auto_translate=True, translate_delay=0.3, download_images=True):
+def crawl_all(language=None, section=None, limit=None, headless=True, delay=2, auto_translate=True, translate_delay=0.3, download_images=True, translation_method='cloud'):
     """
     Crawl tất cả articles chưa có detail
     
@@ -1708,6 +1776,7 @@ def crawl_all(language=None, section=None, limit=None, headless=True, delay=2, a
         auto_translate: Tự động translate article_detail DA sang EN sau khi crawl xong
         translate_delay: Delay giữa các lần translate (seconds)
         download_images: Download images về .com domain nếu True
+        translation_method: 'cloud' hoặc 'web' (default: 'cloud')
     """
     articles = get_articles_to_crawl(language=language, section=section, limit=limit)
     
@@ -1733,6 +1802,7 @@ def crawl_all(language=None, section=None, limit=None, headless=True, delay=2, a
     print(f"   Delay: {delay}s giữa các requests")
     print(f"   Auto-translate: {auto_translate}")
     if auto_translate:
+        print(f"   Translation method: {translation_method.upper()}")
         print(f"   Translate delay: {translate_delay}s")
     print(f"   Download images: {download_images}\n")
     
@@ -1784,6 +1854,9 @@ def crawl_all(language=None, section=None, limit=None, headless=True, delay=2, a
     if auto_translate and crawled_da_details:
         print(f"\n{'='*60}")
         print(f"🌐 Bắt đầu translate {len(crawled_da_details)} article_detail từ DA sang EN...")
+        print(f"   Translation method: {translation_method.upper()}")
+        if translation_method == 'web':
+            print(f"   Headless: {headless}")
         print(f"{'='*60}\n")
         
         translate_success = 0
@@ -1805,7 +1878,12 @@ def crawl_all(language=None, section=None, limit=None, headless=True, delay=2, a
                     continue
                 
                 # Chỉ translate nếu chưa có ArticleDetail với URL này
-                en_detail = create_en_article_detail_from_da(da_detail, delay=translate_delay)
+                en_detail = create_en_article_detail_from_da(
+                    da_detail, 
+                    delay=translate_delay, 
+                    translation_method=translation_method,
+                    headless=headless
+                )
                 
                 if en_detail:
                     translate_success += 1
@@ -1897,13 +1975,19 @@ Examples:
                         help='Giới hạn số lượng article_detail để dịch')
     parser.add_argument('--no-download-images', action='store_true',
                         help='Tắt tự động download images về .com domain (mặc định: bật)')
+    parser.add_argument('--translation-method', choices=['cloud', 'web'], default='cloud',
+                        help='Phương án dịch: "cloud" (Google Cloud API - dự phòng) hoặc "web" (Google Translate Web - chính)')
     
     args = parser.parse_args()
     
     with app.app_context():
         if args.translate_only:
             # Chỉ dịch, không crawl
-            translate_da_article_details_to_en(limit=args.translate_limit)
+            translate_da_article_details_to_en(
+                limit=args.translate_limit,
+                translation_method=args.translation_method,
+                headless=not args.no_headless
+            )
         elif args.list:
             list_articles_to_crawl(
                 language=args.language,
@@ -1921,7 +2005,8 @@ Examples:
                 delay=args.delay,
                 auto_translate=not args.no_auto_translate,  # Mặc định bật auto-translate
                 translate_delay=args.translate_delay,
-                download_images=not args.no_download_images  # Mặc định bật download images
+                download_images=not args.no_download_images,  # Mặc định bật download images
+                translation_method=args.translation_method  # Phương án dịch
             )
 
 

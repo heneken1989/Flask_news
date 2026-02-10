@@ -182,11 +182,124 @@ def translate_article(dk_article, target_language='en', delay=0.5):
                 translated_layout_data['list_items'] = translated_list_items
             
             # Translate title_parts nếu có (cho highlights)
+            # ⚠️ QUAN TRỌNG: Thay vì dịch từng part riêng lẻ (có thể dịch sai tên riêng),
+            # ta sẽ dùng translated_title đã dịch để reconstruct title_parts
             if 'title_parts' in translated_layout_data and isinstance(translated_layout_data['title_parts'], list):
-                for part in translated_layout_data['title_parts']:
-                    if isinstance(part, dict) and 'text' in part and part['text']:
-                        part['text'] = translator.translate(part['text'])
-                        time.sleep(delay)
+                original_title_parts = translated_layout_data['title_parts']
+                
+                # Reconstruct title_parts từ translated_title để đảm bảo consistency
+                # Giữ nguyên color_class từ original parts
+                if translated_title and original_title_parts:
+                    # Tìm các phần được highlight (có color_class)
+                    highlighted_parts = [p for p in original_title_parts if isinstance(p, dict) and p.get('color_class')]
+                    
+                    if highlighted_parts:
+                        # Có highlighted parts - cần tìm text tương ứng trong translated_title
+                        # Strategy: Tìm text được highlight trong original, map sang translated_title
+                        new_title_parts = []
+                        remaining_title = translated_title
+                        
+                        for i, original_part in enumerate(original_title_parts):
+                            if isinstance(original_part, dict) and original_part.get('color_class'):
+                                # Đây là highlighted part
+                                original_text = original_part.get('text', '').strip()
+                                
+                                # Tìm text tương ứng trong translated_title
+                                # Nếu original_text là tên riêng, có thể đã bị dịch sai
+                                # Nên ta sẽ tìm text ở vị trí tương ứng trong translated_title
+                                
+                                # Fallback: Nếu không tìm thấy, dịch original_text
+                                if original_text in remaining_title:
+                                    # Tìm thấy exact match
+                                    pos = remaining_title.find(original_text)
+                                    if pos > 0:
+                                        # Text trước highlighted part
+                                        before_text = remaining_title[:pos]
+                                        if before_text.strip():
+                                            new_title_parts.append({
+                                                'text': before_text,
+                                                'color_class': None
+                                            })
+                                    
+                                    # Highlighted part
+                                    highlighted_text = remaining_title[pos:pos + len(original_text)]
+                                    new_title_parts.append({
+                                        'text': highlighted_text,
+                                        'color_class': original_part.get('color_class')
+                                    })
+                                    
+                                    remaining_title = remaining_title[pos + len(original_text):]
+                                else:
+                                    # Không tìm thấy - có thể là tên riêng bị dịch sai
+                                    # Dịch original_text để lấy bản dịch
+                                    try:
+                                        translated_part = translator.translate(original_text)
+                                        time.sleep(delay)
+                                        
+                                        # Tìm translated_part trong remaining_title
+                                        if translated_part in remaining_title:
+                                            pos = remaining_title.find(translated_part)
+                                            if pos > 0:
+                                                before_text = remaining_title[:pos]
+                                                if before_text.strip():
+                                                    new_title_parts.append({
+                                                        'text': before_text,
+                                                        'color_class': None
+                                                    })
+                                            
+                                            new_title_parts.append({
+                                                'text': translated_part,
+                                                'color_class': original_part.get('color_class')
+                                            })
+                                            remaining_title = remaining_title[pos + len(translated_part):] if pos >= 0 else remaining_title
+                                        else:
+                                            # Không tìm thấy trong translated_title - có thể đã bị dịch khác
+                                            # Dùng translated_part trực tiếp
+                                            new_title_parts.append({
+                                                'text': translated_part,
+                                                'color_class': original_part.get('color_class')
+                                            })
+                                    except:
+                                        # Lỗi dịch - giữ nguyên original text
+                                        new_title_parts.append({
+                                            'text': original_text,
+                                            'color_class': original_part.get('color_class')
+                                        })
+                            else:
+                                # Non-highlighted part - bỏ qua vì sẽ được thêm vào cuối
+                                pass
+                        
+                        # Thêm phần còn lại
+                        if remaining_title.strip():
+                            new_title_parts.append({
+                                'text': remaining_title,
+                                'color_class': None
+                            })
+                        
+                        # Nếu không tạo được parts hợp lý, fallback: split translated_title dựa trên structure của original
+                        if not new_title_parts or ''.join([p.get('text', '') for p in new_title_parts]).strip() != translated_title.strip():
+                            # Fallback: Tạo parts đơn giản từ translated_title
+                            # Giữ highlight cho part đầu tiên nếu có
+                            if ':' in translated_title:
+                                parts = translated_title.split(':', 1)
+                                new_title_parts = [
+                                    {'text': parts[0] + ':', 'color_class': original_title_parts[0].get('color_class') if original_title_parts and isinstance(original_title_parts[0], dict) else None},
+                                    {'text': parts[1], 'color_class': None}
+                                ]
+                            else:
+                                new_title_parts = [{'text': translated_title, 'color_class': original_title_parts[0].get('color_class') if original_title_parts and isinstance(original_title_parts[0], dict) else None}]
+                        
+                        translated_layout_data['title_parts'] = new_title_parts
+                        print(f"   ✅ Title parts reconstructed from translated title")
+                    else:
+                        # Không có highlighted parts - tạo parts đơn giản
+                        translated_layout_data['title_parts'] = [{'text': translated_title, 'color_class': None}]
+                else:
+                    # Fallback: Dịch từng part như cũ (nếu không có translated_title)
+                    for part in translated_layout_data['title_parts']:
+                        if isinstance(part, dict) and 'text' in part and part['text']:
+                            part['text'] = translator.translate(part['text'])
+                            time.sleep(delay)
         
         # Create translated article (lưu trực tiếp, không dùng temp)
         en_article = Article(
