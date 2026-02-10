@@ -17,6 +17,7 @@ import sys
 import os
 import json
 import argparse
+import re
 from pathlib import Path
 from datetime import datetime
 
@@ -525,31 +526,50 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                     # Tìm article cùng language
                     # Với EN: tìm EN article có published_url = DA URL (từ layout)
                     # Với DA: tìm DA article có published_url = DA URL (từ layout)
+                    # ⚠️ QUAN TRỌNG: Với liveblog, có thể có nhiều articles cùng URL
+                    # → Ưu tiên: 1) is_home=True, 2) section='home' (nếu require), 3) created_at mới nhất
+                    candidates = []
                     for article in articles_map[published_url]:
                         if article.language == language:
                             # Với 1_with_list_left/right: chỉ lấy article có section='home'
                             if require_home_section:
                                 if article.section == 'home':
-                                    matched_article = article
-                                    break
+                                    candidates.append(article)
                             else:
-                                matched_article = article
-                                break
+                                candidates.append(article)
+                    
+                    if candidates:
+                        # Ưu tiên: 1) is_home=True, 2) created_at mới nhất
+                        candidates.sort(key=lambda a: (
+                            not a.is_home,  # is_home=True sẽ ở đầu (False < True)
+                            -(a.created_at.timestamp() if a.created_at else 0)  # Mới nhất ở đầu
+                        ))
+                        matched_article = candidates[0]
                     
                     # Nếu không tìm thấy và language='en', thử tìm bằng cách khác
                     if not matched_article and language == 'en':
                         # Tìm DA article trước
-                        da_article = None
+                        # ⚠️ QUAN TRỌNG: Với liveblog, có thể có nhiều DA articles cùng URL
+                        # → Ưu tiên: 1) is_home=True, 2) section='home' (nếu require), 3) created_at mới nhất
+                        da_candidates = []
                         for article in articles_map[published_url]:
                             if article.language == 'da':
                                 # Với 1_with_list_left/right: chỉ lấy article có section='home'
                                 if require_home_section:
                                     if article.section == 'home':
-                                        da_article = article
-                                        break
+                                        da_candidates.append(article)
                                 else:
-                                    da_article = article
-                                    break
+                                    da_candidates.append(article)
+                        
+                        if da_candidates:
+                            # Ưu tiên: 1) is_home=True, 2) created_at mới nhất
+                            da_candidates.sort(key=lambda a: (
+                                not a.is_home,  # is_home=True sẽ ở đầu (False < True)
+                                -(a.created_at.timestamp() if a.created_at else 0)  # Mới nhất ở đầu
+                            ))
+                            da_article = da_candidates[0]
+                        else:
+                            da_article = None
                         
                         if da_article:
                             # Tìm EN version từ DA article
@@ -721,6 +741,40 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                             matched_article.layout_type = layout_type
                             matched_article.grid_size = layout_item.get('grid_size', 6)
                             matched_article.is_home = True
+                            
+                            # ⚠️ QUAN TRỌNG: Với liveblog, có thể có nhiều articles cùng article ID nhưng khác URL
+                            # → Set is_home=True cho article mới nhất, is_home=False cho các articles cũ
+                            try:
+                                # Extract article ID từ URL (số cuối cùng sau dấu `/`)
+                                article_id_match = re.search(r'/(\d+)$', published_url)
+                                if article_id_match:
+                                    article_id_from_url = int(article_id_match.group(1))
+                                    
+                                    # Tìm tất cả articles khác có cùng article ID và cùng language
+                                    # (trừ article hiện tại)
+                                    other_articles = Article.query.filter(
+                                        Article.id != matched_article.id,
+                                        Article.language == language,
+                                        or_(
+                                            Article.published_url.like(f'%/{article_id_from_url}'),
+                                            Article.published_url_en.like(f'%/{article_id_from_url}')
+                                        ),
+                                        or_(Article.is_deleted == False, Article.is_deleted.is_(None))
+                                    ).all()
+                                    
+                                    if other_articles:
+                                        # Set is_home=False cho các articles cũ
+                                        updated_count = 0
+                                        for old_article in other_articles:
+                                            if old_article.is_home:
+                                                old_article.is_home = False
+                                                updated_count += 1
+                                                print(f"         🔄 Set is_home=False for older article (ID: {old_article.id}, URL: {old_article.published_url[:50] if old_article.published_url else 'N/A'}...)")
+                                        
+                                        if updated_count > 0:
+                                            print(f"         ✅ Updated {updated_count} older articles with same article ID ({article_id_from_url})")
+                            except Exception as e:
+                                print(f"         ⚠️  Error handling duplicate article IDs: {e}")
                             
                             # ⚠️ CRITICAL: Chỉ update layout_data và flag_modified KHI layout_data thực sự thay đổi
                             # Tránh unnecessary updates và flag_modified calls
@@ -913,7 +967,43 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                             if list_items:
                                 print(f"         📋 List items saved: {len(list_items)} items")
                         elif not dry_run:
-                            # Không cần update, nhưng vẫn mark URL as processed
+                            # Không cần update, nhưng vẫn cần đảm bảo các articles cũ được set is_home=False
+                            # (nếu article này đã có is_home=True)
+                            if matched_article.is_home:
+                                try:
+                                    # Extract article ID từ URL (số cuối cùng sau dấu `/`)
+                                    article_id_match = re.search(r'/(\d+)$', published_url)
+                                    if article_id_match:
+                                        article_id_from_url = int(article_id_match.group(1))
+                                        
+                                        # Tìm tất cả articles khác có cùng article ID và cùng language
+                                        # (trừ article hiện tại)
+                                        other_articles = Article.query.filter(
+                                            Article.id != matched_article.id,
+                                            Article.language == language,
+                                            or_(
+                                                Article.published_url.like(f'%/{article_id_from_url}'),
+                                                Article.published_url_en.like(f'%/{article_id_from_url}')
+                                            ),
+                                            Article.is_home == True,  # Chỉ set False cho articles đang có is_home=True
+                                            or_(Article.is_deleted == False, Article.is_deleted.is_(None))
+                                        ).all()
+                                        
+                                        if other_articles:
+                                            # Set is_home=False cho các articles cũ
+                                            updated_count = 0
+                                            for old_article in other_articles:
+                                                old_article.is_home = False
+                                                updated_count += 1
+                                                print(f"         🔄 Set is_home=False for older article (ID: {old_article.id}, URL: {old_article.published_url[:50] if old_article.published_url else 'N/A'}...)")
+                                            
+                                            if updated_count > 0:
+                                                db.session.commit()
+                                                print(f"         ✅ Updated {updated_count} older articles with same article ID ({article_id_from_url})")
+                                except Exception as e:
+                                    print(f"         ⚠️  Error handling duplicate article IDs: {e}")
+                            
+                            # Mark URL as processed
                             processed_urls.add(published_url)
                             print(f"      ⏭️  Article already up-to-date (ID: {matched_article.id})")
                         else:
