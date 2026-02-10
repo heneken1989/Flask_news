@@ -5,6 +5,44 @@ from deep_translator import GoogleTranslator
 from database import Article, db
 import time
 from datetime import datetime
+from contextlib import contextmanager
+from seleniumbase import SB
+import os
+from pathlib import Path
+
+# User data directory riêng cho Google Translate Web
+USER_DATA_DIR_TRANSLATE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'user_data_translate')
+
+
+def get_chrome_options_for_headless():
+    """
+    Trả về Chrome options cần thiết cho Linux headless server
+    """
+    return "no-sandbox,disable-dev-shm-usage,disable-gpu"
+
+
+@contextmanager
+def start_browser_for_translate(headless=True):
+    """
+    Start browser để sử dụng Google Translate Web cho title/title_parts
+    
+    Args:
+        headless: Run browser in headless mode
+    
+    Yields:
+        SB instance
+    """
+    chrome_opts = get_chrome_options_for_headless()
+    os.makedirs(USER_DATA_DIR_TRANSLATE, exist_ok=True)
+    os.chmod(USER_DATA_DIR_TRANSLATE, 0o755)
+    
+    sb_context = SB(uc=True, headless=headless, user_data_dir=USER_DATA_DIR_TRANSLATE, chromium_arg=chrome_opts)
+    sb = sb_context.__enter__()
+    
+    try:
+        yield sb
+    finally:
+        sb_context.__exit__(None, None, None)
 
 
 def translate_article(dk_article, target_language='en', delay=0.5):
@@ -30,9 +68,31 @@ def translate_article(dk_article, target_language='en', delay=0.5):
     try:
         translator = GoogleTranslator(source='da', target='en')
         
-        # Translate title
-        translated_title = translator.translate(dk_article.title)
-        print(f"   ✅ Title translated")
+        # ⚠️ QUAN TRỌNG: Dùng Google Translate Web cho title để tránh dịch sai tên riêng
+        # Translate title bằng Google Translate Web
+        print(f"   🌐 Translating title using Google Translate Web...")
+        from scripts.google_translate_web_helper import translate_text_with_google_web
+        
+        translated_title = None
+        try:
+            with start_browser_for_translate(headless=True) as sb_web:
+                translated_title = translate_text_with_google_web(
+                    sb_web,
+                    dk_article.title,
+                    source_lang='da',
+                    target_lang='en'
+                )
+        except Exception as e:
+            print(f"   ⚠️  Error translating title with Google Translate Web: {e}")
+            # Fallback: dùng deep_translator
+            print(f"   🔄 Falling back to deep_translator for title...")
+            translated_title = translator.translate(dk_article.title)
+        
+        if translated_title:
+            print(f"   ✅ Title translated: '{dk_article.title[:50]}...' → '{translated_title[:50]}...'")
+        else:
+            print(f"   ⚠️  Title translation failed, using original")
+            translated_title = dk_article.title
         
         # Delay để tránh rate limit
         time.sleep(delay)
@@ -78,25 +138,58 @@ def translate_article(dk_article, target_language='en', delay=0.5):
                 time.sleep(delay)
             
             # Translate slider_articles (các articles trong slider)
+            # ⚠️ QUAN TRỌNG: Dùng Google Translate Web cho titles
             if 'slider_articles' in translated_layout_data and isinstance(translated_layout_data['slider_articles'], list):
                 print(f"   📰 Translating {len(translated_layout_data['slider_articles'])} slider articles...")
-                for article_idx, article in enumerate(translated_layout_data['slider_articles']):
-                    if isinstance(article, dict):
-                        # Translate article title
-                        if 'title' in article and article['title']:
-                            article['title'] = translator.translate(article['title'])
-                            time.sleep(delay)
-                        
-                        # Translate article kicker
-                        if 'kicker' in article and article['kicker']:
-                            article['kicker'] = translator.translate(article['kicker'])
-                            time.sleep(delay)
-                        
-                        # Translate article excerpt nếu có
-                        if 'excerpt' in article and article['excerpt']:
-                            article['excerpt'] = translator.translate(article['excerpt'])
-                            time.sleep(delay)
-                print(f"   ✅ Slider articles translated")
+                
+                # Tạo browser instance để dịch titles bằng Google Translate Web
+                from scripts.google_translate_web_helper import translate_text_with_google_web
+                try:
+                    with start_browser_for_translate(headless=True) as sb_web:
+                        for article_idx, article in enumerate(translated_layout_data['slider_articles']):
+                            if isinstance(article, dict):
+                                # Translate article title bằng Google Translate Web
+                                if 'title' in article and article['title']:
+                                    translated_title = translate_text_with_google_web(
+                                        sb_web,
+                                        article['title'],
+                                        source_lang='da',
+                                        target_lang='en'
+                                    )
+                                    if translated_title:
+                                        article['title'] = translated_title
+                                        time.sleep(delay)
+                                    else:
+                                        # Fallback: dùng deep_translator
+                                        article['title'] = translator.translate(article['title'])
+                                        time.sleep(delay)
+                                
+                                # Translate article kicker - dùng deep_translator (không phải title)
+                                if 'kicker' in article and article['kicker']:
+                                    article['kicker'] = translator.translate(article['kicker'])
+                                    time.sleep(delay)
+                                
+                                # Translate article excerpt nếu có - dùng deep_translator (không phải title)
+                                if 'excerpt' in article and article['excerpt']:
+                                    article['excerpt'] = translator.translate(article['excerpt'])
+                                    time.sleep(delay)
+                    print(f"   ✅ Slider articles translated (titles via Google Translate Web)")
+                except Exception as e:
+                    print(f"   ⚠️  Error translating slider articles with Google Translate Web: {e}")
+                    # Fallback: dùng deep_translator cho tất cả
+                    print(f"   🔄 Falling back to deep_translator for slider articles...")
+                    for article_idx, article in enumerate(translated_layout_data['slider_articles']):
+                        if isinstance(article, dict):
+                            if 'title' in article and article['title']:
+                                article['title'] = translator.translate(article['title'])
+                                time.sleep(delay)
+                            if 'kicker' in article and article['kicker']:
+                                article['kicker'] = translator.translate(article['kicker'])
+                                time.sleep(delay)
+                            if 'excerpt' in article and article['excerpt']:
+                                article['excerpt'] = translator.translate(article['excerpt'])
+                                time.sleep(delay)
+                    print(f"   ✅ Slider articles translated (fallback)")
             
             # Translate header_link text (cho JOB slider)
             if 'header_link' in translated_layout_data and isinstance(translated_layout_data['header_link'], dict):
@@ -159,17 +252,36 @@ def translate_article(dk_article, target_language='en', delay=0.5):
                         translated_list_items.append(translated_item)
                         print(f"      ✅ Found EN article for list item: {en_article.title[:50]}...")
                     else:
-                        # Không có EN article → translate text (fallback)
+                        # Không có EN article → translate text bằng Google Translate Web (fallback)
                         if da_title:
                             try:
-                                translated_title = translator.translate(da_title)
-                                translated_item = {
-                                    'url': item_url,
-                                    'title': translated_title
-                                }
-                                translated_list_items.append(translated_item)
-                                print(f"      🌐 Translated list item (no EN article found): {translated_title[:50]}...")
-                                time.sleep(delay)
+                                # ⚠️ QUAN TRỌNG: Dùng Google Translate Web cho list item titles
+                                from scripts.google_translate_web_helper import translate_text_with_google_web
+                                translated_title = None
+                                try:
+                                    with start_browser_for_translate(headless=True) as sb_web:
+                                        translated_title = translate_text_with_google_web(
+                                            sb_web,
+                                            da_title,
+                                            source_lang='da',
+                                            target_lang='en'
+                                        )
+                                except Exception as e:
+                                    print(f"      ⚠️  Error translating list item title with Google Translate Web: {e}")
+                                    # Fallback: dùng deep_translator
+                                    translated_title = translator.translate(da_title)
+                                
+                                if translated_title:
+                                    translated_item = {
+                                        'url': item_url,
+                                        'title': translated_title
+                                    }
+                                    translated_list_items.append(translated_item)
+                                    print(f"      🌐 Translated list item (Google Translate Web): {translated_title[:50]}...")
+                                    time.sleep(delay)
+                                else:
+                                    # Fallback: giữ nguyên DA title
+                                    translated_list_items.append(item)
                             except Exception as e:
                                 print(f"      ⚠️  Error translating list item title: {e}")
                                 # Fallback: giữ nguyên DA title
@@ -231,9 +343,22 @@ def translate_article(dk_article, target_language='en', delay=0.5):
                                     remaining_title = remaining_title[pos + len(original_text):]
                                 else:
                                     # Không tìm thấy - có thể là tên riêng bị dịch sai
-                                    # Dịch original_text để lấy bản dịch
+                                    # Dịch original_text bằng Google Translate Web để lấy bản dịch chính xác hơn
                                     try:
-                                        translated_part = translator.translate(original_text)
+                                        from scripts.google_translate_web_helper import translate_text_with_google_web
+                                        # Dùng browser instance đã có nếu có, nếu không tạo mới
+                                        # Note: Trong trường hợp này, chúng ta đang trong context của translate_article
+                                        # nên có thể tạo browser instance riêng cho title_parts
+                                        with start_browser_for_translate(headless=True) as sb_web:
+                                            translated_part = translate_text_with_google_web(
+                                                sb_web,
+                                                original_text,
+                                                source_lang='da',
+                                                target_lang='en'
+                                            )
+                                        if not translated_part:
+                                            # Fallback: dùng deep_translator
+                                            translated_part = translator.translate(original_text)
                                         time.sleep(delay)
                                         
                                         # Tìm translated_part trong remaining_title
