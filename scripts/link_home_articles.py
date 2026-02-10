@@ -20,6 +20,9 @@ import argparse
 import re
 from pathlib import Path
 from datetime import datetime
+from urllib.parse import urljoin
+
+import requests
 
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -38,6 +41,38 @@ from seleniumbase import SB
 
 # User data directory riêng cho Google Translate Web
 USER_DATA_DIR_TRANSLATE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'user_data_translate')
+
+
+def resolve_final_url(url, timeout=5):
+    """
+    Theo dõi redirect để lấy URL cuối cùng (canonical) cho các articles dạng liveblog.
+
+    Nếu có lỗi hoặc không resolve được, trả lại URL gốc.
+    """
+    if not url:
+        return url
+
+    try:
+        # Chuẩn hóa URL: layout có thể lưu dạng absolute hoặc relative
+        if url.startswith('http://') or url.startswith('https://'):
+            full_url = url
+        else:
+            # Home layout luôn crawl từ sermitisiaq.ag
+            full_url = urljoin('https://www.sermitsiaq.ag', url)
+
+        # Cố gắng dùng HEAD để nhẹ hơn, nếu fail thì fallback GET
+        try:
+            resp = requests.head(full_url, allow_redirects=True, timeout=timeout)
+            final_url = resp.url
+        except Exception:
+            resp = requests.get(full_url, allow_redirects=True, timeout=timeout)
+            final_url = resp.url
+
+        # Nếu server trả redirect (ví dụ liveblog slug mới) thì resp.url sẽ là URL cuối
+        return final_url or url
+    except Exception as e:
+        print(f"   ⚠️  resolve_final_url error for '{url}': {e}")
+        return url
 
 
 def get_chrome_options_for_headless():
@@ -160,9 +195,31 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
         # ⚠️ TỐI ƯU: Tạo set các URLs và slider keys từ layout trước
         # Để biết articles nào nên có is_home=True
         print(f"\n📋 Building layout reference sets...")
-        layout_urls = set()  # URLs của articles trong layout
+        layout_urls = set()  # URLs (đã resolve redirect) của articles trong layout
         layout_slider_keys = set()  # (layout_type, display_order) của sliders trong layout
-        
+
+        # Cache cho URL đã resolve để tránh gọi HTTP nhiều lần
+        resolved_url_cache = {}
+
+        def get_resolved_url(raw_url):
+            """
+            Trả về URL đã resolve redirect (nếu có).
+
+            - Dùng cache cho cùng một URL trong layout.
+            - Nếu không resolve được thì trả về URL gốc.
+            """
+            if not raw_url:
+                return raw_url
+            if raw_url in resolved_url_cache:
+                return resolved_url_cache[raw_url]
+
+            final_url = resolve_final_url(raw_url)
+            resolved_url_cache[raw_url] = final_url
+
+            if final_url != raw_url:
+                print(f"   🔁 Resolved redirect: {raw_url} → {final_url}")
+            return final_url
+
         for layout_item in layout_items:
             published_url = layout_item.get('published_url', '')
             layout_type = layout_item.get('layout_type', '')
@@ -173,7 +230,13 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                 layout_slider_keys.add((layout_type, display_order))
             elif published_url:
                 # Article thông thường: dùng published_url
-                layout_urls.add(published_url)
+                resolved_url = get_resolved_url(published_url)
+
+                # Lưu resolved URL vào layout_item để dùng lại ở bước sau
+                layout_item['_resolved_published_url'] = resolved_url
+
+                # Dùng resolved URL làm chuẩn để set is_home / disable articles
+                layout_urls.add(resolved_url)
         
         print(f"   Found {len(layout_urls)} article URLs in layout")
         print(f"   Found {len(layout_slider_keys)} slider containers in layout")
@@ -278,6 +341,8 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
         for idx, layout_item in enumerate(layout_items_sorted, 1):
             try:
                 published_url = layout_item.get('published_url', '')
+                # URL thật sự sau redirect (nếu có), ví dụ liveblog đổi slug
+                resolved_published_url = layout_item.get('_resolved_published_url') or published_url
                 layout_type = layout_item.get('layout_type', '')
                 display_order = layout_item.get('display_order', 0)
                 
@@ -477,11 +542,14 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                     continue
                 
                 # Xử lý articles thông thường (có published_url)
-                if not published_url:
+                if not resolved_published_url:
                     print(f"   [{idx}/{len(layout_items)}] ⚠️  Skipping item without URL (layout_type={layout_type})")
                     continue
                 
-                print(f"   [{idx}/{len(layout_items)}] Processing: {published_url[:60]}... (layout_type={layout_type}, display_order={display_order})")
+                if resolved_published_url != published_url:
+                    print(f"   [{idx}/{len(layout_items)}] Processing: {published_url[:60]}... → {resolved_published_url[:60]}... (layout_type={layout_type}, display_order={display_order})")
+                else:
+                    print(f"   [{idx}/{len(layout_items)}] Processing: {published_url[:60]}... (layout_type={layout_type}, display_order={display_order})")
                 
                 # Xử lý list_items cho 1_with_list_left/right
                 list_items = []
@@ -522,14 +590,17 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                 # ⚠️ QUAN TRỌNG: Với 1_with_list_left/right, chỉ tìm articles có section='home'
                 require_home_section = layout_type in ['1_with_list_left', '1_with_list_right']
                 
-                if published_url in articles_map:
+                # Lookup article theo URL đã resolve (nếu có redirect)
+                lookup_url = resolved_published_url
+
+                if lookup_url in articles_map:
                     # Tìm article cùng language
                     # Với EN: tìm EN article có published_url = DA URL (từ layout)
                     # Với DA: tìm DA article có published_url = DA URL (từ layout)
                     # ⚠️ QUAN TRỌNG: Với liveblog, có thể có nhiều articles cùng URL
                     # → Ưu tiên: 1) is_home=True, 2) section='home' (nếu require), 3) created_at mới nhất
                     candidates = []
-                    for article in articles_map[published_url]:
+                    for article in articles_map[lookup_url]:
                         if article.language == language:
                             # Với 1_with_list_left/right: chỉ lấy article có section='home'
                             if require_home_section:
@@ -554,7 +625,7 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                         # ⚠️ QUAN TRỌNG: Với liveblog, có thể có nhiều DA articles cùng URL
                         # → Ưu tiên: 1) is_home=True, 2) section='home' (nếu require), 3) created_at mới nhất
                         da_candidates = []
-                        for article in articles_map[published_url]:
+                        for article in articles_map[lookup_url]:
                             if article.language == 'da':
                                 # Với 1_with_list_left/right: chỉ lấy article có section='home'
                                 if require_home_section:
@@ -621,10 +692,10 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                                             print(f"      ⏭️  EN article found in final check (ID: {existing_en_final.id}), skipping creation...")
                                             matched_article = existing_en_final
                                             
-                                            # Add to articles_map để tránh query lại
-                                            if published_url not in articles_map:
-                                                articles_map[published_url] = []
-                                            articles_map[published_url].append(existing_en_final)
+                                            # Add to articles_map để tránh query lại (dùng lookup_url = resolved URL)
+                                            if lookup_url not in articles_map:
+                                                articles_map[lookup_url] = []
+                                            articles_map[lookup_url].append(existing_en_final)
                                         else:
                                             # Translate article
                                             en_article = translate_article(
@@ -658,10 +729,10 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                                                 matched_article = en_article
                                                 print(f"      ✅ Created EN article (ID: {en_article.id})")
                                                 
-                                                # Add to articles_map để tránh query lại
-                                                if published_url not in articles_map:
-                                                    articles_map[published_url] = []
-                                                articles_map[published_url].append(en_article)
+                                                # Add to articles_map để tránh query lại (dùng lookup_url = resolved URL)
+                                                if lookup_url not in articles_map:
+                                                    articles_map[lookup_url] = []
+                                                articles_map[lookup_url].append(en_article)
                                             else:
                                                 print(f"      ❌ Failed to translate article")
                                     except Exception as e:
@@ -745,11 +816,19 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                             matched_article.grid_size = layout_item.get('grid_size', 6)
                             matched_article.is_home = True
                             
+                            # ⚠️ QUAN TRỌNG: Với liveblog, nếu article trong DB có URL cũ nhưng layout có URL mới (sau redirect)
+                            # → Update published_url thành URL final để đảm bảo consistency
+                            if resolved_published_url != published_url and matched_article.published_url != resolved_published_url:
+                                print(f"         🔄 Updating published_url from old to final: {matched_article.published_url[:60] if matched_article.published_url else 'N/A'}... → {resolved_published_url[:60]}...")
+                                matched_article.published_url = resolved_published_url
+                            
                             # ⚠️ QUAN TRỌNG: Với liveblog, có thể có nhiều articles cùng article ID nhưng khác URL
                             # → Set is_home=True cho article mới nhất, is_home=False cho các articles cũ
                             try:
                                 # Extract article ID từ URL (số cuối cùng sau dấu `/`)
-                                article_id_match = re.search(r'/(\d+)$', published_url)
+                                # Ưu tiên dùng resolved_published_url (vì đó là URL thật của liveblog)
+                                id_source_url = resolved_published_url or published_url
+                                article_id_match = re.search(r'/(\d+)$', id_source_url)
                                 if article_id_match:
                                     article_id_from_url = int(article_id_match.group(1))
                                     
@@ -968,8 +1047,8 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                                 if not was_home:
                                     stats['articles_enabled'] += 1
                             
-                            # Mark URL as processed
-                            processed_urls.add(published_url)
+                            # Mark URL as processed (dùng lookup_url = resolved URL)
+                            processed_urls.add(lookup_url)
                             
                             print(f"      ✅ Updated article (ID: {matched_article.id})")
                             if require_home_section:
@@ -1019,8 +1098,8 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                             except Exception as e:
                                 print(f"         ⚠️  Error handling duplicate article IDs: {e}")
                             
-                            # Mark URL as processed
-                            processed_urls.add(published_url)
+                            # Mark URL as processed (dùng lookup_url = resolved URL)
+                            processed_urls.add(lookup_url)
                             print(f"      ⏭️  Article already up-to-date (ID: {matched_article.id})")
                         else:
                             # Dry run
@@ -1037,10 +1116,15 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                     matched_article = None
                     try:
                         # Extract article ID từ URL (số cuối cùng sau dấu `/`)
-                        article_id_match = re.search(r'/(\d+)$', published_url)
+                        # ⚠️ QUAN TRỌNG: Ưu tiên dùng resolved_published_url (URL thật sau redirect)
+                        id_source_url = resolved_published_url or published_url
+                        article_id_match = re.search(r'/(\d+)$', id_source_url)
                         if article_id_match:
                             article_id_from_url = int(article_id_match.group(1))
-                            print(f"      🔍 URL not found, trying to find by article ID: {article_id_from_url}")
+                            if resolved_published_url != published_url:
+                                print(f"      🔍 URL not found (resolved: {resolved_published_url[:60]}...), trying to find by article ID: {article_id_from_url}")
+                            else:
+                                print(f"      🔍 URL not found, trying to find by article ID: {article_id_from_url}")
                             
                             # Tìm articles có cùng article ID và cùng language
                             candidates_by_id = Article.query.filter(
@@ -1075,6 +1159,12 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                                     matched_article.layout_type = layout_type
                                     matched_article.grid_size = layout_item.get('grid_size', 6)
                                     
+                                    # ⚠️ QUAN TRỌNG: Với liveblog, nếu article trong DB có URL cũ nhưng layout có URL mới (sau redirect)
+                                    # → Update published_url thành URL final để đảm bảo consistency
+                                    if resolved_published_url != published_url and matched_article.published_url != resolved_published_url:
+                                        print(f"         🔄 Updating published_url from old to final: {matched_article.published_url[:60] if matched_article.published_url else 'N/A'}... → {resolved_published_url[:60]}...")
+                                        matched_article.published_url = resolved_published_url
+                                    
                                     # Set is_home=False cho các articles cũ cùng article ID
                                     for old_article in candidates_by_id[1:]:
                                         if old_article.is_home:
@@ -1085,7 +1175,7 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                                     stats['articles_found'] += 1
                                     stats['articles_updated'] += 1
                                     updated_article_ids.add(matched_article.id)
-                                    processed_urls.add(published_url)
+                                    processed_urls.add(lookup_url)  # Dùng lookup_url = resolved URL
                                     print(f"      ✅ Updated article by ID (ID: {matched_article.id})")
                             else:
                                 print(f"      ⚠️  Article not found by ID either: {article_id_from_url}")
