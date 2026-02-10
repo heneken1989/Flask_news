@@ -9,6 +9,7 @@ from contextlib import contextmanager
 from seleniumbase import SB
 import os
 from pathlib import Path
+import subprocess
 
 # User data directory riêng cho Google Translate Web
 USER_DATA_DIR_TRANSLATE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'user_data_translate')
@@ -19,6 +20,54 @@ def get_chrome_options_for_headless():
     Trả về Chrome options cần thiết cho Linux headless server
     """
     return "no-sandbox,disable-dev-shm-usage,disable-gpu"
+
+
+def kill_chrome_processes():
+    """
+    Kill tất cả Chrome/Chromium processes đang chạy để tránh conflict
+    (dùng trước & sau khi mở browser translate để tránh lỗi 'cannot connect to chrome')
+    """
+    try:
+        result = subprocess.run(
+            ['ps', 'aux'],
+            capture_output=True,
+            text=True
+        )
+
+        chrome_pids = []
+        for line in result.stdout.split('\n'):
+            if any(keyword in line.lower() for keyword in ['chrome', 'chromium', 'chromedriver']):
+                # Tránh kill chính Python process
+                parts = line.split()
+                if len(parts) > 1:
+                    try:
+                        pid = int(parts[1])
+                        # Không kill pid hiện tại
+                        if pid != os.getpid():
+                            chrome_pids.append(pid)
+                    except Exception:
+                        pass
+
+        if chrome_pids:
+            print(f"   🔪 [translation_service] Killing {len(chrome_pids)} Chrome/Chromium processes: {chrome_pids[:5]}{'...' if len(chrome_pids) > 5 else ''}")
+            for pid in chrome_pids:
+                try:
+                    os.kill(pid, 9)  # SIGKILL
+                except ProcessLookupError:
+                    # Process đã chết
+                    pass
+                except Exception as e:
+                    print(f"   ⚠️  [translation_service] Error killing process {pid}: {e}")
+
+            time.sleep(2)
+            print("   ✅ [translation_service] Killed Chrome processes")
+            return len(chrome_pids)
+
+        return 0
+
+    except Exception as e:
+        print(f"   ⚠️  [translation_service] Error killing Chrome processes: {e}")
+        return 0
 
 
 @contextmanager
@@ -32,17 +81,31 @@ def start_browser_for_translate(headless=True):
     Yields:
         SB instance
     """
+    # ⚠️ QUAN TRỌNG: Kill Chrome TRƯỚC khi mở browser translate
+    killed = kill_chrome_processes()
+    if killed > 0:
+        print("   ⏳ [translation_service] Waiting 2 seconds after killing Chrome...")
+        time.sleep(2)
+
     chrome_opts = get_chrome_options_for_headless()
     os.makedirs(USER_DATA_DIR_TRANSLATE, exist_ok=True)
     os.chmod(USER_DATA_DIR_TRANSLATE, 0o755)
-    
+
     sb_context = SB(uc=True, headless=headless, user_data_dir=USER_DATA_DIR_TRANSLATE, chromium_arg=chrome_opts)
     sb = sb_context.__enter__()
-    
+
     try:
         yield sb
     finally:
-        sb_context.__exit__(None, None, None)
+        try:
+            sb_context.__exit__(None, None, None)
+        except Exception as e:
+            print(f"   ⚠️  [translation_service] Error closing translate browser: {e}")
+
+        # Kill Chrome SAU khi dịch xong để cleanup
+        killed_after = kill_chrome_processes()
+        if killed_after:
+            print("   ✅ [translation_service] Chrome cleaned up after translate")
 
 
 def translate_article(dk_article, target_language='en', delay=0.5):

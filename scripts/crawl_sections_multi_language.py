@@ -31,7 +31,7 @@ from services.crawl_service import SermitsiaqCrawler
 from services.article_matcher import match_and_link_articles
 from services.translation_service import translate_articles_batch
 from scripts.translate_article_urls import translate_url
-from scripts.crawl_article_details_batch import crawl_all as crawl_article_details
+from scripts.crawl_article_details_batch import crawl_all as crawl_article_details, kill_chrome_processes
 import argparse
 import time
 import subprocess
@@ -849,6 +849,15 @@ def main():
         print("📄 Starting article details crawl...")
         print("="*80)
         try:
+            # ⚠️ QUAN TRỌNG: Kill Chrome TRƯỚC khi bắt đầu batch crawl + translate ArticleDetail
+            try:
+                killed = kill_chrome_processes()
+                if killed > 0:
+                    print(f"   ⏳ Killed {killed} Chrome processes before article details crawl, waiting 2s...")
+                    time.sleep(2)
+            except Exception as e:
+                print(f"   ⚠️  Error killing Chrome before article details crawl: {e}")
+
             crawl_article_details(
                 language=None,  # Crawl tất cả languages (DA và KL)
                 section=None,   # Crawl tất cả sections
@@ -878,6 +887,15 @@ def main():
         print("🏠 Processing home articles with link_home_articles.py")
         print("="*80)
         try:
+            # Kill Chrome TRƯỚC khi crawl home layout & resolve final URL liveblog
+            try:
+                killed = kill_chrome_processes()
+                if killed > 0:
+                    print(f"   ⏳ Killed {killed} Chrome processes before link_home_articles, waiting 2s...")
+                    time.sleep(2)
+            except Exception as e:
+                print(f"   ⚠️  Error killing Chrome before link_home_articles: {e}")
+
             # Gọi script link_home_articles.py
             script_path = Path(__file__).parent / 'link_home_articles.py'
             result = subprocess.run(

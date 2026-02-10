@@ -843,17 +843,29 @@ def save_layout_to_file(layout_items, output_file=None, language='da'):
     """
     Lưu layout structure vào file JSON
     
+    ⚠️ QUAN TRỌNG: Luôn ghi đè file cũ (mode 'w') để đảm bảo layout mới nhất được lưu.
+    
     Args:
         layout_items: List of layout items
         output_file: Path to output file (nếu None, tự động tạo tên)
         language: Language code để tạo tên file
+    
+    Returns:
+        str: Path to saved file
     """
     if output_file is None:
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
         output_file = f"home_layout_{language}_{timestamp}.json"
     
     output_path = Path(__file__).parent / 'home_layouts' / output_file
-    output_path.parent.mkdir(parents=True, exist_ok=True)
+    
+    # ⚠️ QUAN TRỌNG: Đảm bảo directory tồn tại
+    try:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        print(f"   📁 Output directory: {output_path.parent} (exists: {output_path.parent.exists()})")
+    except Exception as e:
+        print(f"   ❌ Error creating directory {output_path.parent}: {e}")
+        raise
     
     layout_data = {
         'language': language,
@@ -862,10 +874,33 @@ def save_layout_to_file(layout_items, output_file=None, language='da'):
         'layout_items': layout_items
     }
     
-    with open(output_path, 'w', encoding='utf-8') as f:
-        json.dump(layout_data, f, indent=2, ensure_ascii=False)
+    # ⚠️ QUAN TRỌNG: Luôn ghi đè file cũ (mode 'w')
+    try:
+        # Check nếu file cũ tồn tại
+        file_existed = output_path.exists()
+        
+        with open(output_path, 'w', encoding='utf-8') as f:
+            json.dump(layout_data, f, indent=2, ensure_ascii=False)
+        
+        # Verify file đã được ghi
+        if output_path.exists() and output_path.stat().st_size > 0:
+            action = "Overwritten" if file_existed else "Created"
+            print(f"   ✅ {action} layout file: {output_path}")
+            print(f"      File size: {output_path.stat().st_size:,} bytes")
+            print(f"      Total items: {len(layout_items)}")
+        else:
+            raise Exception(f"File was not written correctly (size: {output_path.stat().st_size if output_path.exists() else 0})")
+            
+    except PermissionError as e:
+        print(f"   ❌ Permission denied writing to {output_path}: {e}")
+        print(f"      Please check file permissions and directory ownership")
+        raise
+    except Exception as e:
+        print(f"   ❌ Error saving layout to {output_path}: {e}")
+        import traceback
+        traceback.print_exc()
+        raise
     
-    print(f"\n💾 Saved layout to: {output_path}")
     return str(output_path)
 
 
