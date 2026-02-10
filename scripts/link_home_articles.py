@@ -2258,16 +2258,22 @@ Examples:
                 language='kl',
                 headless=not args.no_headless
             )
-            
+
+            # Nếu crawl_home_layout trả về rỗng → coi như FAIL (có thể do resolve_final_url liveblog lỗi)
+            if not kl_layout_items:
+                print("   ❌ Failed to crawl KL home layout (no layout_items returned).")
+                print("      ⚠️  This may be caused by liveblog final URL check failing.")
+                print("      ⛔ Aborting link_home_articles to avoid saving WRONG layout (old URLs).")
+                sys.exit(1)
+
             # Tự động lưu KL layout file (ghi đè file cũ) cho cả dry-run và normal
-            if kl_layout_items:
-                output_file = "home_layout_kl.json"  # Tên cố định, ghi đè file cũ
-                saved_file = save_layout_to_file(
-                    layout_items=kl_layout_items,
-                    output_file=output_file,
-                    language='kl'
-                )
-                print(f"      💾 KL layout saved to: {saved_file} (overwrites existing file)")
+            output_file = "home_layout_kl.json"  # Tên cố định, ghi đè file cũ
+            saved_file = save_layout_to_file(
+                layout_items=kl_layout_items,
+                output_file=output_file,
+                language='kl'
+            )
+            print(f"      💾 KL layout saved to: {saved_file} (overwrites existing file)")
         
         if kl_layout_items:
             # ⚠️ QUAN TRỌNG: Delete old KL articles SAU KHI crawl (tạo mới), TRƯỚC KHI link
@@ -2350,11 +2356,13 @@ Examples:
             language=args.language,
             headless=not args.no_headless
         )
-        
+
         if not layout_items:
-            print("❌ Failed to crawl layout")
-            return
-        
+            print("❌ Failed to crawl layout (no layout_items returned).")
+            print("   ⚠️  This may be caused by liveblog final URL check failing.")
+            print("   ⛔ Aborting link_home_articles to avoid saving WRONG layout (old URLs).")
+            sys.exit(1)
+
         # ⚠️ QUAN TRỌNG: Tự động lưu layout file cho CẢ chế độ thường và dry-run
         # EN dùng chung layout với DA, nên luôn lưu với language tương ứng
         # Ghi đè file cũ (tên cố định) để không tạo quá nhiều file

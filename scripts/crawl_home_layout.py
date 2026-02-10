@@ -49,7 +49,7 @@ def get_chrome_options_for_headless():
     return "no-sandbox,disable-dev-shm-usage,disable-gpu"
 
 
-def resolve_final_url(url, timeout=5):
+def resolve_final_url(url, timeout=5, strict=False):
     """
     Theo dõi redirect để lấy URL cuối cùng (canonical) cho các articles dạng liveblog.
     
@@ -78,6 +78,9 @@ def resolve_final_url(url, timeout=5):
         return final_url or url
     except Exception as e:
         print(f"   ⚠️  resolve_final_url error for '{url}': {e}")
+        # strict=True: Dùng cho liveblog – nếu không resolve được thì FAIL CẢ SCRIPT
+        if strict:
+            raise
         return url
 
 
@@ -279,7 +282,9 @@ def crawl_home_layout(home_url='https://www.sermitsiaq.ag', language='da',
                 kicker_floating = layout_data.get('kicker_floating', '')
                 if kicker_floating and 'liveblog' in kicker_floating.lower():
                     print(f"   🔍 Detected liveblog article, resolving final URL: {published_url[:60]}...")
-                    resolved_url = resolve_final_url(published_url)
+                    # strict=True: Nếu resolve_final_url gặp lỗi (timeout, connection error, v.v.)
+                    #             → raise exception và DỪNG TOÀN BỘ SCRIPT (không lưu layout sai)
+                    resolved_url = resolve_final_url(published_url, timeout=5, strict=True)
                     if resolved_url != published_url:
                         print(f"      🔁 Resolved redirect: {published_url[:60]}... → {resolved_url[:60]}...")
                         published_url = resolved_url
