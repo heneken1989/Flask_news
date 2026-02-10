@@ -201,23 +201,63 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
         # Cache cho URL đã resolve để tránh gọi HTTP nhiều lần
         resolved_url_cache = {}
 
-        def get_resolved_url(raw_url):
+        def is_liveblog_article(layout_item):
+            """
+            Kiểm tra xem article có phải liveblog không dựa vào kicker_floating.
+            
+            Args:
+                layout_item: Layout item dict
+            
+            Returns:
+                bool: True nếu là liveblog article
+            """
+            # Check từ layout_data
+            layout_data = layout_item.get('layout_data', {})
+            kicker_floating = layout_data.get('kicker_floating', '')
+            if kicker_floating and 'liveblog' in kicker_floating.lower():
+                return True
+            
+            # Fallback: check trực tiếp từ layout_item (nếu có)
+            kicker = layout_item.get('kicker_floating', '')
+            if kicker and 'liveblog' in kicker.lower():
+                return True
+            
+            return False
+
+        def get_resolved_url(raw_url, is_liveblog=False):
             """
             Trả về URL đã resolve redirect (nếu có).
 
+            - Chỉ resolve redirect cho liveblog articles (vì chúng thường có redirect)
+            - Với articles thông thường, trả về URL gốc luôn (tiết kiệm thời gian)
             - Dùng cache cho cùng một URL trong layout.
             - Nếu không resolve được thì trả về URL gốc.
+            
+            Args:
+                raw_url: URL gốc
+                is_liveblog: True nếu là liveblog article
             """
             if not raw_url:
                 return raw_url
+            
+            # Chỉ resolve redirect cho liveblog articles
+            if not is_liveblog:
+                # Có thể bật log debug nếu cần:
+                # print(f"   ⏭️  Skipping redirect resolve for non-live article: {raw_url}")
+                return raw_url
+            
+            # Với liveblog, check cache trước
             if raw_url in resolved_url_cache:
                 return resolved_url_cache[raw_url]
 
+            print(f"   🔍 Resolving final URL for liveblog: {raw_url}")
             final_url = resolve_final_url(raw_url)
             resolved_url_cache[raw_url] = final_url
 
             if final_url != raw_url:
-                print(f"   🔁 Resolved redirect: {raw_url} → {final_url}")
+                print(f"   🔁 Resolved redirect (liveblog): {raw_url} → {final_url}")
+            else:
+                print(f"   ℹ️  No redirect for liveblog URL, using original")
             return final_url
 
         for layout_item in layout_items:
@@ -230,7 +270,9 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                 layout_slider_keys.add((layout_type, display_order))
             elif published_url:
                 # Article thông thường: dùng published_url
-                resolved_url = get_resolved_url(published_url)
+                # ⚠️ TỐI ƯU: Chỉ resolve redirect cho liveblog articles
+                is_liveblog = is_liveblog_article(layout_item)
+                resolved_url = get_resolved_url(published_url, is_liveblog=is_liveblog)
 
                 # Lưu resolved URL vào layout_item để dùng lại ở bước sau
                 layout_item['_resolved_published_url'] = resolved_url
@@ -2206,28 +2248,26 @@ Examples:
                 kl_layout_items = load_layout_from_file(str(kl_files[0]))
                 print(f"   ✅ Loaded KL layout from: {kl_files[0].name}")
         
-        # Nếu không có layout file hoặc có --crawl, crawl KL layout mới
+        # Nếu không có layout file hoặc có --crawl, luôn crawl KL layout mới
+        # ⚠️ QUAN TRỌNG: Việc crawl layout và lưu JSON KHÔNG ảnh hưởng đến database,
+        # nên vẫn an toàn khi chạy trong chế độ dry-run.
         if not kl_layout_items or args.crawl:
-            if not args.dry_run:
-                # Crawl KL layout để tạo articles vào DB
-                print(f"   🔄 Crawling fresh KL layout...")
-                kl_layout_items = crawl_home_layout(
-                    home_url='https://kl.sermitsiaq.ag',
-                    language='kl',
-                    headless=not args.no_headless
+            print(f"   🔄 Crawling fresh KL layout{' (dry run)' if args.dry_run else ''}...")
+            kl_layout_items = crawl_home_layout(
+                home_url='https://kl.sermitsiaq.ag',
+                language='kl',
+                headless=not args.no_headless
+            )
+            
+            # Tự động lưu KL layout file (ghi đè file cũ) cho cả dry-run và normal
+            if kl_layout_items:
+                output_file = "home_layout_kl.json"  # Tên cố định, ghi đè file cũ
+                saved_file = save_layout_to_file(
+                    layout_items=kl_layout_items,
+                    output_file=output_file,
+                    language='kl'
                 )
-                
-                # Tự động lưu KL layout file (ghi đè file cũ)
-                if kl_layout_items:
-                    output_file = "home_layout_kl.json"  # Tên cố định, ghi đè file cũ
-                    saved_file = save_layout_to_file(
-                        layout_items=kl_layout_items,
-                        output_file=output_file,
-                        language='kl'
-                    )
-                    print(f"      💾 KL layout saved to: {saved_file} (overwrites existing file)")
-            else:
-                print(f"   🔄 Would crawl KL layout (dry run)")
+                print(f"      💾 KL layout saved to: {saved_file} (overwrites existing file)")
         
         if kl_layout_items:
             # ⚠️ QUAN TRỌNG: Delete old KL articles SAU KHI crawl (tạo mới), TRƯỚC KHI link
@@ -2304,7 +2344,7 @@ Examples:
             else:
                 args.url = 'https://www.sermitsiaq.ag'
         
-        print(f"\n🔄 Crawling layout structure for {args.language.upper()}...")
+        print(f"\n🔄 Crawling layout structure for {args.language.upper()}{' (dry run)' if args.dry_run else ''}...")
         layout_items = crawl_home_layout(
             home_url=args.url,
             language=args.language,
@@ -2315,20 +2355,19 @@ Examples:
             print("❌ Failed to crawl layout")
             return
         
-        # ⚠️ QUAN TRỌNG: Tự động lưu layout file để EN có thể dùng
-        # EN dùng chung layout với DA, nên luôn lưu với language='da' cho DA layout
+        # ⚠️ QUAN TRỌNG: Tự động lưu layout file cho CẢ chế độ thường và dry-run
+        # EN dùng chung layout với DA, nên luôn lưu với language tương ứng
         # Ghi đè file cũ (tên cố định) để không tạo quá nhiều file
-        if not args.dry_run:
-            # Tên file cố định: home_layout_da.json, home_layout_kl.json
-            output_file = f"home_layout_{args.language}.json"
-            saved_file = save_layout_to_file(
-                layout_items=layout_items,
-                output_file=output_file,  # Tên cố định, ghi đè file cũ
-                language=args.language
-            )
-            print(f"   💾 Layout saved to: {saved_file} (overwrites existing file)")
-            if args.language == 'da':
-                print(f"   ℹ️  EN will use this layout file (EN uses same layout as DA)")
+        # Tên file cố định: home_layout_da.json, home_layout_kl.json, home_layout_en.json
+        output_file = f"home_layout_{args.language}.json"
+        saved_file = save_layout_to_file(
+            layout_items=layout_items,
+            output_file=output_file,  # Tên cố định, ghi đè file cũ
+            language=args.language
+        )
+        print(f"   💾 Layout saved to: {saved_file} (overwrites existing file)")
+        if args.language == 'da':
+            print(f"   ℹ️  EN will use this layout file (EN uses same layout as DA)")
     else:
         # Load từ file (chỉ khi user chỉ định rõ --layout-file)
         layout_items = load_layout_from_file(args.layout_file)

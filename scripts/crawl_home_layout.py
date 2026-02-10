@@ -31,6 +31,7 @@ from bs4 import BeautifulSoup
 from sqlalchemy import or_
 import time
 import re
+import requests
 
 # Import app và database khi cần (sẽ import trong function khi cần app context)
 
@@ -46,6 +47,38 @@ def get_chrome_options_for_headless():
     # --disable-dev-shm-usage: Tránh lỗi shared memory trên VPS
     # --disable-gpu: Tắt GPU (không cần trên server)
     return "no-sandbox,disable-dev-shm-usage,disable-gpu"
+
+
+def resolve_final_url(url, timeout=5):
+    """
+    Theo dõi redirect để lấy URL cuối cùng (canonical) cho các articles dạng liveblog.
+    
+    Nếu có lỗi hoặc không resolve được, trả lại URL gốc.
+    """
+    if not url:
+        return url
+    
+    try:
+        # Chuẩn hóa URL: layout có thể lưu dạng absolute hoặc relative
+        if url.startswith('http://') or url.startswith('https://'):
+            full_url = url
+        else:
+            # Home layout luôn crawl từ sermitisiaq.ag
+            full_url = urljoin('https://www.sermitsiaq.ag', url)
+        
+        # Cố gắng dùng HEAD để nhẹ hơn, nếu fail thì fallback GET
+        try:
+            resp = requests.head(full_url, allow_redirects=True, timeout=timeout)
+            final_url = resp.url
+        except Exception:
+            resp = requests.get(full_url, allow_redirects=True, timeout=timeout)
+            final_url = resp.url
+        
+        # Nếu server trả redirect (ví dụ liveblog slug mới) thì resp.url sẽ là URL cuối
+        return final_url or url
+    except Exception as e:
+        print(f"   ⚠️  resolve_final_url error for '{url}': {e}")
+        return url
 
 
 def extract_section_from_url(url):
@@ -239,8 +272,22 @@ def crawl_home_layout(home_url='https://www.sermitsiaq.ag', language='da',
                 layout_type = article_data.get('layout_type', '')
                 layout_data = article_data.get('layout_data', {})
                 
+                published_url = article_data.get('url', '')
+                
+                # ⚠️ QUAN TRỌNG: Với liveblog articles, resolve final URL ngay khi crawl layout
+                # Để layout file JSON có URL đúng (sau redirect), không phải URL gốc
+                kicker_floating = layout_data.get('kicker_floating', '')
+                if kicker_floating and 'liveblog' in kicker_floating.lower():
+                    print(f"   🔍 Detected liveblog article, resolving final URL: {published_url[:60]}...")
+                    resolved_url = resolve_final_url(published_url)
+                    if resolved_url != published_url:
+                        print(f"      🔁 Resolved redirect: {published_url[:60]}... → {resolved_url[:60]}...")
+                        published_url = resolved_url
+                    else:
+                        print(f"      ℹ️  No redirect, using original URL")
+                
                 layout_item = {
-                    'published_url': article_data.get('url', ''),
+                    'published_url': published_url,  # Dùng URL đã resolve (nếu là liveblog)
                     'layout_type': layout_type,
                     'display_order': article_data.get('display_order', 0),
                     'row_index': article_data.get('row_index', -1),
