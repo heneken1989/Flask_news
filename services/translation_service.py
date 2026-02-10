@@ -146,10 +146,10 @@ def translate_article(dk_article, target_language='en', delay=0.5):
                 from scripts.google_translate_web_helper import translate_text_with_google_web
                 try:
                     with start_browser_for_translate(headless=True) as sb_web:
-                for article_idx, article in enumerate(translated_layout_data['slider_articles']):
-                    if isinstance(article, dict):
+                        for article_idx, article in enumerate(translated_layout_data['slider_articles']):
+                            if isinstance(article, dict):
                                 # Translate article title bằng Google Translate Web
-                        if 'title' in article and article['title']:
+                                if 'title' in article and article['title']:
                                     translated_title = translate_text_with_google_web(
                                         sb_web,
                                         article['title'],
@@ -158,17 +158,16 @@ def translate_article(dk_article, target_language='en', delay=0.5):
                                     )
                                     if translated_title:
                                         article['title'] = translated_title
-                                        time.sleep(delay)
                                     else:
                                         # Fallback: dùng deep_translator
-                            article['title'] = translator.translate(article['title'])
-                            time.sleep(delay)
-                        
+                                        article['title'] = translator.translate(article['title'])
+                                    time.sleep(delay)
+                                
                                 # Translate article kicker - dùng deep_translator (không phải title)
-                        if 'kicker' in article and article['kicker']:
-                            article['kicker'] = translator.translate(article['kicker'])
-                            time.sleep(delay)
-                        
+                                if 'kicker' in article and article['kicker']:
+                                    article['kicker'] = translator.translate(article['kicker'])
+                                    time.sleep(delay)
+                                
                                 # Translate article excerpt nếu có - dùng deep_translator (không phải title)
                                 if 'excerpt' in article and article['excerpt']:
                                     article['excerpt'] = translator.translate(article['excerpt'])
@@ -186,9 +185,9 @@ def translate_article(dk_article, target_language='en', delay=0.5):
                             if 'kicker' in article and article['kicker']:
                                 article['kicker'] = translator.translate(article['kicker'])
                                 time.sleep(delay)
-                        if 'excerpt' in article and article['excerpt']:
-                            article['excerpt'] = translator.translate(article['excerpt'])
-                            time.sleep(delay)
+                            if 'excerpt' in article and article['excerpt']:
+                                article['excerpt'] = translator.translate(article['excerpt'])
+                                time.sleep(delay)
                     print(f"   ✅ Slider articles translated (fallback)")
             
             # Translate header_link text (cho JOB slider)
@@ -272,13 +271,13 @@ def translate_article(dk_article, target_language='en', delay=0.5):
                                 translated_title = translator.translate(da_title)
                                 
                                 if translated_title:
-                                translated_item = {
-                                    'url': item_url,
-                                    'title': translated_title
-                                }
-                                translated_list_items.append(translated_item)
+                                    translated_item = {
+                                        'url': item_url,
+                                        'title': translated_title
+                                    }
+                                    translated_list_items.append(translated_item)
                                     print(f"      🌐 Translated list item (Google Translate Web): {translated_title[:50]}...")
-                                time.sleep(delay)
+                                    time.sleep(delay)
                                 else:
                                     # Fallback: giữ nguyên DA title
                                     translated_list_items.append(item)
@@ -421,10 +420,10 @@ def translate_article(dk_article, target_language='en', delay=0.5):
                         translated_layout_data['title_parts'] = [{'text': translated_title, 'color_class': None}]
                 else:
                     # Fallback: Dịch từng part như cũ (nếu không có translated_title)
-                for part in translated_layout_data['title_parts']:
-                    if isinstance(part, dict) and 'text' in part and part['text']:
-                        part['text'] = translator.translate(part['text'])
-                        time.sleep(delay)
+                    for part in translated_layout_data['title_parts']:
+                        if isinstance(part, dict) and 'text' in part and part['text']:
+                            part['text'] = translator.translate(part['text'])
+                            time.sleep(delay)
         
         # Create translated article (lưu trực tiếp, không dùng temp)
         en_article = Article(
