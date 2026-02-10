@@ -78,3 +78,7 @@ scripts/home_layouts/*.backup*
 # Sitemap files (auto-generated, frequently updated)
 sitemap.xml
 sitemap-*.xml
+
+# Chrome user data (browser cache, should not be committed)
+user_data/
+user_data_*/
