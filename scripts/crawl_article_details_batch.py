@@ -405,19 +405,19 @@ def start_browser_for_translate(headless=True):
         sb_context.__exit__(None, None, None)
 
 
-def translate_content_blocks(content_blocks: list, source_lang: str = 'da', target_lang: str = 'en', delay: float = 0.3, translation_method: str = 'cloud', sb=None, headless: bool = True) -> list:
+def translate_content_blocks(content_blocks: list, source_lang: str = 'da', target_lang: str = 'en', delay: float = 0.3, translation_method: str = 'web', sb=None, headless: bool = True) -> list:
     """
     Dịch content_blocks từ source_lang sang target_lang
     Hỗ trợ 2 phương án:
+    - 'web': Google Translate Web (phương án chính - default)
     - 'cloud': Google Cloud Translation API (phương án dự phòng)
-    - 'web': Google Translate Web (phương án chính)
     
     Args:
         content_blocks: List of content blocks
         source_lang: Source language code ('da')
         target_lang: Target language code ('en')
         delay: Delay giữa các lần translate (giây) để tránh rate limit
-        translation_method: 'cloud' hoặc 'web' (default: 'cloud')
+        translation_method: 'web' hoặc 'cloud' (default: 'web')
         sb: SeleniumBase instance (chỉ cần khi translation_method='web')
         headless: Run browser in headless mode (chỉ cần khi translation_method='web')
         
@@ -802,40 +802,53 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
                     print(f"      ⚠️  Translation error for factbox content: {e}")
                     translated_block['content_text'] = block['content_text']
             
-            # Dịch content_html (chỉ dịch text trong HTML, giữ nguyên tags)
+            # Dịch content_html (dịch từng paragraph riêng biệt để giữ nguyên structure)
             if block.get('content_html'):
                 try:
                     from bs4 import BeautifulSoup
                     soup = BeautifulSoup(block['content_html'], 'html.parser')
                     
-                    # Extract text từ HTML
-                    full_text = soup.get_text(separator=' ', strip=False)
+                    # Dịch từng <p> tag riêng biệt để giữ nguyên line breaks
+                    paragraphs = soup.find_all('p')
                     
-                    if full_text.strip():
-                        # Dịch toàn bộ text
-                        translated_full_text = translate_text_with_google_cloud(full_text, source_lang, target_lang)
-                        time.sleep(delay)
+                    if paragraphs:
+                        for p in paragraphs:
+                            p_text = p.get_text(strip=False)
+                            if p_text.strip():
+                                # Dịch từng paragraph
+                                translated_p_text = translate_text_with_google_cloud(p_text, source_lang, target_lang)
+                                time.sleep(delay)
+                                
+                                if translated_p_text:
+                                    # Thay thế text trong paragraph
+                                    p.string = translated_p_text
                         
-                        if translated_full_text:
-                            # Thay thế text trong HTML
-                            text_nodes = soup.find_all(string=True)
-                            first_text_node = None
+                        translated_block['content_html'] = str(soup)
+                    else:
+                        # Fallback: không có <p> tags, dịch toàn bộ
+                        full_text = soup.get_text(separator=' ', strip=False)
+                        if full_text.strip():
+                            translated_full_text = translate_text_with_google_cloud(full_text, source_lang, target_lang)
+                            time.sleep(delay)
                             
-                            for text_node in text_nodes:
-                                if text_node.strip():
-                                    if first_text_node is None:
-                                        # Node đầu tiên: thay bằng translated text
-                                        first_text_node = text_node
-                                        text_node.replace_with(translated_full_text)
-                                    else:
-                                        # Các node khác: xóa (để tránh duplicate text)
-                                        text_node.replace_with('')
-                            
-                            translated_block['content_html'] = str(soup)
+                            if translated_full_text:
+                                # Thay thế text trong HTML
+                                text_nodes = soup.find_all(string=True)
+                                first_text_node = None
+                                
+                                for text_node in text_nodes:
+                                    if text_node.strip():
+                                        if first_text_node is None:
+                                            first_text_node = text_node
+                                            text_node.replace_with(translated_full_text)
+                                        else:
+                                            text_node.replace_with('')
+                                
+                                translated_block['content_html'] = str(soup)
+                            else:
+                                translated_block['content_html'] = block['content_html']
                         else:
                             translated_block['content_html'] = block['content_html']
-                    else:
-                        translated_block['content_html'] = block['content_html']
                 except Exception as e:
                     print(f"      ⚠️  Translation error for factbox content_html: {e}")
                     translated_block['content_html'] = block['content_html']
@@ -918,14 +931,14 @@ def extract_and_update_article_tags(article_detail: ArticleDetail, article_url: 
         return False
 
 
-def create_en_article_detail_from_da(da_article_detail: ArticleDetail, delay: float = 0.3, translation_method: str = 'cloud', headless: bool = True) -> ArticleDetail:
+def create_en_article_detail_from_da(da_article_detail: ArticleDetail, delay: float = 0.3, translation_method: str = 'web', headless: bool = True) -> ArticleDetail:
     """
     Tạo article_detail EN từ article_detail DA
     
     Args:
         da_article_detail: ArticleDetail object với language='da'
         delay: Delay giữa các lần translate (giây) để tránh rate limit
-        translation_method: 'cloud' hoặc 'web' (default: 'cloud')
+        translation_method: 'web' hoặc 'cloud' (default: 'web')
         headless: Run browser in headless mode (chỉ cần khi translation_method='web')
         
     Returns:
@@ -1011,13 +1024,13 @@ def create_en_article_detail_from_da(da_article_detail: ArticleDetail, delay: fl
         raise
 
 
-def translate_da_article_details_to_en(limit=None, translation_method='cloud', headless=True):
+def translate_da_article_details_to_en(limit=None, translation_method='web', headless=True):
     """
     Dịch tất cả article_detail từ DA sang EN
     
     Args:
         limit: Giới hạn số lượng articles để dịch
-        translation_method: 'cloud' hoặc 'web' (default: 'cloud')
+        translation_method: 'web' hoặc 'cloud' (default: 'web')
         headless: Run browser in headless mode (chỉ cần khi translation_method='web')
     """
     # Lấy tất cả article_detail có language='da' và published_url không phải kl.sermitsiaq.ag
@@ -1829,7 +1842,7 @@ def update_is_temp_flag():
         db.session.rollback()
 
 
-def crawl_all(language=None, section=None, limit=None, headless=True, delay=2, auto_translate=True, translate_delay=0.3, download_images=True, translation_method='cloud'):
+def crawl_all(language=None, section=None, limit=None, headless=True, delay=2, auto_translate=True, translate_delay=0.3, download_images=True, translation_method='web'):
     """
     Crawl tất cả articles chưa có detail
     
@@ -1842,7 +1855,7 @@ def crawl_all(language=None, section=None, limit=None, headless=True, delay=2, a
         auto_translate: Tự động translate article_detail DA sang EN sau khi crawl xong
         translate_delay: Delay giữa các lần translate (seconds)
         download_images: Download images về .com domain nếu True
-        translation_method: 'cloud' hoặc 'web' (default: 'cloud')
+        translation_method: 'web' hoặc 'cloud' (default: 'web')
     """
     articles = get_articles_to_crawl(language=language, section=section, limit=limit)
     
@@ -2041,8 +2054,8 @@ Examples:
                         help='Giới hạn số lượng article_detail để dịch')
     parser.add_argument('--no-download-images', action='store_true',
                         help='Tắt tự động download images về .com domain (mặc định: bật)')
-    parser.add_argument('--translation-method', choices=['cloud', 'web'], default='cloud',
-                        help='Phương án dịch: "cloud" (Google Cloud API - dự phòng) hoặc "web" (Google Translate Web - chính)')
+    parser.add_argument('--translation-method', choices=['cloud', 'web'], default='web',
+                        help='Phương án dịch: "web" (Google Translate Web - chính) hoặc "cloud" (Google Cloud API - dự phòng)')
     
     args = parser.parse_args()
     

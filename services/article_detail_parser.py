@@ -320,7 +320,7 @@ class ArticleDetailParser:
                 if ad_block:
                     blocks.append(ad_block)
                     order += 1
-            
+        
             # Factbox (e.g., "HOW YOUR MONEY IS SECURED")
             elif element.name == 'div' and 'factbox' in element.get('class', []):
                 factbox_block = ArticleDetailParser._parse_factbox(element, order)

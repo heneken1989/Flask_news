@@ -172,7 +172,7 @@
                                 <span class="{{ part.color_class }}">{{ part.text }}</span>
                             {% else %}
                                 {{ part.text }}
-                            {% endif %}
+                        {% endif %}
                         {% endfor %}
                     </h1>
                     {% else %}
@@ -529,6 +529,55 @@
                                     <{{ block.level }}>{{ block.text }}</{{ block.level }}>
                                 {% elif block.type in ['kicker', 'title', 'subtitle'] %}
                                     {# Already rendered in header, skip here #}
+                                {% elif block.type == 'factbox' %}
+                                    {# Render factbox (e.g., "HOW YOUR MONEY IS SECURED") #}
+                                    <div class="column factbox desktop-floatRight mobile-floatRight state-expanded-desktop small-12 large-4 small-abs-12 large-abs-4 style-fade expandable-mobile expandable-desktop collapsable-mobile collapsable-desktop" 
+                                         id="{{ block.factbox_id }}" 
+                                         data-element-guid="{{ block.element_guid }}"
+                                         style="">
+                                        <div class="content bg-octonary color_mobile_bg-octonary hasContentPadding mobile-hasContentPadding" style="">
+                                            {% if block.title %}
+                                            <h2 class="t16 tm18 font-weight-black m-font-weight-black bg-primary color_mobile_bg-primary align-center mobile_text_align_align-center font-IBMPlexSans hasTextPadding mobile-hasTextPadding" style="">
+                                                {{ block.title }}
+                                            </h2>
+                                            {% endif %}
+                                            {% if block.content_html %}
+                                            {{ block.content_html|safe }}
+                                            {% endif %}
+                                            <div class="toggle"></div>
+                                        </div>
+                                        
+                                        <script>
+                                        (function () {
+                                            var box = document.getElementById('{{ block.factbox_id }}');
+                                            if (box) {
+                                                var toggleEl = box.querySelector('.toggle');
+                                                if (toggleEl) {
+                                                    // Detect device (mobile or desktop)
+                                                    var labDevice = window.innerWidth < 768 ? 'mobile' : 'desktop';
+                                                    var isExpanded = box.classList.contains('state-expanded-' + labDevice);
+                                                    
+                                                    toggleEl.addEventListener('click', function(event) {
+                                                        event.preventDefault();
+                                                        event.stopPropagation();
+                                                        isExpanded = !isExpanded;
+                                                        
+                                                        if (!isExpanded) {
+                                                            box.classList.remove('state-expanded-mobile', 'state-expanded-desktop');
+                                                            var rect = box.getBoundingClientRect();
+                                                            var inViewport = rect.top >= 0 && rect.top <= window.innerHeight;
+                                                            if (!inViewport) {
+                                                                box.scrollIntoView({ behavior: 'smooth' });
+                                                            }
+                                                        } else {
+                                                            box.classList.add('state-expanded-mobile', 'state-expanded-desktop');
+                                                        }
+                                                    }, false);
+                                                }
+                                            }
+                                        }());
+                                        </script>
+                                    </div>
                                 {% elif block.type == 'image' %}
                                     {# Skip images with class headerImage in body - their captions will be moved to header #}
                                     {# Check if block has headerImage class or is marked as header image #}

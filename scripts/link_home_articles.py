@@ -809,21 +809,21 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                                                 else:
                                                     # Fallback: Dịch từng part bằng Google Translate Web nếu không có EN title
                                                     print(f"         🌐 Translating title_parts using Google Translate Web (fallback)...")
-                                                    translated_parts = []
+                                                translated_parts = []
                                                     
                                                     # Tạo browser instance để dịch title_parts
                                                     try:
                                                         with start_browser_for_translate(headless=True) as sb_web:
-                                                            for part in merged_layout_data['title_parts']:
-                                                                if isinstance(part, dict) and 'text' in part:
-                                                                    original_text = part['text']
-                                                                    
-                                                                    # Preserve leading/trailing spaces
-                                                                    leading_space = ' ' if original_text.startswith(' ') else ''
-                                                                    trailing_space = ' ' if original_text.endswith(' ') and not original_text.endswith('\n') else ''
-                                                                    
+                                                for part in merged_layout_data['title_parts']:
+                                                    if isinstance(part, dict) and 'text' in part:
+                                                        original_text = part['text']
+                                                        
+                                                        # Preserve leading/trailing spaces
+                                                        leading_space = ' ' if original_text.startswith(' ') else ''
+                                                        trailing_space = ' ' if original_text.endswith(' ') and not original_text.endswith('\n') else ''
+                                                        
                                                                     # Translate text bằng Google Translate Web
-                                                                    text_to_translate = original_text.strip()
+                                                        text_to_translate = original_text.strip()
                                                                     if text_to_translate:
                                                                         translated_text = translate_text_with_google_web(
                                                                             sb_web, 
@@ -832,25 +832,25 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                                                                             target_lang='en'
                                                                         )
                                                                         if translated_text:
-                                                                            # Restore spaces
-                                                                            translated_text = leading_space + translated_text + trailing_space
+                                                        # Restore spaces
+                                                        translated_text = leading_space + translated_text + trailing_space
                                                                         else:
                                                                             # Fallback: giữ nguyên nếu dịch lỗi
                                                                             translated_text = original_text
                                                                     else:
                                                                         translated_text = original_text
-                                                                    
-                                                                    translated_parts.append({
-                                                                        'text': translated_text,
-                                                                        'color_class': part.get('color_class')
-                                                                    })
+                                                        
+                                                        translated_parts.append({
+                                                            'text': translated_text,
+                                                            'color_class': part.get('color_class')
+                                                        })
                                                                     
                                                                     # Delay giữa các lần dịch
                                                                     time.sleep(0.5)
                                                         
-                                                        if translated_parts != en_layout_data.get('title_parts'):
-                                                            en_layout_data['title_parts'] = translated_parts
-                                                            en_layout_data_changed = True
+                                                if translated_parts != en_layout_data.get('title_parts'):
+                                                    en_layout_data['title_parts'] = translated_parts
+                                                    en_layout_data_changed = True
                                                             print(f"         ✅ Translated title_parts using Google Translate Web")
                                                     except Exception as e:
                                                         print(f"         ⚠️  Error translating title_parts with Google Translate Web: {e}")
@@ -1247,7 +1247,7 @@ def translate_slider_containers(language='da', dry_run=False, delay=0.5):
                         # Tạo browser instance để dịch
                         with start_browser_for_translate(headless=True) as sb_web:
                             # Translate title bằng Google Translate Web
-                            if da_slider.title:
+                        if da_slider.title:
                                 translated_title = translate_text_with_google_web(
                                     sb_web, 
                                     da_slider.title, 
@@ -1258,13 +1258,13 @@ def translate_slider_containers(language='da', dry_run=False, delay=0.5):
                                     en_slider.title = translated_title
                                     print(f"         📝 Translated title (Google Translate Web): '{da_slider.title}' → '{en_slider.title}'")
                                     time.sleep(delay)
+                        
+                        # Translate layout_data
+                        if da_slider.layout_data:
+                            en_layout_data = da_slider.layout_data.copy()
                             
-                            # Translate layout_data
-                            if da_slider.layout_data:
-                                en_layout_data = da_slider.layout_data.copy()
-                                
                                 # Translate slider_title bằng Google Translate Web
-                                if 'slider_title' in en_layout_data and en_layout_data['slider_title']:
+                            if 'slider_title' in en_layout_data and en_layout_data['slider_title']:
                                     translated_slider_title = translate_text_with_google_web(
                                         sb_web,
                                         en_layout_data['slider_title'],
@@ -1274,27 +1274,27 @@ def translate_slider_containers(language='da', dry_run=False, delay=0.5):
                                     if translated_slider_title:
                                         en_layout_data['slider_title'] = translated_slider_title
                                         print(f"         📝 Translated slider_title (Google Translate Web): '{en_layout_data.get('slider_title')}' → '{translated_slider_title}'")
-                                        time.sleep(delay)
-                                
+                                time.sleep(delay)
+                            
                                 # Translate header_link text (for job_slider) - dùng deep_translator (không phải title)
                                 from deep_translator import GoogleTranslator
                                 translator = GoogleTranslator(source='da', target='en')
-                                if 'header_link' in en_layout_data and en_layout_data['header_link']:
-                                    header_link = en_layout_data['header_link']
-                                    if isinstance(header_link, dict) and 'text' in header_link:
-                                        translated_text = translator.translate(header_link['text'])
-                                        en_layout_data['header_link']['text'] = translated_text
-                                        print(f"         📝 Translated header_link: '{header_link['text']}' → '{translated_text}'")
-                                        time.sleep(delay)
-                                
+                            if 'header_link' in en_layout_data and en_layout_data['header_link']:
+                                header_link = en_layout_data['header_link']
+                                if isinstance(header_link, dict) and 'text' in header_link:
+                                    translated_text = translator.translate(header_link['text'])
+                                    en_layout_data['header_link']['text'] = translated_text
+                                    print(f"         📝 Translated header_link: '{header_link['text']}' → '{translated_text}'")
+                                    time.sleep(delay)
+                            
                                 # Translate slider_articles titles bằng Google Translate Web
-                                if 'slider_articles' in en_layout_data and isinstance(en_layout_data['slider_articles'], list):
-                                    translated_articles = []
-                                    for article in en_layout_data['slider_articles']:
-                                        if isinstance(article, dict):
-                                            article_copy = article.copy()
+                            if 'slider_articles' in en_layout_data and isinstance(en_layout_data['slider_articles'], list):
+                                translated_articles = []
+                                for article in en_layout_data['slider_articles']:
+                                    if isinstance(article, dict):
+                                        article_copy = article.copy()
                                             # Translate title bằng Google Translate Web
-                                            if 'title' in article_copy and article_copy['title']:
+                                        if 'title' in article_copy and article_copy['title']:
                                                 translated_article_title = translate_text_with_google_web(
                                                     sb_web,
                                                     article_copy['title'],
@@ -1303,14 +1303,14 @@ def translate_slider_containers(language='da', dry_run=False, delay=0.5):
                                                 )
                                                 if translated_article_title:
                                                     article_copy['title'] = translated_article_title
-                                                    time.sleep(delay)
+                                            time.sleep(delay)
                                             # Translate kicker if exists - dùng deep_translator (không phải title)
-                                            if 'kicker' in article_copy and article_copy['kicker']:
-                                                article_copy['kicker'] = translator.translate(article_copy['kicker'])
-                                                time.sleep(delay)
-                                            translated_articles.append(article_copy)
-                                    
-                                    en_layout_data['slider_articles'] = translated_articles
+                                        if 'kicker' in article_copy and article_copy['kicker']:
+                                            article_copy['kicker'] = translator.translate(article_copy['kicker'])
+                                            time.sleep(delay)
+                                        translated_articles.append(article_copy)
+                                
+                                en_layout_data['slider_articles'] = translated_articles
                                     print(f"         📝 Translated {len(translated_articles)} slider articles (titles via Google Translate Web)")
                             
                             en_slider.layout_data = en_layout_data
