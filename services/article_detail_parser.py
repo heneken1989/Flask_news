@@ -320,6 +320,13 @@ class ArticleDetailParser:
                 if ad_block:
                     blocks.append(ad_block)
                     order += 1
+            
+            # Factbox (e.g., "HOW YOUR MONEY IS SECURED")
+            elif element.name == 'div' and 'factbox' in element.get('class', []):
+                factbox_block = ArticleDetailParser._parse_factbox(element, order)
+                if factbox_block:
+                    blocks.append(factbox_block)
+                    order += 1
         
         return blocks
     
@@ -560,6 +567,58 @@ class ArticleDetailParser:
             'classes': ad_element.get('class', []),
             'html': str(ad_element)
         }
+    
+    @staticmethod
+    def _parse_factbox(factbox_element, order: int) -> Optional[Dict]:
+        """
+        Parse factbox element (e.g., "HOW YOUR MONEY IS SECURED")
+        
+        Factbox structure:
+        <div class="factbox ...">
+            <div class="content">
+                <h2>Title</h2>
+                <div class="fact collapsableContent">
+                    <p>Content...</p>
+                </div>
+            </div>
+        </div>
+        """
+        try:
+            element_guid = factbox_element.get('data-element-guid', '')
+            factbox_id = factbox_element.get('id', '')
+            classes = factbox_element.get('class', [])
+            
+            # Find title (h2)
+            title = None
+            title_elem = factbox_element.find('h2')
+            if title_elem:
+                title = title_elem.get_text(strip=True)
+            
+            # Find content (.fact or .collapsableContent)
+            content_html = None
+            content_text = None
+            fact_div = factbox_element.find('div', class_='fact')
+            if not fact_div:
+                fact_div = factbox_element.find('div', class_='collapsableContent')
+            
+            if fact_div:
+                content_html = str(fact_div)
+                content_text = fact_div.get_text(strip=True)
+            
+            return {
+                'type': 'factbox',
+                'order': order,
+                'element_guid': element_guid,
+                'factbox_id': factbox_id,
+                'title': title,
+                'content_html': content_html,
+                'content_text': content_text,
+                'classes': classes,
+                'html': str(factbox_element)
+            }
+        except Exception as e:
+            print(f"Error parsing factbox: {e}")
+            return None
     
     @staticmethod
     def _parse_paywall_offers(offers_div, order: int) -> Optional[Dict]:

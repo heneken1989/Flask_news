@@ -774,6 +774,72 @@ def translate_content_blocks(content_blocks: list, source_lang: str = 'da', targ
                     # Giữ nguyên nếu dịch lỗi
                     translated_block['author'] = block['author']
         
+        # Dịch factbox block (title và content)
+        if block.get('type') == 'factbox':
+            # Dịch title
+            if block.get('title'):
+                try:
+                    translated_title = translate_text_with_google_cloud(block['title'], source_lang, target_lang)
+                    if translated_title:
+                        translated_block['title'] = translated_title
+                        time.sleep(delay)
+                    else:
+                        translated_block['title'] = block['title']
+                except Exception as e:
+                    print(f"      ⚠️  Translation error for factbox title: {e}")
+                    translated_block['title'] = block['title']
+            
+            # Dịch content_text
+            if block.get('content_text'):
+                try:
+                    translated_content = translate_text_with_google_cloud(block['content_text'], source_lang, target_lang)
+                    if translated_content:
+                        translated_block['content_text'] = translated_content
+                        time.sleep(delay)
+                    else:
+                        translated_block['content_text'] = block['content_text']
+                except Exception as e:
+                    print(f"      ⚠️  Translation error for factbox content: {e}")
+                    translated_block['content_text'] = block['content_text']
+            
+            # Dịch content_html (chỉ dịch text trong HTML, giữ nguyên tags)
+            if block.get('content_html'):
+                try:
+                    from bs4 import BeautifulSoup
+                    soup = BeautifulSoup(block['content_html'], 'html.parser')
+                    
+                    # Extract text từ HTML
+                    full_text = soup.get_text(separator=' ', strip=False)
+                    
+                    if full_text.strip():
+                        # Dịch toàn bộ text
+                        translated_full_text = translate_text_with_google_cloud(full_text, source_lang, target_lang)
+                        time.sleep(delay)
+                        
+                        if translated_full_text:
+                            # Thay thế text trong HTML
+                            text_nodes = soup.find_all(string=True)
+                            first_text_node = None
+                            
+                            for text_node in text_nodes:
+                                if text_node.strip():
+                                    if first_text_node is None:
+                                        # Node đầu tiên: thay bằng translated text
+                                        first_text_node = text_node
+                                        text_node.replace_with(translated_full_text)
+                                    else:
+                                        # Các node khác: xóa (để tránh duplicate text)
+                                        text_node.replace_with('')
+                            
+                            translated_block['content_html'] = str(soup)
+                        else:
+                            translated_block['content_html'] = block['content_html']
+                    else:
+                        translated_block['content_html'] = block['content_html']
+                except Exception as e:
+                    print(f"      ⚠️  Translation error for factbox content_html: {e}")
+                    translated_block['content_html'] = block['content_html']
+        
         # Giữ nguyên các block khác (ads, paywall_offers, etc.)
         translated_blocks.append(translated_block)
     
