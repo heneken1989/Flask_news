@@ -539,10 +539,12 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                                 candidates.append(article)
                     
                     if candidates:
-                        # Ưu tiên: 1) is_home=True, 2) created_at mới nhất
+                        # ⚠️ QUAN TRỌNG: Với liveblog, luôn ưu tiên article mới nhất (created_at)
+                        # Sau đó mới set is_home=True cho nó và is_home=False cho các articles cũ
+                        # Ưu tiên: 1) created_at mới nhất, 2) is_home=True (nếu cùng created_at)
                         candidates.sort(key=lambda a: (
-                            not a.is_home,  # is_home=True sẽ ở đầu (False < True)
-                            -(a.created_at.timestamp() if a.created_at else 0)  # Mới nhất ở đầu
+                            -(a.created_at.timestamp() if a.created_at else 0),  # Mới nhất ở đầu
+                            not a.is_home  # is_home=True sẽ ở đầu nếu cùng created_at
                         ))
                         matched_article = candidates[0]
                     
@@ -562,10 +564,11 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                                     da_candidates.append(article)
                         
                         if da_candidates:
-                            # Ưu tiên: 1) is_home=True, 2) created_at mới nhất
+                            # ⚠️ QUAN TRỌNG: Với liveblog, luôn ưu tiên article mới nhất (created_at)
+                            # Ưu tiên: 1) created_at mới nhất, 2) is_home=True (nếu cùng created_at)
                             da_candidates.sort(key=lambda a: (
-                                not a.is_home,  # is_home=True sẽ ở đầu (False < True)
-                                -(a.created_at.timestamp() if a.created_at else 0)  # Mới nhất ở đầu
+                                -(a.created_at.timestamp() if a.created_at else 0),  # Mới nhất ở đầu
+                                not a.is_home  # is_home=True sẽ ở đầu nếu cùng created_at
                             ))
                             da_article = da_candidates[0]
                         else:
@@ -752,8 +755,7 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                                     
                                     # Tìm tất cả articles khác có cùng article ID và cùng language
                                     # (trừ article hiện tại)
-                                    other_articles = Article.query.filter(
-                                        Article.id != matched_article.id,
+                                    all_articles_same_id = Article.query.filter(
                                         Article.language == language,
                                         or_(
                                             Article.published_url.like(f'%/{article_id_from_url}'),
@@ -762,10 +764,18 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                                         or_(Article.is_deleted == False, Article.is_deleted.is_(None))
                                     ).all()
                                     
-                                    if other_articles:
-                                        # Set is_home=False cho các articles cũ
+                                    # Sort theo created_at để tìm articles cũ hơn
+                                    matched_created_at = matched_article.created_at.timestamp() if matched_article.created_at else 0
+                                    older_articles = [
+                                        a for a in all_articles_same_id 
+                                        if a.id != matched_article.id 
+                                        and (a.created_at.timestamp() if a.created_at else 0) < matched_created_at
+                                    ]
+                                    
+                                    if older_articles:
+                                        # Set is_home=False cho các articles cũ hơn
                                         updated_count = 0
-                                        for old_article in other_articles:
+                                        for old_article in older_articles:
                                             if old_article.is_home:
                                                 old_article.is_home = False
                                                 updated_count += 1
@@ -968,40 +978,46 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                                 print(f"         📋 List items saved: {len(list_items)} items")
                         elif not dry_run:
                             # Không cần update, nhưng vẫn cần đảm bảo các articles cũ được set is_home=False
-                            # (nếu article này đã có is_home=True)
-                            if matched_article.is_home:
-                                try:
-                                    # Extract article ID từ URL (số cuối cùng sau dấu `/`)
-                                    article_id_match = re.search(r'/(\d+)$', published_url)
-                                    if article_id_match:
-                                        article_id_from_url = int(article_id_match.group(1))
-                                        
-                                        # Tìm tất cả articles khác có cùng article ID và cùng language
-                                        # (trừ article hiện tại)
-                                        other_articles = Article.query.filter(
-                                            Article.id != matched_article.id,
-                                            Article.language == language,
-                                            or_(
-                                                Article.published_url.like(f'%/{article_id_from_url}'),
-                                                Article.published_url_en.like(f'%/{article_id_from_url}')
-                                            ),
-                                            Article.is_home == True,  # Chỉ set False cho articles đang có is_home=True
-                                            or_(Article.is_deleted == False, Article.is_deleted.is_(None))
-                                        ).all()
-                                        
-                                        if other_articles:
-                                            # Set is_home=False cho các articles cũ
-                                            updated_count = 0
-                                            for old_article in other_articles:
+                            # (luôn chạy, không cần check is_home vì matched_article là article mới nhất)
+                            try:
+                                # Extract article ID từ URL (số cuối cùng sau dấu `/`)
+                                article_id_match = re.search(r'/(\d+)$', published_url)
+                                if article_id_match:
+                                    article_id_from_url = int(article_id_match.group(1))
+                                    
+                                    # Tìm tất cả articles khác có cùng article ID và cùng language
+                                    # (trừ article hiện tại)
+                                    all_articles_same_id = Article.query.filter(
+                                        Article.language == language,
+                                        or_(
+                                            Article.published_url.like(f'%/{article_id_from_url}'),
+                                            Article.published_url_en.like(f'%/{article_id_from_url}')
+                                        ),
+                                        or_(Article.is_deleted == False, Article.is_deleted.is_(None))
+                                    ).all()
+                                    
+                                    # Sort theo created_at để tìm articles cũ hơn
+                                    matched_created_at = matched_article.created_at.timestamp() if matched_article.created_at else 0
+                                    older_articles = [
+                                        a for a in all_articles_same_id 
+                                        if a.id != matched_article.id 
+                                        and (a.created_at.timestamp() if a.created_at else 0) < matched_created_at
+                                    ]
+                                    
+                                    if older_articles:
+                                        # Set is_home=False cho các articles cũ hơn
+                                        updated_count = 0
+                                        for old_article in older_articles:
+                                            if old_article.is_home:
                                                 old_article.is_home = False
                                                 updated_count += 1
                                                 print(f"         🔄 Set is_home=False for older article (ID: {old_article.id}, URL: {old_article.published_url[:50] if old_article.published_url else 'N/A'}...)")
-                                            
-                                            if updated_count > 0:
-                                                db.session.commit()
-                                                print(f"         ✅ Updated {updated_count} older articles with same article ID ({article_id_from_url})")
-                                except Exception as e:
-                                    print(f"         ⚠️  Error handling duplicate article IDs: {e}")
+                                        
+                                        if updated_count > 0:
+                                            db.session.commit()
+                                            print(f"         ✅ Updated {updated_count} older articles with same article ID ({article_id_from_url})")
+                            except Exception as e:
+                                print(f"         ⚠️  Error handling duplicate article IDs: {e}")
                             
                             # Mark URL as processed
                             processed_urls.add(published_url)
@@ -1016,17 +1032,79 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                             print(f"      ⚠️  Article found but language mismatch (need '{language}')")
                         stats['articles_not_found'] += 1
                 else:
-                    if require_home_section:
-                        print(f"      ⚠️  Article not found in DB with section='home' and language='{language}' (required for {layout_type}): {published_url[:60]}...")
-                    else:
-                        print(f"      ⚠️  Article not found in DB: {published_url[:60]}...")
-                    stats['articles_not_found'] += 1
-                    stats['errors'].append({
-                        'url': published_url,
-                        'reason': 'not_found_in_db',
-                        'layout_type': layout_type,
-                        'require_home_section': require_home_section
-                    })
+                    # ⚠️ QUAN TRỌNG: Nếu không tìm thấy theo URL, thử tìm theo article ID
+                    # (Với liveblog, có thể có nhiều articles cùng article ID nhưng khác URL)
+                    matched_article = None
+                    try:
+                        # Extract article ID từ URL (số cuối cùng sau dấu `/`)
+                        article_id_match = re.search(r'/(\d+)$', published_url)
+                        if article_id_match:
+                            article_id_from_url = int(article_id_match.group(1))
+                            print(f"      🔍 URL not found, trying to find by article ID: {article_id_from_url}")
+                            
+                            # Tìm articles có cùng article ID và cùng language
+                            candidates_by_id = Article.query.filter(
+                                or_(
+                                    Article.published_url.like(f'%/{article_id_from_url}'),
+                                    Article.published_url_en.like(f'%/{article_id_from_url}')
+                                ),
+                                Article.language == language,
+                                or_(Article.is_deleted == False, Article.is_deleted.is_(None))
+                            )
+                            
+                            # Với 1_with_list_left/right: chỉ lấy article có section='home'
+                            if require_home_section:
+                                candidates_by_id = candidates_by_id.filter_by(section='home')
+                            
+                            candidates_by_id = candidates_by_id.all()
+                            
+                            if candidates_by_id:
+                                # ⚠️ QUAN TRỌNG: Với liveblog, luôn ưu tiên article mới nhất (created_at)
+                                # Ưu tiên: 1) created_at mới nhất, 2) is_home=True (nếu cùng created_at)
+                                candidates_by_id.sort(key=lambda a: (
+                                    -(a.created_at.timestamp() if a.created_at else 0),  # Mới nhất ở đầu
+                                    not a.is_home  # is_home=True sẽ ở đầu nếu cùng created_at
+                                ))
+                                matched_article = candidates_by_id[0]
+                                print(f"      ✅ Found article by ID (DB ID: {matched_article.id}, URL: {matched_article.published_url[:50] if matched_article.published_url else 'N/A'}...)")
+                                
+                                # Set is_home=True cho article mới nhất và is_home=False cho các articles cũ
+                                if not dry_run:
+                                    matched_article.is_home = True
+                                    matched_article.display_order = display_order
+                                    matched_article.layout_type = layout_type
+                                    matched_article.grid_size = layout_item.get('grid_size', 6)
+                                    
+                                    # Set is_home=False cho các articles cũ cùng article ID
+                                    for old_article in candidates_by_id[1:]:
+                                        if old_article.is_home:
+                                            old_article.is_home = False
+                                            print(f"         🔄 Set is_home=False for older article (ID: {old_article.id}, URL: {old_article.published_url[:50] if old_article.published_url else 'N/A'}...)")
+                                    
+                                    db.session.commit()
+                                    stats['articles_found'] += 1
+                                    stats['articles_updated'] += 1
+                                    updated_article_ids.add(matched_article.id)
+                                    processed_urls.add(published_url)
+                                    print(f"      ✅ Updated article by ID (ID: {matched_article.id})")
+                            else:
+                                print(f"      ⚠️  Article not found by ID either: {article_id_from_url}")
+                    except Exception as e:
+                        print(f"      ⚠️  Error finding article by ID: {e}")
+                    
+                    # Nếu vẫn không tìm thấy
+                    if not matched_article:
+                        if require_home_section:
+                            print(f"      ⚠️  Article not found in DB with section='home' and language='{language}' (required for {layout_type}): {published_url[:60]}...")
+                        else:
+                            print(f"      ⚠️  Article not found in DB: {published_url[:60]}...")
+                        stats['articles_not_found'] += 1
+                        stats['errors'].append({
+                            'url': published_url,
+                            'reason': 'not_found_in_db',
+                            'layout_type': layout_type,
+                            'require_home_section': require_home_section
+                        })
                 
             except Exception as e:
                 error_msg = f"Error processing layout item {idx}: {e}"
