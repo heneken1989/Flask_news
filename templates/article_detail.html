@@ -163,17 +163,18 @@
                     <p class="{{ kicker_block.classes|join(' ') if kicker_block.classes else 'kicker' }}" style="">{{ kicker_block.text }}</p>
                     {% endif %}
                     
-                    {# Get title: Priority 1: title block from content_blocks, Priority 2: h1 heading from content_blocks, Priority 3: article.title #}
-                    {% set title_block = None %}
-                    {% if article_detail and article_detail.content_blocks %}
-                        {% set title_block = article_detail.content_blocks | selectattr('type', 'equalto', 'title') | first %}
-                        {% if not title_block %}
-                            {% set title_block = article_detail.content_blocks | selectattr('type', 'equalto', 'heading') | selectattr('level', 'equalto', 'h1') | first %}
-                        {% endif %}
-                    {% endif %}
-                    
-                    {% if title_block and title_block.text %}
-                    <h1 class="headline mainTitle" style="">{{ title_block.text }}</h1>
+                    {# Get title: Luôn dùng article.title để đồng nhất với trang home #}
+                    {# Có thể dùng title_parts nếu có (từ layout_data) để hiển thị với highlights #}
+                    {% if article.title_parts %}
+                    <h1 class="headline mainTitle" style="">
+                        {% for part in article.title_parts %}
+                            {% if part.color_class %}
+                                <span class="{{ part.color_class }}">{{ part.text }}</span>
+                            {% else %}
+                                {{ part.text }}
+                            {% endif %}
+                        {% endfor %}
+                    </h1>
                     {% else %}
                     <h1 class="headline mainTitle" style="">{{ article.title }}</h1>
                     {% endif %}
