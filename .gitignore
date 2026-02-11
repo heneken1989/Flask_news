@@ -78,3 +78,7 @@ scripts/home_layouts/*.backup*
 # Sitemap files (auto-generated, frequently updated)
 sitemap.xml
 sitemap-*.xml
+
+# Uploaded images (auto-downloaded, should not be committed)
+static/uploads/images/
+static/uploads/images/*
