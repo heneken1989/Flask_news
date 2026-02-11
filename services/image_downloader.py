@@ -190,11 +190,53 @@ def download_and_update_image_data(image_data: Dict, base_url: str = 'https://ww
         if image_data.get(key):
             original_url = image_data[key]
             
+            # Kiểm tra xem file đã tồn tại trên disk chưa (dựa trên imageId)
+            file_exists = False
+            if image_id:
+                file_path = os.path.join(save_dir, f"{image_id}.{format_type}")
+                file_exists = os.path.exists(file_path)
+            
             # Kiểm tra xem URL đã có .com domain chưa
             if isinstance(original_url, str) and 'sermitsiaq.com' in original_url:
-                # Đã có .com domain, giữ nguyên
-                updated_data[key] = original_url
-                print(f"      ℹ️  {key} already has .com domain, keeping: {original_url[:80]}...")
+                # Đã có .com domain
+                if file_exists:
+                    # File đã tồn tại, giữ nguyên URL
+                    updated_data[key] = original_url
+                    print(f"      ℹ️  {key} already has .com domain and file exists, keeping: {original_url[:80]}...")
+                else:
+                    # URL có .com nhưng file không tồn tại → download lại
+                    print(f"      🔄 {key} has .com domain but file missing, re-downloading...")
+                    # Tìm URL gốc từ các keys khác (có thể là image.sermitsiaq.ag)
+                    fallback_url = None
+                    for fallback_key in ['fallback', 'desktop_webp', 'desktop_jpeg', 'mobile_webp', 'mobile_jpeg']:
+                        if fallback_key != key and image_data.get(fallback_key):
+                            fallback_url_candidate = image_data[fallback_key]
+                            if isinstance(fallback_url_candidate, str) and 'image.sermitsiaq.ag' in fallback_url_candidate:
+                                fallback_url = fallback_url_candidate
+                                break
+                    
+                    # Nếu không tìm thấy URL gốc, reconstruct từ imageId
+                    if not fallback_url and image_id:
+                        # Reconstruct URL gốc từ imageId
+                        if format_type == 'webp':
+                            fallback_url = f"https://image.sermitsiaq.ag/{image_id}.webp?imageId={image_id}&format=webp"
+                        else:
+                            fallback_url = f"https://image.sermitsiaq.ag/{image_id}.{format_type}?imageId={image_id}&format={format_type}"
+                    
+                    if fallback_url:
+                        relative_path = download_image(fallback_url, save_dir, image_id, format_type)
+                        if relative_path:
+                            new_url = f"{base_url}{relative_path}"
+                            updated_data[key] = new_url
+                            print(f"      ✅ Re-downloaded {key}: {new_url}")
+                        else:
+                            # Giữ nguyên URL nếu download lỗi
+                            updated_data[key] = original_url
+                            print(f"      ⚠️  Failed to re-download {key}, keeping: {original_url[:80]}...")
+                    else:
+                        # Không tìm được URL gốc, giữ nguyên
+                        updated_data[key] = original_url
+                        print(f"      ⚠️  Could not find original URL for {key}, keeping: {original_url[:80]}...")
             else:
                 # Chưa có .com domain, download
                 relative_path = download_image(original_url, save_dir, image_id, format_type)

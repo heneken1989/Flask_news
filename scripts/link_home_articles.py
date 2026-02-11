@@ -30,7 +30,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from app import app
 from database import db, Article
 from scripts.crawl_home_layout import crawl_home_layout, save_layout_to_file
-from services.translation_service import translate_article
+from services.translation_service import translate_article, translate_text_with_google_cloud
 from scripts.translate_article_urls import translate_url
 from scripts.generate_sitemaps import generate_sitemap
 from scripts.google_translate_web_helper import translate_text_with_google_web
@@ -108,14 +108,14 @@ def start_browser_for_translate(headless=True):
 
 def translate_title_with_web(text, source_lang='da', target_lang='en', sb=None, headless=True):
     """
-    Dịch title sử dụng Google Translate Web
+    Dịch title sử dụng Google Cloud Translation API
     
     Args:
         text: Text cần dịch
         source_lang: Source language code
         target_lang: Target language code
-        sb: SeleniumBase instance (nếu có, sẽ dùng lại; nếu None, sẽ tạo mới)
-        headless: Run browser in headless mode (chỉ dùng khi sb=None)
+        sb: SeleniumBase instance (không dùng nữa, giữ để backward compatibility)
+        headless: Run browser in headless mode (không dùng nữa, giữ để backward compatibility)
     
     Returns:
         Translated text hoặc None nếu lỗi
@@ -123,13 +123,8 @@ def translate_title_with_web(text, source_lang='da', target_lang='en', sb=None, 
     if not text or not text.strip():
         return text
     
-    if sb:
-        # Dùng browser instance đã có
-        return translate_text_with_google_web(sb, text, source_lang, target_lang)
-    else:
-        # Tạo browser instance mới
-        with start_browser_for_translate(headless=headless) as sb_instance:
-            return translate_text_with_google_web(sb_instance, text, source_lang, target_lang)
+    # ⚠️ CHANGED: Dùng Google Cloud Translation API thay vì Google Translate Web
+    return translate_text_with_google_cloud(text, source_lang, target_lang)
 
 
 def load_layout_from_file(layout_file):
@@ -588,10 +583,11 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                     print(f"   [{idx}/{len(layout_items)}] ⚠️  Skipping item without URL (layout_type={layout_type})")
                     continue
                 
-                if resolved_published_url != published_url:
-                    print(f"   [{idx}/{len(layout_items)}] Processing: {published_url[:60]}... → {resolved_published_url[:60]}... (layout_type={layout_type}, display_order={display_order})")
-                else:
-                    print(f"   [{idx}/{len(layout_items)}] Processing: {published_url[:60]}... (layout_type={layout_type}, display_order={display_order})")
+                # Log removed to reduce noise
+                # if resolved_published_url != published_url:
+                #     print(f"   [{idx}/{len(layout_items)}] Processing: {published_url[:60]}... → {resolved_published_url[:60]}... (layout_type={layout_type}, display_order={display_order})")
+                # else:
+                #     print(f"   [{idx}/{len(layout_items)}] Processing: {published_url[:60]}... (layout_type={layout_type}, display_order={display_order})")
                 
                 # Xử lý list_items cho 1_with_list_left/right
                 list_items = []
@@ -1005,56 +1001,53 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                                                         en_layout_data_changed = True
                                                         print(f"         ✅ Reconstructed title_parts from EN article title")
                                                 else:
-                                                    # Fallback: Dịch từng part bằng Google Translate Web nếu không có EN title
-                                                    print(f"         🌐 Translating title_parts using Google Translate Web (fallback)...")
+                                                    # Fallback: Dịch từng part bằng Google Cloud Translation API nếu không có EN title
+                                                    print(f"         🌐 Translating title_parts using Google Cloud Translation API (fallback)...")
                                                     translated_parts = []
                                                     
-                                                    # Tạo browser instance để dịch title_parts
                                                     try:
-                                                        with start_browser_for_translate(headless=True) as sb_web:
-                                                            for part in merged_layout_data['title_parts']:
-                                                                if isinstance(part, dict) and 'text' in part:
-                                                                    original_text = part['text']
-                                                                    
-                                                                    # Preserve leading/trailing spaces
-                                                                    leading_space = ' ' if original_text.startswith(' ') else ''
-                                                                    trailing_space = ' ' if original_text.endswith(' ') and not original_text.endswith('\n') else ''
-                                                                    
-                                                                    # Translate text bằng Google Translate Web
-                                                                    text_to_translate = original_text.strip()
-                                                                    if text_to_translate:
-                                                                        translated_text = translate_text_with_google_web(
-                                                                            sb_web,
-                                                                            text_to_translate,
-                                                                            source_lang='da',
-                                                                            target_lang='en',
-                                                                        )
-                                                                        if translated_text:
-                                                                            # Restore spaces
-                                                                            translated_text = leading_space + translated_text + trailing_space
-                                                                        else:
-                                                                            # Fallback: giữ nguyên nếu dịch lỗi
-                                                                            translated_text = original_text
+                                                        for part in merged_layout_data['title_parts']:
+                                                            if isinstance(part, dict) and 'text' in part:
+                                                                original_text = part['text']
+                                                                
+                                                                # Preserve leading/trailing spaces
+                                                                leading_space = ' ' if original_text.startswith(' ') else ''
+                                                                trailing_space = ' ' if original_text.endswith(' ') and not original_text.endswith('\n') else ''
+                                                                
+                                                                # Translate text bằng Google Cloud Translation API
+                                                                text_to_translate = original_text.strip()
+                                                                if text_to_translate:
+                                                                    translated_text = translate_text_with_google_cloud(
+                                                                        text_to_translate,
+                                                                        source_lang='da',
+                                                                        target_lang='en'
+                                                                    )
+                                                                    if translated_text:
+                                                                        # Restore spaces
+                                                                        translated_text = leading_space + translated_text + trailing_space
                                                                     else:
+                                                                        # Fallback: giữ nguyên nếu dịch lỗi
                                                                         translated_text = original_text
-                                                                    
-                                                                    translated_parts.append({
-                                                                        'text': translated_text,
-                                                                        'color_class': part.get('color_class'),
-                                                                    })
-                                                                    
-                                                                    # Delay giữa các lần dịch
-                                                                    time.sleep(0.5)
-                                                        
+                                                                else:
+                                                                    translated_text = original_text
+                                                                
+                                                                translated_parts.append({
+                                                                    'text': translated_text,
+                                                                    'color_class': part.get('color_class'),
+                                                                })
+                                                                
+                                                                # Delay giữa các lần dịch
+                                                                time.sleep(0.3)
+                                                    
                                                         # Sau khi dịch xong, nếu khác thì update vào en_layout_data
                                                         if translated_parts != en_layout_data.get('title_parts'):
                                                             en_layout_data['title_parts'] = translated_parts
                                                             en_layout_data_changed = True
-                                                            print(f"         ✅ Translated title_parts using Google Translate Web")
+                                                            print(f"         ✅ Translated title_parts using Google Cloud Translation API")
                                                         else:
                                                             print(f"         ℹ️  Title_parts after translation is same as existing EN layout_data")
                                                     except Exception as e:
-                                                        print(f"         ⚠️  Error translating title_parts with Google Translate Web: {e}")
+                                                        print(f"         ⚠️  Error translating title_parts with Google Cloud Translation API: {e}")
                                                         # Fallback: giữ nguyên title_parts gốc
                                                         pass
                                             
@@ -1092,7 +1085,8 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                             # Mark URL as processed (dùng lookup_url = resolved URL)
                             processed_urls.add(lookup_url)
                             
-                            print(f"      ✅ Updated article (ID: {matched_article.id})")
+                            # Log removed to reduce noise
+                            # print(f"      ✅ Updated article (ID: {matched_article.id})")
                             if require_home_section:
                                 print(f"         ✅ Section='home' (required for {layout_type})")
                             if list_items:
@@ -1142,7 +1136,8 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                             
                             # Mark URL as processed (dùng lookup_url = resolved URL)
                             processed_urls.add(lookup_url)
-                            print(f"      ⏭️  Article already up-to-date (ID: {matched_article.id})")
+                            # Log removed to reduce noise
+                            # print(f"      ⏭️  Article already up-to-date (ID: {matched_article.id})")
                         else:
                             # Dry run
                             print(f"      ⚠️  Would update article (ID: {matched_article.id}) - dry run")
@@ -1218,7 +1213,8 @@ def link_articles_with_layout(layout_items, language='da', dry_run=False, reset_
                                     stats['articles_updated'] += 1
                                     updated_article_ids.add(matched_article.id)
                                     processed_urls.add(lookup_url)  # Dùng lookup_url = resolved URL
-                                    print(f"      ✅ Updated article by ID (ID: {matched_article.id})")
+                                    # Log removed to reduce noise
+                                    # print(f"      ✅ Updated article by ID (ID: {matched_article.id})")
                             else:
                                 print(f"      ⚠️  Article not found by ID either: {article_id_from_url}")
                     except Exception as e:
@@ -1559,67 +1555,62 @@ def translate_slider_containers(language='da', dry_run=False, delay=0.5):
                 # Translate slider content
                 if not dry_run:
                     try:
-                        # ⚠️ QUAN TRỌNG: Dùng Google Translate Web cho title và slider_articles titles
-                        # Tạo browser instance để dịch
-                        with start_browser_for_translate(headless=True) as sb_web:
-                            # Translate title bằng Google Translate Web
-                            if da_slider.title:
-                                translated_title = translate_text_with_google_web(
-                                    sb_web, 
-                                    da_slider.title, 
-                                    source_lang='da', 
+                        # ⚠️ QUAN TRỌNG: Dùng Google Cloud Translation API cho title và slider_articles titles
+                        # Translate title bằng Google Cloud Translation API
+                        if da_slider.title:
+                            translated_title = translate_text_with_google_cloud(
+                                da_slider.title,
+                                source_lang='da',
+                                target_lang='en'
+                            )
+                            if translated_title:
+                                en_slider.title = translated_title
+                                print(f"         📝 Translated title (Google Cloud API): '{da_slider.title}' → '{en_slider.title}'")
+                                time.sleep(delay)
+                        
+                        # Translate layout_data
+                        if da_slider.layout_data:
+                            en_layout_data = da_slider.layout_data.copy()
+                            
+                            # Translate slider_title bằng Google Cloud Translation API
+                            if 'slider_title' in en_layout_data and en_layout_data['slider_title']:
+                                translated_slider_title = translate_text_with_google_cloud(
+                                    en_layout_data['slider_title'],
+                                    source_lang='da',
                                     target_lang='en'
                                 )
-                                if translated_title:
-                                    en_slider.title = translated_title
-                                    print(f"         📝 Translated title (Google Translate Web): '{da_slider.title}' → '{en_slider.title}'")
+                                if translated_slider_title:
+                                    en_layout_data['slider_title'] = translated_slider_title
+                                    print(f"         📝 Translated slider_title (Google Cloud API): '{en_layout_data.get('slider_title')}' → '{translated_slider_title}'")
+                                time.sleep(delay)
+                            
+                            # Translate header_link text (for job_slider) - dùng deep_translator (không phải title)
+                            from deep_translator import GoogleTranslator
+                            translator = GoogleTranslator(source='da', target='en')
+                            if 'header_link' in en_layout_data and en_layout_data['header_link']:
+                                header_link = en_layout_data['header_link']
+                                if isinstance(header_link, dict) and 'text' in header_link:
+                                    translated_text = translator.translate(header_link['text'])
+                                    en_layout_data['header_link']['text'] = translated_text
+                                    print(f"         📝 Translated header_link: '{header_link['text']}' → '{translated_text}'")
                                     time.sleep(delay)
                             
-                            # Translate layout_data
-                            if da_slider.layout_data:
-                                en_layout_data = da_slider.layout_data.copy()
-                                
-                                # Translate slider_title bằng Google Translate Web
-                                if 'slider_title' in en_layout_data and en_layout_data['slider_title']:
-                                    translated_slider_title = translate_text_with_google_web(
-                                        sb_web,
-                                        en_layout_data['slider_title'],
-                                        source_lang='da',
-                                        target_lang='en'
-                                    )
-                                    if translated_slider_title:
-                                        en_layout_data['slider_title'] = translated_slider_title
-                                        print(f"         📝 Translated slider_title (Google Translate Web): '{en_layout_data.get('slider_title')}' → '{translated_slider_title}'")
-                                    time.sleep(delay)
-                                
-                                # Translate header_link text (for job_slider) - dùng deep_translator (không phải title)
-                                from deep_translator import GoogleTranslator
-                                translator = GoogleTranslator(source='da', target='en')
-                                if 'header_link' in en_layout_data and en_layout_data['header_link']:
-                                    header_link = en_layout_data['header_link']
-                                    if isinstance(header_link, dict) and 'text' in header_link:
-                                        translated_text = translator.translate(header_link['text'])
-                                        en_layout_data['header_link']['text'] = translated_text
-                                        print(f"         📝 Translated header_link: '{header_link['text']}' → '{translated_text}'")
-                                        time.sleep(delay)
-                                
-                                # Translate slider_articles titles bằng Google Translate Web
-                                if 'slider_articles' in en_layout_data and isinstance(en_layout_data['slider_articles'], list):
-                                    translated_articles = []
-                                    for article in en_layout_data['slider_articles']:
-                                        if isinstance(article, dict):
-                                            article_copy = article.copy()
-                                            # Translate title bằng Google Translate Web
-                                            if 'title' in article_copy and article_copy['title']:
-                                                translated_article_title = translate_text_with_google_web(
-                                                    sb_web,
-                                                    article_copy['title'],
-                                                    source_lang='da',
-                                                    target_lang='en'
-                                                )
-                                                if translated_article_title:
-                                                    article_copy['title'] = translated_article_title
-                                                time.sleep(delay)
+                            # Translate slider_articles titles bằng Google Cloud Translation API
+                            if 'slider_articles' in en_layout_data and isinstance(en_layout_data['slider_articles'], list):
+                                translated_articles = []
+                                for article in en_layout_data['slider_articles']:
+                                    if isinstance(article, dict):
+                                        article_copy = article.copy()
+                                        # Translate title bằng Google Cloud Translation API
+                                        if 'title' in article_copy and article_copy['title']:
+                                            translated_article_title = translate_text_with_google_cloud(
+                                                article_copy['title'],
+                                                source_lang='da',
+                                                target_lang='en'
+                                            )
+                                            if translated_article_title:
+                                                article_copy['title'] = translated_article_title
+                                            time.sleep(delay)
                                             # Translate kicker if exists - dùng deep_translator (không phải title)
                                             if 'kicker' in article_copy and article_copy['kicker']:
                                                 article_copy['kicker'] = translator.translate(article_copy['kicker'])
@@ -1627,7 +1618,7 @@ def translate_slider_containers(language='da', dry_run=False, delay=0.5):
                                             translated_articles.append(article_copy)
                                     
                                     en_layout_data['slider_articles'] = translated_articles
-                                    print(f"         📝 Translated {len(translated_articles)} slider articles (titles via Google Translate Web)")
+                                    print(f"         📝 Translated {len(translated_articles)} slider articles (titles via Google Cloud API)")
                                 
                                 en_slider.layout_data = en_layout_data
                         
@@ -1787,14 +1778,13 @@ def create_or_update_5_articles_en(dry_run=False, delay=0.5):
                 try:
                     updated = False
                     
-                    # Update title nếu DA có title mới - dùng Google Translate Web
+                    # Update title nếu DA có title mới - dùng Google Cloud Translation API
                     if da_latest.title:
-                        print(f"      🌐 Translating title using Google Translate Web...")
-                        translated_title = translate_title_with_web(
+                        print(f"      🌐 Translating title using Google Cloud Translation API...")
+                        translated_title = translate_text_with_google_cloud(
                             da_latest.title,
                             source_lang='da',
-                            target_lang='en',
-                            headless=True
+                            target_lang='en'
                         )
                         if translated_title and translated_title != en_existing.title:
                             en_existing.title = translated_title
@@ -1854,12 +1844,11 @@ def create_or_update_5_articles_en(dry_run=False, delay=0.5):
                     updated = False
                     
                     if da_latest.title:
-                        print(f"      🌐 Translating title using Google Translate Web...")
-                        translated_title = translate_title_with_web(
+                        print(f"      🌐 Translating title using Google Cloud Translation API...")
+                        translated_title = translate_text_with_google_cloud(
                             da_latest.title,
                             source_lang='da',
-                            target_lang='en',
-                            headless=True
+                            target_lang='en'
                         )
                         if translated_title and translated_title != en_keep.title:
                             en_keep.title = translated_title
@@ -2258,22 +2247,16 @@ Examples:
                 language='kl',
                 headless=not args.no_headless
             )
-
-            # Nếu crawl_home_layout trả về rỗng → coi như FAIL (có thể do resolve_final_url liveblog lỗi)
-            if not kl_layout_items:
-                print("   ❌ Failed to crawl KL home layout (no layout_items returned).")
-                print("      ⚠️  This may be caused by liveblog final URL check failing.")
-                print("      ⛔ Aborting link_home_articles to avoid saving WRONG layout (old URLs).")
-                sys.exit(1)
-
+            
             # Tự động lưu KL layout file (ghi đè file cũ) cho cả dry-run và normal
-            output_file = "home_layout_kl.json"  # Tên cố định, ghi đè file cũ
-            saved_file = save_layout_to_file(
-                layout_items=kl_layout_items,
-                output_file=output_file,
-                language='kl'
-            )
-            print(f"      💾 KL layout saved to: {saved_file} (overwrites existing file)")
+            if kl_layout_items:
+                output_file = "home_layout_kl.json"  # Tên cố định, ghi đè file cũ
+                saved_file = save_layout_to_file(
+                    layout_items=kl_layout_items,
+                    output_file=output_file,
+                    language='kl'
+                )
+                print(f"      💾 KL layout saved to: {saved_file} (overwrites existing file)")
         
         if kl_layout_items:
             # ⚠️ QUAN TRỌNG: Delete old KL articles SAU KHI crawl (tạo mới), TRƯỚC KHI link
@@ -2356,13 +2339,11 @@ Examples:
             language=args.language,
             headless=not args.no_headless
         )
-
+        
         if not layout_items:
-            print("❌ Failed to crawl layout (no layout_items returned).")
-            print("   ⚠️  This may be caused by liveblog final URL check failing.")
-            print("   ⛔ Aborting link_home_articles to avoid saving WRONG layout (old URLs).")
-            sys.exit(1)
-
+            print("❌ Failed to crawl layout")
+            return
+        
         # ⚠️ QUAN TRỌNG: Tự động lưu layout file cho CẢ chế độ thường và dry-run
         # EN dùng chung layout với DA, nên luôn lưu với language tương ứng
         # Ghi đè file cũ (tên cố định) để không tạo quá nhiều file

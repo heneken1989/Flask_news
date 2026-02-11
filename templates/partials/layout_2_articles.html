@@ -38,6 +38,13 @@
                 height="{{ article.image.mobile_height|default('312') }}"
                 media="(max-width: 767px)"
                 type="image/webp">    
+            {% elif article.image.desktop_webp %}
+            {# Fallback: dùng desktop_webp cho mobile nếu mobile_webp không có #}
+            <source srcset="{{ article.image.desktop_webp }}" 
+                width="{{ article.image.mobile_width|default('480') }}"
+                height="{{ article.image.mobile_height|default('312') }}"
+                media="(max-width: 767px)"
+                type="image/webp">    
             {% endif %}
             {% if article.image.mobile_jpeg %}
             <source srcset="{{ article.image.mobile_jpeg }}" 
@@ -45,8 +52,15 @@
                 height="{{ article.image.mobile_height|default('312') }}"
                 media="(max-width: 767px)"
                 type="image/jpeg">    
+            {% elif article.image.desktop_jpeg %}
+            {# Fallback: dùng desktop_jpeg cho mobile nếu mobile_jpeg không có #}
+            <source srcset="{{ article.image.desktop_jpeg }}" 
+                width="{{ article.image.mobile_width|default('480') }}"
+                height="{{ article.image.mobile_height|default('312') }}"
+                media="(max-width: 767px)"
+                type="image/jpeg">    
             {% endif %}
-            <img src="{{ article.image.fallback|default(article.image.mobile_jpeg|default('')) }}"
+            <img src="{{ article.image.fallback|default(article.image.mobile_jpeg|default(article.image.desktop_webp|default(article.image.desktop_jpeg|default('')))) }}"
                 width="{{ article.image.mobile_width|default('480') }}"
                 height="{{ article.image.mobile_height|default('312') }}"
                 title="{{ article.title|default('') }}"

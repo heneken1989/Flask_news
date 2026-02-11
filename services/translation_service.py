@@ -10,9 +10,56 @@ from seleniumbase import SB
 import os
 from pathlib import Path
 import subprocess
+import requests
 
 # User data directory riêng cho Google Translate Web
 USER_DATA_DIR_TRANSLATE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'user_data_translate')
+
+# Google Cloud Translation API key từ environment variable
+GOOGLE_TRANSLATE_API_KEY = os.environ.get('GOOGLE_TRANSLATE_API_KEY')
+
+
+def translate_text_with_google_cloud(text, source_lang='da', target_lang='en'):
+    """
+    Dịch text với Google Cloud Translation API
+    
+    Args:
+        text: Text cần dịch
+        source_lang: Source language code
+        target_lang: Target language code
+        
+    Returns:
+        Translated text hoặc None nếu lỗi
+    """
+    if not GOOGLE_TRANSLATE_API_KEY:
+        print(f"      ⚠️  GOOGLE_TRANSLATE_API_KEY not set in environment")
+        return None
+    
+    if not text or not text.strip():
+        return text
+    
+    try:
+        url = "https://translation.googleapis.com/language/translate/v2"
+        params = {
+            'key': GOOGLE_TRANSLATE_API_KEY,
+            'q': text,
+            'source': source_lang,
+            'target': target_lang,
+            'format': 'text'
+        }
+        
+        response = requests.post(url, params=params, timeout=10)
+        
+        if response.status_code == 200:
+            result = response.json()
+            translated_text = result['data']['translations'][0]['translatedText']
+            return translated_text
+        else:
+            print(f"      ⚠️  Google Cloud API Error: {response.status_code} - {response.text[:200]}")
+            return None
+    except Exception as e:
+        print(f"      ⚠️  Error with Google Cloud Translation: {e}")
+        return None
 
 
 def get_chrome_options_for_headless():
@@ -131,25 +178,24 @@ def translate_article(dk_article, target_language='en', delay=0.5):
     try:
         translator = GoogleTranslator(source='da', target='en')
         
-        # ⚠️ QUAN TRỌNG: Dùng Google Translate Web cho title để tránh dịch sai tên riêng
-        # Translate title bằng Google Translate Web
-        print(f"   🌐 Translating title using Google Translate Web...")
-        from scripts.google_translate_web_helper import translate_text_with_google_web
+        # ⚠️ QUAN TRỌNG: Dùng Google Cloud Translation API cho title
+        # Translate title bằng Google Cloud Translation API
+        print(f"   🌐 Translating title using Google Cloud Translation API...")
         
         translated_title = None
         try:
-            with start_browser_for_translate(headless=True) as sb_web:
-                translated_title = translate_text_with_google_web(
-                    sb_web,
-                    dk_article.title,
-                    source_lang='da',
-                    target_lang='en'
-                )
+            translated_title = translate_text_with_google_cloud(
+                dk_article.title,
+                source_lang='da',
+                target_lang='en'
+            )
         except Exception as e:
-            print(f"   ⚠️  Error translating title with Google Translate Web: {e}")
-            # Fallback: dùng deep_translator
+            print(f"   ⚠️  Error translating title with Google Cloud API: {e}")
+        
+        # Fallback: dùng deep_translator nếu Google Cloud API lỗi
+        if not translated_title:
             print(f"   🔄 Falling back to deep_translator for title...")
-        translated_title = translator.translate(dk_article.title)
+            translated_title = translator.translate(dk_article.title)
         
         if translated_title:
             print(f"   ✅ Title translated: '{dk_article.title[:50]}...' → '{translated_title[:50]}...'")
@@ -201,30 +247,26 @@ def translate_article(dk_article, target_language='en', delay=0.5):
                 time.sleep(delay)
             
             # Translate slider_articles (các articles trong slider)
-            # ⚠️ QUAN TRỌNG: Dùng Google Translate Web cho titles
+            # ⚠️ QUAN TRỌNG: Dùng Google Cloud Translation API cho titles
             if 'slider_articles' in translated_layout_data and isinstance(translated_layout_data['slider_articles'], list):
                 print(f"   📰 Translating {len(translated_layout_data['slider_articles'])} slider articles...")
                 
-                # Tạo browser instance để dịch titles bằng Google Translate Web
-                from scripts.google_translate_web_helper import translate_text_with_google_web
                 try:
-                    with start_browser_for_translate(headless=True) as sb_web:
-                        for article_idx, article in enumerate(translated_layout_data['slider_articles']):
-                            if isinstance(article, dict):
-                                # Translate article title bằng Google Translate Web
-                                if 'title' in article and article['title']:
-                                    translated_title = translate_text_with_google_web(
-                                        sb_web,
-                                        article['title'],
-                                        source_lang='da',
-                                        target_lang='en'
-                                    )
-                                    if translated_title:
-                                        article['title'] = translated_title
-                                    else:
-                                        # Fallback: dùng deep_translator
-                                        article['title'] = translator.translate(article['title'])
-                                    time.sleep(delay)
+                    for article_idx, article in enumerate(translated_layout_data['slider_articles']):
+                        if isinstance(article, dict):
+                            # Translate article title bằng Google Cloud Translation API
+                            if 'title' in article and article['title']:
+                                translated_title = translate_text_with_google_cloud(
+                                    article['title'],
+                                    source_lang='da',
+                                    target_lang='en'
+                                )
+                                if translated_title:
+                                    article['title'] = translated_title
+                                else:
+                                    # Fallback: dùng deep_translator
+                                    article['title'] = translator.translate(article['title'])
+                                time.sleep(delay)
                                 
                                 # Translate article kicker - dùng deep_translator (không phải title)
                                 if 'kicker' in article and article['kicker']:
@@ -235,9 +277,9 @@ def translate_article(dk_article, target_language='en', delay=0.5):
                                 if 'excerpt' in article and article['excerpt']:
                                     article['excerpt'] = translator.translate(article['excerpt'])
                                     time.sleep(delay)
-                    print(f"   ✅ Slider articles translated (titles via Google Translate Web)")
+                    print(f"   ✅ Slider articles translated (titles via Google Cloud API)")
                 except Exception as e:
-                    print(f"   ⚠️  Error translating slider articles with Google Translate Web: {e}")
+                    print(f"   ⚠️  Error translating slider articles with Google Cloud API: {e}")
                     # Fallback: dùng deep_translator cho tất cả
                     print(f"   🔄 Falling back to deep_translator for slider articles...")
                     for article_idx, article in enumerate(translated_layout_data['slider_articles']):
@@ -317,21 +359,20 @@ def translate_article(dk_article, target_language='en', delay=0.5):
                         # Không có EN article → translate text bằng Google Translate Web (fallback)
                         if da_title:
                             try:
-                                # ⚠️ QUAN TRỌNG: Dùng Google Translate Web cho list item titles
-                                from scripts.google_translate_web_helper import translate_text_with_google_web
+                                # ⚠️ QUAN TRỌNG: Dùng Google Cloud Translation API cho list item titles
                                 translated_title = None
                                 try:
-                                    with start_browser_for_translate(headless=True) as sb_web:
-                                        translated_title = translate_text_with_google_web(
-                                            sb_web,
-                                            da_title,
-                                            source_lang='da',
-                                            target_lang='en'
-                                        )
+                                    translated_title = translate_text_with_google_cloud(
+                                        da_title,
+                                        source_lang='da',
+                                        target_lang='en'
+                                    )
                                 except Exception as e:
-                                    print(f"      ⚠️  Error translating list item title with Google Translate Web: {e}")
+                                    print(f"      ⚠️  Error translating list item title with Google Cloud API: {e}")
+                                
+                                if not translated_title:
                                     # Fallback: dùng deep_translator
-                                translated_title = translator.translate(da_title)
+                                    translated_title = translator.translate(da_title)
                                 
                                 if translated_title:
                                     translated_item = {
@@ -339,7 +380,7 @@ def translate_article(dk_article, target_language='en', delay=0.5):
                                         'title': translated_title
                                     }
                                     translated_list_items.append(translated_item)
-                                    print(f"      🌐 Translated list item (Google Translate Web): {translated_title[:50]}...")
+                                    print(f"      🌐 Translated list item (Google Cloud API): {translated_title[:50]}...")
                                     time.sleep(delay)
                                 else:
                                     # Fallback: giữ nguyên DA title
@@ -405,19 +446,13 @@ def translate_article(dk_article, target_language='en', delay=0.5):
                                     remaining_title = remaining_title[pos + len(original_text):]
                                 else:
                                     # Không tìm thấy - có thể là tên riêng bị dịch sai
-                                    # Dịch original_text bằng Google Translate Web để lấy bản dịch chính xác hơn
+                                    # Dịch original_text bằng Google Cloud Translation API
                                     try:
-                                        from scripts.google_translate_web_helper import translate_text_with_google_web
-                                        # Dùng browser instance đã có nếu có, nếu không tạo mới
-                                        # Note: Trong trường hợp này, chúng ta đang trong context của translate_article
-                                        # nên có thể tạo browser instance riêng cho title_parts
-                                        with start_browser_for_translate(headless=True) as sb_web:
-                                            translated_part = translate_text_with_google_web(
-                                                sb_web,
-                                                original_text,
-                                                source_lang='da',
-                                                target_lang='en'
-                                            )
+                                        translated_part = translate_text_with_google_cloud(
+                                            original_text,
+                                            source_lang='da',
+                                            target_lang='en'
+                                        )
                                         if not translated_part:
                                             # Fallback: dùng deep_translator
                                             translated_part = translator.translate(original_text)

@@ -222,6 +222,13 @@
                                         height="{{ article.image_data.mobile_height|default('274') }}"
                                         media="(max-width: 767px)"
                                         type="image/webp">    
+                                    {% elif article.image_data.desktop_webp %}
+                                    {# Fallback: dùng desktop_webp cho mobile nếu mobile_webp không có #}
+                                    <source srcset="{{ article.image_data.desktop_webp }}" 
+                                        width="{{ article.image_data.mobile_width|default('480') }}"
+                                        height="{{ article.image_data.mobile_height|default('274') }}"
+                                        media="(max-width: 767px)"
+                                        type="image/webp">    
                                     {% endif %}
                                     {% if article.image_data.mobile_jpeg %}
                                     <source srcset="{{ article.image_data.mobile_jpeg }}" 
@@ -229,8 +236,15 @@
                                         height="{{ article.image_data.mobile_height|default('274') }}"
                                         media="(max-width: 767px)"
                                         type="image/jpeg">    
+                                    {% elif article.image_data.desktop_jpeg %}
+                                    {# Fallback: dùng desktop_jpeg cho mobile nếu mobile_jpeg không có #}
+                                    <source srcset="{{ article.image_data.desktop_jpeg }}" 
+                                        width="{{ article.image_data.mobile_width|default('480') }}"
+                                        height="{{ article.image_data.mobile_height|default('274') }}"
+                                        media="(max-width: 767px)"
+                                        type="image/jpeg">    
                                     {% endif %}
-                                    <img src="{{ article.image_data.fallback|default(article.image_data.mobile_jpeg|default('')) }}"
+                                    <img src="{{ article.image_data.fallback|default(article.image_data.mobile_jpeg|default(article.image_data.desktop_webp|default(article.image_data.desktop_jpeg|default('')))) }}"
                                         width="{{ article.image_data.mobile_width|default('480') }}"
                                         height="{{ article.image_data.mobile_height|default('274') }}"
                                         title="{{ article.title }}"
@@ -449,9 +463,23 @@
                                                                                 height="{{ block.image_sources.mobile_height|default('360') }}"
                                                                                 media="(max-width: 767px)"
                                                                                 type="image/webp">
+                                                                            {% elif block.image_sources.desktop_webp %}
+                                                                            {# Fallback: dùng desktop_webp cho mobile nếu mobile_webp không có #}
+                                                                            <source srcset="{{ block.image_sources.desktop_webp }}" 
+                                                                                width="{{ block.image_sources.mobile_width|default('480') }}"
+                                                                                height="{{ block.image_sources.mobile_height|default('360') }}"
+                                                                                media="(max-width: 767px)"
+                                                                                type="image/webp">
                                                                             {% endif %}
                                                                             {% if block.image_sources.mobile_jpeg %}
                                                                             <source srcset="{{ block.image_sources.mobile_jpeg }}" 
+                                                                                width="{{ block.image_sources.mobile_width|default('480') }}"
+                                                                                height="{{ block.image_sources.mobile_height|default('360') }}"
+                                                                                media="(max-width: 767px)"
+                                                                                type="image/jpeg">
+                                                                            {% elif block.image_sources.desktop_jpeg %}
+                                                                            {# Fallback: dùng desktop_jpeg cho mobile nếu mobile_jpeg không có #}
+                                                                            <source srcset="{{ block.image_sources.desktop_jpeg }}" 
                                                                                 width="{{ block.image_sources.mobile_width|default('480') }}"
                                                                                 height="{{ block.image_sources.mobile_height|default('360') }}"
                                                                                 media="(max-width: 767px)"
@@ -607,6 +635,13 @@
                                                         height="{{ block.image_sources.mobile_height|default('360') }}"
                                                         media="(max-width: 767px)"
                                                         type="image/webp">
+                                                    {% elif block.image_sources.desktop_webp %}
+                                                    {# Fallback: dùng desktop_webp cho mobile nếu mobile_webp không có #}
+                                                    <source srcset="{{ block.image_sources.desktop_webp }}" 
+                                                        width="{{ block.image_sources.mobile_width|default('480') }}"
+                                                        height="{{ block.image_sources.mobile_height|default('360') }}"
+                                                        media="(max-width: 767px)"
+                                                        type="image/webp">
                                                     {% endif %}
                                                     {% if block.image_sources.mobile_jpeg %}
                                                     <source srcset="{{ block.image_sources.mobile_jpeg }}" 
@@ -614,8 +649,15 @@
                                                         height="{{ block.image_sources.mobile_height|default('360') }}"
                                                         media="(max-width: 767px)"
                                                         type="image/jpeg">
+                                                    {% elif block.image_sources.desktop_jpeg %}
+                                                    {# Fallback: dùng desktop_jpeg cho mobile nếu mobile_jpeg không có #}
+                                                    <source srcset="{{ block.image_sources.desktop_jpeg }}" 
+                                                        width="{{ block.image_sources.mobile_width|default('480') }}"
+                                                        height="{{ block.image_sources.mobile_height|default('360') }}"
+                                                        media="(max-width: 767px)"
+                                                        type="image/jpeg">
                                                     {% endif %}
-                                                    <img src="{{ block.image_sources.fallback|default('') }}" 
+                                                    <img src="{{ block.image_sources.fallback|default(block.image_sources.mobile_jpeg|default(block.image_sources.desktop_webp|default(block.image_sources.desktop_jpeg|default('')))) }}" 
                                                         width="{{ block.image_sources.mobile_width|default('480') }}"
                                                         height="{{ block.image_sources.mobile_height|default('360') }}"
                                                         title="{{ block.image_sources.title|default('') }}"
@@ -811,6 +853,10 @@
                                                 <img src="{{ item.image.fallback }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('172') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
                                                 {% elif item.image.mobile_jpeg %}
                                                 <img src="{{ item.image.mobile_jpeg }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('172') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
+                                                {% elif item.image.desktop_webp %}
+                                                <img src="{{ item.image.desktop_webp }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('172') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
+                                                {% elif item.image.desktop_jpeg %}
+                                                <img src="{{ item.image.desktop_jpeg }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('172') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
                                                 {% endif %}
                                             {% endif %}
                                         </figure>
@@ -823,6 +869,10 @@
                                                 <img src="{{ item.image.fallback }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('172') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
                                                 {% elif item.image.mobile_jpeg %}
                                                 <img src="{{ item.image.mobile_jpeg }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('172') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
+                                                {% elif item.image.desktop_webp %}
+                                                <img src="{{ item.image.desktop_webp }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('172') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
+                                                {% elif item.image.desktop_jpeg %}
+                                                <img src="{{ item.image.desktop_jpeg }}" width="{{ item.image.width|default('265') }}" height="{{ item.image.height|default('172') }}" loading="lazy" alt="{{ item.image.alt|default('') }}">
                                                 {% endif %}
                                             {% endif %}
                                         </figure>

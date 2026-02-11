@@ -125,50 +125,14 @@ def kill_chrome_processes():
         return 0
 
 
-def cleanup_user_data_dir():
-    """
-    Xóa user_data_dir cũ nếu tồn tại để tránh conflict
-    """
-    if os.path.exists(USER_DATA_DIR):
-        try:
-            print(f"   🗑️  Removing old user_data_dir: {USER_DATA_DIR}")
-            shutil.rmtree(USER_DATA_DIR)
-            print(f"   ✅ Removed old user_data_dir")
-        except Exception as e:
-            print(f"   ⚠️  Error removing user_data_dir: {e}")
-            # Thử xóa từng file nếu không xóa được cả thư mục
-            try:
-                for root, dirs, files in os.walk(USER_DATA_DIR):
-                    for f in files:
-                        try:
-                            os.remove(os.path.join(root, f))
-                        except:
-                            pass
-                    for d in dirs:
-                        try:
-                            os.rmdir(os.path.join(root, d))
-                        except:
-                            pass
-                os.rmdir(USER_DATA_DIR)
-                print(f"   ✅ Removed user_data_dir (file by file)")
-            except:
-                pass
-
-
-def create_fresh_user_data_dir():
-    """
-    Tạo user_data_dir mới với permissions đúng
-    """
-    cleanup_user_data_dir()
-    os.makedirs(USER_DATA_DIR, exist_ok=True)
-    os.chmod(USER_DATA_DIR, 0o755)  # rwxr-xr-x
-    print(f"   ✅ Created fresh user_data_dir: {USER_DATA_DIR}")
+# ⚠️ REMOVED: cleanup_user_data_dir() và create_fresh_user_data_dir()
+# Logic xóa và tạo lại user_data_dir đã được bỏ để giữ nguyên session login
 
 
 @contextmanager
 def start_browser_with_retry(headless=True, max_retries=2):
     """
-    Start browser với retry logic: nếu không start được, xóa user_data_dir và thử lại
+    Start browser với retry logic: nếu không start được, chỉ kill Chrome và thử lại (không xóa user_data_dir)
     
     Args:
         headless: Run browser in headless mode
@@ -185,24 +149,14 @@ def start_browser_with_retry(headless=True, max_retries=2):
     for attempt in range(max_retries + 1):
         try:
             # Kill Chrome processes trước khi start (tránh conflict)
-            if attempt == 0:
-                # Lần đầu: kill Chrome processes nếu có
-                killed = kill_chrome_processes()
-                if killed > 0:
-                    print(f"   ⏳ Waiting 3 seconds for processes to fully terminate...")
-                    time.sleep(3)
-            else:
-                # Các lần retry: kill lại và tạo lại user_data_dir mới
-                print(f"   🔄 Retry attempt {attempt}/{max_retries}: Killing Chrome processes and creating fresh user_data_dir...")
-                kill_chrome_processes()
-                time.sleep(2)
-                create_fresh_user_data_dir()
+            killed = kill_chrome_processes()
+            if killed > 0:
+                print(f"   ⏳ Waiting 3 seconds for processes to fully terminate...")
+                time.sleep(3)
             
             # Tạo user_data_dir nếu chưa tồn tại
-            if attempt == 0:
-                # Lần đầu: thử với user_data_dir hiện tại (nếu có)
-                os.makedirs(USER_DATA_DIR, exist_ok=True)
-                os.chmod(USER_DATA_DIR, 0o755)
+            os.makedirs(USER_DATA_DIR, exist_ok=True)
+            os.chmod(USER_DATA_DIR, 0o755)
             
             # Thử start browser - sử dụng context manager đúng cách
             sb_context = SB(uc=True, headless=headless, user_data_dir=USER_DATA_DIR, chromium_arg=chrome_opts)
@@ -245,7 +199,7 @@ def start_browser_with_retry(headless=True, max_retries=2):
             if is_browser_start_error:
                 if attempt < max_retries:
                     print(f"   ⚠️  Browser start failed (attempt {attempt + 1}/{max_retries + 1}): {error_msg[:150]}")
-                    print(f"   🔄 Will retry with fresh user_data_dir...")
+                    print(f"   🔄 Will retry...")
                     sb = None
                     continue
                 else:
@@ -1441,7 +1395,7 @@ def crawl_article_detail(url: str, language: str = 'da', headless: bool = True, 
     """
     print(f"🔍 Crawling: {url[:70]}...")
     
-    # Start browser với retry logic (tự động xóa và tạo lại user_data_dir nếu cần)
+    # Start browser với retry logic (chỉ kill Chrome processes, không xóa user_data_dir)
     with start_browser_with_retry(headless=headless) as sb:
         # Đảm bảo đã login trước khi crawl (chỉ login 1 lần cho batch)
         # Note: Login sẽ được thực hiện ở batch_crawl_articles, không cần login lại mỗi article
@@ -1903,7 +1857,7 @@ def crawl_all(language=None, section=None, limit=None, headless=True, delay=2, a
     
     # Login một lần trước khi bắt đầu crawl (sử dụng user_data_dir để lưu session)
     print("🔐 Initializing browser session with login...")
-    # Start browser với retry logic (tự động xóa và tạo lại user_data_dir nếu cần)
+    # Start browser với retry logic (chỉ kill Chrome processes, không xóa user_data_dir)
     with start_browser_with_retry(headless=headless) as sb:
         if not ensure_login(sb):
             print("❌ Failed to login, cannot proceed with crawling")
