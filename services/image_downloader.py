@@ -36,6 +36,75 @@ def extract_image_id_from_url(url: str) -> Optional[str]:
     return None
 
 
+def parse_width_height_from_url(url: str) -> tuple:
+    """
+    Parse width và height từ URL
+    
+    Args:
+        url: Image URL
+        
+    Returns:
+        (width, height) tuple hoặc (None, None) nếu không tìm thấy
+    """
+    if not url:
+        return (None, None)
+    
+    try:
+        parsed = urlparse(url)
+        params = parse_qs(parsed.query)
+        
+        width = params.get('width', [None])[0]
+        height = params.get('height', [None])[0]
+        
+        if width and height:
+            return (int(width), int(height))
+    except:
+        pass
+    
+    return (None, None)
+
+
+def reconstruct_high_quality_url(image_id: str, format_type: str, key: str = 'desktop_webp') -> str:
+    """
+    Reconstruct URL chất lượng cao từ imageId
+    
+    Args:
+        image_id: Image ID
+        format_type: Format (webp, jpeg, jpg, png)
+        key: Key của image (desktop_webp, mobile_webp, etc.) để xác định kích thước
+        
+    Returns:
+        URL với width/height phù hợp để đảm bảo chất lượng cao
+    """
+    # Xác định width/height dựa trên key và format
+    # Desktop: dùng width lớn để đảm bảo chất lượng cao
+    # Mobile: dùng width vừa phải
+    if 'desktop' in key:
+        # Desktop: dùng width lớn (2116 hoặc 2000)
+        width = 2116
+        height = 1208
+    elif 'mobile' in key:
+        # Mobile: dùng width vừa phải (960 hoặc 1200)
+        width = 1200
+        height = 800
+    else:
+        # Fallback: dùng width lớn
+        width = 2000
+        height = 1200
+    
+    # Reconstruct URL với width/height
+    # Dùng extension phù hợp với format_type (webp, jpeg, jpg, png)
+    # Nhưng path thường là .webp, format trong query string mới là format_type
+    extension = 'webp'  # Path thường là .webp
+    if format_type in ['jpeg', 'jpg']:
+        extension = 'jpg'
+    elif format_type == 'png':
+        extension = 'png'
+    
+    url = f"https://image.sermitsiaq.ag/{image_id}.{extension}?imageId={image_id}&width={width}&height={height}&format={format_type}"
+    return url
+
+
 def download_image(image_url: str, save_dir: str, image_id: str = None, format: str = 'webp') -> Optional[str]:
     """
     Download image từ URL và lưu vào thư mục
@@ -215,13 +284,10 @@ def download_and_update_image_data(image_data: Dict, base_url: str = 'https://ww
                                 fallback_url = fallback_url_candidate
                                 break
                     
-                    # Nếu không tìm thấy URL gốc, reconstruct từ imageId
+                    # Nếu không tìm thấy URL gốc, reconstruct từ imageId với width/height để đảm bảo chất lượng cao
                     if not fallback_url and image_id:
-                        # Reconstruct URL gốc từ imageId
-                        if format_type == 'webp':
-                            fallback_url = f"https://image.sermitsiaq.ag/{image_id}.webp?imageId={image_id}&format=webp"
-                        else:
-                            fallback_url = f"https://image.sermitsiaq.ag/{image_id}.{format_type}?imageId={image_id}&format={format_type}"
+                        # Reconstruct URL chất lượng cao từ imageId
+                        fallback_url = reconstruct_high_quality_url(image_id, format_type, key)
                     
                     if fallback_url:
                         relative_path = download_image(fallback_url, save_dir, image_id, format_type)
@@ -239,7 +305,17 @@ def download_and_update_image_data(image_data: Dict, base_url: str = 'https://ww
                         print(f"      ⚠️  Could not find original URL for {key}, keeping: {original_url[:80]}...")
             else:
                 # Chưa có .com domain, download
-                relative_path = download_image(original_url, save_dir, image_id, format_type)
+                # Kiểm tra xem URL có width/height chưa, nếu chưa thì reconstruct với width/height lớn
+                download_url = original_url
+                if isinstance(original_url, str) and 'image.sermitsiaq.ag' in original_url:
+                    width, height = parse_width_height_from_url(original_url)
+                    # Nếu URL không có width/height hoặc width quá nhỏ (< 500), reconstruct với width/height lớn
+                    if not width or width < 500:
+                        if image_id:
+                            download_url = reconstruct_high_quality_url(image_id, format_type, key)
+                            print(f"      🔄 URL không có width/height hoặc quá nhỏ, reconstruct với width/height lớn: {download_url[:100]}...")
+                
+                relative_path = download_image(download_url, save_dir, image_id, format_type)
                 
                 if relative_path:
                     # Tạo full URL

@@ -82,3 +82,8 @@ sitemap-*.xml
 # Uploaded images (auto-downloaded, should not be committed)
 static/uploads/images/
 static/uploads/images/*
+
+# Chrome user data (browser cache, should not be committed)
+user_data/
+user_data_*/
+user_data_translate/
